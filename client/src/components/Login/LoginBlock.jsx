@@ -2,6 +2,7 @@ import React,{useState} from 'react'
 import '../../style/loginBlock.css'
 const LoginBlock = () => {
     const [signupLog,setSL] = useState(false);
+    
   return (
     <div className='loginBlock'>
       <div className='heading text-white'>
@@ -12,9 +13,8 @@ const LoginBlock = () => {
                     ? "Enter your credentials, email, and password to create an account."
                     : "Enter your email and password to log in to your account."}
             </div>
-
       <div className='bottom'>
-        <div className={`container flex flex-col text-left ${signupLog?"p-16":"px-16"}`}>
+        <div className={`container flex flex-col text-left ${signupLog?"p-16":"px-16 py-5"}`}>
         <div className='text-white head-info '>Email*</div>
        <input className='input-detail'></input>
        </div>

@@ -1,0 +1,9 @@
+{
+    "Test":{
+        "signup":"/api/test/signup",
+        "otpVerification":"/api/test/otpVar",
+        "login":"/api/test/login",
+        "forget":"/api/test/forget",
+        "confirmPasswordChange":"/api/test/confirChange"
+    }
+}
