@@ -1,10 +1,12 @@
 import React from 'react'
-const bgimg = import.meta.process.env.backgroundImage
+import '../style/LoginMain.css';
+import logback from "../assets/logback.jpg";
+import LoginBlock from '../components/Login/LoginBlock';
 const LoginMain = () => {
-    console.log(bgimg);
+    console.log(logback)
   return (
-    <div >
-      
+    <div className='login-page' style={{backgroundImage:`url(${logback})`}}>
+        <LoginBlock></LoginBlock>
     </div>
   )
 }
