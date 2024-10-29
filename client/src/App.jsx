@@ -1,4 +1,3 @@
-import './App.css'
 import React from 'react'
 import { Route, Routes } from 'react-router-dom';
 import url from './url.json';
@@ -9,7 +8,7 @@ function App() {
   return(
     <Routes>
       <Route path={url.Login} element={<LoginMain/>}></Route>
-      <Route path="/main" element={<WebsiteBuilder/>}></Route>
+      <Route path={url.Main} element={<WebsiteBuilder/>}></Route>
     </Routes>
   )
 }
