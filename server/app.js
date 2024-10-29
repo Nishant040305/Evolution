@@ -28,6 +28,7 @@ app.use(cookieParser());
 
 //TEST
 app.use('/api/test/',require("./test/loginTest"));
+app.use('/api/test/mail',require("./test/mailTest"))
 //middleware for error
 app.use((err, req, res, next) => {
   console.error(err.stack);

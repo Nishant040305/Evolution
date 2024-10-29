@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OTP Verification</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      color: #333333;
+      line-height: 1.6;
+      background-color: #f9f9f9;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      padding: 20px;
+      border: 1px solid #dddddd;
+      border-radius: 5px;
+    }
+    .header {
+      text-align: center;
+      padding: 10px 0;
+    }
+    .header h2 {
+      color: #5c6bc0;
+    }
+    .otp-code {
+      font-size: 24px;
+      color: #333333;
+      background-color: #e8f0fe;
+      padding: 10px;
+      border-radius: 5px;
+      text-align: center;
+      margin: 20px 0;
+    }
+    .footer {
+      font-size: 12px;
+      color: #888888;
+      margin-top: 20px;
+      text-align: center;
+    }
+    .button {
+      background-color: #5c6bc0;
+      color: #ffffff;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h2>Welcome to DNA - Evolution</h2>
+    </div>
+
+    <p>Dear USER,</p>
+    <p>Thank you for choosing DNA - Evolution! To complete your account verification, please use the One-Time Password (OTP) below:</p>
+    
+    <div class="otp-code">{{OTP_CODE}}</div>
+
+    <p><strong>Note:</strong> This OTP will expire in 10 minutes for your security. If it expires, you can request a new code on the Evolution site.</p>
+
+    <p>If you didn’t request this code or believe you received it in error, please disregard this email. For any concerns, reach out to our support team at <a href="mailto:support@evolution.dna.com">support@evolution.dna.com</a>.</p>
+
+    <p>Thank you for being a part of our journey toward innovation with DNA - Evolution!</p>
+
+    <p>Best Regards,<br>The DNA - Evolution Team</p>
+    <p><a href="http://www.evolution.dna.com" class="button">Visit DNA - Evolution</a></p>
+
+    <div class="footer">
+      <p>Please do not share this code with anyone. DNA - Evolution will never ask for your OTP via email, phone, or any other means outside our secure platform.</p>
+      <p>© 2024 DNA - Evolution</p>
+    </div>
+  </div>
+</body>
+</html>
