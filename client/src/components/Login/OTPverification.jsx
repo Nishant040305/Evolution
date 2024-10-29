@@ -76,7 +76,7 @@ const OTPVerification = (props) => {
 
   return (
     <div className='bottom'>
-      <div className={`container flex flex-col text-left px-16 py-5`}>
+      <div className={`container flex flex-col text-left px-16`}>
         <div className='text-white head-info'>OTP</div>
         {isResendVisible?<></>:<span className="timer text-white">Resend in {formatTime()}</span>}
         <input

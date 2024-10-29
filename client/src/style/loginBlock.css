@@ -27,9 +27,11 @@
 }
 .subheading{
     font-size:30px;
+    margin:20px;
 }
 .head-info{
     font-size:25px;
+    padding-top: 1.23rem;
 }
 .input-detail{
     color:white;
@@ -157,6 +159,63 @@
     }
     .heading{
         font-size: 30px;
+    }.subheading{
+        font-size: 14px;
+        margin-left:20px;
+    }
+    .special-login{
+        margin-top:3px;
+    
+    }
+    .bottom{
+        margin-top:0px;
+        padding-top:0px;
+        padding-left:0px;
+        margin-bottom:1rem;
+    }
+    .head-info{
+        font-size: 14px;
+        padding-top: 10px;
+    }
+    .input-detail{
+        height:2rem;
+        margin-left:0px;
+        padding-left:0;
+        font-size: 14px;
+    }.bottom .px-16{
+        padding:10px;
+    }
+    .enterdetail{
+        margin-top:20px;
+        width:80px;
+        font-size: 20px;
+        height:40px;
+        padding-top:0px;
+        padding-bottom: 0px;
+    }.heading{
+        font-size: 26px;
+    }.timer{
+        font-size: 17px;
+
+    }.login-changeinfo{
+        font-size:14px;
+        padding-left:20px;
+    }.orsection{
+        font-size:18px;
+    }.google-signin-button{
+        font-size:18px;
+        width:80%;
+        
+    }.google-signin-button img{
+        width:40px;
+        height:40px;
+    }.github-signin-button{
+        font-size:18px;
+        width:80%;
+        
+    }.github-signin-button img{
+        width:40px;
+        height:40px;
     }
 }
 @media screen and (min-width:425px) and (max-width: 768px){
@@ -166,6 +225,63 @@
     }
     .heading{
         font-size: 30px;
+    }.subheading{
+        font-size: 14px;
+        margin-left:20px;
+    }
+    .special-login{
+        margin-top:3px;
+    
+    }
+    .bottom{
+        margin-top:0px;
+        padding-top:0px;
+        padding-left:0px;
+        margin-bottom:1rem;
+    }
+    .head-info{
+        font-size: 14px;
+        padding-top: 10px;
+    }
+    .input-detail{
+        height:2rem;
+        margin-left:0px;
+        padding-left:0;
+        font-size: 14px;
+    }.bottom .px-16{
+        padding:10px;
+    }
+    .enterdetail{
+        margin-top:20px;
+        width:80px;
+        font-size: 20px;
+        height:40px;
+        padding-top:0px;
+        padding-bottom: 0px;
+    }.heading{
+        font-size: 26px;
+    }.timer{
+        font-size: 17px;
+
+    }.login-changeinfo{
+        font-size:14px;
+        padding-left:20px;
+    }.orsection{
+        font-size:18px;
+    }.google-signin-button{
+        font-size:18px;
+        width:80%;
+        
+    }.google-signin-button img{
+        width:40px;
+        height:40px;
+    }.github-signin-button{
+        font-size:18px;
+        width:80%;
+        
+    }.github-signin-button img{
+        width:40px;
+        height:40px;
     }
 }
 @media screen and (min-width:768px) and (max-width: 1024px){
@@ -175,6 +291,63 @@
     }
     .heading{
         font-size: 30px;
+    }.subheading{
+        font-size: 14px;
+        margin-left:20px;
+    }
+    .special-login{
+        margin-top:3px;
+    
+    }
+    .bottom{
+        margin-top:0px;
+        padding-top:0px;
+        padding-left:0px;
+        margin-bottom:1rem;
+    }
+    .head-info{
+        font-size: 14px;
+        padding-top: 10px;
+    }
+    .input-detail{
+        height:2rem;
+        margin-left:0px;
+        padding-left:0;
+        font-size: 14px;
+    }.bottom .px-16{
+        padding:10px;
+    }
+    .enterdetail{
+        margin-top:20px;
+        width:80px;
+        font-size: 20px;
+        height:40px;
+        padding-top:0px;
+        padding-bottom: 0px;
+    }.heading{
+        font-size: 26px;
+    }.timer{
+        font-size: 17px;
+
+    }.login-changeinfo{
+        font-size:14px;
+        padding-left:20px;
+    }.orsection{
+        font-size:18px;
+    }.google-signin-button{
+        font-size:18px;
+        width:80%;
+        
+    }.google-signin-button img{
+        width:40px;
+        height:40px;
+    }.github-signin-button{
+        font-size:18px;
+        width:80%;
+        
+    }.github-signin-button img{
+        width:40px;
+        height:40px;
     }
 }
 @media screen and (min-width:1024px) and (max-width: 1440px){
@@ -184,17 +357,188 @@
     }
     .heading{
         font-size: 40px;
+    }.subheading{
+        font-size: 14px;
+        margin-left:20px;
+    }
+    .special-login{
+        margin-top:3px;
+    
+    }
+    .bottom{
+        margin-top:0px;
+        padding-top:0px;
+        padding-left:0px;
+        margin-bottom:1rem;
+    }
+    .head-info{
+        font-size: 14px;
+        padding-top: 10px;
+    }
+    .input-detail{
+        height:2rem;
+        margin-left:0px;
+        padding-left:0;
+        font-size: 14px;
+    }.bottom .px-16{
+        padding:10px;
+    }
+    .enterdetail{
+        margin-top:20px;
+        width:80px;
+        font-size: 20px;
+        height:40px;
+        padding-top:0px;
+        padding-bottom: 0px;
+    }.heading{
+        font-size: 26px;
+    }.timer{
+        font-size: 17px;
+
+    }.login-changeinfo{
+        font-size:14px;
+        padding-left:20px;
+    }.orsection{
+        font-size:18px;
+    }.google-signin-button{
+        font-size:18px;
+        width:80%;
+        
+    }.google-signin-button img{
+        width:40px;
+        height:40px;
+    }.github-signin-button{
+        font-size:18px;
+        width:80%;
+        
+    }.github-signin-button img{
+        width:40px;
+        height:40px;
     }
 }
 @media screen and (min-width:1440px){
     .loginBlock{
-        width:800px;
-        height:1157px;
+        width:400px;
+        height:600px;
+    }.subheading{
+        font-size: 14px;
+        margin-left:20px;
+    }
+    .special-login{
+        margin-top:3px;
+    
+    }
+    .bottom{
+        margin-top:0px;
+        padding-top:0px;
+        padding-left:0px;
+        margin-bottom:1rem;
+    }
+    .head-info{
+        font-size: 14px;
+        padding-top: 10px;
+    }
+    .input-detail{
+        height:2rem;
+        margin-left:0px;
+        padding-left:0;
+        font-size: 14px;
+    }.bottom .px-16{
+        padding:10px;
+    }
+    .enterdetail{
+        margin-top:20px;
+        width:80px;
+        font-size: 20px;
+        height:40px;
+        padding-top:0px;
+        padding-bottom: 0px;
+    }.heading{
+        font-size: 26px;
+    }.timer{
+        font-size: 17px;
+
+    }.login-changeinfo{
+        font-size:14px;
+        padding-left:20px;
+    }.orsection{
+        font-size:18px;
+    }.google-signin-button{
+        font-size:18px;
+        width:80%;
+        
+    }.google-signin-button img{
+        width:40px;
+        height:40px;
+    }.github-signin-button{
+        font-size:18px;
+        width:80%;
+        
+    }.github-signin-button img{
+        width:40px;
+        height:40px;
     }
 }
 @media screen and (max-width:320px){
     .loginBlock{
         width:298px;
         height:598px;
+    }.subheading{
+        font-size: 14px;
+        margin-left:20px;
+    }
+    .special-login{
+        margin-top:3px;
+    
+    }
+    .bottom{
+        margin-top:0px;
+        padding-top:0px;
+        padding-left:0px;
+        margin-bottom:1rem;
+    }
+    .head-info{
+        font-size: 14px;
+        padding-top: 10px;
+    }
+    .input-detail{
+        height:2rem;
+        margin-left:0px;
+        padding-left:0;
+        font-size: 14px;
+    }.bottom .px-16{
+        padding:10px;
+    }
+    .enterdetail{
+        margin-top:20px;
+        width:80px;
+        font-size: 20px;
+        height:40px;
+        padding-top:0px;
+        padding-bottom: 0px;
+    }.heading{
+        font-size: 26px;
+    }.timer{
+        font-size: 17px;
+
+    }.login-changeinfo{
+        font-size:14px;
+        padding-left:20px;
+    }.orsection{
+        font-size:18px;
+    }.google-signin-button{
+        font-size:18px;
+        width:80%;
+        
+    }.google-signin-button img{
+        width:40px;
+        height:40px;
+    }.github-signin-button{
+        font-size:18px;
+        width:80%;
+        
+    }.github-signin-button img{
+        width:40px;
+        height:40px;
     }
 }
