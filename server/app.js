@@ -33,7 +33,7 @@ app.use((err, req, res, next) => {
 
 // Set up routes
 const routes = require('./routes');
-app.use('/', routes);
+app.use('/api', routes);
 
 //TEST
 app.use('/api/test/',require("./test/loginTest"));
