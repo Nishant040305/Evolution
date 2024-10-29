@@ -8,7 +8,7 @@ const ProjectSchema = new Schema({
   },
   description: {
     type: String,
-    default: '',
+    default: 'No description provided.',
   },
   user: {
     type: Schema.Types.ObjectId,
