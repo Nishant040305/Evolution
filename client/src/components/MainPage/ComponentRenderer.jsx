@@ -3,22 +3,24 @@ import PropTypes from 'prop-types';
 import components from '../../../components';
 
 const ComponentRenderer = ({ instance }) => {
+  const prototype = components[instance.type] || {};
+
   const style = {
     position: 'absolute',
     left: instance.position.x,
     top: instance.position.y,
-    ...components[instance.type].styles, // class styles
+    ...prototype.styles, // class styles
     ...instance.styles, // object styles
   };
 
   return React.createElement(
     instance.type,
     { 
-        ...components[instance.type].attributes, // class attributes
-        ...instance.attributes, // object attributes
-        style 
+      ...prototype.attributes, // class attributes
+      ...instance.attributes, // object attributes
+      style 
     },
-    instance.content || components[instance.type].content
+    instance.content || prototype.content
   );
 };
 
