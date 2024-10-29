@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import TopBar from "./Topbar";
-import LeftSidebar from "./LeftSidebar";
-import MainCanvas from "./MainCanvas";
-import RightSidebar from "./RightSidebar";
-import BottomBar from "./BottomBar";
+import TopBar from "../components/MainPage/Topbar";
+import LeftSidebar from "../components/MainPage/LeftSidebar";
+import MainCanvas from "../components/MainPage/MainCanvas";
+import RightSidebar from "../components/MainPage/RightSidebar";
+import BottomBar from "../components/MainPage/BottomBar";
 
 const WebsiteBuilder = () => {
   const [leftSidebarOpen, setLeftSidebarOpen] = useState(true);
