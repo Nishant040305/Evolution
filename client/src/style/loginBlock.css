@@ -145,6 +145,11 @@
     justify-content: center;
     align-content: space-between;
 }
+.timer{
+    font-size: 25px;
+    margin-top:10px;
+    margin-bottom: 10px;
+}
 @media screen and (min-width: 320px) and (max-width: 425px){
     .loginBlock{
         width:320px;

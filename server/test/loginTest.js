@@ -2,9 +2,11 @@ const express = require("express")
 const router = express.Router();
 
 router.post('/signup',async(req,res)=>{
-    return res.status(200).json({_id:123})
+    console.log(req.body);
+    return res.status(200).json({AUTH:123})
 })
 router.post('/otpver',async(req,res)=>{
+    console.log(req.body)
     if(req.body.OTP==100000){
         return res.status(200).json({sucess:true})
     }else{
@@ -15,6 +17,7 @@ router.post('/login',async(req,res)=>{
     if(req.body.EMAIL=="nishant040305@gmail.com"&&req.body.PASSWORD=="000000"){
         return res.status(200).json({success:true})
     }
+    return res.status(400).json({success:false})
 })
 router.post('/forget',async(req,res)=>{
     if(req.body.EMAIL=="nishant040305@gmail.com"){
@@ -29,5 +32,8 @@ router.post('/confirChange',async(req,res)=>{
     }else{
         return res.status(400).json({success:false})
     }
+})
+router.post('/resend',async(req,res)=>{
+    return res.status(200).json({success:true})
 })
 module.exports = router;

@@ -1,51 +1,104 @@
-import React,{useState} from 'react'
-import '../../style/loginBlock.css'
+import React, { useState } from 'react';
+import '../../style/loginBlock.css';
+import Signup from './signup';
+import Login from './login';
+import OTPVerification from './OTPverification';
+import ForgetPassword from './forgetPassword';
+import ConfirmPassword from './ConfirmPassword';
+
 const LoginBlock = () => {
-    const [signupLog,setSL] = useState(false);
-    
+  const [signupLog, setSL] = useState(0); // 0: Login, 1: Signup, 2: OTP Verification, 3: Forget Password, 4: OTP for Password Reset, 5: Confirm Password
+  const [userInfo, setUserInfo] = useState({ EMAIL: "", PASSWORD: "" });
+  const [OTP, setOTP] = useState({ AUTHENTICATION: "", OTP: "" });
+  const [PASS, setPASS] = useState({ AUTHENTICATION: "", PASSWORD: "", CPASSWORD: "" });
+  const [FOREMAIL, setEMAIL] = useState("");
+
+  const getHeading = () => {
+    switch (signupLog) {
+      case 1:
+        return "Sign In";
+      case 2:
+        return "OTP Verification";
+      case 3:
+        return "Password Recovery";
+      case 4:
+        return "OTP Verification";
+      case 5:
+        return "Confirm New Password";
+      default:
+        return "Log In";
+    }
+  };
+
+  const getSubheading = () => {
+    switch (signupLog) {
+      case 0:
+        return "Enter your email and password to log in.";
+      case 1:
+        return "Fill in your details to create a new account.";
+      case 2:
+      case 4:
+        return "Enter the 6-digit OTP sent to your email.";
+      case 3:
+        return "Enter your email to receive password reset instructions.";
+      case 5:
+        return "Set your new password.";
+      default:
+        return "";
+    }
+  };
+
   return (
     <div className='loginBlock'>
-      <div className='heading text-white'>
-        {signupLog==true?"Sign Up":"Log In"}
-      </div>
-      <div className="subheading text-white">
-                {signupLog 
-                    ? "Enter your credentials, email, and password to create an account."
-                    : "Enter your email and password to log in to your account."}
-            </div>
-      <div className='bottom'>
-        <div className={`container flex flex-col text-left ${signupLog?"p-16":"px-16 py-5"}`}>
-        <div className='text-white head-info '>Email*</div>
-       <input className='input-detail'></input>
-       </div>
-       {!signupLog?
-       <div className=' flex flex-col text-left px-16 py-2'>
-        <div className='text-white head-info'>Password*</div>
-       <input className='input-detail'></input>
-       </div>:<></>}
-       <button className='enterdetail btn'>Enter</button>
-      </div>
+      <div className='heading text-white'>{getHeading()}</div>
+      <div className="subheading text-white">{getSubheading()}</div>
+      
+      {/* Render based on current state */}
+      {signupLog === 1 ? (
+        <Signup value={userInfo} setValue={setUserInfo} Update={setSL} AUTH={setOTP} />
+      ) : signupLog === 0 ? (
+        <Login value={userInfo} setValue={setUserInfo} Update={setSL} />
+      ) : signupLog === 2 ? (
+        <OTPVerification value={OTP} setValue={setOTP} Update={setSL} />
+      ) : signupLog === 3 ? (
+        <ForgetPassword value={FOREMAIL} setValue={setEMAIL} AUTH={setOTP} Update={setSL} />
+      ) : signupLog === 4 ? (
+        <OTPVerification value={OTP} setValue={setOTP} Update={setSL} PASS={setPASS} work={1} />
+      ) : signupLog === 5 ? (
+        <ConfirmPassword value={PASS} setValue={setPASS} />
+      ) : (
+        <Login value={userInfo} setValue={setUserInfo} Update={setSL} />
+      )}
+
+      {/* Toggle links based on login or signup state */}
       <div className='login-changeinfo'>
-        {signupLog?<div className='text-white' onClick={()=>{setSL(1-signupLog)}}>already have account?</div>:<div className=' loged '>
-        <div className='text-white mr-10'>forget password?</div>
-        <div className='text-white' onClick={()=>{setSL(1-signupLog)}}>Create Account?</div></div>}
+        {(signupLog === 1 || signupLog === 2) ? (
+          <div className='text-white' onClick={() => setSL(0)}>Already have an account?</div>
+        ) : (
+          <div className='loged'>
+            {signupLog !== 3 && <div className='text-white mr-10' onClick={() => setSL(3)}>Forgot password?</div>}
+            <div className='text-white' onClick={() => setSL(1)}>Create an account</div>
+          </div>
+        )}
       </div>
+      
       <div className='flex flex-row orsection px-5'>
-      <hr className='text-white line'></hr>OR<hr className='text-white line'></hr>
+        <hr className='text-white line' /> OR <hr className='text-white line' />
       </div>
+      
+      {/* Social login buttons */}
       <div className='special-login'>
-      <button class="google-signin-button">
+        <button className="google-signin-button">
           <img src="https://banner2.cleanpng.com/20240111/qtv/transparent-google-logo-colorful-google-logo-with-bold-green-1710929465092.webp" alt="Google logo" />
-          <span>Sign in with google</span>
-      </button>
-      <button class="github-signin-button">
+          <span>Sign in with Google</span>
+        </button>
+        <button className="github-signin-button">
           <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub logo" />
           <span>Sign in with GitHub</span>
-      </button>
-
+        </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default LoginBlock
+export default LoginBlock;
