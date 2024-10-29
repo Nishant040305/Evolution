@@ -15,6 +15,10 @@ const ProjectSchema = new Schema({
     ref: 'User',
     required: true,
   },
-});
+  components: {
+    type: Schema.Types.Mixed,
+    default: {}
+  }
+}, { timestamps: true });
 
 module.exports = model('Project', ProjectSchema);
