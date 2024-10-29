@@ -33,7 +33,7 @@ app.use('/api/test/mail',require("./test/mailTest"))
 
 //Routes 
 
-app.use('/api/auth/', require("/routes/credential.routes"));
+app.use('/api/auth/', require("./routes/credential.routes"));
 
 
 

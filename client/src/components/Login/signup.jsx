@@ -34,11 +34,11 @@ const Signup = (props) => {
     }
   return (
     <div className='bottom'>
-        <div className={`container flex flex-col text-left px-16 py-5`}>
+        <div className={`container flex flex-col text-left px-16`}>
         <div className='text-white head-info '>Email*</div>
        <input className='input-detail'name="EMAIL" value={props.value.EMAIL} onChange={(e)=>{handleChange(e)}}></input>
        </div>
-       <div className=' flex flex-col text-left px-16 py-2'>
+       <div className=' flex flex-col text-left px-16 '>
         <div className='text-white head-info'>Password*</div>
        <input className='input-detail' name="PASSWORD" value={props.value.PASSWORD} onChange={(e)=>{handleChange(e)}}></input>
        </div>

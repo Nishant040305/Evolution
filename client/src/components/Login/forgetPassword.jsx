@@ -32,7 +32,7 @@ const ForgetPassword = (props) => {
 
   return (
     <div className='bottom'>
-    <div className={`container flex flex-col text-left px-16 py-5`}>
+    <div className={`container flex flex-col text-left px-16`}>
     <div className='text-white head-info '>Email*</div>
    <input className='input-detail'name="EMAIL" value={props.value} onChange={(e)=>{handleChange(e)}}></input>
    <button className='enterdetail btn' onClick={()=>{forgetPass()}}>Enter</button>
