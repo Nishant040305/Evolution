@@ -26,6 +26,7 @@ const ComponentRenderer = ({ instance }) => {
 
 ComponentRenderer.propTypes = {
   instance: PropTypes.shape({
+    id: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     position: PropTypes.shape({
       x: PropTypes.number.isRequired,
