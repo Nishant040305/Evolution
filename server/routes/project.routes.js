@@ -11,24 +11,24 @@ const {
     deleteProject,
 } = projectController;
 
-// @route    GET /api/v1/project
+// @route    GET /api/project
 // @desc     Get all projects
-router.get('/', projectController.getAllProjects);
+router.get('/', getAllProjects);
 
-// @route    GET /api/v1/project/:id
+// @route    GET /api/project/:id
 // @desc     Get a project by id
-router.get('/:id', projectController.getProjectById);
+router.get('/:id', getProjectById);
 
-// @route    POST /api/v1/project
+// @route    POST /api/project
 // @desc     Create a new project
-router.post('/', projectController.createProject);
+router.post('/', createProject);
 
-// @route    PUT /api/v1/project/:id
+// @route    PUT /api/project/:id
 // @desc     Update a project by id
-router.put('/:id', projectController.updateProject);
+router.put('/:id', updateProject);
 
-// @route    DELETE /api/v1/project/:id
+// @route    DELETE /api/project/:id
 // @desc     Delete a project by id
-router.delete('/:id', projectController.deleteProject);
+router.delete('/:id', deleteProject);
 
 module.exports = router;
