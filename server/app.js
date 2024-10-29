@@ -29,6 +29,15 @@ app.use(cookieParser());
 //TEST
 app.use('/api/test/',require("./test/loginTest"));
 app.use('/api/test/mail',require("./test/mailTest"))
+
+
+//Routes 
+
+app.use('/api/auth/', require("/routes/credential.routes"));
+
+
+
+
 //middleware for error
 app.use((err, req, res, next) => {
   console.error(err.stack);

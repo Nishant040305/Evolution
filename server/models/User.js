@@ -11,6 +11,10 @@ const UserSchema = new Schema({
     type: String,
     unique: true,
   },
+  verify:{
+    type:Boolean,
+    default:false
+  },
   password: {
     type: String,
   },
@@ -24,13 +28,6 @@ const UserSchema = new Schema({
       ref: 'Project',
     }
   ]
-});
-
-UserSchema.pre('save', async function(next) {
-  if (this.isModified('password')) {
-    this.password = await bcrypt.hash(this.password, 10);
-  }
-  next();
 });
 
 module.exports = model('User', UserSchema);
