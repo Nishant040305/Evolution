@@ -1,4 +1,5 @@
 {
-    "Main":"/main",
-    "Login":"/login-page"
+  "Main": "/main",
+  "Login": "/login-page",
+  "Dashboard": "/"
 }
