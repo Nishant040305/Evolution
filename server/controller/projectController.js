@@ -1,3 +1,4 @@
+const User = require("../models/User");
 const Project = require('../models/Project');
 
 const getAllProjects = async (req, res) => {
@@ -23,6 +24,10 @@ const getProjectById = async (req, res) => {
 
 const createProject = async (req, res) => {
     try {
+        const user = await User.findById(req.body.user);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
         const newProject = new Project({
             name: req.body.name,
             description: req.body.description,
@@ -30,6 +35,8 @@ const createProject = async (req, res) => {
             components: req.body.components,
         });
         const savedProject = await newProject.save();
+        user.projects.push(savedProject._id);
+        await user.save();
         res.status(201).json(savedProject);
     } catch (error) {
         res.status(500).json({ message: 'Error creating project', error });
