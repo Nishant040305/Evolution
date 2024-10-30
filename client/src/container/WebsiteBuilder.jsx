@@ -10,6 +10,8 @@ const WebsiteBuilder = () => {
   const [rightSidebarOpen, setRightSidebarOpen] = useState(false);
   const [selectedElement, setSelectedElement] = useState(null);
   const [expandedCategories, setExpandedCategories] = useState({});
+  const [webElements,setWebElements] = useState({});
+  const [id,setId] = useState(0);
 
   const toggleCategory = (category) => {
     setExpandedCategories((prev) => ({
@@ -25,7 +27,8 @@ const WebsiteBuilder = () => {
 
   return (
     <div className="flex flex-col h-screen">
-      <TopBar />
+      <TopBar webElements={webElements}
+          setWebElements = {setWebElements}/>
       <div className="flex flex-1">
         <LeftSidebar
           sidebarOpen={leftSidebarOpen}
@@ -33,16 +36,29 @@ const WebsiteBuilder = () => {
           toggleCategory={toggleCategory}
           expandedCategories={expandedCategories}
           handleElementSelect={handleElementSelect}
+          webElements={webElements}
+          setWebElements = {setWebElements}
+          id={id}
+          setId={setId}
         />
-        <MainCanvas />
+        <MainCanvas
+        webElements={webElements}
+        setWebElements = {setWebElements}
+         />
         {rightSidebarOpen && (
           <RightSidebar
             element={selectedElement}
             closeSidebar={() => setRightSidebarOpen(false)}
+            webElements={webElements}
+          setWebElements = {setWebElements}
+          id={id}
           />
         )}
       </div>
-      <BottomBar />
+      <BottomBar
+      webElements={webElements}
+      setWebElements = {setWebElements}
+      />
     </div>
   );
 };

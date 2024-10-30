@@ -1,7 +1,7 @@
 import React from "react";
 import { X } from "lucide-react";
-
-const RightSidebar = ({ element, closeSidebar }) => (
+import ComponentEditor from "./componentEditor";
+const RightSidebar = ({ element, closeSidebar,webElements,setWebElements ,id}) => (
   <div
     className={`w-64 transition-all duration-300 border-l bg-white overflow-hidden`}
   >
@@ -31,6 +31,7 @@ const RightSidebar = ({ element, closeSidebar }) => (
           </div>
         </div>
       </div>
+      {id!=0?<ComponentEditor id={id} webElements={webElements} setWebElements={setWebElements}></ComponentEditor>:<></>}
     </div>
   </div>
 );

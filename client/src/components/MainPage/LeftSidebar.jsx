@@ -1,3 +1,4 @@
+import { useState } from "react";
 import React from "react";
 import {
   ChevronRight,
@@ -7,13 +8,18 @@ import {
   Type,
   Image,
 } from "lucide-react";
-
+//webElements is the elements of the selected and configured components on the webpage
 const LeftSidebar = ({
   sidebarOpen,
   toggleSidebar,
   toggleCategory,
   expandedCategories,
   handleElementSelect,
+  webElements,
+  setWebElements,
+  setId,
+  id,
+
 }) => {
   const categories = {
     elements: {
@@ -80,6 +86,47 @@ const LeftSidebar = ({
       ],
     },
   };
+  const [counter,setCounter] = useState(1);
+  //drag and drop
+  const startDrag = (event, elementId) => {
+    event.preventDefault();
+
+    const element = document.getElementById(elementId);
+    let startX = event.clientX;
+    let startY = event.clientY;
+
+    const handleMouseMove = (moveEvent) => {
+      const dx = moveEvent.clientX - startX;
+      const dy = moveEvent.clientY - startY;
+
+      setWebElements((prevWebElements) => {
+        const newPosition = {
+          x: prevWebElements[elementId].position.x + dx,
+          y: prevWebElements[elementId].position.y + dy,
+        };
+
+        return {
+          ...prevWebElements,
+          [elementId]: {
+            ...prevWebElements[elementId],
+            position: newPosition,
+          },
+        };
+      });
+
+      startX = moveEvent.clientX;
+      startY = moveEvent.clientY;
+    };
+
+    const handleMouseUp = () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+  };
+
 
   return (
     <>
@@ -95,9 +142,8 @@ const LeftSidebar = ({
       </button>
 
       <div
-        className={`${
-          sidebarOpen ? "w-64" : "w-0"
-        } transition-all duration-300 border-r bg-white overflow-hidden`}
+        className={`${sidebarOpen ? "w-64" : "w-0"
+          } transition-all duration-300 border-r bg-white overflow-hidden`}
       >
         <div className="h-full p-4 overflow-y-auto">
           {Object.entries(categories).map(([key, category]) => (
@@ -111,9 +157,8 @@ const LeftSidebar = ({
                   <span>{category.label}</span>
                 </div>
                 <ChevronDown
-                  className={`w-4 h-4 transform transition-transform ${
-                    expandedCategories[key] ? "rotate-180" : ""
-                  }`}
+                  className={`w-4 h-4 transform transition-transform ${expandedCategories[key] ? "rotate-180" : ""
+                    }`}
                 />
               </button>
 
@@ -139,6 +184,42 @@ const LeftSidebar = ({
               )}
             </div>
           ))}
+          <div className="Test">
+            <button onClick={async()=>{
+              let id = counter+1;
+              let hash = id.toString();
+              setCounter((prevCounter) => prevCounter + 1);
+              setWebElements({
+                ...webElements,
+                [hash]:{
+                  "id":`${hash}`,
+                  "type": "button",
+                  "styles": {
+                      "backgroundColor": "gray",
+                      
+                  },
+                  "position":{x:100,y:100},
+                  "attributes": {
+                      "onClick": function() { 
+                        alert(`Button ${id} clicked`)
+                       },
+                       onMouseDown: (event) => startDrag(event, hash)
+                  },
+                  "content": `Button ${counter}`
+              }
+              
+
+              })
+              }}>Add buttons</button>
+
+          </div>
+          <div className="components">
+            <div>components</div>
+            {Object.entries(webElements).map(([index, value]) => (
+               <div key={index} onClick={()=>{setId(value.id)}}>{`${value.type} ${value.id}`}</div>
+             ))}
+
+          </div>
         </div>
       </div>
     </>

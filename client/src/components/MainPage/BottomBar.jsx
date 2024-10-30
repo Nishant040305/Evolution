@@ -1,7 +1,7 @@
 import React from "react";
 import { Timer, Layout, Save } from "lucide-react";
-
-const BottomBar = () => (
+//webElements is the elements of the selected and configured components on the webpage
+const BottomBar = ({webElements,setWebElements}) => (
   <div className="flex items-center justify-between h-12 px-4 bg-white border-t">
     <div className="flex items-center space-x-4">
       <span className="text-sm text-gray-600">Canvas Size: 1920 x 1080</span>

@@ -1,7 +1,7 @@
 import React from "react";
 import { Undo, Redo, Monitor, Tablet, Smartphone } from "lucide-react";
 
-const TopBar = () => (
+const TopBar = ({webElements ,setWebElements}) => (
   <div className="flex items-center justify-between px-4 bg-white border-b h-14">
     <div className="flex items-center space-x-4">
       <h1 className="text-xl font-semibold text-rose-800">Evolution</h1>
