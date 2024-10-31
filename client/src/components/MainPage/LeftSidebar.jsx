@@ -1,93 +1,24 @@
 import { useState } from "react";
 import React from "react";
-import {
-  ChevronRight,
-  ChevronLeft,
-  ChevronDown,
-  Grid,
-  Type,
-  Image,
-} from "lucide-react";
-//webElements is the elements of the selected and configured components on the webpage
+import { Textarea } from "../../lib/TextArea-standared";
+import { Label } from "../../lib/label";
+import { Button } from "../../lib/Buttons-standard";
+import { Input } from "../../lib/Input-standard";
+import { Select } from "../../lib/select";
+import { ChevronRight, ChevronLeft, ChevronDown, ChevronUp,Grid } from "lucide-react";
+
 const LeftSidebar = ({
   sidebarOpen,
   toggleSidebar,
-  toggleCategory,
-  expandedCategories,
-  handleElementSelect,
   webElements,
   setWebElements,
+  toggleRight,
   setId,
-  id,
-
 }) => {
-  const categories = {
-    elements: {
-      label: "Elements",
-      icon: Grid,
-      items: [
-        {
-          type: "container",
-          label: "Container",
-          subItems: ["Flex", "Grid", "Box"],
-        },
-        {
-          type: "section",
-          label: "Section",
-          subItems: ["Hero", "Feature", "CTA"],
-        },
-        {
-          type: "layout",
-          label: "Layout",
-          subItems: ["1-Column", "2-Column", "3-Column"],
-        },
-      ],
-    },
-    text: {
-      label: "Text",
-      icon: Type,
-      items: [
-        {
-          type: "heading",
-          label: "Headings",
-          subItems: ["H1", "H2", "H3", "H4"],
-        },
-        {
-          type: "paragraph",
-          label: "Paragraphs",
-          subItems: ["Regular", "Left", "Small"],
-        },
-        {
-          type: "special",
-          label: "Special",
-          subItems: ["Code", "Ordered List", "Unordered List"],
-        },
-      ],
-    },
-    media: {
-      label: "Media",
-      icon: Image,
-      items: [
-        {
-          type: "image",
-          label: "Images",
-          subItems: ["Single", "Gallery", "Slider"],
-        },
-        {
-          type: "video",
-          label: "Video",
-          subItems: ["Local", "YouTube", "Vimeo"],
-        },
-        {
-          type: "icon",
-          label: "Icons",
-          subItems: ["Basic", "Social", "Custom"],
-        },
-      ],
-    },
-  };
-  const [counter,setCounter] = useState(1);
-  //drag and drop
+  const [counter, setCounter] = useState(1);
+  const [showComponents, setShowComponents] = useState(true); // New state to toggle sections
+  const [showElements, setShowElements] = useState(true); // State to toggle elements
+
   const startDrag = (event, elementId) => {
     event.preventDefault();
 
@@ -127,13 +58,31 @@ const LeftSidebar = ({
     document.addEventListener("mouseup", handleMouseUp);
   };
 
-
   return (
-    <>
-      <button
-        onClick={toggleSidebar}
-        className="absolute left-0 z-10 p-1 transform -translate-y-1/2 bg-white border rounded-r-lg top-1/2"
+    <div className="relative">
+      {sidebarOpen==true?<div
+        className={`${
+          sidebarOpen ? "w-64" : "w-0"
+        } transition-all duration-300 border-r bg-white overflow-hidden`}
       >
+        <div className="h-full p-4 overflow-y-auto">
+          <div className="flex justify-between mb-4">
+            <button
+              onClick={() => setShowComponents(true)}
+              className={`p-2 ${showComponents ? "font-bold" : ""}`}
+            >
+              Components
+            </button>
+            <button
+              onClick={() => setShowComponents(false)}
+              className={`p-2 ${!showComponents ? "font-bold" : ""}`}
+            >
+              Project
+            </button>
+            <button
+              onClick={toggleSidebar}
+              className=" z-10 p-2 transform  bg-white   "
+            >
         {sidebarOpen ? (
           <ChevronLeft className="w-4 h-4" />
         ) : (
@@ -141,88 +90,121 @@ const LeftSidebar = ({
         )}
       </button>
 
-      <div
-        className={`${sidebarOpen ? "w-64" : "w-0"
-          } transition-all duration-300 border-r bg-white overflow-hidden`}
-      >
-        <div className="h-full p-4 overflow-y-auto">
-          {Object.entries(categories).map(([key, category]) => (
-            <div key={key} className="mb-4">
-              <button
-                onClick={() => toggleCategory(key)}
-                className="flex items-center justify-between w-full p-2 rounded-lg hover:bg-rose-50"
-              >
-                <div className="flex items-center space-x-2">
-                  {React.createElement(category.icon, { className: "w-4 h-4" })}
-                  <span>{category.label}</span>
-                </div>
-                <ChevronDown
-                  className={`w-4 h-4 transform transition-transform ${expandedCategories[key] ? "rotate-180" : ""
-                    }`}
-                />
-              </button>
+          </div>
+          
+          <>
+          {showComponents ? (
+            <div>
+              <div className="flex justify-between items-center">
+                <h3 className="font-bold flex flex-row"><Grid className="w-4 h-4"></Grid>   Elements</h3>
+                <button onClick={() => setShowElements((prev) => !prev)}>
+                  {showElements ? (
+                    <ChevronUp className="w-4 h-4" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4" />
+                  )}
+                </button>
+              </div>
 
-              {expandedCategories[key] && (
-                <div className="mt-2 ml-4 space-y-2">
-                  {category.items.map((item) => (
-                    <div key={item.type} className="space-y-1">
-                      <div className="text-sm font-medium text-gray-600">
-                        {item.label}
-                      </div>
-                      {item.subItems.map((subItem) => (
-                        <button
-                          key={subItem}
-                          onClick={() => handleElementSelect(item, subItem)}
-                          className="w-full py-1 pl-4 text-sm text-left rounded hover:bg-rose-50"
-                        >
-                          {subItem}
-                        </button>
-                      ))}
-                    </div>
-                  ))}
+              {showElements && (
+                <div className="Elements transition-all duration-300 flex flex-col mt-2 items-start">
+                  <button
+                    onClick={() => {
+                      let id = counter + 1;
+                      let hash = id.toString();
+                      setCounter((prevCounter) => prevCounter + 1);
+                      setWebElements({
+                        ...webElements,
+                        [hash]: Button(hash, startDrag), // Adds a Button component
+                      });
+                    }}
+                  >
+                    Button
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      let id = counter + 1;
+                      let hash = id.toString();
+                      setCounter((prevCounter) => prevCounter + 1);
+                      setWebElements({
+                        ...webElements,
+                        [hash]: Textarea(hash, startDrag), // Adds a TextField component
+                      });
+                    }}
+                  >
+                    Text Field
+                  </button>
+                    {/* work in progress */}
+                  {/* <button
+                    onClick={() => {
+                      let id = counter + 1;
+                      let hash = id.toString();
+                      setCounter((prevCounter) => prevCounter + 1);
+                      setWebElements({
+                        ...webElements,
+                        [hash]: Select(hash, ["Option 1", "Option 2", "Option 3"], startDrag), // Adds a Dropdown component
+                      });
+                    }}
+                  >
+                    Dropdown
+                  </button> */}
+
+                  <button
+                    onClick={() => {
+                      let id = counter + 1;
+                      let hash = id.toString();
+                      setCounter((prevCounter) => prevCounter + 1);
+                      setWebElements({
+                        ...webElements,
+                        [hash]: Label(hash, "New Label Text", startDrag), // Adds a Label component
+                      });
+                    }}
+                  >
+                    Label
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      let id = counter + 1;
+                      let hash = id.toString();
+                      setCounter((prevCounter) => prevCounter + 1);
+                      setWebElements({
+                        ...webElements,
+                        [hash]: Input(hash, "New Label Text", startDrag), // Adds a Label component
+                      });
+                    }}
+                  >
+                    Input
+                  </button>
                 </div>
               )}
             </div>
-          ))}
-          <div className="Test">
-            <button onClick={async()=>{
-              let id = counter+1;
-              let hash = id.toString();
-              setCounter((prevCounter) => prevCounter + 1);
-              setWebElements({
-                ...webElements,
-                [hash]:{
-                  "id":`${hash}`,
-                  "type": "button",
-                  "styles": {
-                      "backgroundColor": "gray",
-                      
-                  },
-                  "position":{x:100,y:100},
-                  "attributes": {
-                      "onClick": function() { 
-                        alert(`Button ${id} clicked`)
-                       },
-                       onMouseDown: (event) => startDrag(event, hash)
-                  },
-                  "content": `Button ${counter}`
-              }
-              
-
-              })
-              }}>Add buttons</button>
-
-          </div>
-          <div className="components">
-            <div>components</div>
-            {Object.entries(webElements).map(([index, value]) => (
-               <div key={index} onClick={()=>{setId(value.id)}}>{`${value.type} ${value.id}`}</div>
-             ))}
-
-          </div>
+          ) : (
+            <div className="project-overview">
+              <h2 className="font-bold text-lg">Project Overview</h2>
+              <div className="components">
+                <div>Components</div>
+                {Object.entries(webElements).map(([index, value]) => (
+                  <div key={index} onClick={() => { setId(value.id);toggleRight(true) }}>{`${value.type} ${value.id}`}</div>
+                ))}
+              </div>
+            </div>
+          )}
+          </>
         </div>
-      </div>
-    </>
+        
+      </div>:<button
+              onClick={toggleSidebar}
+              className=" z-10 p-2 transform  bg-white   absolute top-0"
+            >
+        {sidebarOpen ? (
+          <ChevronLeft className="w-4 h-4" />
+        ) : (
+          <ChevronRight className="w-4 h-4" />
+        )}
+      </button>}
+    </div>
   );
 };
 

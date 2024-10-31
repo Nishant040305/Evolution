@@ -7,9 +7,7 @@ import BottomBar from "../components/MainPage/BottomBar";
 
 const WebsiteBuilder = () => {
   const [leftSidebarOpen, setLeftSidebarOpen] = useState(true);
-  const [rightSidebarOpen, setRightSidebarOpen] = useState(false);
-  const [selectedElement, setSelectedElement] = useState(null);
-  const [expandedCategories, setExpandedCategories] = useState({});
+  const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
   const [webElements,setWebElements] = useState({});
   const [id,setId] = useState(0);
 
@@ -32,9 +30,8 @@ const WebsiteBuilder = () => {
       <div className="flex flex-1">
         <LeftSidebar
           sidebarOpen={leftSidebarOpen}
+          toggleRight={setRightSidebarOpen}
           toggleSidebar={() => setLeftSidebarOpen(!leftSidebarOpen)}
-          toggleCategory={toggleCategory}
-          expandedCategories={expandedCategories}
           handleElementSelect={handleElementSelect}
           webElements={webElements}
           setWebElements = {setWebElements}
@@ -47,7 +44,6 @@ const WebsiteBuilder = () => {
          />
         {rightSidebarOpen && (
           <RightSidebar
-            element={selectedElement}
             closeSidebar={() => setRightSidebarOpen(false)}
             webElements={webElements}
           setWebElements = {setWebElements}

@@ -1,37 +1,21 @@
 import React from "react";
-import { X } from "lucide-react";
+import { X ,ChartColumn} from "lucide-react";
 import ComponentEditor from "./componentEditor";
-const RightSidebar = ({ element, closeSidebar,webElements,setWebElements ,id}) => (
-  <div
-    className={`w-64 transition-all duration-300 border-l bg-white overflow-hidden`}
-  >
-    <div className="p-4">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="font-semibold">Edit {element.sub}</h3>
-        <button onClick={closeSidebar} className="p-1 rounded hover:bg-rose-50">
-          <X className="w-4 h-4" />
-        </button>
-      </div>
-      <div className="space-y-4">
-        <div>
-          <label className="block mb-2 text-sm">Font Family</label>
-          <select className="w-full p-2 border rounded-lg">
-            <option>Arial</option>
-            <option>Helvetica</option>
-            <option>Times New Roman</option>
-          </select>
-        </div>
-        <div>
-          <label className="block mb-2 text-sm">Colors</label>
-          <div className="flex space-x-2">
-            <button className="w-8 h-8 rounded-full bg-rose-500"></button>
-            <button className="w-8 h-8 bg-blue-500 rounded-full"></button>
-            <button className="w-8 h-8 bg-green-500 rounded-full"></button>
-            <button className="w-8 h-8 bg-yellow-500"></button>
-          </div>
-        </div>
-      </div>
-      {id!=0?<ComponentEditor id={id} webElements={webElements} setWebElements={setWebElements}></ComponentEditor>:<></>}
+import ComponentEditorTransform from "./ComponentEditorTransform";
+import Info from "./Info";
+import ComponentEditorAppearance from "./ComponentEditorAppearance";
+import ComponentEditorAdvanced from "./ComponentEditorAdvanced";
+import ComponentEditorContent from "./ComponentEditorContent";
+const RightSidebar = ({ closeSidebar,webElements,setWebElements ,id}) => (
+  <div className={`w-64 transition-all flex flex-col duration-300 border-l bg-gray-50 overflow-hidden`}>
+    <div className="properties-section flex flex-row justify-between px-2 pt-2 border-b border-slate-200 py-3"><div className="flex flex-row"><ChartColumn size={25} color="#000" />Properties</div><X onClick={()=>{closeSidebar(false)}}></X></div>
+    <div className="p-1">
+      {id!=0?<div><Info id={id} webElements={webElements} setWebElements={setWebElements}></Info>
+      <ComponentEditorTransform id={id} webElements={webElements} setWebElements={setWebElements}></ComponentEditorTransform>
+      <ComponentEditorAppearance id={id} webElements={webElements} setWebElements={setWebElements}></ComponentEditorAppearance>
+      <ComponentEditorAdvanced id={id} webElements={webElements} setWebElements={setWebElements}></ComponentEditorAdvanced>
+      <ComponentEditorContent id={id} webElements={webElements} setWebElements={setWebElements}/>
+      </div>:<></>}
     </div>
   </div>
 );
