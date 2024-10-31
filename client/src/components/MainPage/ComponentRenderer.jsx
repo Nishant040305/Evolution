@@ -13,6 +13,24 @@ const ComponentRenderer = ({ instance }) => {
     ...instance.styles, // object styles
   };
 
+  // Handle the select component rendering
+  if (instance.type === 'select') {
+    return (
+      <select
+        {...prototype.attributes}
+        {...instance.attributes}
+        style={style}
+      >
+        {(instance.attributes.options || []).map((option, index) => (
+          <option key={index} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    );
+  }
+
+  // Fallback for other types
   return React.createElement(
     instance.type,
     { 
@@ -27,7 +45,6 @@ const ComponentRenderer = ({ instance }) => {
 ComponentRenderer.propTypes = {
   instance: PropTypes.shape({
     id: PropTypes.string.isRequired,
-    className:"DragableElements",
     type: PropTypes.string.isRequired,
     position: PropTypes.shape({
       x: PropTypes.number.isRequired,
