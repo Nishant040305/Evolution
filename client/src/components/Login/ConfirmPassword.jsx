@@ -1,33 +1,13 @@
 import React from 'react'
-import axios from "axios";
-import server from "../../server.json";
-
+import AuthService from '../../scripts/API.Login'
 const ConfirmPassword = (props) => {
-    let WEB = import.meta.env.VITE_REACT_APP_BACKWEB;
-
     const handleChange=(e)=>{
         props.setValue({
             ...props.value,
             [e.target.name]:e.target.value
         })
     }
-    const  ConfirmPass =async()=> {
-        try {
-            const response = await axios.post(`${WEB}${server.Auth.confirmPasswordChange}`, {...props.value}, {
-                headers: {
-                    'Accept': 'application/json',
-                }
-            });
-            if (response.status !== 200) {
-                throw new Error('Failed to Send Email');
-            } else {
-                
-            }
-        } catch (e) {
-            console.error(e);
-        }
-        
-    }
+    const API = new AuthService();
 
   return (
     <div className='bottom'>
@@ -39,7 +19,9 @@ const ConfirmPassword = (props) => {
         <div className='text-white head-info'>Confirm Password*</div>
        <input className='input-detail' name="CPASSWORD" value={props.value.CPASSWORD} onChange={(e)=>{handleChange(e)}}></input>
        </div>
-       <button className='enterdetail btn' onClick={()=>{ConfirmPass()}}>Confirm</button>
+       <button className='enterdetail btn' onClick={()=>{
+        API.confirmPasswordChange(props);
+       }}>Confirm</button>
       </div>
   )
 }

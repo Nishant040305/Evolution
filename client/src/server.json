@@ -15,5 +15,15 @@
         "confirmPasswordChange":"/api/auth/passwordChange",
         "resend":"/api/auth/OTPverification",
         "verify":"/api/auth/"
+    },
+    "Project":{
+        "GetAllProject":"/api/project",
+        "GetProjectById":"/api/project/:id",
+        "CreatProject":"/api/project",
+        "UpdateProject":"/api/project/:id",
+        "DeleteProject":"/api/project/:id"
+    },
+    "User":{
+        "GetAllUsersProject":"/api/user/:id/project"
     }
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from "axios";
 import server from "../../server.json";
+import AuthService from '../../scripts/API.Login';
 const Signup = (props) => {
     let WEB = import.meta.env.VITE_REACT_APP_BACKWEB;
 
@@ -9,28 +10,7 @@ const Signup = (props) => {
             ...props.value,
             [e.target.name]:e.target.value
         })
-    }
-    const  Signup =async()=> {
-        try {
-            const response = await axios.post(`${WEB}${server.Auth.signup}`, {...props.value}, {
-                headers: {
-                    'Accept': 'application/json',
-                }
-            });
-            if (response.status !== 200) {
-                throw new Error('Failed to Send Email');
-            } else {
-                props.Update(2);
-                props.AUTH({
-                    AUTHENTICATION:response.data.AUTH,
-                    OTP:""
-                }
-                );
-            }
-        } catch (e) {
-            console.error(e);
-        }
-        
+        const API = new AuthService();
     }
   return (
     <div className='bottom'>
@@ -42,7 +22,9 @@ const Signup = (props) => {
         <div className='text-white head-info'>Password*</div>
        <input className='input-detail' name="PASSWORD" value={props.value.PASSWORD} onChange={(e)=>{handleChange(e)}}></input>
        </div>
-       <button className='enterdetail btn' onClick={()=>{Signup()}}>Signup</button>
+       <button className='enterdetail btn' onClick={()=>{
+        API.signup(props);
+       }}>Signup</button>
       </div>
   )
 }
