@@ -1,7 +1,7 @@
-export const Textarea = (id,startDrag) => {
+const Select = (id, options = [], startDrag) => {
     return {
         id: `${id}`,
-        type: "textarea",
+        type: "select",
         styles: {
             backgroundColor: "white",
             color: "black",
@@ -11,14 +11,11 @@ export const Textarea = (id,startDrag) => {
             borderStyle: "solid",
             borderRadius: "5px",
             fontSize: "16px",
-            lineHeight: "1.5",           // Improves readability of text
-            width: "200px",
-            height: "100px",
+            width: "100%",
             boxSizing: "border-box",
             outline: "none",
-            resize: "vertical",          // Allows vertical resizing only
+            cursor: "pointer",
             transition: "all 0.3s ease",
-            boxShadow: "1px 1px 5px rgba(0, 0, 0, 0.2)",
             // Define interactive styles
             ":focus": {
                 borderColor: "#007BFF",
@@ -27,19 +24,25 @@ export const Textarea = (id,startDrag) => {
             ":hover": {
                 borderColor: "#888"
             },
-            // ":disabled": {
-            //     backgroundColor: "#f0f0f0",
-            //     color: "#888",
-            //     cursor: "not-allowed"
-            // }
+            ":disabled": {
+                backgroundColor: "#f0f0f0",
+                color: "#888",
+                cursor: "not-allowed"
+            }
         },
         position: { x: 100, y: 100 },
         attributes: {
-            placeholder: "write something",
             onChange: (event) => {
-                console.log("Textarea content:", event.target.value); // Log changes
+                // Handle selection change (future functionality)
             },
             onMouseDown: (event) => startDrag(event, id)
-        }
+        },
+        content: options.map(option => ({
+            label: option.label || '', // Default to empty string if no label
+            value: option.value || ''  // Default to empty string if no value
+        })) // Store options as objects
+
     };
 };
+
+export default Select;

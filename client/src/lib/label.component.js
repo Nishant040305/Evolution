@@ -1,4 +1,4 @@
-export const Label = (id, text = "Label",startDrag) => {
+const Label = (id, text = "Label",startDrag) => {
     return {
         id: `${id}`,
         type: "label",
@@ -22,3 +22,5 @@ export const Label = (id, text = "Label",startDrag) => {
         }
     };
 };
+
+export default Label;

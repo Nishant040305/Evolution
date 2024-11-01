@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import components from '../../../components';
+import components from '../../lib';
 
 const ComponentRenderer = ({ instance }) => {
   const prototype = components[instance.type] || {};

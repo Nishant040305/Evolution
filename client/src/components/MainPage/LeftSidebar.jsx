@@ -1,11 +1,14 @@
 import { useState } from "react";
 import React from "react";
-import { Textarea } from "../../lib/TextArea-standared";
-import { Label } from "../../lib/label";
-import { Button } from "../../lib/Buttons-standard";
-import { Input } from "../../lib/Input-standard";
-import { Select } from "../../lib/select";
-import { ChevronRight, ChevronLeft, ChevronDown, ChevronUp,Grid } from "lucide-react";
+import components from "../../lib";
+const {
+  Button,
+  TextArea,
+  Label,
+  Input,
+  Select,
+} = components;
+import { ChevronRight, ChevronLeft, ChevronDown, ChevronUp, Grid } from "lucide-react";
 
 const LeftSidebar = ({
   sidebarOpen,
@@ -58,6 +61,14 @@ const LeftSidebar = ({
     document.addEventListener("mouseup", handleMouseUp);
   };
 
+  const sidebarElements = {
+    "Button": (hash) => Button(hash, startDrag),
+    "TextField": (hash) => TextArea(hash, startDrag),
+    "Dropdown": (hash) => Select(hash, ["Option 1", "Option 2", "Option 3"], startDrag),
+    "Label": (hash) => Label(hash, "New Label Text", startDrag),
+    "Input": (hash) => Input(hash, "New Label Text", startDrag),
+  }
+
   return (
     <div className="relative">
       {sidebarOpen==true?<div
@@ -83,13 +94,12 @@ const LeftSidebar = ({
               onClick={toggleSidebar}
               className=" z-10 p-2 transform  bg-white   "
             >
-        {sidebarOpen ? (
-          <ChevronLeft className="w-4 h-4" />
-        ) : (
-          <ChevronRight className="w-4 h-4" />
-        )}
-      </button>
-
+              {sidebarOpen ? (
+                <ChevronLeft className="w-4 h-4" />
+              ) : (
+                <ChevronRight className="w-4 h-4" />
+              )}
+            </button>
           </div>
           
           <>
@@ -108,76 +118,25 @@ const LeftSidebar = ({
 
               {showElements && (
                 <div className="Elements transition-all duration-300 flex flex-col mt-2 items-start">
-                  <button
-                    onClick={() => {
-                      let id = counter + 1;
-                      let hash = id.toString();
-                      setCounter((prevCounter) => prevCounter + 1);
-                      setWebElements({
-                        ...webElements,
-                        [hash]: Button(hash, startDrag), // Adds a Button component
-                      });
-                    }}
-                  >
-                    Button
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      let id = counter + 1;
-                      let hash = id.toString();
-                      setCounter((prevCounter) => prevCounter + 1);
-                      setWebElements({
-                        ...webElements,
-                        [hash]: Textarea(hash, startDrag), // Adds a TextField component
-                      });
-                    }}
-                  >
-                    Text Field
-                  </button>
-                    {/* work in progress */}
-                  {/* <button
-                    onClick={() => {
-                      let id = counter + 1;
-                      let hash = id.toString();
-                      setCounter((prevCounter) => prevCounter + 1);
-                      setWebElements({
-                        ...webElements,
-                        [hash]: Select(hash, ["Option 1", "Option 2", "Option 3"], startDrag), // Adds a Dropdown component
-                      });
-                    }}
-                  >
-                    Dropdown
-                  </button> */}
-
-                  <button
-                    onClick={() => {
-                      let id = counter + 1;
-                      let hash = id.toString();
-                      setCounter((prevCounter) => prevCounter + 1);
-                      setWebElements({
-                        ...webElements,
-                        [hash]: Label(hash, "New Label Text", startDrag), // Adds a Label component
-                      });
-                    }}
-                  >
-                    Label
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      let id = counter + 1;
-                      let hash = id.toString();
-                      setCounter((prevCounter) => prevCounter + 1);
-                      setWebElements({
-                        ...webElements,
-                        [hash]: Input(hash, "New Label Text", startDrag), // Adds a Label component
-                      });
-                    }}
-                  >
-                    Input
-                  </button>
-                </div>
+                  {Object.keys(sidebarElements).map((element) => {
+                    return (
+                      <button
+                        onClick={() => {
+                          let id = counter + 1;
+                          let hash = id.toString();
+                          setCounter((prevCounter) => prevCounter + 1);
+                          setWebElements({
+                            ...webElements,
+                            [hash]: sidebarElements[element](hash),
+                          });
+                        }}
+                        key={element}
+                      >
+                        {element}
+                      </button>
+                    );
+                  })}
+                </div>   
               )}
             </div>
           ) : (

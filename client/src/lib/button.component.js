@@ -1,4 +1,4 @@
-export const Button = (id, startDrag) => {
+const Button = (id, startDrag) => {
     return {
         id: `${id}`,
         type: "button",
@@ -53,3 +53,5 @@ export const Button = (id, startDrag) => {
         content: `Button ${id}`
     };
 };
+
+export default Button;

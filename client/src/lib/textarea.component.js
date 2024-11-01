@@ -1,7 +1,7 @@
-export const Select = (id, options = [], startDrag) => {
+const TextArea = (id,startDrag) => {
     return {
         id: `${id}`,
-        type: "select",
+        type: "textarea",
         styles: {
             backgroundColor: "white",
             color: "black",
@@ -11,11 +11,14 @@ export const Select = (id, options = [], startDrag) => {
             borderStyle: "solid",
             borderRadius: "5px",
             fontSize: "16px",
-            width: "100%",
+            lineHeight: "1.5",           // Improves readability of text
+            width: "200px",
+            height: "100px",
             boxSizing: "border-box",
             outline: "none",
-            cursor: "pointer",
+            resize: "vertical",          // Allows vertical resizing only
             transition: "all 0.3s ease",
+            boxShadow: "1px 1px 5px rgba(0, 0, 0, 0.2)",
             // Define interactive styles
             ":focus": {
                 borderColor: "#007BFF",
@@ -24,23 +27,21 @@ export const Select = (id, options = [], startDrag) => {
             ":hover": {
                 borderColor: "#888"
             },
-            ":disabled": {
-                backgroundColor: "#f0f0f0",
-                color: "#888",
-                cursor: "not-allowed"
-            }
+            // ":disabled": {
+            //     backgroundColor: "#f0f0f0",
+            //     color: "#888",
+            //     cursor: "not-allowed"
+            // }
         },
         position: { x: 100, y: 100 },
         attributes: {
+            placeholder: "write something",
             onChange: (event) => {
-                // Handle selection change (future functionality)
+                console.log("Textarea content:", event.target.value); // Log changes
             },
             onMouseDown: (event) => startDrag(event, id)
-        },
-        content: options.map(option => ({
-            label: option.label || '', // Default to empty string if no label
-            value: option.value || ''  // Default to empty string if no value
-        })) // Store options as objects
-
+        }
     };
 };
+
+export default TextArea;

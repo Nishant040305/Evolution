@@ -1,4 +1,4 @@
-export const Input = (id, placeholder = "Enter text...",startDrag) => {
+const Input = (id, placeholder = "Enter text...",startDrag) => {
     return {
         id: `${id}`,
         type: "input",
@@ -43,3 +43,5 @@ export const Input = (id, placeholder = "Enter text...",startDrag) => {
         }
     };
 };
+
+export default Input;
