@@ -1,7 +1,13 @@
 import React from "react";
 import { Undo, Redo, Monitor, Tablet, Smartphone } from "lucide-react";
-
+import { ActionCreators } from 'redux-undo';
+import { useDispatch } from "react-redux";
 const TopBar = ({webElements ,setWebElements}) => {
+  const dispatch = useDispatch();
+  const handleUndo = () => {
+    dispatch(ActionCreators.undo())
+  };
+  const handleRedo = () => dispatch(ActionCreators.redo());
   const openHTML = (download) => {
     const htmlContent = document.getElementById("canvas").innerHTML;
     
@@ -25,10 +31,14 @@ const TopBar = ({webElements ,setWebElements}) => {
     <div className="flex items-center space-x-4">
       <h1 className="text-xl font-semibold text-rose-800">Evolution</h1>
       <div className="flex space-x-2">
-        <button className="p-2 rounded-lg hover:bg-rose-50">
+        <button className="p-2 rounded-lg hover:bg-rose-50" onClick={()=>{
+          handleUndo();
+        }}>
           <Undo className="w-5 h-5 text-gray-600" />
         </button>
-        <button className="p-2 rounded-lg hover:bg-rose-50">
+        <button className="p-2 rounded-lg hover:bg-rose-50" onClick={()=>{
+          handleRedo();
+        }}>
           <Redo className="w-5 h-5 text-gray-600" />
         </button>
       </div>

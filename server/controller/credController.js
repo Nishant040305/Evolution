@@ -123,7 +123,7 @@ const PasswordRecovery = async (req, res) => {
 
     sendPasswordRecoverEmail(EMAIL, otp);
 
-    return res.status(200).json({ type: "PasswordChangeOTP", tokenId: newToken._id });
+    return res.status(200).json({ type: "PasswordChangeOTP", AUTH: newToken._id });
   } catch (e) {
     console.error(e);
     return res.status(500).json({ message: "Internal Server Error" });

@@ -1,9 +1,9 @@
 import axios from 'axios';
 import server from '../server.json'; 
-
+import { useDispatch } from 'react-redux';
 class AuthService {
   constructor() {
-    this.baseURL = import.meta.env.BACKWEB; // Set base URL from the imported constant
+    this.baseURL = import.meta.env.VITE_REACT_APP_BACKWEB; // Set base URL from the imported constant
     this.server = server; // Set server configuration from the imported JSON
   }
   async resendOTP(props, setTimer, setMsg) {
@@ -31,16 +31,13 @@ class AuthService {
       if (props.work === 1) {
         props.Update(5);
         props.PASS({
-          AUTHENTICATION: response.data.AUTHENTICATION,
+          AUTHENTICATION: response.data.AUTH,
           PASSWORD: "",
           CPASSWORD: ""
         });
       } else {
-        props.setRegister({
-          state: true,
-          info: response.data.info,
-        });
-        navigate('/');
+        window.location.reload(true);
+        
       }
       setMsg("OTP verified successfully.");
     } catch (e) {
@@ -87,10 +84,10 @@ class AuthService {
       });
       if (response.status !== 200) throw new Error('Invalid Credentials');
       
-      props.setRegister({
-        state: true,
-        info: response.data.info
-      });
+      // props.setRegister({
+      //   state: true,
+      //   info: response.data.info
+      // });
       navigate('/');
       setMsg("You are Logged in!");
     } catch (e) {

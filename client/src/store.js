@@ -3,14 +3,14 @@ import persistReducer from 'redux-persist/es/persistReducer';
 import persistStore from 'redux-persist/es/persistStore';
 import storage from 'redux-persist/lib/storage';
 import undoable from 'redux-undo';
-import webElementsSlice from './webElementsSlice'; // import your slice
-
+import webElementsSlice from './Store/webElementSlice'; // import your slice
+import userReducer from './Store/userSlice';
 // Root reducer with undo functionality for specific slices
 const rootReducer = combineReducers({
-  webElements: undoable(webElementsSlice.reducer),
+  webElement: undoable(webElementsSlice),
+  user: userReducer,
 
 });
-
 const persistConfig = {
   key: 'root',
   storage,
@@ -28,3 +28,6 @@ export const store = configureStore({
 });
 
 export const persistor = persistStore(store);
+// Clear storage for development
+persistor.purge(); // This will clear the persisted state
+  
