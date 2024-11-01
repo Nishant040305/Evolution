@@ -2,10 +2,6 @@ import { useEffect, useState } from "react";
 import ComponentRenderer from "./ComponentRenderer";
 
 const MainCanvas = ({webElements,setWebElements}) => {
-  const toHTML = () => {
-    return document.getElementById("canvas").innerHTML;
-  };
-
   useEffect(() => {
     console.log(webElements);
   }, [webElements]);
