@@ -4,13 +4,11 @@ const path = require('path');
 // Load HTML template and replace placeholders
 function loadTemplate(filePath, replacements) {
     const resolvedPath = path.resolve(__dirname, filePath);
-    console.log(resolvedPath)
 
   let template = fs.readFileSync(resolvedPath, 'utf-8');
   for (const key in replacements) {
     template = template.replace(new RegExp(`{{${key}}}`, 'g'), replacements[key]);
   }
-  console.log(template)
   return template;
 }
 
@@ -31,7 +29,6 @@ const sendOtpEmail=async(recipientEmail,otpCode)=> {
   });
 
   // Set up email options
-  console.log(htmlTemplate);
   const mailOptions = {
     from: process.env.EMAIL,
     to: recipientEmail,
@@ -56,7 +53,6 @@ const sendPasswordRecoverEmail=async(recipientEmail,otpCode)=> {
     });
   
     // Set up email options
-    console.log(htmlTemplate);
     const mailOptions = {
       from: process.env.EMAIL,
       to: recipientEmail,

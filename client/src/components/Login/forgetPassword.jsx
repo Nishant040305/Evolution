@@ -9,7 +9,7 @@ const ForgetPassword = (props) => {
     }
     const forgetPass=async()=>{
         try {
-            const response = await axios.post(`${WEB}${server.Test.forget}`, {EMAIL:props.value}, {
+            const response = await axios.post(`${WEB}${server.Auth.forget}`, {EMAIL:props.value}, {
                 headers: {
                     'Accept': 'application/json',
                 }

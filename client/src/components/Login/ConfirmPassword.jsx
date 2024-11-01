@@ -13,7 +13,7 @@ const ConfirmPassword = (props) => {
     }
     const  ConfirmPass =async()=> {
         try {
-            const response = await axios.post(`${WEB}${server.Test.confirmPasswordChange}`, {...props.value}, {
+            const response = await axios.post(`${WEB}${server.Auth.confirmPasswordChange}`, {...props.value}, {
                 headers: {
                     'Accept': 'application/json',
                 }

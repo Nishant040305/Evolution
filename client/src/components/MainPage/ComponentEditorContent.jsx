@@ -13,7 +13,6 @@ const ComponentEditorContent = ({ id, webElements, setWebElements }) => {
     }));
   };
   const handleAttributeChange=(property,value)=>{
-    console.log(webElements)
     setWebElements((prev)=>({
         ...prev,
         [id]:{

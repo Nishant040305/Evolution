@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import server from "../../server.json";
-
+import { useNavigate } from 'react-router-dom';
 const OTPVerification = (props) => {
   let WEB = import.meta.env.VITE_REACT_APP_BACKWEB;
   const [timer, setTimer] = useState(300); // 5 minutes in seconds
   const [msg, setMsg] = useState('');
   const [isResendVisible, setIsResendVisible] = useState(false);
-
+  const navigate = useNavigate();
   const handleChange = (e) => {
     props.setValue({
       ...props.value,
@@ -32,9 +32,8 @@ const OTPVerification = (props) => {
   };
 
   const Resend = async () => {
-    console.log("hey")
     try {
-      const response = await axios.post(`${WEB}${server.Test.resend}`, { ...props.value }, {
+      const response = await axios.post(`${WEB}${server.Auth.resend}`, { ...props.value }, {
         headers: { 'Accept': 'application/json' },
       });
       if (response.status !== 200) {
@@ -51,7 +50,7 @@ const OTPVerification = (props) => {
 
   const Verified = async () => {
     try {
-      const response = await axios.post(`${WEB}${server.Test.otpVerification}`, { ...props.value }, {
+      const response = await axios.post(`${WEB}${server.Auth.otpVerification}`, { ...props.value }, {
         headers: { 'Accept': 'application/json' },
       });
       if (response.status !== 200) {
@@ -65,6 +64,13 @@ const OTPVerification = (props) => {
               CPASSWORD:""
             
           })
+        }else{
+
+          props.setRegister({
+            state:true,
+            info:response.data.info,
+          })
+          navigate('/');
         }
         setMsg("OTP verified successfully.");
       }

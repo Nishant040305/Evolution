@@ -4,7 +4,7 @@ const generateOTP=()=> {
 }
 const UserNameParse = (email) => {
     if (typeof email !== 'string' || !email.includes('@')) {
-      throw new Error("Invalid email address");
+      return email;
     }
     // Extract the username (everything before the '@' symbol)
     const username = email.split('@')[0];

@@ -4,7 +4,6 @@ const ComponentEditorTransform = ({ id, webElements, setWebElements }) => {
   const[on,setOFF] = useState(0);
   const element = webElements[id];
   const handleTransformChange = (property, value) => {
-    console.log(property,value)
     setWebElements((prev) => ({
       ...prev,
       [id]: {

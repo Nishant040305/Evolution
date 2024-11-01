@@ -1,9 +1,11 @@
 import React,{useState} from 'react'
 import axios from "axios";
 import server from "../../server.json";
-
+import { useNavigate } from 'react-router-dom';
 const Login = (props) => {
+    axios.defaults.withCredentials = true;
     let WEB = import.meta.env.VITE_REACT_APP_BACKWEB;
+    const navigate = useNavigate();
 
     const [msg, setMsg] = useState('');
 
@@ -15,10 +17,12 @@ const Login = (props) => {
     }
     const  login =async()=> {
         try {
-            const response = await axios.post(`${WEB}${server.Test.login}`, {...props.value}, {
+            const response = await axios.post(`${WEB}${server.Auth.login}`, {...props.value}, {
                 headers: {
                     'Accept': 'application/json',
-                }
+                },
+                mode:"cors",
+                withCredentials:true
             });
             if (response.status !== 200) {
                 throw new Error('Invalid Credentials');
@@ -26,6 +30,11 @@ const Login = (props) => {
 
             } else {
                //Loged in User
+               props.setRegister({
+                state:true,
+                info:response.data.info
+               })
+               navigate('/')
                setMsg("You are Logged in!!")
             }
         } catch (e) {

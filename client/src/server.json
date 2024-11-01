@@ -6,5 +6,14 @@
         "forget":"/api/test/forget",
         "confirmPasswordChange":"/api/test/confirChange",
         "resend":"/api/test/resend"
+    },
+    "Auth":{
+        "signup":"/api/auth/signin",
+        "otpVerification":"/api/auth/OTPverification",
+        "login":"/api/auth/login",
+        "forget":"/api/auth/forgetPassword",
+        "confirmPasswordChange":"/api/auth/passwordChange",
+        "resend":"/api/auth/OTPverification",
+        "verify":"/api/auth/"
     }
 }

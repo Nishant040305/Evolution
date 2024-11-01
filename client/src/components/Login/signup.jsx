@@ -12,7 +12,7 @@ const Signup = (props) => {
     }
     const  Signup =async()=> {
         try {
-            const response = await axios.post(`${WEB}${server.Test.signup}`, {...props.value}, {
+            const response = await axios.post(`${WEB}${server.Auth.signup}`, {...props.value}, {
                 headers: {
                     'Accept': 'application/json',
                 }

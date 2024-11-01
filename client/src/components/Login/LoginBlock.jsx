@@ -6,7 +6,7 @@ import OTPVerification from './OTPverification';
 import ForgetPassword from './forgetPassword';
 import ConfirmPassword from './ConfirmPassword';
 
-const LoginBlock = () => {
+const LoginBlock = ({setRegister}) => {
   const [signupLog, setSL] = useState(0); // 0: Login, 1: Signup, 2: OTP Verification, 3: Forget Password, 4: OTP for Password Reset, 5: Confirm Password
   const [userInfo, setUserInfo] = useState({ EMAIL: "", PASSWORD: "" });
   const [OTP, setOTP] = useState({ AUTHENTICATION: "", OTP: "" });
@@ -57,9 +57,9 @@ const LoginBlock = () => {
       {signupLog === 1 ? (
         <Signup value={userInfo} setValue={setUserInfo} Update={setSL} AUTH={setOTP} />
       ) : signupLog === 0 ? (
-        <Login value={userInfo} setValue={setUserInfo} Update={setSL} />
+        <Login value={userInfo} setValue={setUserInfo} Update={setSL} setRegister={setRegister}/>
       ) : signupLog === 2 ? (
-        <OTPVerification value={OTP} setValue={setOTP} Update={setSL} />
+        <OTPVerification value={OTP} setValue={setOTP} Update={setSL} setRegister={setRegister} />
       ) : signupLog === 3 ? (
         <ForgetPassword value={FOREMAIL} setValue={setEMAIL} AUTH={setOTP} Update={setSL} />
       ) : signupLog === 4 ? (

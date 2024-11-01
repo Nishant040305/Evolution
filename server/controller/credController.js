@@ -7,6 +7,8 @@ const User = require("../models/User");
 const Token = require("../models/Token");
 
 //services
+const path = require("path");
+require('dotenv').config({ path: path.resolve(__dirname, '../../.env') })
 const jwtToken = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
@@ -17,7 +19,7 @@ const Signin = async (req, res) => {
     const salt = await bcrypt.genSalt(Number(process.env.SALT));
     const hashPassword = await bcrypt.hash(req.body.PASSWORD, salt);
 
-    user = await new User({ displayname: UserNameParse(req.body.Email), email: req.body.EMAIL, password: hashPassword, verify: false }).save();
+    user = await new User({ displayname: UserNameParse(req.body.EMAIL), email: req.body.EMAIL, password: hashPassword, verify: false }).save();
     const otp = generateOTP();
 
     const token = await new Token({
@@ -42,9 +44,7 @@ const Signin = async (req, res) => {
       userId: user._id,
       token: _,
       email: user.email,
-      info: {
-        message: "EmailVerification",
-      },
+      type: "EmailVerification",
     }).save();
     await sendOtpEmail(user.email, _);
 
@@ -59,7 +59,7 @@ const VerifyUser = async (req, res) => {
     if (!user) return res.status(400).json({ message: "OTP Expiered" });
 
     const token = await Token.findOne({
-      userId: user._id,
+      _id: user._id,
       token: req.body.OTP,
     });
     if (!token && token.type == "PasswordChangeOTP") {
@@ -74,11 +74,12 @@ const VerifyUser = async (req, res) => {
     }
     else if (!token && token.type != "EmailVerification") return res.status(400).json({ message: "OTP Expired" })
 
-    const userUpdate = await User.findOneAndUpdate({ _id: user._id }, { verify: true }, { new: true });
+    const userUpdate = await User.findOneAndUpdate({ _id: user.userId }, { verify: true }, { new: true }).lean();
     delete userUpdate.password;
+    delete userUpdate.verify;
     const jwtData = jwtToken.sign(userUpdate, process.env.JWTSECREAT)
     res.cookie('uid', jwtData, { httpOnly: true, secure: true, sameSite: 'Strict' });
-    return res.status(200).json({ _id: userUpdate._id, message: "Email verified successfully" });
+    return res.status(200).json({ _id: userUpdate, message: "Email verified successfully" });
   } catch (error) {
     console.log(error)
     return res.status(500).json({ message: "Internal Server Error" });
@@ -86,18 +87,19 @@ const VerifyUser = async (req, res) => {
 }
 const LogIn = async (req, res) => {
   try {
-    let user = await User.findOne({ email: req.body.EMAIL });
-    const passwordCompare = await bcrypt.compare(req.body.PASSWORD, user._doc.password);
+    let user = await User.findOne({ email: req.body.EMAIL }).lean();
+    const passwordCompare = await bcrypt.compare(req.body.PASSWORD, user.password);
     if (!user.verify) {
       return res.status(400).json({ error: "please try to login with correct credentials" })
     }
     if (!passwordCompare) {
       return res.status(400).json({ error: "please try to login with correct credentials" })
     }
-    delete user._doc.password;
-    const jwtData = jwtToken.sign({ ...user._doc }, process.env.jwt_secreat)
+    delete user.password;
+    delete user.verify;
+    const jwtData = jwtToken.sign(user, process.env.JWTSECREAT)
     res.cookie('uid', jwtData, { httpOnly: true, secure: true, sameSite: 'Strict' });
-    res.status(200).json({ info: { ...user._doc }, message: "Login successful" });
+    res.status(200).json({ info: { ...user }, message: "Login successful" });
   } catch (e) {
     res.status(500).json({ message: 'Internal Server Error' });
   }
