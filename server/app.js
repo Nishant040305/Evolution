@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
@@ -31,7 +32,13 @@ app.use((err, req, res, next) => {
 
 
 
+// Static files
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Set up routes
+const domainRoutes = require('./routes/domain.routes');
+app.use('/', domainRoutes);
+
 const routes = require('./routes');
 app.use('/api', routes);
 

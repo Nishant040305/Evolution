@@ -9,6 +9,7 @@ const {
     createProject,
     updateProject,
     deleteProject,
+    publishProject,
 } = projectController;
 
 // @route    GET /api/project
@@ -30,5 +31,9 @@ router.put('/:id', updateProject);
 // @route    DELETE /api/project/:id
 // @desc     Delete a project by id
 router.delete('/:id', deleteProject);
+
+// @route    POST /api/project/:id/publish
+// @desc     Publish a project by id
+router.post('/:id/publish', publishProject);
 
 module.exports = router;

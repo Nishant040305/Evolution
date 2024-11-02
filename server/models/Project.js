@@ -10,6 +10,13 @@ const ProjectSchema = new Schema({
     type: String,
     default: 'No description provided.',
   },
+  domain: {
+    type: String,
+    unique: true,
+    default: function() {
+      return this._id.toString();
+    },
+  },
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',

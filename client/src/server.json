@@ -21,7 +21,8 @@
         "GetProjectById":"/api/project/:id",
         "CreatProject":"/api/project",
         "UpdateProject":"/api/project/:id",
-        "DeleteProject":"/api/project/:id"
+        "DeleteProject":"/api/project/:id",
+        "PublishProject": "/api/project/:id/publish"
     },
     "User":{
         "GetAllUsersProject":"/api/user/:id/project"

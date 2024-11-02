@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const User = require("../models/User");
 const Project = require('../models/Project');
 
@@ -67,10 +69,46 @@ const deleteProject = async (req, res) => {
     }
 };
 
+const publishProject = async (req, res) => {
+    const { id, htmlContent } = req.body;
+    
+    if (!id || !htmlContent) {
+        return res.status(400).json({ error: 'ID and HTML content are required.' });
+    }
+
+    const filePath = path.join(__dirname, `../public/${id}.html`);
+
+    fs.writeFile(filePath, htmlContent, (err) => {
+        if (err) {
+            return res.status(500).json({ error: 'Error saving the file.' });
+        }
+        res.status(200).json({ message: 'File saved successfully.' });
+    });
+}
+
+const openProject = async (req, res) => {
+    const { domain } = req.params;
+    try {
+        const project = await Project.findOne({ domain });
+
+        if (project) {
+            const filePath = path.join(__dirname, `../public/${project._id}.html`);
+            return res.sendFile(filePath);
+        } else {
+            return res.status(404).send('404 Page not found');
+        }
+    } catch (error) {
+        console.error("Error fetching project:", error);
+        return res.status(500).send('Server error');
+    }
+}
+
 module.exports = {
     getAllProjects,
     getProjectById,
     createProject,
     updateProject,
     deleteProject,
+    publishProject,
+    openProject,
 };
