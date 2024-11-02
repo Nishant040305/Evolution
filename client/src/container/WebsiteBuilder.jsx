@@ -1,4 +1,4 @@
-import React, { useEffect, useState ,useMemo} from "react";
+import React, { useEffect, useState, useRef, useMemo} from "react";
 import TopBar from "../components/MainPage/Topbar";
 import LeftSidebar from "../components/MainPage/LeftSidebar";
 import MainCanvas from "../components/MainPage/MainCanvas";
@@ -8,6 +8,7 @@ import { useSelector,useDispatch } from "react-redux";
 import { setElement } from "../Store/webElementSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import ApiDashboard from "../scripts/API.Dashboard";
+
 const WebsiteBuilder = () => {
   const {userId,projectID} = useParams();
   const navigate = useNavigate();
@@ -19,12 +20,8 @@ const WebsiteBuilder = () => {
   const [leftSidebarOpen, setLeftSidebarOpen] = useState(true);
   const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
   const [id,setId] = useState(0);
-  /* SHIVAM DEKH LENA
-      MAI COMMIT KAR RHA HU 
-      branch mai
-      baki maine implement kardiya baki sab thoda dekhna hai
-      errors
-  */ 
+  const webElementRef = useRef(webElement); // Create a ref for the last webElement
+
   const API = useMemo(() => new ApiDashboard(), []); // Ensure API instance is stable
   const toggleCategory = (category) => {
     setExpandedCategories((prev) => ({
@@ -75,21 +72,19 @@ const WebsiteBuilder = () => {
 
   useEffect(() => {
     if (webElements && Object.keys(webElements).length > 0) {
-      if (JSON.stringify(webElements) !== JSON.stringify(webElement)) {
+      // If webElements have changed, dispatch the new value
+      if (webElements !== webElementRef.current) {
         dispatch(setElement(webElements));
       }
     }
+
+    if (webElement && webElement !== webElements) {
+      // If webElement has changed, update local state
+      setWebElements(webElement);
+      webElementRef.current = webElement;
+    }
   }, [webElements, dispatch, webElement]);
 
-  // Sync local state with Redux store only when necessary
-  useEffect(() => {
-    if (webElement && JSON.stringify(webElement) !== JSON.stringify(webElements)) {
-      setWebElements(webElement);
-    }
-  }, [webElement, webElements]);
-
-
-  
     return (
     <div className="flex flex-col h-screen">
       <TopBar webElements={webElements}
