@@ -63,6 +63,11 @@ const deleteProject = async (req, res) => {
         if (!deletedProject) {
             return res.status(404).json({ message: 'Project not found' });
         }
+         // Update the user by removing the projectId from the projects array
+         await User.updateOne(
+            { _id: deletedProject.user }, 
+            { $pull: { projects: req.params.id } } 
+        );
         return res.status(200).json({ message: 'Project deleted successfully' });
     } catch (error) {
         return res.status(500).json({ message: 'Error deleting project', error });

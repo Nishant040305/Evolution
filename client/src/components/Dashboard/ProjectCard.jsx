@@ -8,7 +8,7 @@ const ProjectCard = ({ project, onDelete, onClick }) => (
         e.stopPropagation();
         onDelete(project._id);
       }}
-      className="absolute p-2 text-gray-400 transition-opacity opacity-0 top-4 right-4 hover:text-red-600 group-hover:opacity-100"
+      className="absolute p-2 text-gray-700 transition-opacity top-4 right-4 hover:text-red-600 group-hover:opacity-100"
     >
       <Trash2 className="w-5 h-5" />
     </button>

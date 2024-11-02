@@ -71,6 +71,7 @@ const ProjectDashboard = () => {
       try {
         await API.deleteProject(projectId)
         setProjects((prev) => prev.filter((p) => p._id !== projectId));
+
       } catch (err) {
         console.error("Error deleting project:", err);
       }
