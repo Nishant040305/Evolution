@@ -19,9 +19,18 @@ const WebsiteBuilder = () => {
   const [webElements,setWebElements] = useState({});
   const [leftSidebarOpen, setLeftSidebarOpen] = useState(true);
   const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
-  const [id,setId] = useState(0);
+  const [id,set] = useState(0);
   const webElementRef = useRef(webElement); // Create a ref for the last webElement
+  const setId=(id)=>{
+    //middleWare for setId
+    if(webElement[id]==null){
 
+      setRightSidebarOpen(false);
+      set(0);
+    }else{
+      set(id)
+    }
+  }
   const API = useMemo(() => new ApiDashboard(), []); // Ensure API instance is stable
   const toggleCategory = (category) => {
     setExpandedCategories((prev) => ({
@@ -82,6 +91,10 @@ const WebsiteBuilder = () => {
       // If webElement has changed, update local state
       setWebElements(webElement);
       webElementRef.current = webElement;
+    }
+    if(webElement[id]==null){
+      setId(0);
+      setRightSidebarOpen(false);
     }
   }, [webElements, dispatch, webElement]);
 
