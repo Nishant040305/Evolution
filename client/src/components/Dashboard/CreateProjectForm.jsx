@@ -1,12 +1,20 @@
 import React, { useState } from "react";
+import ApiDashboard from "../../scripts/API.Dashboard";
+import { useSelector } from "react-redux";
 
 const CreateProjectForm = ({ onCreateProject }) => {
+  const user = useSelector(state=>state.user.userInfo._id);
   const [newProject, setNewProject] = useState({ name: "", description: "" });
-
+  const API = new ApiDashboard();
   const handleSubmit = (e) => {
     e.preventDefault();
     if (newProject.name.trim()) {
       onCreateProject({ ...newProject, createdAt: new Date().toISOString() });
+      API.createProject({
+        name:newProject.name,
+        description:newProject.description,
+        user:user
+      })
       setNewProject({ name: "", description: "" });
     }
   };

@@ -5,16 +5,20 @@ import TopBar from "../components/Dashboard/Topbar";
 import ProjectCard from "../components/Dashboard/ProjectCard";
 import Modal from "../components/Dashboard/Modal";
 import CreateProjectForm from "../components/Dashboard/CreateProjectForm";
-
+import { useSelector } from "react-redux";
+import ApiDashboard from "../scripts/API.Dashboard";
+import User from "../scripts/API.User";
 const ProjectDashboard = () => {
   const navigate = useNavigate();
+  const user = useSelector(state=>state.user.userInfo._id)
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [projects, setProjects] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const API = new ApiDashboard();
+  const APIUser = new User(user);
   useEffect(() => {
     fetchProjects();
   }, []);
@@ -39,14 +43,15 @@ const ProjectDashboard = () => {
   const fetchProjects = async () => {
     try {
       setIsLoading(true);
-      // const data = await API.getProjects();
-      const dummyData = [
-        { id: 1, name: "Project Alpha", description: "Alpha description" },
-        { id: 2, name: "Project Beta", description: "Beta description" },
-        { id: 3, name: "Project Gamma", description: "Gamma description" },
-      ];
-      setProjects(dummyData);
-      setFilteredProjects(dummyData);
+      const data = await APIUser.getAllUsersProject();
+      // const dummyData = [
+      //   { id: 1, name: "Project Alpha", description: "Alpha description" },
+      //   { id: 2, name: "Project Beta", description: "Beta description" },
+      //   { id: 3, name: "Project Gamma", description: "Gamma description" },
+      // ];
+
+      setProjects(data);
+      setFilteredProjects(data);
     } catch (err) {
       setError("Failed to load projects");
     } finally {
