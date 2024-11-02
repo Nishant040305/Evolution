@@ -5,7 +5,6 @@ class ApiDashboard {
     constructor(baseURL) {
         this.baseURL = import.meta.env.VITE_REACT_APP_BACKWEB;
         this.endpoints = serverConfig.Project;
-
         // Create an axios instance with the base URL
         this.api = axios.create({
             baseURL: this.baseURL,
@@ -15,7 +14,7 @@ class ApiDashboard {
     // Fetch all projects
     async getAllProjects() {
         try {
-            const response = await this.api.get(this.endpoints.GetAllProject);
+            const response = await axios.get(`${this.baseURL}${this.endpoints.GetAllProject}`);
             return response.data;
         } catch (error) {
             console.error("Failed to fetch projects:", error);
@@ -27,7 +26,8 @@ class ApiDashboard {
     async getProjectById(id) {
         const endpoint = this.endpoints.GetProjectById.replace(':id', id);
         try {
-            const response = await this.api.get(endpoint);
+            const response = await axios.get(`${this.baseURL}${endpoint}`);
+            console.log(response);
             return response.data;
         } catch (error) {
             console.error(`Failed to fetch project with ID ${id}:`, error);
@@ -37,8 +37,11 @@ class ApiDashboard {
 
     // Create a new project
     async createProject(projectData) {
+
         try {
-            const response = await this.api.post(this.endpoints.CreateProject, projectData);
+            console.log(`${this.baseURL}${this.endpoints.CreatProject}`)
+            console.log(this.endpoints)
+            const response = await axios.post(`${this.baseURL}${this.endpoints.CreatProject}`, projectData);
             return response.data;
         } catch (error) {
             console.error("Failed to create project:", error);

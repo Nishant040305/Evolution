@@ -18,10 +18,12 @@ const ProjectDashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const API = new ApiDashboard();
-  const APIUser = new User(user);
+  let APIUser = new User(user);
   useEffect(() => {
+    APIUser = new User(user);
     fetchProjects();
-  }, []);
+    
+  }, [user]);
 
   useEffect(() => {
     const filterProjects = async () => {
@@ -44,12 +46,6 @@ const ProjectDashboard = () => {
     try {
       setIsLoading(true);
       const data = await APIUser.getAllUsersProject();
-      // const dummyData = [
-      //   { id: 1, name: "Project Alpha", description: "Alpha description" },
-      //   { id: 2, name: "Project Beta", description: "Beta description" },
-      //   { id: 3, name: "Project Gamma", description: "Gamma description" },
-      // ];
-
       setProjects(data);
       setFilteredProjects(data);
     } catch (err) {

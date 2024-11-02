@@ -14,7 +14,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(verifyUser());
-  }, [dispatch]);
+  }, [dispatch,isAuthenticated]);
 
   return (
     <Routes>

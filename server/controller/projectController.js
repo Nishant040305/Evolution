@@ -32,7 +32,6 @@ const createProject = async (req, res) => {
             name: req.body.name,
             description: req.body.description,
             user: req.body.user,
-            components: req.body.components,
         });
         const savedProject = await newProject.save();
         user.projects.push(savedProject._id);

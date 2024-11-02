@@ -1,6 +1,5 @@
 import axios from 'axios';
 import server from '../server.json'; 
-import { useDispatch } from 'react-redux';
 class AuthService {
   constructor() {
     this.baseURL = import.meta.env.VITE_REACT_APP_BACKWEB; // Set base URL from the imported constant
@@ -84,10 +83,12 @@ class AuthService {
       });
       if (response.status !== 200) throw new Error('Invalid Credentials');
       
-      // props.setRegister({
-      //   state: true,
-      //   info: response.data.info
-      // });
+      props.setRegister({
+        state: true,
+        info: response.data.info
+      });
+      // const dispatch = useDispatch();
+      // dispatch(loginSuccess(response.data.info))
       navigate('/');
       setMsg("You are Logged in!");
     } catch (e) {
