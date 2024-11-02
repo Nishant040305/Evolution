@@ -10,8 +10,9 @@ const Signup = (props) => {
             ...props.value,
             [e.target.name]:e.target.value
         })
-        const API = new AuthService();
+        
     }
+    const API = new AuthService();
   return (
     <div className='bottom'>
         <div className={`container flex flex-col text-left px-16`}>
