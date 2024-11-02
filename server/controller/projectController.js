@@ -4,9 +4,9 @@ const Project = require('../models/Project');
 const getAllProjects = async (req, res) => {
     try {
         const projects = await Project.find().populate('user', '_id displayname email');
-        res.status(200).json(projects);
+        return res.status(200).json(projects);
     } catch (error) {
-        res.status(500).json({ message: 'Error retrieving projects', error });
+        return res.status(500).json({ message: 'Error retrieving projects', error });
     }
 };
 
@@ -16,7 +16,7 @@ const getProjectById = async (req, res) => {
         if (!project) {
             return res.status(404).json({ message: 'Project not found' });
         }
-        res.status(200).json(project);
+        return res.status(200).json(project);
     } catch (error) {
         res.status(500).json({ message: 'Error retrieving project', error });
     }
@@ -37,7 +37,7 @@ const createProject = async (req, res) => {
         const savedProject = await newProject.save();
         user.projects.push(savedProject._id);
         await user.save();
-        res.status(201).json(savedProject);
+        return res.status(201).json(savedProject);
     } catch (error) {
         res.status(500).json({ message: 'Error creating project', error });
     }
@@ -49,9 +49,9 @@ const updateProject = async (req, res) => {
         if (!updatedProject) {
             return res.status(404).json({ message: 'Project not found' });
         }
-        res.status(200).json(updatedProject);
+        return res.status(200).json(updatedProject);
     } catch (error) {
-        res.status(500).json({ message: 'Error updating project', error });
+        return res.status(500).json({ message: 'Error updating project', error });
     }
 };
 
@@ -61,9 +61,9 @@ const deleteProject = async (req, res) => {
         if (!deletedProject) {
             return res.status(404).json({ message: 'Project not found' });
         }
-        res.status(200).json({ message: 'Project deleted successfully' });
+        return res.status(200).json({ message: 'Project deleted successfully' });
     } catch (error) {
-        res.status(500).json({ message: 'Error deleting project', error });
+        return res.status(500).json({ message: 'Error deleting project', error });
     }
 };
 
