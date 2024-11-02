@@ -73,19 +73,21 @@ const WebsiteBuilder = () => {
     };
   }, [projectID, currentUserId, userId, API, navigate]);
 
-  // Update redux state only when necessary
   useEffect(() => {
     if (webElements && Object.keys(webElements).length > 0) {
-      dispatch(setElement(webElements));
+      if (JSON.stringify(webElements) !== JSON.stringify(webElement)) {
+        dispatch(setElement(webElements));
+      }
     }
-  }, [webElements, dispatch]);
+  }, [webElements, dispatch, webElement]);
 
-  // Only run when `webElement` from the Redux store changes
+  // Sync local state with Redux store only when necessary
   useEffect(() => {
     if (webElement && JSON.stringify(webElement) !== JSON.stringify(webElements)) {
       setWebElements(webElement);
     }
   }, [webElement, webElements]);
+
 
   
     return (
