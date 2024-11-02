@@ -6,13 +6,13 @@ const ProjectCard = ({ project, onDelete, onClick }) => (
     <button
       onClick={(e) => {
         e.stopPropagation();
-        onDelete(project.id);
+        onDelete(project._id);
       }}
       className="absolute p-2 text-gray-400 transition-opacity opacity-0 top-4 right-4 hover:text-red-600 group-hover:opacity-100"
     >
       <Trash2 className="w-5 h-5" />
     </button>
-    <div onClick={() => onClick(project.id)} className="cursor-pointer">
+    <div onClick={() => onClick(project._id)} className="cursor-pointer">
       <div className="flex items-center justify-center w-12 h-12 mb-4 bg-red-100 rounded-full">
         <Folder className="w-6 h-6 text-red-600" />
       </div>

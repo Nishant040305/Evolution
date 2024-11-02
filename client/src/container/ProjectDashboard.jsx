@@ -57,12 +57,7 @@ const ProjectDashboard = () => {
 
   const handleCreateProject = async (newProject) => {
     try {
-      // const createdProject = await API.createProject(newProject);
-      const createdProject = {
-        id: projects.length + 1,
-        name: newProject.name,
-        description: newProject.description,
-      };
+      const createdProject = await API.createProject(newProject);
       setProjects((prev) => [...prev, createdProject]);
       setIsCreateModalOpen(false);
     } catch (err) {
@@ -73,8 +68,8 @@ const ProjectDashboard = () => {
   const handleDeleteProject = async (projectId) => {
     if (window.confirm("Are you sure you want to delete this project?")) {
       try {
-        // await API.deleteProject(projectId);
-        setProjects((prev) => prev.filter((p) => p.id !== projectId));
+        await API.deleteProject(projectId)
+        setProjects((prev) => prev.filter((p) => p._id !== projectId));
       } catch (err) {
         console.error("Error deleting project:", err);
       }
@@ -82,7 +77,7 @@ const ProjectDashboard = () => {
   };
 
   const handleProjectClick = (projectId) => {
-    navigate("/main");
+    navigate(`main/${user}/${projectId}`);
   };
 
   return (
