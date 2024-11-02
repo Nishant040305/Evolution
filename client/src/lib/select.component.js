@@ -1,3 +1,5 @@
+import React from "react";
+
 const Select = (id, options = [], startDrag) => {
     return {
         id: `${id}`,
@@ -37,11 +39,16 @@ const Select = (id, options = [], startDrag) => {
             },
             onMouseDown: (event) => startDrag(event, id)
         },
-        content: options.map(option => ({
-            label: option.label || '', // Default to empty string if no label
-            value: option.value || ''  // Default to empty string if no value
-        })) // Store options as objects
-
+        content: options.map((option, index) =>
+            React.createElement(
+                'option',
+                {
+                    key: `SELECT ${id} OPTION ${index}`,
+                    value: `SELECT ${id} OPTION ${index}`
+                },
+                option
+            )
+        ),
     };
 };
 

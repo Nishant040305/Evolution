@@ -1,59 +1,65 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import components from '../../lib';
 
-const ComponentRenderer = ({ instance }) => {
-  const prototype = components[instance.type] || {};
+const ComponentRenderer = ({ instance, webElements, setWebElements, recursionDepth = 0 }) => {
+  // Skip top levelrendering if the element has a parent
+  console.log(instance.type, recursionDepth);
+  if (instance.parent && recursionDepth === 0) return null;
 
-  const style = {
+  const postion = instance.position ? {
     position: 'absolute',
-    left: instance.position.x,
-    top: instance.position.y,
-    ...prototype.styles, // class styles
-    ...instance.styles, // object styles
-  };
+    left: instance.position?.x,
+    top: instance.position?.y,
+  } : {};
 
-  // Handle the select component rendering
-  if (instance.type === 'select') {
-    return (
-      <select
-        {...prototype.attributes}
-        {...instance.attributes}
-        style={style}
-      >
-        {(instance.attributes.options || []).map((option, index) => (
-          <option key={index} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+  const style = { ...postion, ...instance.styles };
+  const attributes = { ...instance.attributes, style };
+  const content = instance.content;
+
+  // Child elements by id
+  if (instance.childrenId)
+    return React.createElement(
+      instance.type,
+      attributes,
+      content,
+      React.Children.map(instance.childrenId,
+        child => (
+          <ComponentRenderer 
+            key={child}
+            instance={webElements[child]} 
+            webElements={webElements}
+            setWebElements={setWebElements}
+            recursionDepth={recursionDepth + 1}
+          />)
+      )
     );
-  }
 
-  // Fallback for other types
+  // No children
   return React.createElement(
     instance.type,
-    { 
-      ...prototype.attributes, // class attributes
-      ...instance.attributes, // object attributes
-      style 
-    },
-    instance.content || prototype.content
+    attributes,
+    content,
   );
 };
 
+const ComponentType = PropTypes.shape({
+  id: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  position: PropTypes.shape({
+    x: PropTypes.number.isRequired,
+    y: PropTypes.number.isRequired,
+  }),
+  styles: PropTypes.object,
+  attributes: PropTypes.object,
+  content: PropTypes.string,
+  childrenId: PropTypes.arrayOf(PropTypes.string),
+  parent: PropTypes.string,
+});
+
 ComponentRenderer.propTypes = {
-  instance: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    position: PropTypes.shape({
-      x: PropTypes.number.isRequired,
-      y: PropTypes.number.isRequired,
-    }).isRequired,
-    styles: PropTypes.object,
-    attributes: PropTypes.object,
-    content: PropTypes.string,
-  }).isRequired,
+  instance: ComponentType.isRequired,
+  webElements: PropTypes.object.isRequired, // [key: string, value: ComponentType]
+  setWebElements: PropTypes.func.isRequired
 };
 
 export default ComponentRenderer;

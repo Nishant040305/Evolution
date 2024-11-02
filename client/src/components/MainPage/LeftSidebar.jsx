@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import React from "react";
 import components from "../../lib";
 const {
@@ -7,6 +7,7 @@ const {
   Label,
   Input,
   Select,
+  Div,
 } = components;
 import { ChevronRight, ChevronLeft, ChevronDown, ChevronUp, Grid } from "lucide-react";
 
@@ -67,10 +68,43 @@ const LeftSidebar = ({
     "Dropdown": (hash) => Select(hash, ["Option 1", "Option 2", "Option 3"], startDrag),
     "Label": (hash) => Label(hash, "New Label Text", startDrag),
     "Input": (hash) => Input(hash, "New Label Text", startDrag),
+    "Div": (hash) => Div(hash, startDrag),
   }
+
+  // test elements
+  const testElements = () => {
+    const parentButton = Button("parentButton", startDrag);
+    parentButton.content = "really long button text";
+    const childLabel = Label("childLabel", "TEST", startDrag);
+    parentButton.childrenId = [childLabel.id];
+    childLabel.parent = parentButton.id;
+    setWebElements((prev) => {
+      return {
+        ...prev,
+        [parentButton.id]: parentButton,
+        [childLabel.id]: childLabel,
+      };
+    });
+
+    // div test
+    const div = Div("div", startDrag);
+    const childofdiv = Label("childofdiv", "HELLO", startDrag);
+    div.childrenId = [childofdiv.id];
+    childofdiv.parent = div.id;
+    childofdiv.position.x = 15;
+    childofdiv.position.y = 15;
+    setWebElements((prev) => {
+      return {
+        ...prev,
+        [div.id]: div,
+        [childofdiv.id]: childofdiv,
+      };
+    });
+  };
 
   return (
     <div className="relative">
+      <button onClick={testElements}>Children TEST</button>
       {sidebarOpen==true?<div
         className={`${
           sidebarOpen ? "w-64" : "w-0"

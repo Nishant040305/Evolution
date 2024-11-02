@@ -11,7 +11,7 @@ const MainCanvas = ({webElements,setWebElements}) => {
             <p className="text-gray-500">Drag and drop elements here</p>
           ) : null}
           {Object.values(webElements).map((component) => (
-            <ComponentRenderer key={component.id} instance={component} />
+            <ComponentRenderer key={component.id} instance={component} webElements={webElements} setWebElements={setWebElements} />
           ))}
         </div>
       </div>

@@ -3,6 +3,7 @@ import Input from './input.component';
 import Label from './label.component';
 import Select from './select.component';
 import TextArea from './textarea.component';
+import Div from './div.component';
 
 export default {
   Button,
@@ -10,4 +11,5 @@ export default {
   Label,
   Input,
   Select,
+  Div,
 };
