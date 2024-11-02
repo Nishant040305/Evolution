@@ -50,14 +50,17 @@ class AuthService {
       const response = await axios.post(`${this.baseURL}${this.server.Auth.forget}`, { EMAIL: props.value }, {
         headers: { 'Accept': 'application/json' },
       });
-      if (response.status !== 200) throw new Error('Failed to Send Email');
-      
+      if (response.status !== 200) {
+        props.setMsg(response.data.message)
+        throw new Error('Failed to Send Email')
+      };
       props.Update(4);
       props.AUTH({
         AUTHENTICATION: response.data.AUTH,
         OTP: ""
       });
     } catch (e) {
+      props.setMsg(e.response.data.message)
       console.error(e);
     }
   }
@@ -68,7 +71,12 @@ class AuthService {
         headers: { 'Accept': 'application/json' },
       });
       if (response.status !== 200) throw new Error('Failed to confirm password change');
-      
+      else{
+        props.setRegister({
+          state: true,
+          info: response.data.info
+        });
+      }
     } catch (e) {
       console.error(e);
     }

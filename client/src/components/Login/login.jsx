@@ -28,7 +28,7 @@ const Login = (props) => {
        <input className='input-detail' name="PASSWORD" value={props.value.PASSWORD} onChange={(e)=>{handleChange(e)}}></input>
        </div>
        <button className='enterdetail btn' onClick={()=>{API.login({...props,setRegister:setRegister},setMsg,navigate)}}>Login</button>
-       {msg && <div className='msg text-red-500 mt-2 text-2xl'>{msg}</div>}
+       {msg && <div className='msg text-red-500 mt-2 text-base text-center'>{msg}</div>}
       </div>
   )
 }

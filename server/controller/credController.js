@@ -55,17 +55,19 @@ const Signin = async (req, res) => {
 
 const VerifyUser = async (req, res) => {
   try {
-    const user = await Token.findById(req.body.AUTHENTICATION);
-    if (!user) return res.status(400).json({ message: "OTP Expiered" });
+    const token_ = await Token.findById(req.body.AUTHENTICATION);
+    if (!token_) return res.status(400).json({ message: "OTP Expiered" });
 
     const token = await Token.findOne({
-      _id: user._id,
+      _id: token_._id,
       token: req.body.OTP,
     });
-    if (!token && token.type == "PasswordChangeOTP") {
+    if(!token) return res.status(400).json({message: "OTP Expired or invalid"})
+    if (token.type == "PasswordChangeOTP") {
       const PasswordUpdateToken = await new Token({
-        userId: user._id,
+        userId: token_.userId,
         token: 0,
+        email:token_.email,
         type: "PasswordChange"
         //expiring time
       }).save();
@@ -74,7 +76,7 @@ const VerifyUser = async (req, res) => {
     }
     else if (!token && token.type != "EmailVerification") return res.status(400).json({ message: "OTP Expired" })
 
-    const userUpdate = await User.findOneAndUpdate({ _id: user.userId }, { verify: true }, { new: true }).lean();
+    const userUpdate = await User.findOneAndUpdate({ _id: token_.userId }, { verify: true }, { new: true }).lean();
     delete userUpdate.password;
     delete userUpdate.verify;
     const jwtData = jwtToken.sign(userUpdate, process.env.JWTSECREAT)
@@ -132,9 +134,11 @@ const PasswordRecovery = async (req, res) => {
 
 const ConfirmPasswordChange = async (req, res) => {
   try {
-    const { AUTHENTICATION, PASSWORD } = req.body;
 
-    const token = await Token.findOne({ _id: AUTHENTICATION, type: "PasswordChangeOTP" });
+    const { AUTHENTICATION, PASSWORD } = req.body;
+    console.log(AUTHENTICATION,PASSWORD)
+    const token = await Token.findOne({ _id: AUTHENTICATION, type: "PasswordChange" });
+    console.log(token);
     if (!token) {
       return res.status(400).json({ message: "Invalid or expired OTP" });
     }
@@ -151,8 +155,18 @@ const ConfirmPasswordChange = async (req, res) => {
     await user.save();
 
     await Token.findByIdAndDelete(token._id);
-
-    return res.status(200).json({ message: "Password updated successfully" });
+    delete user.password;
+    delete user.verify;
+    const data = {
+      displayname:user.displayname,
+      _id:user._id,
+      email:user.email,
+      projects:user.projects,
+      avatar:user.avatar
+    }
+    const jwtData = jwtToken.sign(data, process.env.JWTSECREAT)
+    res.cookie('uid', jwtData, { httpOnly: true, secure: true, sameSite: 'Strict' });
+    return res.status(200).json({ info:{...data},message: "Password updated successfully" });
   } catch (e) {
     console.error(e);
     return res.status(500).json({ message: "Internal Server Error" });

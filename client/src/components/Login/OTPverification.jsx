@@ -54,7 +54,7 @@ const OTPVerification = (props) => {
           API.verifyOTP(props,setMsg,navigate);
         }}>Enter</button>
       </div>
-      {msg && <div className='msg text-red-500 mt-2 text-2xl'>{msg}</div>}
+      {msg && <div className='msg text-red-500 mt-2 text-base text-center'>{msg}</div>}
     </div>
   );
 };
