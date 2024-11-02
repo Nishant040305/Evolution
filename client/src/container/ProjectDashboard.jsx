@@ -57,6 +57,7 @@ const ProjectDashboard = () => {
 
   const handleCreateProject = async (newProject) => {
     try {
+      console.log(newProject)
       const createdProject = await API.createProject(newProject);
       setProjects((prev) => [...prev, createdProject]);
       setIsCreateModalOpen(false);

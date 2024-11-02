@@ -42,6 +42,7 @@ class ApiDashboard {
             console.log(`${this.baseURL}${this.endpoints.CreatProject}`)
             console.log(this.endpoints)
             const response = await axios.post(`${this.baseURL}${this.endpoints.CreatProject}`, projectData);
+            console.log(response)
             return response.data;
         } catch (error) {
             console.error("Failed to create project:", error);

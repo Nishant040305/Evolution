@@ -9,12 +9,7 @@ const CreateProjectForm = ({ onCreateProject }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (newProject.name.trim()) {
-      onCreateProject({ ...newProject, createdAt: new Date().toISOString() });
-      API.createProject({
-        name:newProject.name,
-        description:newProject.description,
-        user:user
-      })
+      onCreateProject({ ...newProject,user:user });
       setNewProject({ name: "", description: "" });
     }
   };
