@@ -47,7 +47,12 @@ const createProject = async (req, res) => {
 
 const updateProject = async (req, res) => {
     try {
-        const updatedProject = await Project.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const updatedProject = await Project.findByIdAndUpdate(
+            req.params.id,
+            { $set: { components: req.body } },
+            { new: true } // Return the updated document
+        );
+
         if (!updatedProject) {
             return res.status(404).json({ message: 'Project not found' });
         }
