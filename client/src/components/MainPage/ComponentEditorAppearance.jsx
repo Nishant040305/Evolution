@@ -3,9 +3,9 @@ import { ChevronDown,ChevronUp } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setProperty } from '../../Store/webElementSlice';
 const ComponentEditorAppearance = ({ id }) => {
-  const element = webElements[id];
   const [on,setOFF] = useState(false);
   const webElements = useSelector(state=>state.webElement.present);
+  const element = webElements[id];
   const dispatch = useDispatch();
   const handleAppearanceChange = (property, value) => {
     dispatch(setProperty({id:id,property:property,value:value}));

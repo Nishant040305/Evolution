@@ -1,13 +1,13 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { setAttribute, setProperty } from '../../Store/webElementSlice';
+import { useDispatch ,useSelector} from 'react-redux';
+import { setAttribute, setContent, setProperty } from '../../Store/webElementSlice';
 
 const ComponentEditorContent = ({ id }) => {
   const webElements = useSelector(state=>state.webElement.present);
   const element = webElements[id];
   const dispatch = useDispatch();
   const handleContentChange = (property, value) => {
-    dispatch(setProperty({id:id,property:property,value:value}));
+    dispatch(setContent({id:id,property:property,value:value}));
   };
   const handleAttributeChange=(property,value)=>{
    dispatch(setAttribute({id:id,property:property,value:value}))

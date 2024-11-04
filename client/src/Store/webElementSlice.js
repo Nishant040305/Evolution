@@ -30,35 +30,50 @@ const webElementSlice= createSlice({
                 ...state,
                 [action.payload.id]:{
                     ...state[action.payload.id],
-                    transform:action.payload.transform,
+                    styles:{
+                        ...state[action.payload.id].styles,
+                        transform:action.payload.transform,
+                    }
                 }
             }
         },
         setProperty:(state,action)=>{
-            return {
+            const newEl =  {
                 ...state,
                 [action.payload.id]:{
                     ...state[action.payload.id],
-                    style:{
-                        ...state[action.payload.id].style,
+                    styles:{
+                        ...state[action.payload.id].styles,
                         [action.payload.property]:action.payload.value
                     }
                 }
             }
+            console.log(newEl)
+            return newEl
         },
         setAttribute:(state,action)=>{
             return{
                 ...state,
                 [action.payload.id]:{
                     ...state[action.payload.id],
-                    attribute:{
-                        ...state[action.payload.id].attribute,
-                        [action.payload.propery]:action.payload.value
+                    attributes:{
+                        ...state[action.payload.id].attributes,
+                        [action.payload.property]:action.payload.value
                     }
+                }
+            }
+        },
+        setContent:(state,action)=>{
+            return{
+                ...state,
+                [action.payload.id]:{
+                    ...state[action.payload.id],
+                    [action.payload.property]:action.payload.value
+                    
                 }
             }
         }
     }
 })
-export const {setElement,setPosition,addElement,setTransform,setProperty,setAttribute} = webElementSlice.actions;
+export const {setElement,setPosition,addElement,setTransform,setProperty,setAttribute,setContent} = webElementSlice.actions;
 export default webElementSlice.reducer;

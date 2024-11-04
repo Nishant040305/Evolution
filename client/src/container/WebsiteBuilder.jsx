@@ -71,7 +71,7 @@ const WebsiteBuilder = () => {
       didCancel = true; // Clean up to avoid setting state on unmounted component
     };
   }, [projectID, currentUserId, userId, API, navigate]);
-
+  
     return (
     <div className="flex flex-col h-screen">
       <TopBar/>
