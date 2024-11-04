@@ -19,19 +19,6 @@ const TextArea = (id,startDrag) => {
             resize: "vertical",          // Allows vertical resizing only
             transition: "all 0.3s ease",
             boxShadow: "1px 1px 5px rgba(0, 0, 0, 0.2)",
-            // Define interactive styles
-            ":focus": {
-                borderColor: "#007BFF",
-                boxShadow: "0 0 8px rgba(0, 123, 255, 0.5)"
-            },
-            ":hover": {
-                borderColor: "#888"
-            },
-            // ":disabled": {
-            //     backgroundColor: "#f0f0f0",
-            //     color: "#888",
-            //     cursor: "not-allowed"
-            // }
         },
         position: { x: 100, y: 100 },
         attributes: {
