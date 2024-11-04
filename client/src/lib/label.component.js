@@ -10,10 +10,6 @@ const Label = (id, text = "Label",startDrag) => {
             display: "inline-block",       // Ensures label displays correctly with inputs
             cursor: "pointer",
             transition: "color 0.3s ease",  // Smooth color transition
-            // Define interactive styles
-            ":hover": {
-                color: "#007BFF"
-            }
         },
         position: { x: 100, y: 100 },
         content: text,

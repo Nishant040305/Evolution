@@ -12,8 +12,21 @@ const ComponentRenderer = ({ instance, webElements, setWebElements, recursionDep
     top: instance.position?.y,
   } : {};
 
-  const style = { ...postion, ...instance.styles };
-  const attributes = { ...instance.attributes, style };
+  const style = { 
+    ...postion, 
+    ...instance.styles 
+  };
+
+  const canvasComponent = !instance.attributes.className ? {
+    className: "canvas-component",
+  } : {};
+
+  const attributes = { 
+    ...instance.attributes,
+    ...canvasComponent, 
+    style, 
+  };
+
   const content = instance.content;
 
   // Child elements by id
