@@ -1,28 +1,16 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { setAttribute, setProperty } from '../../Store/webElementSlice';
 
-const ComponentEditorContent = ({ id, webElements, setWebElements }) => {
+const ComponentEditorContent = ({ id }) => {
+  const webElements = useSelector(state=>state.webElement.present);
   const element = webElements[id];
-
+  const dispatch = useDispatch();
   const handleContentChange = (property, value) => {
-    setWebElements((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        [property]: value,
-      },
-    }));
+    dispatch(setProperty({id:id,property:property,value:value}));
   };
   const handleAttributeChange=(property,value)=>{
-    setWebElements((prev)=>({
-        ...prev,
-        [id]:{
-            ...prev[id],
-            attributes:{
-                ...[prev[id].atributes],
-                [property]:value
-            }
-        }
-    }))
+   dispatch(setAttribute({id:id,property:property,value:value}))
   }
   return (
     <div className="content-editor p-4 border border-gray-300 rounded-lg space-y-3">

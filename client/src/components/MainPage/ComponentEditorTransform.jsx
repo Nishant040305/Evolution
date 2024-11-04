@@ -1,35 +1,22 @@
 import React, { useState } from 'react';
 import { ChevronDown,ChevronUp } from 'lucide-react';
-const ComponentEditorTransform = ({ id, webElements, setWebElements }) => {
+import { useDispatch, useSelector } from 'react-redux';
+import { setPosition, setProperty, setTransform } from '../../Store/webElementSlice';
+const ComponentEditorTransform = ({ id }) => {
   const[on,setOFF] = useState(0);
+  const webElements = useSelector(state=>state.webElement.present)
   const element = webElements[id];
+  const dispatch = useDispatch();
   const handleTransformChange = (property, value) => {
-    setWebElements((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        styles: {
-          ...prev[id].styles,
-          [property]:value,
-        },
-      },
-    }));
+    dispatch(setProperty({id:id,property:property,value:value}));
   };
   
   // Function to handle rotation
   const handleRotationChange = (value) => {
     const currentTransform = element.styles.transform || '';
     const updatedTransform = `${currentTransform.replace(/rotate\([^)]+\)/, '')} rotate(${value}deg)`;
-    setWebElements((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        styles: {
-          ...prev[id].styles,
-          transform: updatedTransform,
-        },
-      },
-    }));
+    dispatch(setTransform({id:id,transform:updatedTransform}));
+
   };
 
   // Function to handle reflection (horizontal or vertical)
@@ -44,16 +31,7 @@ const ComponentEditorTransform = ({ id, webElements, setWebElements }) => {
     }
 
     const updatedTransform = `${currentTransform.replace(/scale[XY]\(-1\)/, '')} ${reflectionTransform}`;
-    setWebElements((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        styles: {
-          ...prev[id].styles,
-          transform: updatedTransform,
-        },
-      },
-    }));
+    dispatch(setTransform({id:id,transform:updatedTransform}));
   };
 
   return (
@@ -84,13 +62,7 @@ const ComponentEditorTransform = ({ id, webElements, setWebElements }) => {
           type="number"
           value={element.position.x}
           onChange={(e) =>
-            setWebElements((prev) => ({
-              ...prev,
-              [id]: {
-                ...prev[id],
-                position: { ...prev[id].position, x: parseInt(e.target.value) },
-              },
-            }))
+            dispatch(setPosition({id:id,dy:0,dx:parseInt(e.target.value)-webElements[id].position.x}))
           }
           className="ml-2 p-1 border border-gray-300 rounded"
         />
@@ -103,13 +75,7 @@ const ComponentEditorTransform = ({ id, webElements, setWebElements }) => {
           type="number"
           value={element.position.y}
           onChange={(e) =>
-            setWebElements((prev) => ({
-              ...prev,
-              [id]: {
-                ...prev[id],
-                position: { ...prev[id].position, y: parseInt(e.target.value) },
-              },
-            }))
+            dispatch(setPosition({id:id,dx:0,dy:parseInt(e.target.value)-webElements[id].position.y}))
           }
           className="ml-2 p-1 border border-gray-300 rounded"
         />

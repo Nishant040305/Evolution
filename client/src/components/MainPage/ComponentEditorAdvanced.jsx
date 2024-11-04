@@ -1,19 +1,14 @@
 import React, { useState } from 'react';
 import { ChevronDown,ChevronUp } from 'lucide-react';
-const ComponentEditorAdvanced = ({ id, webElements, setWebElements }) => {
+import { useDispatch, useSelector } from 'react-redux';
+import { setProperty } from '../../Store/webElementSlice';
+const ComponentEditorAdvanced = ({ id}) => {
+  const webElements = useSelector(state=>state.webElement.present);
   const element = webElements[id];
   const [on,setOFF] = useState(false)
+  const dispatch = useDispatch();
   const handleAdvancedChange = (property, value) => {
-    setWebElements((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        styles: {
-          ...prev[id].styles,
-          [property]: value,
-        },
-      },
-    }));
+    dispatch(setProperty({id:id,property:property,value:value}));
   };
 
   const handleBorderWidthChange = (side, value) => {
@@ -51,16 +46,7 @@ const ComponentEditorAdvanced = ({ id, webElements, setWebElements }) => {
     };
     
     const newBoxShadow = `${horizontalOffset} ${verticalOffset} ${blurRadius} ${spreadRadius} ${color}`;
-    setWebElements((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        styles: {
-          ...prev[id].styles,
-          boxShadow: newBoxShadow,
-        },
-      },
-    }));
+    dispatch(setProperty({id:id,property:"boxShadow",value:newBoxShadow}))
   };
 
   return (

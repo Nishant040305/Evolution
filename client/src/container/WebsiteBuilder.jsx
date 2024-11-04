@@ -16,7 +16,6 @@ const WebsiteBuilder = () => {
   const currentUserId = useSelector((state) => state.user.userInfo?._id); // Current logged-in user's ID
   console.log(webElement)
   const dispatch = useDispatch();
-  const [webElements,setWebElements] = useState({});
   const [leftSidebarOpen, setLeftSidebarOpen] = useState(true);
   const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
   const [id,set] = useState(0);
@@ -51,17 +50,11 @@ const WebsiteBuilder = () => {
     const fetchProject = async () => {
       try {
         const projectComp = await API.getProjectById(projectID);
-        console.log("Project:", projectComp);
-
         if (!didCancel) {
           if (!projectComp || projectComp.user._id !== currentUserId || currentUserId !== userId) {
             navigate('/'); // Redirect if unauthorized
           } else {
-            // Only update state if there's a real change
-            setWebElements((prev) => {
-              const newComponents = projectComp.components || {};
-              return JSON.stringify(prev) !== JSON.stringify(newComponents) ? newComponents : prev;
-            });
+            dispatch(setElement(projectComp.components))
           }
         }
       } catch (error) {
@@ -79,57 +72,28 @@ const WebsiteBuilder = () => {
     };
   }, [projectID, currentUserId, userId, API, navigate]);
 
-  useEffect(() => {
-    if (webElements && Object.keys(webElements).length > 0) {
-      // If webElements have changed, dispatch the new value
-      if (webElements !== webElementRef.current) {
-        dispatch(setElement(webElements));
-      }
-    }
-
-    if (webElement && webElement !== webElements) {
-      // If webElement has changed, update local state
-      setWebElements(webElement);
-      webElementRef.current = webElement;
-    }
-    if(webElement[id]==null){
-      setId(0);
-      setRightSidebarOpen(false);
-    }
-  }, [webElements, dispatch, webElement]);
-
     return (
     <div className="flex flex-col h-screen">
-      <TopBar webElements={webElements}
-          setWebElements = {setWebElements}/>
+      <TopBar/>
       <div className="flex flex-1">
         <LeftSidebar
           sidebarOpen={leftSidebarOpen}
           toggleRight={setRightSidebarOpen}
           toggleSidebar={() => setLeftSidebarOpen(!leftSidebarOpen)}
           handleElementSelect={handleElementSelect}
-          webElements={webElements}
-          setWebElements = {setWebElements}
           id={id}
           setId={setId}
         />
         <MainCanvas
-        webElements={webElements}
-        setWebElements = {setWebElements}
          />
         {rightSidebarOpen && (
           <RightSidebar
             closeSidebar={() => setRightSidebarOpen(false)}
-            webElements={webElements}
-          setWebElements = {setWebElements}
           id={id}
           />
         )}
       </div>
-      <BottomBar
-      webElements={webElements}
-      setWebElements = {setWebElements}
-      />
+      <BottomBar/>
     </div>
   );
 };

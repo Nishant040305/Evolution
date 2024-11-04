@@ -1,19 +1,14 @@
 import React, { useState } from 'react';
 import { ChevronDown,ChevronUp } from 'lucide-react';
-const ComponentEditorAppearance = ({ id, webElements, setWebElements }) => {
+import { useDispatch, useSelector } from 'react-redux';
+import { setProperty } from '../../Store/webElementSlice';
+const ComponentEditorAppearance = ({ id }) => {
   const element = webElements[id];
   const [on,setOFF] = useState(false);
+  const webElements = useSelector(state=>state.webElement.present);
+  const dispatch = useDispatch();
   const handleAppearanceChange = (property, value) => {
-    setWebElements((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        styles: {
-          ...prev[id].styles,
-          [property]: value,
-        },
-      },
-    }));
+    dispatch(setProperty({id:id,property:property,value:value}));
   };
 
   const handlePaddingChange = (side, value) => {

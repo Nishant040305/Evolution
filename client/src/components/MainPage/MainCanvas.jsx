@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import ComponentRenderer from "./ComponentRenderer";
+import { useSelector } from "react-redux";
 
-const MainCanvas = ({webElements,setWebElements}) => {
-  
+const MainCanvas = () => {
+  const webElements = useSelector(state=>state.webElement.present);
   return (
     <div className="flex-1 p-8 overflow-auto bg-gray-100">
       <div className="min-h-full p-8 bg-white rounded-lg shadow-lg">
@@ -11,7 +12,7 @@ const MainCanvas = ({webElements,setWebElements}) => {
             <p className="text-gray-500">Drag and drop elements here</p>
           ) : null}
           {Object.values(webElements).map((component) => (
-            <ComponentRenderer key={component.id} instance={component} webElements={webElements} setWebElements={setWebElements} />
+            <ComponentRenderer key={component.id} instance={component} webElements={webElements} />
           ))}
         </div>
       </div>

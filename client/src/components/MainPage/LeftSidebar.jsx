@@ -10,22 +10,22 @@ const {
   Div,
 } = components;
 import { ChevronRight, ChevronLeft, ChevronDown, ChevronUp, Grid } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { addElement, setElement, setPosition } from "../../Store/webElementSlice";
 
 const LeftSidebar = ({
   sidebarOpen,
   toggleSidebar,
-  webElements,
-  setWebElements,
   toggleRight,
   setId,
 }) => {
   const [counter, setCounter] = useState(1);
   const [showComponents, setShowComponents] = useState(true); // New state to toggle sections
   const [showElements, setShowElements] = useState(true); // State to toggle elements
-
+  const webElements = useSelector(state=>state.webElement.present);
+  const dispatch = useDispatch();
   const startDrag = (event, elementId) => {
     event.preventDefault();
-
     const element = document.getElementById(elementId);
     let startX = event.clientX;
     let startY = event.clientY;
@@ -33,22 +33,8 @@ const LeftSidebar = ({
     const handleMouseMove = (moveEvent) => {
       const dx = moveEvent.clientX - startX;
       const dy = moveEvent.clientY - startY;
-
-      setWebElements((prevWebElements) => {
-        const newPosition = {
-          x: prevWebElements[elementId].position.x + dx,
-          y: prevWebElements[elementId].position.y + dy,
-        };
-
-        return {
-          ...prevWebElements,
-          [elementId]: {
-            ...prevWebElements[elementId],
-            position: newPosition,
-          },
-        };
-      });
-
+   
+      dispatch(setPosition({id:elementId,dx:dx,dy:dy}))
       startX = moveEvent.clientX;
       startY = moveEvent.clientY;
     };
@@ -72,39 +58,39 @@ const LeftSidebar = ({
   }
 
   // test elements
-  const testElements = () => {
-    const parentButton = Button("parentButton", startDrag);
-    parentButton.content = "really long button text";
-    const childLabel = Label("childLabel", "TEST", startDrag);
-    parentButton.childrenId = [childLabel.id];
-    childLabel.parent = parentButton.id;
-    setWebElements((prev) => {
-      return {
-        ...prev,
-        [parentButton.id]: parentButton,
-        [childLabel.id]: childLabel,
-      };
-    });
+  // const testElements = () => {
+  //   const parentButton = Button("parentButton", startDrag);
+  //   parentButton.content = "really long button text";
+  //   const childLabel = Label("childLabel", "TEST", startDrag);
+  //   parentButton.childrenId = [childLabel.id];
+  //   childLabel.parent = parentButton.id;
+  //   setWebElements((prev) => {
+  //     return {
+  //       ...prev,
+  //       [parentButton.id]: parentButton,
+  //       [childLabel.id]: childLabel,
+  //     };
+  //   });
 
-    // div test
-    const div = Div("div", startDrag);
-    const childofdiv = Label("childofdiv", "HELLO", startDrag);
-    div.childrenId = [childofdiv.id];
-    childofdiv.parent = div.id;
-    childofdiv.position.x = 15;
-    childofdiv.position.y = 15;
-    setWebElements((prev) => {
-      return {
-        ...prev,
-        [div.id]: div,
-        [childofdiv.id]: childofdiv,
-      };
-    });
-  };
+  //   // div test
+  //   const div = Div("div", startDrag);
+  //   const childofdiv = Label("childofdiv", "HELLO", startDrag);
+  //   div.childrenId = [childofdiv.id];
+  //   childofdiv.parent = div.id;
+  //   childofdiv.position.x = 15;
+  //   childofdiv.position.y = 15;
+  //   setWebElements((prev) => {
+  //     return {
+  //       ...prev,
+  //       [div.id]: div,
+  //       [childofdiv.id]: childofdiv,
+  //     };
+  //   });
+  // };
 
   return (
     <div className="relative">
-      <button onClick={testElements}>Children TEST</button>
+      {/* <button onClick={testElements}>Children TEST</button> */}
       {sidebarOpen==true?<div
         className={`${
           sidebarOpen ? "w-64" : "w-0"
@@ -159,10 +145,7 @@ const LeftSidebar = ({
                           let id = counter + 1;
                           let hash = id.toString();
                           setCounter((prevCounter) => prevCounter + 1);
-                          setWebElements({
-                            ...webElements,
-                            [hash]: sidebarElements[element](hash),
-                          });
+                          dispatch(addElement({hash:hash,value:sidebarElements[element](hash)}))
                         }}
                         key={element}
                       >

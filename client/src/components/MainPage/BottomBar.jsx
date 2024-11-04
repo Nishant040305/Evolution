@@ -4,10 +4,11 @@ import ApiDashboard from "../../scripts/API.Dashboard";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 //webElements is the elements of the selected and configured components on the webpage
-const BottomBar = ({webElements,setWebElements}) => {
+const BottomBar = () => {
   const API = new ApiDashboard();
   const {userId,projectID} = useParams();
   const project = useSelector(state=>state.user.userInfo.projects);
+  const webElements = useSelector(state=>state.webElement.present)
   // console.log(project)
   return(
   <div className="flex items-center justify-between h-12 px-4 bg-white border-t">
@@ -25,10 +26,6 @@ const BottomBar = ({webElements,setWebElements}) => {
         <span>Grid: On</span>
       </button> */}
       <button className="flex items-center p-2 space-x-1 text-sm text-white rounded-lg bg-rose-500 hover:bg-rose-600" onClick={()=>{
-        console.log("hey")
-        console.log(webElements)
-        console.log(projectID);
-        console.log(project)
         if (webElements && project.includes(projectID)) {
           API.updateProject(projectID, webElements);
       }        

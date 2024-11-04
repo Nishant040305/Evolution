@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
-const ComponentRenderer = ({ instance, webElements, setWebElements, recursionDepth = 0 }) => {
+const ComponentRenderer = ({ instance, recursionDepth = 0 }) => {
+  const webElements = useSelector(state=>state.webElement.present)
   // Skip top levelrendering if the element has a parent
   console.log(instance.type, recursionDepth);
   if (instance.parent && recursionDepth === 0) return null;
@@ -28,7 +30,7 @@ const ComponentRenderer = ({ instance, webElements, setWebElements, recursionDep
             key={child}
             instance={webElements[child]} 
             webElements={webElements}
-            setWebElements={setWebElements}
+            // setWebElements={setWebElements}
             recursionDepth={recursionDepth + 1}
           />)
       )
@@ -59,7 +61,7 @@ const ComponentType = PropTypes.shape({
 ComponentRenderer.propTypes = {
   instance: ComponentType.isRequired,
   webElements: PropTypes.object.isRequired, // [key: string, value: ComponentType]
-  setWebElements: PropTypes.func.isRequired
+  // setWebElements: PropTypes.func.isRequired
 };
 
 export default ComponentRenderer;

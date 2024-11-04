@@ -4,7 +4,7 @@ import { ActionCreators } from 'redux-undo';
 import { useDispatch } from "react-redux";
 import ApiDashboard from "../../scripts/API.Dashboard";
 
-const TopBar = ({webElements ,setWebElements}) => {
+const TopBar = () => {
   const dispatch = useDispatch();
   const handleUndo = () => {
     dispatch(ActionCreators.undo())
