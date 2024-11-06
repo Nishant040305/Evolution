@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 const credController = require("../controller/credController");
 const credMiddleware = require("../middleware/credMiddleware");
-
+const User = require("../models/User");
 // @routes   GET /api/auth/
 // @desc     Get current user info
 router.get('/', credMiddleware.UserVerifier, async (req, res) => {
-    return res.status(200).json({ info: req.user });
+    const user = await User.findById(req.user._id);
+    return res.status(200).json({ info: user });
 });
 
 // @routes   POST /api/auth/signin
