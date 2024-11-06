@@ -18,6 +18,9 @@ const Input = (id, placeholder = "Enter text...",startDrag) => {
             boxShadow: "1px 1px 5px rgba(0, 0, 0, 0.2)",  // Subtle shadow for depth
         },
         position: { x: 100, y: 100 },
+        HTMLAttributes: {
+            onchange: "alert('Hello World!')",
+        },
         attributes: {
             placeholder: placeholder,        // Placeholder text
             onChange: (event) => {

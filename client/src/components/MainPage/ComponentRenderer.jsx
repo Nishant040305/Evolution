@@ -26,14 +26,17 @@ const ComponentRenderer = ({ instance, recursionDepth = 0 }) => {
   const attributes = { 
     ...instance.attributes,
     ...canvasComponent, 
-    style, 
+    style,
+    id: "canvas-element " + instance.id,
   };
 
   const content = instance.content;
 
   // Child elements by id
+  let element;
+
   if (instance.childrenId)
-    return React.createElement(
+    element = React.createElement(
       instance.type,
       attributes,
       content,
@@ -48,13 +51,17 @@ const ComponentRenderer = ({ instance, recursionDepth = 0 }) => {
           />)
       )
     );
+  else
+    element = React.createElement(
+      instance.type,
+      attributes,
+      content,
+    );
 
-  // No children
-  return React.createElement(
-    instance.type,
-    attributes,
-    content,
-  );
+  console.log(attributes);
+  console.log(instance);
+
+  return element;
 };
 
 const ComponentType = PropTypes.shape({
@@ -66,6 +73,7 @@ const ComponentType = PropTypes.shape({
   }),
   styles: PropTypes.object,
   attributes: PropTypes.object,
+  HTMLAttributes: PropTypes.object,
   content: PropTypes.string,
   childrenId: PropTypes.arrayOf(PropTypes.string),
   parent: PropTypes.string,
@@ -73,8 +81,7 @@ const ComponentType = PropTypes.shape({
 
 ComponentRenderer.propTypes = {
   instance: ComponentType.isRequired,
-  webElements: PropTypes.object.isRequired, // [key: string, value: ComponentType]
-  // setWebElements: PropTypes.func.isRequired
+  recursionDepth: PropTypes.number,
 };
 
 export default ComponentRenderer;

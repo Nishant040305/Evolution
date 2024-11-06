@@ -29,11 +29,11 @@ const Button = (id, startDrag) => {
             transform: "rotate(0deg)",           // Default scale for hover effect
         },
         position: { x: 100, y: 100 },
+        HTMLAttributes: {
+            onclick: "alert('Hello World!')",
+        },
         attributes: {
             className: "canvas-component-dark",
-            onClick: () => { 
-                // TODO: Implement future functionality
-            },
             onMouseDown: (event) => startDrag(event, id)
         },
         content: `Button ${id}`
