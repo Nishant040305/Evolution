@@ -81,6 +81,8 @@ const deleteProject = async (req, res) => {
 
 const publishProject = async (req, res) => {
     const { id, htmlContent } = req.body;
+
+    const project = await Project.findById(id);
     
     if (!id || !htmlContent) {
         return res.status(400).json({ error: 'ID and HTML content are required.' });
@@ -88,11 +90,13 @@ const publishProject = async (req, res) => {
 
     const filePath = path.join(__dirname, `../public/${id}.html`);
 
-    fs.writeFile(filePath, htmlContent, (err) => {
+    fs.writeFile(filePath, htmlContent, async (err) => {
         if (err) {
             return res.status(500).json({ error: 'Error saving the file.' });
         }
-        res.status(200).json({ message: 'File saved successfully.' });
+        project.version += 1;
+        await project.save();
+        res.status(200).json({ message: 'File saved successfully.', data: project });
     });
 }
 
@@ -102,7 +106,9 @@ const openProject = async (req, res) => {
         const project = await Project.findOne({ domain });
 
         if (project) {
+            project.analytics.views += 1;
             const filePath = path.join(__dirname, `../public/${project._id}.html`);
+            project.save();
             return res.sendFile(filePath);
         } else {
             return res.status(404).send('404 Page not found');

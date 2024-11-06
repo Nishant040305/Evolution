@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const credController = require("../controller/credController");
 const credMiddleware = require("../middleware/credMiddleware");
-const User = require("../models/User");
+const User = require('../models/User');
+
 // @routes   GET /api/auth/
 // @desc     Get current user info
 router.get('/', credMiddleware.UserVerifier, async (req, res) => {
