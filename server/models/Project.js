@@ -17,10 +17,14 @@ const ProjectSchema = new Schema({
       return this._id.toString();
     },
   },
+  version: {
+    type: Number,
+    default: 1,
+  },
   analytics: {
-    type: Schema.Types.Mixed,
-    default: {
-      views: 0,
+    views: {
+      type: Number,
+      default: 0,
     }
   },
   user: {
