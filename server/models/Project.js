@@ -17,11 +17,23 @@ const ProjectSchema = new Schema({
       return this._id.toString();
     },
   },
+  analytics: {
+    type: Schema.Types.Mixed,
+    default: {
+      views: 0,
+    }
+  },
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true,
   },
+  members: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    }
+  ],
   components: {
     type: Schema.Types.Mixed,
     default: {}
