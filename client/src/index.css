@@ -5,7 +5,7 @@
 .canvas-component-dark:hover {
   background-color: #333 !important;
   color: #f0f0f0 !important;
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: 4px 4px 10px #00000066 !important;
 }
 
 .canvas-component-dark:active {
@@ -13,6 +13,7 @@
   color: #f0f0f0 !important;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4) !important;
   transform: scale(0.98) !important;
+  z-index: 1 !important;
 }
 
 /* canvas component */
@@ -22,6 +23,7 @@
 
 .canvas-component:active {
   box-shadow: 0 0 8px #007BFF !important;
+  z-index: 1 !important;
 }
 
 @tailwind utilities;

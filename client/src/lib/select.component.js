@@ -1,6 +1,6 @@
 import React from "react";
 
-const Select = (id, options = [], startDrag) => {
+const Select = (id, options = [], canvasEvents) => {
     return {
         id: `${id}`,
         type: "select",
@@ -21,10 +21,7 @@ const Select = (id, options = [], startDrag) => {
         },
         position: { x: 100, y: 100 },
         attributes: {
-            onChange: (event) => {
-                // Handle selection change (future functionality)
-            },
-            onMouseDown: (event) => startDrag(event, id)
+            ...canvasEvents(id),
         },
         content: options.map((option, index) =>
             React.createElement(

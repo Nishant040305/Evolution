@@ -1,4 +1,4 @@
-const Div = (id, startDrag) => {
+const Div = (id, canvasEvents) => {
     return {
         id: `${id}`,
         type: "div",
@@ -19,10 +19,7 @@ const Div = (id, startDrag) => {
         },
         position: { x: 100, y: 100 },
         attributes: {
-            onClick: () => { 
-                // TODO: Implement future functionality
-            },
-            onMouseDown: (event) => startDrag(event, id)
+            ...canvasEvents(id),
         }
     };
 };

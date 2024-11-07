@@ -1,4 +1,4 @@
-const Button = (id, startDrag) => {
+const Button = (id, canvasEvents) => {
     return {
         id: `${id}`,
         type: "button",
@@ -33,8 +33,8 @@ const Button = (id, startDrag) => {
             onclick: "alert('Hello World!')",
         },
         attributes: {
+            ...canvasEvents(id),
             className: "canvas-component-dark",
-            onMouseDown: (event) => startDrag(event, id)
         },
         content: `Button ${id}`
     };

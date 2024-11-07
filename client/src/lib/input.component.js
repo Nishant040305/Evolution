@@ -1,4 +1,4 @@
-const Input = (id, placeholder = "Enter text...",startDrag) => {
+const Input = (id, canvasEvents, placeholder = "Enter text...") => {
     return {
         id: `${id}`,
         type: "input",
@@ -22,14 +22,8 @@ const Input = (id, placeholder = "Enter text...",startDrag) => {
             onchange: "alert('Hello World!')",
         },
         attributes: {
-            placeholder: placeholder,        // Placeholder text
-            onChange: (event) => {
-                // Handle input change (future functionality)
-            },
-            onBlur: (event) => {
-                // Handle input blur (future functionality)
-            },
-            onMouseDown: (event) => startDrag(event, id)
+            placeholder,
+            ...canvasEvents(id),
         }
     };
 };

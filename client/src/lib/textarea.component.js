@@ -1,4 +1,4 @@
-const TextArea = (id,startDrag) => {
+const TextArea = (id, canvasEvents, placeholder="write something") => {
     return {
         id: `${id}`,
         type: "textarea",
@@ -22,11 +22,11 @@ const TextArea = (id,startDrag) => {
         },
         position: { x: 100, y: 100 },
         attributes: {
-            placeholder: "write something",
+            placeholder,
+            ...canvasEvents(id),
             onChange: (event) => {
                 console.log("Textarea content:", event.target.value); // Log changes
             },
-            onMouseDown: (event) => startDrag(event, id)
         }
     };
 };

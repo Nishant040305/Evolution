@@ -39,7 +39,8 @@ const LeftSidebar = ({
   const dispatch = useDispatch();
   const startDrag = (event, elementId) => {
     event.preventDefault();
-    const element = document.getElementById(elementId);
+    const element = document.getElementById("canvas-element " + elementId);
+    console.log("ELEMENT", element);
     let startX = event.clientX;
     let startY = event.clientY;
 
@@ -61,18 +62,24 @@ const LeftSidebar = ({
     document.addEventListener("mouseup", handleMouseUp);
   };
 
+  const canvasEvents = (id) => {
+    return {
+      onMouseDown: (event) => startDrag(event, id)
+    }
+  }
+
   const sidebarElements = {
-    "Button": (hash) => Button(hash, startDrag),
-    "TextField": (hash) => TextArea(hash, startDrag),
-    "Dropdown": (hash) => Select(hash, ["Option 1", "Option 2", "Option 3"], startDrag),
-    "Label": (hash) => Label(hash, "New Label Text", startDrag),
-    "Input": (hash) => Input(hash, "New Label Text", startDrag),
-    "Div": (hash) => Div(hash, startDrag),
+    "Button": (hash) => Button(hash, canvasEvents),
+    "TextField": (hash) => TextArea(hash, canvasEvents),
+    "Dropdown": (hash) => Select(hash, ["Option 1", "Option 2", "Option 3"], canvasEvents),
+    "Label": (hash) => Label(hash, "New Label Text", canvasEvents),
+    "Input": (hash) => Input(hash, canvasEvents),
+    "Div": (hash) => Div(hash, canvasEvents),
   }
 
   return (
     <div className="relative">
-      <RelativeChildrenTest startDrag={startDrag} />
+      <RelativeChildrenTest canvasEvents={canvasEvents} />
       {sidebarOpen==true?<div
         className={`${
           sidebarOpen ? "w-64" : "w-0"
