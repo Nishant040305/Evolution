@@ -1,9 +1,8 @@
-import React from 'react';
+import React from "react";
 
 function ComponentEditor({ id, webElements, setWebElements }) {
   const element = webElements[id];
 
-  // Handle changes for non-style properties (content, position)
   const handleInputChange = (property, value) => {
     setWebElements((prevWebElements) => ({
       ...prevWebElements,
@@ -14,7 +13,6 @@ function ComponentEditor({ id, webElements, setWebElements }) {
     }));
   };
 
-  // Handle changes for style properties
   const handleStyleChange = (styleProp, value) => {
     setWebElements((prevWebElements) => ({
       ...prevWebElements,
@@ -29,168 +27,191 @@ function ComponentEditor({ id, webElements, setWebElements }) {
   };
 
   return (
-    <div>
+    <div className="p-4 space-y-4 bg-white rounded-lg shadow-lg">
       {id !== 0 && element ? (
-        <div>
-          <h3>Properties</h3>
+        <>
+          <h3 className="text-xl font-semibold">Properties</h3>
 
-          <label>Content:</label>
-          <input
-            type="text"
-            value={element.content}
-            onChange={(e) => handleInputChange('content', e.target.value)}
-          />
+          {/* Content */}
+          <div className="space-y-2">
+            <label className="block font-medium text-gray-700">Content:</label>
+            <input
+              type="text"
+              value={element.content || ""}
+              onChange={(e) => handleInputChange("content", e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+              placeholder="Enter content"
+            />
+          </div>
 
-          <h3>Position</h3>
+          {/* Position */}
+          <div className="mt-4">
+            <h3 className="text-xl font-semibold">Position</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block font-medium text-gray-700">
+                  Position X:
+                </label>
+                <input
+                  type="number"
+                  value={element.position.x || 0}
+                  onChange={(e) =>
+                    handleInputChange("position", {
+                      ...element.position,
+                      x: parseInt(e.target.value),
+                    })
+                  }
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </div>
+              <div>
+                <label className="block font-medium text-gray-700">
+                  Position Y:
+                </label>
+                <input
+                  type="number"
+                  value={element.position.y || 0}
+                  onChange={(e) =>
+                    handleInputChange("position", {
+                      ...element.position,
+                      y: parseInt(e.target.value),
+                    })
+                  }
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </div>
+            </div>
+          </div>
 
-          <label>Position X:</label>
-          <input
-            type="number"
-            value={element.position.x}
-            onChange={(e) =>
-              setWebElements((prevWebElements) => ({
-                ...prevWebElements,
-                [id]: {
-                  ...prevWebElements[id],
-                  position: {
-                    ...prevWebElements[id].position,
-                    x: parseInt(e.target.value),
-                  },
+          {/* Styles */}
+          <div className="mt-4">
+            <h3 className="text-xl font-semibold">Styles</h3>
+            <div className="space-y-4">
+              {/* Background Color */}
+              <div>
+                <label className="block font-medium text-gray-700">
+                  Background Color:
+                </label>
+                <input
+                  type="color"
+                  value={element.styles.backgroundColor || "#ffffff"}
+                  onChange={(e) =>
+                    handleStyleChange("backgroundColor", e.target.value)
+                  }
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </div>
+
+              {/* Text Color */}
+              <div>
+                <label className="block font-medium text-gray-700">
+                  Text Color:
+                </label>
+                <input
+                  type="color"
+                  value={element.styles.color || "#000000"}
+                  onChange={(e) => handleStyleChange("color", e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </div>
+
+              {/* Other styles */}
+              {[
+                { label: "Padding", style: "padding" },
+                {
+                  label: "Border Width",
+                  style: "borderWidth",
+                  type: "number",
+                  suffix: "px",
                 },
-              }))
-            }
-          />
-
-          <label>Position Y:</label>
-          <input
-            type="number"
-            value={element.position.y}
-            onChange={(e) =>
-              setWebElements((prevWebElements) => ({
-                ...prevWebElements,
-                [id]: {
-                  ...prevWebElements[id],
-                  position: {
-                    ...prevWebElements[id].position,
-                    y: parseInt(e.target.value),
-                  },
+                { label: "Border Color", style: "borderColor", type: "color" },
+                {
+                  label: "Border Radius",
+                  style: "borderRadius",
+                  type: "number",
+                  suffix: "px",
                 },
-              }))
-            }
-          />
+                {
+                  label: "Font Size",
+                  style: "fontSize",
+                  type: "number",
+                  suffix: "px",
+                },
+                {
+                  label: "Letter Spacing",
+                  style: "letterSpacing",
+                  type: "number",
+                  suffix: "px",
+                },
+              ].map(({ label, style, type = "text", suffix = "" }) => (
+                <div key={style}>
+                  <label className="block font-medium text-gray-700">
+                    {label}:
+                  </label>
+                  <input
+                    type={type}
+                    value={parseInt(element.styles[style]) || ""}
+                    onChange={(e) =>
+                      handleStyleChange(style, `${e.target.value}${suffix}`)
+                    }
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                </div>
+              ))}
 
-          <h3>Styles</h3>
+              {/* Select elements for dropdown styles */}
+              {[
+                {
+                  label: "Border Style",
+                  style: "borderStyle",
+                  options: ["solid", "dashed", "dotted", "double"],
+                },
+                {
+                  label: "Font Weight",
+                  style: "fontWeight",
+                  options: ["normal", "bold", "bolder", "lighter"],
+                },
+                {
+                  label: "Cursor",
+                  style: "cursor",
+                  options: ["pointer", "default", "move", "text"],
+                },
+              ].map(({ label, style, options }) => (
+                <div key={style}>
+                  <label className="block font-medium text-gray-700">
+                    {label}:
+                  </label>
+                  <select
+                    value={element.styles[style] || options[0]}
+                    onChange={(e) => handleStyleChange(style, e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded"
+                  >
+                    {options.map((option) => (
+                      <option key={option} value={option}>
+                        {option.charAt(0).toUpperCase() + option.slice(1)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              ))}
 
-          <label>Background Color:</label>
-          <input
-            type="color"
-            value={element.styles.backgroundColor}
-            onChange={(e) => handleStyleChange('backgroundColor', e.target.value)}
-          />
-
-          <label>Text Color:</label>
-          <input
-            type="color"
-            value={element.styles.color}
-            onChange={(e) => handleStyleChange('color', e.target.value)}
-          />
-
-          <label>Padding:</label>
-          <input
-            type="text"
-            value={element.styles.padding}
-            onChange={(e) => handleStyleChange('padding', e.target.value)}
-          />
-
-          <label>Border Width:</label>
-          <input
-            type="number"
-            value={parseInt(element.styles.borderWidth)}
-            onChange={(e) => handleStyleChange('borderWidth', `${e.target.value}px`)}
-          />
-
-          <label>Border Color:</label>
-          <input
-            type="color"
-            value={element.styles.borderColor}
-            onChange={(e) => handleStyleChange('borderColor', e.target.value)}
-          />
-
-          <label>Border Style:</label>
-          <select
-            value={element.styles.borderStyle}
-            onChange={(e) => handleStyleChange('borderStyle', e.target.value)}
-          >
-            <option value="solid">Solid</option>
-            <option value="dashed">Dashed</option>
-            <option value="dotted">Dotted</option>
-            <option value="double">Double</option>
-          </select>
-
-          <label>Border Radius:</label>
-          <input
-            type="number"
-            value={parseInt(element.styles.borderRadius)}
-            onChange={(e) => handleStyleChange('borderRadius', `${e.target.value}px`)}
-          />
-
-          <label>Font Size:</label>
-          <input
-            type="number"
-            value={parseInt(element.styles.fontSize)}
-            onChange={(e) => handleStyleChange('fontSize', `${e.target.value}px`)}
-          />
-
-          <label>Font Weight:</label>
-          <select
-            value={element.styles.fontWeight}
-            onChange={(e) => handleStyleChange('fontWeight', e.target.value)}
-          >
-            <option value="normal">Normal</option>
-            <option value="bold">Bold</option>
-            <option value="bolder">Bolder</option>
-            <option value="lighter">Lighter</option>
-          </select>
-
-          <label>Cursor:</label>
-          <select
-            value={element.styles.cursor}
-            onChange={(e) => handleStyleChange('cursor', e.target.value)}
-          >
-            <option value="pointer">Pointer</option>
-            <option value="default">Default</option>
-            <option value="move">Move</option>
-            <option value="text">Text</option>
-          </select>
-
-          <label>Letter Spacing:</label>
-          <input
-            type="number"
-            value={parseInt(element.styles.letterSpacing)}
-            onChange={(e) => handleStyleChange('letterSpacing', `${e.target.value}px`)}
-          />
-
-          <label>Transition:</label>
-          <input
-            type="text"
-            value={element.styles.transition}
-            onChange={(e) => handleStyleChange('transition', e.target.value)}
-          />
-
-          <label>Box Shadow:</label>
-          <input
-            type="text"
-            value={element.styles.boxShadow}
-            onChange={(e) => handleStyleChange('boxShadow', e.target.value)}
-          />
-
-          <label>Transform:</label>
-          <input
-            type="text"
-            value={element.styles.transform}
-            onChange={(e) => handleStyleChange('transform', e.target.value)}
-          />
-        </div>
+              {/* Text inputs for miscellaneous properties */}
+              {["transition", "boxShadow", "transform"].map((style) => (
+                <div key={style}>
+                  <label className="block font-medium text-gray-700">
+                    {style.charAt(0).toUpperCase() + style.slice(1)}:
+                  </label>
+                  <input
+                    type="text"
+                    value={element.styles[style] || ""}
+                    onChange={(e) => handleStyleChange(style, e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
       ) : null}
     </div>
   );

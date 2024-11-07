@@ -1,110 +1,139 @@
-import React from 'react';
-import { useDispatch ,useSelector} from 'react-redux';
-import { setAttribute, setContent, setProperty } from '../../Store/webElementSlice';
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setAttribute, setContent } from "../../Store/webElementSlice";
 
 const ComponentEditorContent = ({ id }) => {
-  const webElements = useSelector(state=>state.webElement.present);
+  const webElements = useSelector((state) => state.webElement.present);
   const element = webElements[id];
   const dispatch = useDispatch();
+
   const handleContentChange = (property, value) => {
-    dispatch(setContent({id:id,property:property,value:value}));
+    dispatch(setContent({ id, property, value }));
   };
-  const handleAttributeChange=(property,value)=>{
-   dispatch(setAttribute({id:id,property:property,value:value}))
-  }
+
+  const handleAttributeChange = (property, value) => {
+    dispatch(setAttribute({ id, property, value }));
+  };
+
   return (
-    <div className="content-editor p-4 border border-gray-300 rounded-lg space-y-3">
-      <h3 className="font-semibold text-lg">Content Properties</h3>
+    <div className="p-4 space-y-4 bg-white border border-gray-300 rounded-lg shadow-sm appearance-editor">
+      <h3 className="text-xl font-semibold text-gray-700">
+        Content Properties
+      </h3>
 
       {/* Textarea Content */}
-      {element.type === 'textarea' && (
-        <label>
-          Content:
-          <textarea
-            value={element.attributes.placeholder || ''}
-            onChange={(e) => handleAttributeChange('placeholder', e.target.value)}
-            className="ml-2 p-1 border border-gray-300 rounded w-full"
-            placeholder="Enter text content here"
-          />
-        </label>
+      {element.type === "textarea" && (
+        <div>
+          <label className="block mb-1 font-medium text-gray-600">
+            Content:
+            <textarea
+              value={element.attributes.placeholder || ""}
+              onChange={(e) =>
+                handleAttributeChange("placeholder", e.target.value)
+              }
+              className="w-full p-2 mt-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+              placeholder="Enter text content here"
+            />
+          </label>
+        </div>
       )}
 
       {/* Input Placeholder */}
-      {element.type === 'input' && (
-        <label>
-          Placeholder:
-          <input
-            type="text"
-            value={element.attributes.placeholder || ''}
-            onChange={(e) => handleAttributeChange('placeholder', e.target.value)}
-            className="ml-2 p-1 border border-gray-300 rounded w-full"
-            placeholder="Enter placeholder text"
-          />
-        </label>
-      )}
-        {/* Input Placeholder */}
-        {element.type === 'label' && (
-            <label>
-            content:
+      {element.type === "input" && (
+        <div>
+          <label className="block mb-1 font-medium text-gray-600">
+            Placeholder:
             <input
-                type="text"
-                value={element.content || ''}
-                onChange={(e) => handleContentChange('content', e.target.value)}
-                className="ml-2 p-1 border border-gray-300 rounded w-full"
-                placeholder="Enter placeholder text"
+              type="text"
+              value={element.attributes.placeholder || ""}
+              onChange={(e) =>
+                handleAttributeChange("placeholder", e.target.value)
+              }
+              className="w-full p-2 mt-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+              placeholder="Enter placeholder text"
             />
-            </label>
-        )}
-{/* work in progress */}
-{/* {element.type === 'select' && (
-    <div>
-        <label>Options:</label>
-        {(element.attributes.content || []).map((option, index) => (
-            <div key={index} className="flex items-center space-x-2">
-                <input
-                    type="text"
-                    value={option.label} // Accessing label directly from the option object
-                    onChange={(e) => {
-                        const updatedOptions = [...element.attributes.content];
-                        updatedOptions[index] = { ...updatedOptions[index], label: e.target.value }; // Update the label
-                        handleAttributeChange('content', updatedOptions);
-                    }}
-                    className="p-1 border border-gray-300 rounded w-full"
-                />
-                <button
-                    onClick={() => {
-                        const updatedOptions = element.attributes.content.filter((_, i) => i !== index);
-                        handleAttributeChange('content', updatedOptions);
-                    }}
-                    className="p-1 bg-red-500 text-white rounded"
-                >
-                    Remove
-                </button>
-            </div>
-        ))}
-        <button
-            onClick={() => handleAttributeChange('content', [...(element.attributes.content || []), { label: '', value: '' }])} // Adding an empty option
-            className="mt-2 p-1 bg-blue-500 text-white rounded"
-        >
-            Add Option
-        </button>
-    </div>
-)}
+          </label>
+        </div>
+      )}
 
-         */}
+      {/* Label Content */}
+      {element.type === "label" && (
+        <div>
+          <label className="block mb-1 font-medium text-gray-600">
+            Content:
+            <input
+              type="text"
+              value={element.content || ""}
+              onChange={(e) => handleContentChange("content", e.target.value)}
+              className="w-full p-2 mt-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+              placeholder="Enter label content"
+            />
+          </label>
+        </div>
+      )}
+
+      {/* Select Options (Work in Progress) */}
+      {element.type === "select" && (
+        <div>
+          <label className="block mb-1 font-medium text-gray-600">
+            Options:
+          </label>
+          {(element.attributes.content || []).map((option, index) => (
+            <div key={index} className="flex items-center mb-2 space-x-2">
+              <input
+                type="text"
+                value={option.label}
+                onChange={(e) => {
+                  const updatedOptions = [...element.attributes.content];
+                  updatedOptions[index] = {
+                    ...updatedOptions[index],
+                    label: e.target.value,
+                  };
+                  handleAttributeChange("content", updatedOptions);
+                }}
+                className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+              <button
+                onClick={() => {
+                  const updatedOptions = element.attributes.content.filter(
+                    (_, i) => i !== index
+                  );
+                  handleAttributeChange("content", updatedOptions);
+                }}
+                className="p-2 text-white bg-red-500 rounded hover:bg-red-600"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <button
+            onClick={() =>
+              handleAttributeChange("content", [
+                ...(element.attributes.content || []),
+                { label: "", value: "" },
+              ])
+            }
+            className="w-full p-2 mt-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+          >
+            Add Option
+          </button>
+        </div>
+      )}
 
       {/* Button Text */}
-      {element.type === 'button' && (
-        <label>
-          Button Text:
-          <input
-            type="text"
-            value={element.content || ''}
-            onChange={(e) => handleContentChange('content', e.target.value)}
-            className="ml-2 p-1 border border-gray-300 rounded w-full"
-            placeholder="Enter button text"
-          />
-        </label>
+      {element.type === "button" && (
+        <div>
+          <label className="block mb-1 font-medium text-gray-600">
+            Button Text:
+            <input
+              type="text"
+              value={element.content || ""}
+              onChange={(e) => handleContentChange("content", e.target.value)}
+              className="w-full p-2 mt-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+              placeholder="Enter button text"
+            />
+          </label>
+        </div>
       )}
     </div>
   );

@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
-import { ChevronDown,ChevronUp } from 'lucide-react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setProperty } from '../../Store/webElementSlice';
-const ComponentEditorAdvanced = ({ id}) => {
-  const webElements = useSelector(state=>state.webElement.present);
+import React, { useState } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { setProperty } from "../../Store/webElementSlice";
+
+const ComponentEditorAdvanced = ({ id }) => {
+  const webElements = useSelector((state) => state.webElement.present);
   const element = webElements[id];
-  const [on,setOFF] = useState(false)
+  const [on, setOFF] = useState(false);
+
   const dispatch = useDispatch();
+
   const handleAdvancedChange = (property, value) => {
-    dispatch(setProperty({id:id,property:property,value:value}));
+    dispatch(setProperty({ id: id, property: property, value: value }));
   };
 
   const handleBorderWidthChange = (side, value) => {
@@ -22,16 +25,17 @@ const ComponentEditorAdvanced = ({ id}) => {
       ...prev,
       [property]: value,
     }));
-    handleAdvancedChange('hover', { ...hoverStyles, [property]: value });
+    handleAdvancedChange("hover", { ...hoverStyles, [property]: value });
   };
-  const boxShadow = element.styles.boxShadow || '0px 0px 0px 0px #000000';
+
+  const boxShadow = element.styles.boxShadow || "0px 0px 0px 0px #000000";
 
   const [shadowParams, setShadowParams] = useState({
-    horizontalOffset: boxShadow.split(' ')[0] || '0px',
-    verticalOffset: boxShadow.split(' ')[1] || '0px',
-    blurRadius: boxShadow.split(' ')[2] || '0px',
-    spreadRadius: boxShadow.split(' ')[3] || '0px',
-    color: boxShadow.split(' ')[4] || '#000000',
+    horizontalOffset: boxShadow.split(" ")[0] || "0px",
+    verticalOffset: boxShadow.split(" ")[1] || "0px",
+    blurRadius: boxShadow.split(" ")[2] || "0px",
+    spreadRadius: boxShadow.split(" ")[3] || "0px",
+    color: boxShadow.split(" ")[4] || "#000000",
   });
 
   const handleShadowChange = (property, value) => {
@@ -39,153 +43,199 @@ const ComponentEditorAdvanced = ({ id}) => {
       ...prev,
       [property]: value,
     }));
-    
-    const { horizontalOffset, verticalOffset, blurRadius, spreadRadius, color } = {
+
+    const {
+      horizontalOffset,
+      verticalOffset,
+      blurRadius,
+      spreadRadius,
+      color,
+    } = {
       ...shadowParams,
       [property]: value,
     };
-    
+
     const newBoxShadow = `${horizontalOffset} ${verticalOffset} ${blurRadius} ${spreadRadius} ${color}`;
-    dispatch(setProperty({id:id,property:"boxShadow",value:newBoxShadow}))
+    dispatch(
+      setProperty({ id: id, property: "boxShadow", value: newBoxShadow })
+    );
   };
 
   return (
-    <div className="advanced-editor p-4 border border-gray-300 rounded-lg space-y-3">
-      <h3 className="font-semibold text-lg">Advanced Properties<button onClick={() => setOFF((prev) => !prev)}>
-                  {on ? (
-                    <ChevronUp className="w-4 h-4" />
-                  ) : (
-                    <ChevronDown className="w-4 h-4" />
-                  )}
-                </button></h3>
+    <div className="p-4 space-y-4 bg-white border border-gray-300 rounded-lg shadow-sm appearance-editor">
+      <h3 className="flex items-center text-lg font-semibold text-gray-800">
+        Advanced Properties
+        <button onClick={() => setOFF((prev) => !prev)} className="ml-auto">
+          {on ? (
+            <ChevronUp className="w-4 h-4 text-gray-600" />
+          ) : (
+            <ChevronDown className="w-4 h-4 text-gray-600" />
+          )}
+        </button>
+      </h3>
 
+      {on && (
+        <>
+          {/* Border Width */}
+          <h4 className="mt-3 font-semibold text-gray-700">Border Width</h4>
+          <div className="grid grid-cols-2 gap-4 p-3 bg-white border border-gray-200 rounded">
+            {["Top", "Bottom", "Left", "Right"].map((side) => (
+              <label key={side} className="flex flex-col">
+                <span className="font-medium text-gray-600">{side}:</span>
+                <input
+                  type="number"
+                  value={parseInt(element.styles[`border${side}Width`]) || 0}
+                  onChange={(e) =>
+                    handleBorderWidthChange(side, e.target.value)
+                  }
+                  className="p-1 mt-1 border border-gray-300 rounded focus:border-gray-400 focus:outline-none"
+                />
+              </label>
+            ))}
+          </div>
 
-    {on?<>
-      {/* Border Width */}
-      <h4 className="font-semibold mt-3">Border Width</h4>
-      <div className="grid grid-cols-2 gap-2">
-        {['Top', 'Bottom', 'Left', 'Right'].map((side) => (
-          <label key={side}>
-            {side}:
-            <input
-              type="number"
-              value={parseInt(element.styles[`border${side}Width`]) || 0}
-              onChange={(e) => handleBorderWidthChange(side, e.target.value)}
-              className="ml-2 p-1 border border-gray-300 rounded"
-            />
-          </label>
-        ))}
-      </div>
+          {/* Cursor */}
+          <div className="mt-4">
+            <label className="flex flex-col">
+              <span className="font-medium text-gray-700">Cursor:</span>
+              <select
+                value={element.styles.cursor || "default"}
+                onChange={(e) => handleAdvancedChange("cursor", e.target.value)}
+                className="p-1 mt-1 border border-gray-300 rounded focus:border-gray-400 focus:outline-none"
+              >
+                <option value="default">Default</option>
+                <option value="pointer">Pointer</option>
+                <option value="text">Text</option>
+                <option value="move">Move</option>
+                <option value="not-allowed">Not Allowed</option>
+              </select>
+            </label>
+          </div>
 
-      {/* Cursor */}
-      <label>
-        Cursor:
-        <select
-          value={element.styles.cursor || 'default'}
-          onChange={(e) => handleAdvancedChange('cursor', e.target.value)}
-          className="ml-2 p-1 border border-gray-300 rounded"
-        >
-          <option value="default">Default</option>
-          <option value="pointer">Pointer</option>
-          <option value="text">Text</option>
-          <option value="move">Move</option>
-          <option value="not-allowed">Not Allowed</option>
-        </select>
-      </label>
+          {/* Box Shadow Controls */}
+          <h4 className="mt-3 font-semibold text-gray-700">Box Shadow</h4>
+          <div className="grid grid-cols-2 gap-4 p-3 bg-white border border-gray-200 rounded">
+            <label className="flex flex-col">
+              <span className="font-medium text-gray-600">
+                Horizontal Offset
+              </span>
+              <input
+                type="number"
+                value={parseInt(shadowParams.horizontalOffset)}
+                onChange={(e) =>
+                  handleShadowChange("horizontalOffset", `${e.target.value}px`)
+                }
+                className="p-1 mt-1 border border-gray-300 rounded focus:border-gray-400 focus:outline-none"
+              />
+            </label>
 
-      {/* Box Shadow Controls */}
-      <h4 className="font-semibold mt-3">Box Shadow</h4>
-      <div className="grid grid-cols-2 gap-2">
-        <label>
-          Horizontal Offset:
-          <input
-            type="number"
-            value={parseInt(shadowParams.horizontalOffset)}
-            onChange={(e) => handleShadowChange('horizontalOffset', `${e.target.value}px`)}
-            className="ml-2 p-1 border border-gray-300 rounded"
-          />
-        </label>
-        <label>
-          Vertical Offset:
-          <input
-            type="number"
-            value={parseInt(shadowParams.verticalOffset)}
-            onChange={(e) => handleShadowChange('verticalOffset', `${e.target.value}px`)}
-            className="ml-2 p-1 border border-gray-300 rounded"
-          />
-        </label>
-        <label>
-          Blur Radius:
-          <input
-            type="number"
-            value={parseInt(shadowParams.blurRadius)}
-            onChange={(e) => handleShadowChange('blurRadius', `${e.target.value}px`)}
-            className="ml-2 p-1 border border-gray-300 rounded"
-          />
-        </label>
-        <label>
-          Spread Radius:
-          <input
-            type="number"
-            value={parseInt(shadowParams.spreadRadius)}
-            onChange={(e) => handleShadowChange('spreadRadius', `${e.target.value}px`)}
-            className="ml-2 p-1 border border-gray-300 rounded"
-          />
-        </label>
-        <label>
-          Color:
-          <input
-            type="color"
-            value={shadowParams.color}
-            onChange={(e) => handleShadowChange('color', e.target.value)}
-            className="ml-2 p-1 border border-gray-300 rounded"
-          />
-        </label>
-      </div>
+            <label className="flex flex-col">
+              <span className="font-medium text-gray-600">Vertical Offset</span>
+              <input
+                type="number"
+                value={parseInt(shadowParams.verticalOffset)}
+                onChange={(e) =>
+                  handleShadowChange("verticalOffset", `${e.target.value}px`)
+                }
+                className="p-1 mt-1 border border-gray-300 rounded focus:border-gray-400 focus:outline-none"
+              />
+            </label>
 
+            <label className="flex flex-col">
+              <span className="font-medium text-gray-600">Blur Radius</span>
+              <input
+                type="number"
+                value={parseInt(shadowParams.blurRadius)}
+                onChange={(e) =>
+                  handleShadowChange("blurRadius", `${e.target.value}px`)
+                }
+                className="p-1 mt-1 border border-gray-300 rounded focus:border-gray-400 focus:outline-none"
+              />
+            </label>
 
-      {/* Letter Spacing */}
-      <label>
-        Letter Spacing:
-        <input
-          type="number"
-          value={parseInt(element.styles.letterSpacing) || 0}
-          onChange={(e) => handleAdvancedChange('letterSpacing', `${e.target.value}px`)}
-          className="ml-2 p-1 border border-gray-300 rounded"
-          placeholder="px"
-        />
-      </label>
+            <label className="flex flex-col">
+              <span className="font-medium text-gray-600">Spread Radius</span>
+              <input
+                type="number"
+                value={parseInt(shadowParams.spreadRadius)}
+                onChange={(e) =>
+                  handleShadowChange("spreadRadius", `${e.target.value}px`)
+                }
+                className="p-1 mt-1 border border-gray-300 rounded focus:border-gray-400 focus:outline-none"
+              />
+            </label>
 
-      {/* Hover Properties */}
-      <h4 className="font-semibold mt-3">Hover Properties</h4>
-      <label>
-        Hover Color:
-        <input
-          type="color"
-          value={hoverStyles.color || '#000000'}
-          onChange={(e) => handleHoverChange('color', e.target.value)}
-          className="ml-2 p-1 border border-gray-300 rounded"
-        />
-      </label>
-      <label>
-        Hover Background Color:
-        <input
-          type="color"
-          value={hoverStyles.backgroundColor || '#ffffff'}
-          onChange={(e) => handleHoverChange('backgroundColor', e.target.value)}
-          className="ml-2 p-1 border border-gray-300 rounded"
-        />
-      </label>
-      <label>
-        Hover Box Shadow:
-        <input
-          type="text"
-          placeholder="e.g., 5px 5px 10px #000000"
-          value={hoverStyles.boxShadow || ''}
-          onChange={(e) => handleHoverChange('boxShadow', e.target.value)}
-          className="ml-2 p-1 border border-gray-300 rounded"
-        />
-      </label></>:<></>}
+            <label className="flex flex-col">
+              <span className="font-medium text-gray-600">Color</span>
+              <input
+                type="color"
+                value={shadowParams.color}
+                onChange={(e) => handleShadowChange("color", e.target.value)}
+                className="mt-1 border border-gray-300 rounded focus:outline-none"
+              />
+            </label>
+          </div>
+
+          {/* Letter Spacing */}
+          <div className="mt-4">
+            <label className="flex flex-col">
+              <span className="font-medium text-gray-700">Letter Spacing:</span>
+              <input
+                type="number"
+                value={parseInt(element.styles.letterSpacing) || 0}
+                onChange={(e) =>
+                  handleAdvancedChange("letterSpacing", `${e.target.value}px`)
+                }
+                className="p-1 mt-1 border border-gray-300 rounded focus:border-gray-400 focus:outline-none"
+                placeholder="px"
+              />
+            </label>
+
+            {/* Hover Properties */}
+            <h4 className="mt-8 mb-4 font-semibold text-gray-700">
+              Hover Properties
+            </h4>
+            <div className="space-y-3">
+              <label className="flex flex-col">
+                <span className="font-medium text-gray-600">Hover Color:</span>
+                <input
+                  type="color"
+                  value={hoverStyles.color || "#000000"}
+                  onChange={(e) => handleHoverChange("color", e.target.value)}
+                  className="p-1 mt-1 border border-gray-300 rounded focus:outline-none"
+                />
+              </label>
+              <label className="flex flex-col">
+                <span className="font-medium text-gray-600">
+                  Hover Background Color:
+                </span>
+                <input
+                  type="color"
+                  value={hoverStyles.backgroundColor || "#ffffff"}
+                  onChange={(e) =>
+                    handleHoverChange("backgroundColor", e.target.value)
+                  }
+                  className="p-1 mt-1 border border-gray-300 rounded focus:outline-none"
+                />
+              </label>
+              <label className="flex flex-col">
+                <span className="font-medium text-gray-600">
+                  Hover Box Shadow:
+                </span>
+                <input
+                  type="text"
+                  placeholder="e.g., 5px 5px 10px #000000"
+                  value={hoverStyles.boxShadow || ""}
+                  onChange={(e) =>
+                    handleHoverChange("boxShadow", e.target.value)
+                  }
+                  className="p-1 mt-1 border border-gray-300 rounded focus:outline-none"
+                />
+              </label>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
