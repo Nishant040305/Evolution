@@ -3,8 +3,10 @@ import { Undo, Redo, Monitor, Tablet, Smartphone } from "lucide-react";
 import { ActionCreators } from 'redux-undo';
 import { useDispatch } from "react-redux";
 import ApiDashboard from "../../scripts/API.Dashboard";
+import { useSelector } from "react-redux";
 
 const TopBar = () => {
+  const webElements = useSelector(state=>state.webElement.present);
   const dispatch = useDispatch();
   const handleUndo = () => {
     dispatch(ActionCreators.undo())
@@ -19,7 +21,23 @@ const TopBar = () => {
   }
 
   const getHTMLContent = () => {
-    const htmlContent = document.getElementById("canvas").innerHTML;
+    let htmlContent = document.getElementById("canvas").innerHTML;
+
+    htmlContent = htmlContent.replace(
+        /(id="canvas-element (\d+)")/g,
+        (match, p1, p2) => {
+          if (webElements[p2].HTMLAttributes === undefined) {
+            console.log(p1, "HTML ATTRIBUTES NOT FOUND")
+            return match;
+          }
+          return `${p1} ` +
+           Object.keys(webElements[p2].HTMLAttributes)
+            .map(key => `${key}="${webElements[p2].HTMLAttributes[key]}"`).join(" ");
+        }
+    );
+
+    console.log(htmlContent);
+
     return htmlContent;
   }
 

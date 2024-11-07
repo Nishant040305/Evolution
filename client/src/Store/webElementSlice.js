@@ -8,6 +8,8 @@ const webElementSlice= createSlice({
             return action.payload;
         },
         setPosition:(state,action)=>{
+            if (state[action.payload.id].position === undefined || state[action.payload.id].parent !== undefined)
+                return state;
             return {
                 ...state,
                 [action.payload.id]:{
