@@ -11,14 +11,14 @@ const {
   Div,
 } = components;
 
-const RelativeChildrenTest = ( { startDrag } ) => {
+const RelativeChildrenTest = ( { canvasEvents } ) => {
     const dispatch = useDispatch();
     const webElements = useSelector(state=>state.webElement.present);
 
     const relativeTest = () => {
-        const parentDiv = Div("parentDiv", startDrag);
+        const parentDiv = Div("parentDiv", canvasEvents);
         parentDiv.content = "";
-        const childLabel = Label("childLabel", "TEST", startDrag);
+        const childLabel = Label("childLabel", "TEST", canvasEvents);
         parentDiv.childrenId = [childLabel.id];
         childLabel.parent = parentDiv.id;
         delete childLabel.position;
@@ -26,9 +26,9 @@ const RelativeChildrenTest = ( { startDrag } ) => {
         dispatch(addElement({hash:parentDiv.id,value:parentDiv}))
     
         // div test
-        const div = Div("div", startDrag);
+        const div = Div("div", canvasEvents);
         div.content = "absolute";
-        const childofdiv = Label("childofdiv", "HELLO", startDrag);
+        const childofdiv = Label("childofdiv", "HELLO", canvasEvents);
         div.childrenId = [childofdiv.id];
         childofdiv.parent = div.id;
         childofdiv.position.x = 15;
@@ -41,7 +41,7 @@ const RelativeChildrenTest = ( { startDrag } ) => {
 
     return (
         <div>
-            <button onClick={relativeTest}>Children TEST</button>
+            <button onClick={relativeTest}>Relative Children TEST</button>
         </div>
     );
 }

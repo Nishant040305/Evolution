@@ -1,4 +1,4 @@
-const Label = (id, text = "Label",startDrag) => {
+const Label = (id, text = "Label", canvasEvents) => {
     return {
         id: `${id}`,
         type: "label",
@@ -13,8 +13,8 @@ const Label = (id, text = "Label",startDrag) => {
         },
         position: { x: 100, y: 100 },
         content: text,
-        attributes:{
-            onMouseDown: (event) => startDrag(event, id)
+        attributes: {
+            ...canvasEvents(id),
         }
     };
 };
