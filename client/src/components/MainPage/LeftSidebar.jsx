@@ -19,10 +19,22 @@ const LeftSidebar = ({
   toggleRight,
   setId,
 }) => {
-  const [counter, setCounter] = useState(1);
+  const evalCounter = (webElements) => {
+    let val = 0;
+    Object.keys(webElements).forEach((key) => {
+      const parsedKey = parseInt(key, 10);  // Convert string to integer using base 10
+      if (!isNaN(parsedKey) && parsedKey >= val) {
+        val = parsedKey + 1;
+      }
+    });
+    return val;
+  };
+  
   const [showComponents, setShowComponents] = useState(true); // New state to toggle sections
   const [showElements, setShowElements] = useState(true); // State to toggle elements
   const webElements = useSelector(state=>state.webElement.present);
+  const [counter, setCounter] = useState(evalCounter(webElements));
+
   const dispatch = useDispatch();
   const startDrag = (event, elementId) => {
     event.preventDefault();
@@ -38,7 +50,7 @@ const LeftSidebar = ({
       startX = moveEvent.clientX;
       startY = moveEvent.clientY;
     };
-
+    
     const handleMouseUp = () => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
