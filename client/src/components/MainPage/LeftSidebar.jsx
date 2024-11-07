@@ -27,7 +27,8 @@ const LeftSidebar = ({
   const dispatch = useDispatch();
   const startDrag = (event, elementId) => {
     event.preventDefault();
-    const element = document.getElementById(elementId);
+    const element = document.getElementById("canvas-element " + elementId);
+    console.log("ELEMENT", element);
     let startX = event.clientX;
     let startY = event.clientY;
 
