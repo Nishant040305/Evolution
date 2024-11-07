@@ -58,8 +58,9 @@ const TopBar = () => {
     const id = getProjectId();
 
     try {
-      await apiDashboard.publishProject(id, htmlContent);
-      window.open(`${import.meta.env.VITE_REACT_APP_BACKWEB}/${id}.html`,"_blank"); 
+      const res = await apiDashboard.publishProject(id, htmlContent);
+      console.log(res);
+      window.open(`${import.meta.env.VITE_REACT_APP_BACKWEB}/${res.data.domain}`,"_blank"); 
     } catch (error) {
       console.error("Failed to publish content:", error);
       alert("Failed to publish content. Please try again.");
