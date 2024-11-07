@@ -12,6 +12,7 @@ const {
 import { ChevronRight, ChevronLeft, ChevronDown, ChevronUp, Grid } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { addElement, setElement, setPosition } from "../../Store/webElementSlice";
+import RelativeChildrenTest from "../../test/RelativeChildrenTest";
 
 const LeftSidebar = ({
   sidebarOpen,
@@ -57,40 +58,9 @@ const LeftSidebar = ({
     "Div": (hash) => Div(hash, startDrag),
   }
 
-  // test elements
-  // const testElements = () => {
-  //   const parentButton = Button("parentButton", startDrag);
-  //   parentButton.content = "really long button text";
-  //   const childLabel = Label("childLabel", "TEST", startDrag);
-  //   parentButton.childrenId = [childLabel.id];
-  //   childLabel.parent = parentButton.id;
-  //   setWebElements((prev) => {
-  //     return {
-  //       ...prev,
-  //       [parentButton.id]: parentButton,
-  //       [childLabel.id]: childLabel,
-  //     };
-  //   });
-
-  //   // div test
-  //   const div = Div("div", startDrag);
-  //   const childofdiv = Label("childofdiv", "HELLO", startDrag);
-  //   div.childrenId = [childofdiv.id];
-  //   childofdiv.parent = div.id;
-  //   childofdiv.position.x = 15;
-  //   childofdiv.position.y = 15;
-  //   setWebElements((prev) => {
-  //     return {
-  //       ...prev,
-  //       [div.id]: div,
-  //       [childofdiv.id]: childofdiv,
-  //     };
-  //   });
-  // };
-
   return (
     <div className="relative">
-      {/* <button onClick={testElements}>Children TEST</button> */}
+      <RelativeChildrenTest startDrag={startDrag} />
       {sidebarOpen==true?<div
         className={`${
           sidebarOpen ? "w-64" : "w-0"
