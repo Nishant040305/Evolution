@@ -5,7 +5,7 @@ import MainCanvas from "../components/MainPage/MainCanvas";
 import RightSidebar from "../components/MainPage/RightSidebar";
 import BottomBar from "../components/MainPage/BottomBar";
 import { useSelector,useDispatch } from "react-redux";
-import { setElement } from "../Store/webElementSlice";
+import { setElement ,setAttribute,setPosition} from "../Store/webElementSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import ApiDashboard from "../scripts/API.Dashboard";
 
@@ -14,7 +14,6 @@ const WebsiteBuilder = () => {
   const navigate = useNavigate();
   const webElement = useSelector(state=>state.webElement.present);
   const currentUserId = useSelector((state) => state.user.userInfo?._id); // Current logged-in user's ID
-  console.log(webElement)
   const dispatch = useDispatch();
   const [leftSidebarOpen, setLeftSidebarOpen] = useState(true);
   const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
@@ -30,6 +29,31 @@ const WebsiteBuilder = () => {
       set(id)
     }
   }
+  const startDrag = (event, elementId) => {
+    event.preventDefault();
+    const element = document.getElementById(elementId);
+    let startX = event.clientX;
+    let startY = event.clientY;
+
+    const handleMouseMove = (moveEvent) => {
+      const dx = moveEvent.clientX - startX;
+      const dy = moveEvent.clientY - startY;
+   
+      dispatch(setPosition({id:elementId,dx:dx,dy:dy}))
+      startX = moveEvent.clientX;
+      startY = moveEvent.clientY;
+    };
+
+    const handleMouseUp = () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+  };
+
+
   const API = useMemo(() => new ApiDashboard(), []); // Ensure API instance is stable
   const toggleCategory = (category) => {
     setExpandedCategories((prev) => ({
@@ -55,6 +79,16 @@ const WebsiteBuilder = () => {
             navigate('/'); // Redirect if unauthorized
           } else {
             dispatch(setElement(projectComp.components))
+            Object.keys(webElement).forEach((key)=>{
+              dispatch(setAttribute(
+                {
+                  id:key,
+                  property:"onMouseDown",
+                  value:(event)=> startDrag(event,key)
+                }
+
+              ))
+            })
           }
         }
       } catch (error) {
