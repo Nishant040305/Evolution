@@ -36,6 +36,13 @@ const ComponentEditorTransform = ({ id }) => {
     )} ${reflectionTransform}`;
     dispatch(setTransform({ id, transform: updatedTransform }));
   };
+  const handleAppearanceChange = (property, value) => {
+    dispatch(setProperty({ id: id, property: property, value: value }));
+  };
+
+  const handleMarginChange= (side, value) => {
+    handleAppearanceChange(`margin${side}`, `${value}px`);
+  };
 
   return (
     <div className="p-4 space-y-3 border border-gray-300 rounded-lg">
@@ -64,6 +71,8 @@ const ComponentEditorTransform = ({ id }) => {
           </label>
 
           {/* X Position */}
+          {webElements[id].position?(
+            <>
           <label className="flex items-center">
             <span className="w-32">X Position:</span>
             <input
@@ -100,6 +109,24 @@ const ComponentEditorTransform = ({ id }) => {
               className="w-full p-1 ml-2 border border-gray-300 rounded"
             />
           </label>
+          </>):(
+            <>
+            <h4 className="mt-4 font-semibold text-gray-800">Margin</h4>
+          <div className="grid grid-cols-2 gap-2 text-gray-700">
+            {["Top", "Bottom", "Left", "Right"].map((side) => (
+              <label key={side} className="flex flex-col">
+                <span className="font-medium">{side}:</span>
+                <input
+                  type="number"
+                  value={parseInt(element.styles[`margin${side}`]) || 0}
+                  onChange={(e) => handleMarginChange(side, e.target.value)}
+                  className="p-1 mt-1 border border-gray-300 rounded"
+                />
+              </label>
+            ))}
+          </div>
+          </>
+          )}
 
           {/* Width */}
           <label className="flex items-center">
