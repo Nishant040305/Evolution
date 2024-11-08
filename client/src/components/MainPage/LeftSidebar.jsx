@@ -58,6 +58,7 @@ const LeftSidebar = ({ sidebarOpen, toggleSidebar, toggleRight, setId }) => {
   const onDragStart = (event, elementId) => {
     event.stopPropagation();
     console.log("Dragging.... ", elementId);
+    setId(elementId);
     const rect = event.currentTarget.getBoundingClientRect();
     
     // Calculate the offset between the mouse position and the top-left corner of the element
@@ -118,6 +119,10 @@ const LeftSidebar = ({ sidebarOpen, toggleSidebar, toggleRight, setId }) => {
     console.log("Dropped on:", targetId);
   };
 
+  const openProperties = (event, elementId) => {
+    setId(elementId);
+  };
+
   const canvasEvents = (id, container) => {
     const dragTarget = container ? {
       onDragEnter: (event) => onDragEnter(event, id),
@@ -127,6 +132,7 @@ const LeftSidebar = ({ sidebarOpen, toggleSidebar, toggleRight, setId }) => {
     } : {};
     return {
       onDragStart: (event) => onDragStart(event, id),
+      onClick: (event) => openProperties(event, id),
       ...dragTarget,
     };
   };
@@ -140,6 +146,7 @@ const LeftSidebar = ({ sidebarOpen, toggleSidebar, toggleRight, setId }) => {
     Input: (hash) => Input(hash, canvasEvents),
     Div: (hash) => Div(hash, canvasEvents),
   };
+
   const sidebarMedia={
     ImageElement:(hash,image)=>ImageElement(hash,image,"Image",canvasEvents)
   }
