@@ -1,0 +1,49 @@
+/* Base class to make a div resizable */
+.resizable {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Resizer handle for resizing from the right */
+.resizable-right::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 100%;
+    right: 0;
+    top: 0;
+    cursor: ew-resize; /* Left-right resize cursor */
+    background: transparent;
+}
+
+/* Resizer handle for resizing from the left */
+.resizable-left::before {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 100%;
+    left: 0;
+    top: 0;
+    cursor: ew-resize; /* Left-right resize cursor */
+    background: transparent;
+}
+
+/* Resizer handle for resizing from both left and right */
+.resizable-left-right::before,
+.resizable-left-right::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 100%;
+    top: 0;
+    cursor: ew-resize;
+    background: transparent;
+}
+
+.resizable-left-right::before {
+    left: 0;
+}
+
+.resizable-left-right::after {
+    right: 0;
+}
