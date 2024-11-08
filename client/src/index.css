@@ -2,8 +2,9 @@
 @tailwind components;
 
 /* canvas component global */
-.canvas-component {
-  z-index: 1;
+.canvas-component:active {
+  z-index: 1 !important;
+  transition: none !important;
 }
 
 /* canvas component dark */
