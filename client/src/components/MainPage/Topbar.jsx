@@ -23,7 +23,9 @@ const TopBar = () => {
   const getHTMLContent = () => {
     let htmlContent = document.getElementById("canvas").innerHTML;
 
-    htmlContent = htmlContent.replace(
+    htmlContent = htmlContent
+      .replace(/draggable="true"/g, "") 
+      .replace(
         /(id="canvas-element (\d+)")/g,
         (match, p1, p2) => {
           if (webElements[p2].HTMLAttributes === undefined) {
