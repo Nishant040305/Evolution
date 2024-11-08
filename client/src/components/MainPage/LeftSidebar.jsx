@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import React from "react";
 import components from "../../lib";
 const {
@@ -11,7 +11,7 @@ const {
 } = components;
 import { ChevronRight, ChevronLeft, ChevronDown, ChevronUp, Grid } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { addElement, setElement, setPosition } from "../../Store/webElementSlice";
+import { addElement, addChild, removeChild, setPosition } from "../../Store/webElementSlice";
 import RelativeChildrenTest from "../../test/RelativeChildrenTest";
 
 const LeftSidebar = ({
@@ -34,13 +34,20 @@ const LeftSidebar = ({
   const [showComponents, setShowComponents] = useState(true); // New state to toggle sections
   const [showElements, setShowElements] = useState(true); // State to toggle elements
   const webElements = useSelector(state=>state.webElement.present);
+  const webElementsRef = useRef(webElements);
   const [counter, setCounter] = useState(evalCounter(webElements));
+
+  useEffect(() => {
+    webElementsRef.current = webElements;
+  }, [webElements]);
 
   const dispatch = useDispatch();
 
   // FUTURE: Move this to a separate file
 
   const onDragStart = (event, elementId) => {
+    event.stopPropagation();
+    console.log("Dragging.... ", elementId);
     const rect = event.currentTarget.getBoundingClientRect();
     
     // Calculate the offset between the mouse position and the top-left corner of the element
@@ -75,29 +82,42 @@ const LeftSidebar = ({
   
     const data = JSON.parse(event.dataTransfer.getData("text/plain"));
     const { id: draggedElementId, offsetX, offsetY } = data;
-    const element = document.getElementById("canvas-element-" + draggedElementId);
-  
-    if (element) {
+
+    if (draggedElementId === targetId) return;
+
+    event.stopPropagation();
+
+    const element = webElementsRef.current[draggedElementId];
+    const target = webElementsRef.current[targetId];
+
+    if (element && target) {
       // Get the bounding box of the drop target (main canvas or div)
       const rect = event.currentTarget.getBoundingClientRect();
       
       // Calculate the new position based on the drop location and offset
       const dx = event.clientX - rect.left - offsetX;
       const dy = event.clientY - rect.top - offsetY;
-      
-      dispatch(setPosition({ id: draggedElementId, dx, dy }));
+
+      // Handle parent-child relationship
+      if (element.parent) {
+        dispatch(removeChild({ id: element.parent, child: draggedElementId }));
+      }
+      dispatch(addChild({ id: targetId, child: draggedElementId }));
     }
   
     console.log("Dropped on:", targetId);
   };
 
-  const canvasEvents = (id) => {
-    return {
-      onDragStart: (event) => onDragStart(event, id),
+  const canvasEvents = (id, container) => {
+    const dragTarget = container ? {
       onDragEnter: (event) => onDragEnter(event, id),
       onDragOver: (event) => onDragOver(event, id),
       onDragLeave: (event) => onDragLeave(event, id),
       onDrop: (event) => onDrop(event, id),
+    } : {};
+    return {
+      onDragStart: (event) => onDragStart(event, id),
+      ...dragTarget,
     }
   }
 
