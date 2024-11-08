@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const User = require("../models/User");
 const Project = require('../models/Project');
+const { ImageUpload } = require('../utils/ImageUpload');
 
 const getAllProjects = async (req, res) => {
     try {
@@ -61,7 +62,28 @@ const updateProject = async (req, res) => {
         return res.status(500).json({ message: 'Error updating project', error });
     }
 };
-
+const updateImageProject = async (req,res)=>{
+    try{
+        const valid = Project.findById(req.body.params);
+        if(!valid) return res.status(404).json({message:"Project Not Found"})
+        const url = await ImageUpload(req.file);
+        if(url.message!="OK"){
+            console.log(url)
+            return res.status(400).json({message:url.message});
+        }
+        const updateProjectMedia = await Project.findByIdAndUpdate(
+            req.params.id,
+            {$push :{ media: url.url}},
+            {new :true}
+        )
+        if(!updateProjectMedia) {
+            return res.status(404).json({message:"Project not found"})
+        }
+        return res.status(200).json({message:"success",url:url.url});
+    }catch(e){
+        return res.status(500).json({message:"Internal Server Error"})
+    }
+}
 const deleteProject = async (req, res) => {
     try {
         const deletedProject = await Project.findByIdAndDelete(req.params.id);
@@ -127,4 +149,5 @@ module.exports = {
     deleteProject,
     publishProject,
     openProject,
+    updateImageProject,
 };

@@ -8,6 +8,7 @@ import { useSelector,useDispatch } from "react-redux";
 import { setElement ,setAttribute,setPosition} from "../Store/webElementSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import ApiDashboard from "../scripts/API.Dashboard";
+import { setData } from "../Store/imageSlice";
 
 const WebsiteBuilder = () => {
   const {userId,projectID} = useParams();
@@ -78,7 +79,8 @@ const WebsiteBuilder = () => {
           if (!projectComp || projectComp.user._id !== currentUserId || currentUserId !== userId) {
             navigate('/'); // Redirect if unauthorized
           } else {
-            dispatch(setElement(projectComp.components))
+            dispatch(setElement(projectComp.components));
+            dispatch(setData(projectComp.media));
             Object.keys(webElement).forEach((key)=>{
               dispatch(setAttribute(
                 {

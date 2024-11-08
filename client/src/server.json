@@ -22,7 +22,8 @@
         "CreatProject":"/api/project",
         "UpdateProject":"/api/project/:id",
         "DeleteProject":"/api/project/:id",
-        "PublishProject": "/api/project/:id/publish"
+        "PublishProject": "/api/project/:id/publish",
+        "MediaUpdate":"/api/project/image/"
     },
     "User":{
         "GetAllUsersProject":"/api/user/:id/project"

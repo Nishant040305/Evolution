@@ -5,10 +5,12 @@ import storage from 'redux-persist/lib/storage';
 import undoable from 'redux-undo';
 import webElementsSlice from './Store/webElementSlice'; // import your slice
 import userReducer from './Store/userSlice';
+import ImageSlice from './Store/imageSlice';
 // Root reducer with undo functionality for specific slices
 const rootReducer = combineReducers({
   webElement: undoable(webElementsSlice),
   user: userReducer,
+  image:ImageSlice,
 
 });
 const persistConfig = {

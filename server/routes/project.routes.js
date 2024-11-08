@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
-
+const multer = require("multer");
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 const { projectController } = require('../controller');
 
 const {
@@ -10,6 +12,7 @@ const {
     updateProject,
     deleteProject,
     publishProject,
+    updateImageProject
 } = projectController;
 
 // @route    GET /api/project
@@ -32,6 +35,7 @@ router.put('/:id', updateProject);
 // @desc     Delete a project by id
 router.delete('/:id', deleteProject);
 
+router.post('/image/:id',upload.single('file'),updateImageProject);
 // @route    POST /api/project/:id/publish
 // @desc     Publish a project by id
 router.post('/:id/publish', publishProject);
