@@ -8,7 +8,7 @@ const ComponentRenderer = ({ instance, recursionDepth = 0 }) => {
   console.log(instance.type, recursionDepth);
   if (instance.parent && recursionDepth === 0) return null;
 
-  const postion = instance.position ? {
+  const postion = instance.position && !instance.parent ? {
     position: 'absolute',
     left: instance.position?.x,
     top: instance.position?.y,
@@ -19,15 +19,16 @@ const ComponentRenderer = ({ instance, recursionDepth = 0 }) => {
     ...instance.styles 
   };
 
-  const canvasComponent = !instance.attributes?.className ? {
-    className: "canvas-component",
-  } : {};
+  const classNames = instance.attributes.className 
+    ? [ "canvas-component", ...instance.attributes.className.split(" ") ]
+    : [ "canvas-component", "canvas-component-light" ];
 
   const attributes = { 
     ...instance.attributes,
-    ...canvasComponent, 
+    className: classNames.join(" "),
     style,
     id: "canvas-element " + instance.id,
+    draggable: true,
   };
 
   const content = instance.content;
@@ -35,18 +36,16 @@ const ComponentRenderer = ({ instance, recursionDepth = 0 }) => {
   // Child elements by id
   let element;
 
-  if (instance.childrenId)
+  if (instance.children)
     element = React.createElement(
       instance.type,
       attributes,
       content,
-      React.Children.map(instance.childrenId,
+      React.Children.map(instance.children,
         child => (
           <ComponentRenderer 
             key={child}
-            instance={webElements[child]} 
-            // webElements={webElements}
-            // setWebElements={setWebElements}
+            instance={webElements[child]}
             recursionDepth={recursionDepth + 1}
           />)
       )
@@ -58,8 +57,8 @@ const ComponentRenderer = ({ instance, recursionDepth = 0 }) => {
       content,
     );
 
-  console.log(attributes);
-  console.log(instance);
+  // console.log(attributes);
+  // console.log(instance);
 
   return element;
 };
@@ -75,9 +74,8 @@ const ComponentType = PropTypes.shape({
   attributes: PropTypes.object,
   HTMLAttributes: PropTypes.object,
   content: PropTypes.string,
-  childrenId: PropTypes.arrayOf(PropTypes.string),
+  children: PropTypes.arrayOf(PropTypes.string),
   parent: PropTypes.string,
-  onClick:PropTypes.func
 });
 
 ComponentRenderer.propTypes = {

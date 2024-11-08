@@ -1,6 +1,11 @@
 @tailwind base;
 @tailwind components;
 
+/* canvas component global */
+.canvas-component {
+  z-index: 1;
+}
+
 /* canvas component dark */
 .canvas-component-dark:hover {
   background-color: #333 !important;
@@ -13,17 +18,15 @@
   color: #f0f0f0 !important;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4) !important;
   transform: scale(0.98) !important;
-  z-index: 1 !important;
 }
 
-/* canvas component */
-.canvas-component:hover {
+/* canvas component light */
+.canvas-component-light:hover {
   box-shadow: 0 0 8px #007BFF !important;
 }
 
-.canvas-component:active {
+.canvas-component-light:active {
   box-shadow: 0 0 8px #007BFF !important;
-  z-index: 1 !important;
 }
 
 @tailwind utilities;
