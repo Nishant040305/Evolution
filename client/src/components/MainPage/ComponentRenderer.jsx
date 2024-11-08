@@ -28,6 +28,7 @@ const ComponentRenderer = ({ instance, recursionDepth = 0 }) => {
     ...canvasComponent, 
     style,
     id: "canvas-element " + instance.id,
+    draggable: true,
   };
 
   const content = instance.content;
@@ -44,9 +45,7 @@ const ComponentRenderer = ({ instance, recursionDepth = 0 }) => {
         child => (
           <ComponentRenderer 
             key={child}
-            instance={webElements[child]} 
-            webElements={webElements}
-            // setWebElements={setWebElements}
+            instance={webElements[child]}
             recursionDepth={recursionDepth + 1}
           />)
       )
@@ -58,8 +57,8 @@ const ComponentRenderer = ({ instance, recursionDepth = 0 }) => {
       content,
     );
 
-  console.log(attributes);
-  console.log(instance);
+  // console.log(attributes);
+  // console.log(instance);
 
   return element;
 };

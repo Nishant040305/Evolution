@@ -37,34 +37,67 @@ const LeftSidebar = ({
   const [counter, setCounter] = useState(evalCounter(webElements));
 
   const dispatch = useDispatch();
-  const startDrag = (event, elementId) => {
-    event.preventDefault();
-    const element = document.getElementById("canvas-element " + elementId);
-    console.log("ELEMENT", element);
-    let startX = event.clientX;
-    let startY = event.clientY;
 
-    const handleMouseMove = (moveEvent) => {
-      const dx = moveEvent.clientX - startX;
-      const dy = moveEvent.clientY - startY;
-   
-      dispatch(setPosition({id:elementId,dx:dx,dy:dy}))
-      startX = moveEvent.clientX;
-      startY = moveEvent.clientY;
-    };
+  // FUTURE: Move this to a separate file
+
+  const onDragStart = (event, elementId) => {
+    const rect = event.currentTarget.getBoundingClientRect();
     
-    const handleMouseUp = () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-    };
-
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
+    // Calculate the offset between the mouse position and the top-left corner of the element
+    const offsetX = event.clientX - rect.left;
+    const offsetY = event.clientY - rect.top;
+    
+    // Store both the element ID and the offset in dataTransfer
+    event.dataTransfer.setData("text/plain", JSON.stringify({
+      id: elementId,
+      offsetX,
+      offsetY
+    }));
+    event.dataTransfer.effectAllowed = "move";
+  };
+  
+  const onDragEnter = (event, targetId) => {
+    event.preventDefault(); // Allow the drop by preventing default behavior
+    console.log("Entered:", targetId);
+  };
+  
+  const onDragOver = (event, targetId) => {
+    event.preventDefault(); // Allow the drop by preventing default behavior
+    console.log("Dragging over:", targetId);
+  };
+  
+  const onDragLeave = (event, targetId) => {
+    console.log("Left:", targetId);
+  };
+  
+  const onDrop = (event, targetId) => {
+    event.preventDefault();
+  
+    const data = JSON.parse(event.dataTransfer.getData("text/plain"));
+    const { id: draggedElementId, offsetX, offsetY } = data;
+    const element = document.getElementById("canvas-element-" + draggedElementId);
+  
+    if (element) {
+      // Get the bounding box of the drop target (main canvas or div)
+      const rect = event.currentTarget.getBoundingClientRect();
+      
+      // Calculate the new position based on the drop location and offset
+      const dx = event.clientX - rect.left - offsetX;
+      const dy = event.clientY - rect.top - offsetY;
+      
+      dispatch(setPosition({ id: draggedElementId, dx, dy }));
+    }
+  
+    console.log("Dropped on:", targetId);
   };
 
   const canvasEvents = (id) => {
     return {
-      onMouseDown: (event) => startDrag(event, id)
+      onDragStart: (event) => onDragStart(event, id),
+      onDragEnter: (event) => onDragEnter(event, id),
+      onDragOver: (event) => onDragOver(event, id),
+      onDragLeave: (event) => onDragLeave(event, id),
+      onDrop: (event) => onDrop(event, id),
     }
   }
 

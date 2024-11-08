@@ -15,8 +15,8 @@ const webElementSlice= createSlice({
                 [action.payload.id]:{
                     ...state[action.payload.id],
                     position:{
-                        x:state[action.payload.id].position.x+action.payload.dx,
-                        y:state[action.payload.id].position.y+action.payload.dy
+                        x:action.payload.dx,
+                        y:action.payload.dy
                     }
                 }
             }
