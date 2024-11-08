@@ -25,4 +25,4 @@ dist-ssr
 .env
 
 # hosted files
-*.html
+server/public/*
