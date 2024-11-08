@@ -10,6 +10,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import ApiDashboard from "../scripts/API.Dashboard";
 import { setData } from "../Store/imageSlice";
 import CodeEditorJS from "../components/MainPage/CodeEditorJS";
+import CodeEditorCSS from "../components/MainPage/CodeEditorCSS";
 
 const WebsiteBuilder = () => {
   const {userId,projectID} = useParams();
@@ -19,6 +20,7 @@ const WebsiteBuilder = () => {
   const dispatch = useDispatch();
   const [leftSidebarOpen, setLeftSidebarOpen] = useState(true);
   const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
+  const [statusCode,setStatusCode] = useState(0);
   const [id,set] = useState(0);
   const webElementRef = useRef(webElement); // Create a ref for the last webElement
   const setId=(id)=>{
@@ -133,12 +135,11 @@ const WebsiteBuilder = () => {
           toggleRight={setRightSidebarOpen}
           toggleSidebar={() => setLeftSidebarOpen(!leftSidebarOpen)}
           handleElementSelect={handleElementSelect}
+          setStatusCode={setStatusCode}
           id={id}
           setId={set}
         />
-        {/* <MainCanvas
-         /> */}
-         {/* <CodeEditorJS></CodeEditorJS> */}
+        {statusCode==0?<MainCanvas/>:statusCode==1?<CodeEditorJS/>:statusCode==2?<CodeEditorCSS/>:<MainCanvas/>}
         {rightSidebarOpen && (
           <RightSidebar
             closeSidebar={() => {
