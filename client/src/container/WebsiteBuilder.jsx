@@ -9,6 +9,7 @@ import { setElement ,setAttribute,setPosition} from "../Store/webElementSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import ApiDashboard from "../scripts/API.Dashboard";
 import { setData } from "../Store/imageSlice";
+import CodeEditorJS from "../components/MainPage/CodeEditorJS";
 
 const WebsiteBuilder = () => {
   const {userId,projectID} = useParams();
@@ -135,8 +136,9 @@ const WebsiteBuilder = () => {
           id={id}
           setId={set}
         />
-        <MainCanvas
-         />
+        {/* <MainCanvas
+         /> */}
+         {/* <CodeEditorJS></CodeEditorJS> */}
         {rightSidebarOpen && (
           <RightSidebar
             closeSidebar={() => {

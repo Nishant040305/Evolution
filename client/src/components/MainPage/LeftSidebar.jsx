@@ -11,6 +11,8 @@ import {
   ChevronUp,
   Grid,
   Image,
+  Code,
+  Palette
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -324,6 +326,18 @@ const LeftSidebar = ({ sidebarOpen, toggleSidebar, toggleRight, setId }) => {
                           })}
                       </div>
                     )}
+                  </div>
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="flex items-center text-sm font-semibold ">
+                      <Code className="w-4 h-4 mr-1" />
+                      JavaScript
+                    </h3>
+                  </div>
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="flex items-center text-sm font-semibold">
+                      <Palette className="w-4 h-4 mr-1" />
+                      Style CSS3
+                    </h3>
                   </div>
                   </>
               ) : (
