@@ -20,7 +20,7 @@ const Div = (id, canvasEvents) => {
         position: { x: 100, y: 100 },
         attributes: {
             ...canvasEvents(id),
-        }
+        },
     };
 };
 

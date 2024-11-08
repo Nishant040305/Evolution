@@ -46,6 +46,7 @@ const LeftSidebar = ({ sidebarOpen, toggleSidebar, toggleRight, setId }) => {
   const dispatch = useDispatch();
   const startDrag = (event, elementId) => {
     event.preventDefault();
+    
     const element = document.getElementById("canvas-element " + elementId);
     console.log("ELEMENT", element);
     let startX = event.clientX;
@@ -63,9 +64,15 @@ const LeftSidebar = ({ sidebarOpen, toggleSidebar, toggleRight, setId }) => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
     };
+    const handleClick=()=>{
+      console.log("clicked")
+      setId(elementId);
+      toggleRight(true)
+    }
 
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
+    element.addEventListener("click",handleClick);
   };
 
   const canvasEvents = (id) => {
@@ -165,19 +172,10 @@ const LeftSidebar = ({ sidebarOpen, toggleSidebar, toggleRight, setId }) => {
               </button>
               <button
                 onClick={toggleSidebar}
-// <<<<<<< HEAD
-//                 className=" z-10 p-2 transform  bg-white   "
-//               >
-//                 {sidebarOpen ? (
-//                   <ChevronLeft className="w-4 h-4" />
-//                 ) : (
-//                   <ChevronRight className="w-4 h-4" />
-//                 )}
-// =======
+
                 className="z-10 p-2 bg-white rounded-full shadow-md"
               >
                 <ChevronLeft className="w-4 h-4 text-gray-600" />
-{/* >>>>>>> 1a6145b940d0ac77f4cf1862fe96787a231b7e42 */}
               </button>
             </div>
 

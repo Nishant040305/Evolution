@@ -24,7 +24,7 @@ const Input = (id, canvasEvents, placeholder = "Enter text...") => {
         attributes: {
             placeholder,
             ...canvasEvents(id),
-        }
+        },
     };
 };
 

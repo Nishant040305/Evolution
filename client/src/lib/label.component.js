@@ -15,7 +15,7 @@ const Label = (id, text = "Label", canvasEvents) => {
         content: text,
         attributes: {
             ...canvasEvents(id),
-        }
+        },
     };
 };
 

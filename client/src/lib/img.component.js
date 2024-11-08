@@ -14,6 +14,7 @@ const ImageElement = (id, src, alt = "Image", canvasEvents) => {
       alt: alt,                  // Alt text for the image
       ...canvasEvents(id),       // Include any additional event handlers
     }
+    ,
   };
 };
 

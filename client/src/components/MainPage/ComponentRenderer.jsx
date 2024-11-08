@@ -77,6 +77,7 @@ const ComponentType = PropTypes.shape({
   content: PropTypes.string,
   childrenId: PropTypes.arrayOf(PropTypes.string),
   parent: PropTypes.string,
+  onClick:PropTypes.func
 });
 
 ComponentRenderer.propTypes = {
