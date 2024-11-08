@@ -56,6 +56,11 @@ const LeftSidebar = ({ sidebarOpen, toggleSidebar, toggleRight, setId }) => {
   // FUTURE: Move this to a separate file
 
   const onDragStart = (event, elementId) => {
+    const handleClick = ()=>{
+      setId(elementId);
+      toggleRight(true);
+    }
+    document.getElementById(`canvas-element ${elementId}`).addEventListener("click",handleClick)
     event.stopPropagation();
     console.log("Dragging.... ", elementId);
     const rect = event.currentTarget.getBoundingClientRect();
@@ -178,7 +183,7 @@ const LeftSidebar = ({ sidebarOpen, toggleSidebar, toggleRight, setId }) => {
         const response = await axios.post(`${BACKWEB}${server.Project.MediaUpdate}${projectID}`,formData);
 
         if (response.status==200) {
-          const responseData = await response.json();
+          const responseData = await response.data;
           const newImageUrl = responseData.url;
           dispatch(setImagesMedia(newImageUrl));
           setImageToUpload({ image: "", file: "" });
