@@ -102,25 +102,72 @@ const deleteProject = async (req, res) => {
 };
 
 const publishProject = async (req, res) => {
-    const { id, htmlContent } = req.body;
+    const { id, htmlContent, style_css, script_js } = req.body;
 
     const project = await Project.findById(id);
+    const { name, description } = project;
     
     if (!id || !htmlContent) {
         return res.status(400).json({ error: 'ID and HTML content are required.' });
     }
 
-    const filePath = path.join(__dirname, `../public/${id}.html`);
+    const projectDir = path.join(__dirname, `../public/${id}`);
+    const htmlPath = path.join(projectDir, 'index.html');
+    const cssPath = path.join(projectDir, 'style.css');
+    const jsPath = path.join(projectDir, 'script.js');
 
-    fs.writeFile(filePath, htmlContent, async (err) => {
+    // Create the directory if it doesn't exist
+    if (!fs.existsSync(projectDir)) {
+        fs.mkdirSync(projectDir, { recursive: true });
+    }
+
+    // Full HTML content with head and body structure
+    const index_html = 
+    `<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>${name}</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        ${htmlContent}
+        <script src="script.js"></script>
+    </body>
+    </html>`;
+
+    // Write HTML file
+    fs.writeFile(htmlPath, index_html, async (err) => {
         if (err) {
-            return res.status(500).json({ error: 'Error saving the file.' });
+            return res.status(500).json({ error: 'Error saving HTML file.' });
         }
+
+        // Write CSS file if provided
+        if (style_css) {
+            fs.writeFile(cssPath, style_css, (err) => {
+                if (err) {
+                    return res.status(500).json({ error: 'Error saving CSS file.' });
+                }
+            });
+        }
+
+        // Write JS file if provided
+        if (script_js) {
+            fs.writeFile(jsPath, script_js, (err) => {
+                if (err) {
+                    return res.status(500).json({ error: 'Error saving JS file.' });
+                }
+            });
+        }
+
+        // Increment the project version and save it
         project.version += 1;
         await project.save();
-        res.status(200).json({ message: 'File saved successfully.', data: project });
+
+        res.status(200).json({ message: 'Files saved successfully.', data: project });
     });
-}
+};
 
 const openProject = async (req, res) => {
     const { domain } = req.params;
@@ -129,7 +176,7 @@ const openProject = async (req, res) => {
 
         if (project) {
             project.analytics.views += 1;
-            const filePath = path.join(__dirname, `../public/${project._id}.html`);
+            const filePath = path.join(__dirname, `../public/${project._id}/index.html`);
             project.save();
             return res.sendFile(filePath);
         } else {
