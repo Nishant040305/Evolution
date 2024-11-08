@@ -19,7 +19,7 @@ const ComponentRenderer = ({ instance, recursionDepth = 0 }) => {
     ...instance.styles 
   };
 
-  const canvasComponent = !instance.attributes.className ? {
+  const canvasComponent = !instance.attributes?.className ? {
     className: "canvas-component",
   } : {};
 
@@ -45,7 +45,7 @@ const ComponentRenderer = ({ instance, recursionDepth = 0 }) => {
           <ComponentRenderer 
             key={child}
             instance={webElements[child]} 
-            webElements={webElements}
+            // webElements={webElements}
             // setWebElements={setWebElements}
             recursionDepth={recursionDepth + 1}
           />)

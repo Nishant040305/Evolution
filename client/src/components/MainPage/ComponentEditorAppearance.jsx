@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
-import { ChevronDown,ChevronUp } from 'lucide-react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setProperty } from '../../Store/webElementSlice';
+import React, { useState } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { setProperty } from "../../Store/webElementSlice";
+
 const ComponentEditorAppearance = ({ id }) => {
-  const [on,setOFF] = useState(false);
-  const webElements = useSelector(state=>state.webElement.present);
+  const [on, setOFF] = useState(false);
+  const webElements = useSelector((state) => state.webElement.present);
   const element = webElements[id];
   const dispatch = useDispatch();
+
   const handleAppearanceChange = (property, value) => {
-    dispatch(setProperty({id:id,property:property,value:value}));
+    dispatch(setProperty({ id: id, property: property, value: value }));
   };
 
   const handlePaddingChange = (side, value) => {
@@ -16,121 +18,143 @@ const ComponentEditorAppearance = ({ id }) => {
   };
 
   return (
-    <div className="appearance-editor p-4 border border-gray-300 rounded-lg space-y-3">
-      <h3 className="font-semibold text-lg">Appearance Properties<button onClick={() => setOFF((prev) => !prev)}>
-                  {on ? (
-                    <ChevronUp className="w-4 h-4" />
-                  ) : (
-                    <ChevronDown className="w-4 h-4" />
-                  )}
-                </button></h3>
-
-      {/* Color */}
-      {on?<><label>
-        Color:
-        <input
-          type="color"
-          value={element.styles.color || '#000000'}
-          onChange={(e) => handleAppearanceChange('color', e.target.value)}
-          className="ml-2 p-1 border border-gray-300 rounded"
-        />
-      </label>
-
-      {/* Background Color */}
-      <label>
-        Background Color:
-        <input
-          type="color"
-          value={element.styles.backgroundColor || '#ffffff'}
-          onChange={(e) => handleAppearanceChange('backgroundColor', e.target.value)}
-          className="ml-2 p-1 border border-gray-300 rounded"
-        />
-      </label>
-
-      {/* Font Size */}
-      <label>
-        Font Size:
-        <input
-          type="number"
-          value={parseInt(element.styles.fontSize) || ''}
-          onChange={(e) => handleAppearanceChange('fontSize', `${e.target.value}px`)}
-          className="ml-2 p-1 border border-gray-300 rounded"
-          placeholder="px"
-        />
-      </label>
-
-      {/* Font Family */}
-      <label>
-        Font Family:
-        <select
-          value={element.styles.fontFamily || 'Arial'}
-          onChange={(e) => handleAppearanceChange('fontFamily', e.target.value)}
-          className="ml-2 p-1 border border-gray-300 rounded"
+    <div className="p-4 space-y-4 bg-white border border-gray-300 rounded-lg shadow-sm appearance-editor">
+      <h3 className="flex items-center justify-between text-lg font-semibold text-gray-800">
+        Appearance Properties
+        <button
+          onClick={() => setOFF((prev) => !prev)}
+          className="p-1 ml-2 text-gray-500 transition rounded hover:text-gray-700"
         >
-          <option value="Arial">Arial</option>
-          <option value="Helvetica">Helvetica</option>
-          <option value="Times New Roman">Times New Roman</option>
-          <option value="Courier New">Courier New</option>
-          <option value="Georgia">Georgia</option>
-        </select>
-      </label>
+          {on ? (
+            <ChevronUp className="w-4 h-4" />
+          ) : (
+            <ChevronDown className="w-4 h-4" />
+          )}
+        </button>
+      </h3>
 
-      {/* Font Weight */}
-      <label>
-        Font Weight:
-        <select
-          value={element.styles.fontWeight || 'normal'}
-          onChange={(e) => handleAppearanceChange('fontWeight', e.target.value)}
-          className="ml-2 p-1 border border-gray-300 rounded"
-        >
-          <option value="normal">Normal</option>
-          <option value="bold">Bold</option>
-          <option value="lighter">Lighter</option>
-          <option value="bolder">Bolder</option>
-        </select>
-      </label>
-
-      {/* Text Align */}
-      <label>
-        Text Align:
-        <select
-          value={element.styles.textAlign || 'left'}
-          onChange={(e) => handleAppearanceChange('textAlign', e.target.value)}
-          className="ml-2 p-1 border border-gray-300 rounded"
-        >
-          <option value="left">Left</option>
-          <option value="center">Center</option>
-          <option value="right">Right</option>
-          <option value="justify">Justify</option>
-        </select>
-      </label>
-
-      {/* Border Color */}
-      <label>
-        Border Color:
-        <input
-          type="color"
-          value={element.styles.borderColor || '#000000'}
-          onChange={(e) => handleAppearanceChange('borderColor', e.target.value)}
-          className="ml-2 p-1 border border-gray-300 rounded"
-        />
-      </label>
-
-      {/* Padding */}
-      <h4 className="font-semibold mt-3">Padding</h4>
-      <div className="grid grid-cols-2 gap-2">
-        {['Top', 'Bottom', 'Left', 'Right'].map((side) => (
-          <label key={side}>
-            {side}:
+      {on && (
+        <>
+          {/* Color */}
+          <label className="flex flex-col text-gray-700">
+            <span className="font-medium">Color:</span>
             <input
-              type="number"
-              value={parseInt(element.styles[`padding${side}`]) || 0}
-              onChange={(e) => handlePaddingChange(side, e.target.value)}
-              className="ml-2 p-1 border border-gray-300 rounded"
+              type="color"
+              value={element.styles.color || "#000000"}
+              onChange={(e) => handleAppearanceChange("color", e.target.value)}
+              className="p-1 mt-1 border border-gray-300 rounded"
             />
           </label>
-        ))}
-      </div></>:<></>}
+
+          {/* Background Color */}
+          <label className="flex flex-col text-gray-700">
+            <span className="font-medium">Background Color:</span>
+            <input
+              type="color"
+              value={element.styles.backgroundColor || "#ffffff"}
+              onChange={(e) =>
+                handleAppearanceChange("backgroundColor", e.target.value)
+              }
+              className="p-1 mt-1 border border-gray-300 rounded"
+            />
+          </label>
+
+          {/* Font Size */}
+          <label className="flex flex-col text-gray-700">
+            <span className="font-medium">Font Size:</span>
+            <input
+              type="number"
+              value={parseInt(element.styles.fontSize) || ""}
+              onChange={(e) =>
+                handleAppearanceChange("fontSize", `${e.target.value}px`)
+              }
+              className="p-1 mt-1 border border-gray-300 rounded"
+              placeholder="px"
+            />
+          </label>
+
+          {/* Font Family */}
+          <label className="flex flex-col text-gray-700">
+            <span className="font-medium">Font Family:</span>
+            <select
+              value={element.styles.fontFamily || "Arial"}
+              onChange={(e) =>
+                handleAppearanceChange("fontFamily", e.target.value)
+              }
+              className="p-1 mt-1 bg-white border border-gray-300 rounded"
+            >
+              <option value="Arial">Arial</option>
+              <option value="Helvetica">Helvetica</option>
+              <option value="Times New Roman">Times New Roman</option>
+              <option value="Courier New">Courier New</option>
+              <option value="Georgia">Georgia</option>
+            </select>
+          </label>
+
+          {/* Font Weight */}
+          <label className="flex flex-col text-gray-700">
+            <span className="font-medium">Font Weight:</span>
+            <select
+              value={element.styles.fontWeight || "normal"}
+              onChange={(e) =>
+                handleAppearanceChange("fontWeight", e.target.value)
+              }
+              className="p-1 mt-1 bg-white border border-gray-300 rounded"
+            >
+              <option value="normal">Normal</option>
+              <option value="bold">Bold</option>
+              <option value="lighter">Lighter</option>
+              <option value="bolder">Bolder</option>
+            </select>
+          </label>
+
+          {/* Text Align */}
+          <label className="flex flex-col text-gray-700">
+            <span className="font-medium">Text Align:</span>
+            <select
+              value={element.styles.textAlign || "left"}
+              onChange={(e) =>
+                handleAppearanceChange("textAlign", e.target.value)
+              }
+              className="p-1 mt-1 bg-white border border-gray-300 rounded"
+            >
+              <option value="left">Left</option>
+              <option value="center">Center</option>
+              <option value="right">Right</option>
+              <option value="justify">Justify</option>
+            </select>
+          </label>
+
+          {/* Border Color */}
+          <label className="flex flex-col text-gray-700">
+            <span className="font-medium">Border Color:</span>
+            <input
+              type="color"
+              value={element.styles.borderColor || "#000000"}
+              onChange={(e) =>
+                handleAppearanceChange("borderColor", e.target.value)
+              }
+              className="p-1 mt-1 border border-gray-300 rounded"
+            />
+          </label>
+
+          {/* Padding */}
+          <h4 className="mt-4 font-semibold text-gray-800">Padding</h4>
+          <div className="grid grid-cols-2 gap-2 text-gray-700">
+            {["Top", "Bottom", "Left", "Right"].map((side) => (
+              <label key={side} className="flex flex-col">
+                <span className="font-medium">{side}:</span>
+                <input
+                  type="number"
+                  value={parseInt(element.styles[`padding${side}`]) || 0}
+                  onChange={(e) => handlePaddingChange(side, e.target.value)}
+                  className="p-1 mt-1 border border-gray-300 rounded"
+                />
+              </label>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 };
