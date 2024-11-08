@@ -28,7 +28,7 @@ const TextArea = (id, canvasEvents, placeholder="write something") => {
                 console.log("Textarea content:", event.target.value); // Log changes
             },
         }
-    };
+            };
 };
 
 export default TextArea;

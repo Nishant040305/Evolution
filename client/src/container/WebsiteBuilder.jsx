@@ -8,6 +8,7 @@ import { useSelector,useDispatch } from "react-redux";
 import { setElement ,setAttribute,setPosition} from "../Store/webElementSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import ApiDashboard from "../scripts/API.Dashboard";
+import { setData } from "../Store/imageSlice";
 
 const WebsiteBuilder = () => {
   const {userId,projectID} = useParams();
@@ -21,11 +22,16 @@ const WebsiteBuilder = () => {
   const webElementRef = useRef(webElement); // Create a ref for the last webElement
   const setId=(id)=>{
     //middleWare for setId
-    if(webElement[id]==null){
-
+    console.log("hey",id)
+    let x = parseInt(id);
+    if(webElement[x]==null){
+      console.log(webElement);
+      console.log(x,"not availabe")
       setRightSidebarOpen(false);
       set(0);
     }else{
+      console.log(id);
+      setRightSidebarOpen(true);
       set(id)
     }
   }
@@ -43,7 +49,10 @@ const WebsiteBuilder = () => {
       startX = moveEvent.clientX;
       startY = moveEvent.clientY;
     };
-
+    const handleClick=(elementId)=>{
+      console.log("clicked")
+      setId(elementId);
+    }
     const handleMouseUp = () => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
@@ -51,6 +60,7 @@ const WebsiteBuilder = () => {
 
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("click", handleClick)
   };
 
 
@@ -78,7 +88,8 @@ const WebsiteBuilder = () => {
           if (!projectComp || projectComp.user._id !== currentUserId || currentUserId !== userId) {
             navigate('/'); // Redirect if unauthorized
           } else {
-            dispatch(setElement(projectComp.components))
+            dispatch(setElement(projectComp.components));
+            dispatch(setData(projectComp.media));
             Object.keys(webElement).forEach((key)=>{
               dispatch(setAttribute(
                 {
@@ -86,7 +97,13 @@ const WebsiteBuilder = () => {
                   property:"onMouseDown",
                   value:(event)=> startDrag(event,key)
                 }
-
+              ))
+              dispatch(setAttribute(
+                {
+                  id:key,
+                  property:"onClick",
+                  value:()=>setId(key)
+                }
               ))
             })
           }
@@ -116,13 +133,15 @@ const WebsiteBuilder = () => {
           toggleSidebar={() => setLeftSidebarOpen(!leftSidebarOpen)}
           handleElementSelect={handleElementSelect}
           id={id}
-          setId={setId}
+          setId={set}
         />
         <MainCanvas
          />
         {rightSidebarOpen && (
           <RightSidebar
-            closeSidebar={() => setRightSidebarOpen(false)}
+            closeSidebar={() => {
+              console.log("hey")
+              setRightSidebarOpen(false)}}
           id={id}
           />
         )}

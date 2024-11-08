@@ -41,6 +41,10 @@ const ProjectSchema = new Schema({
   components: {
     type: Schema.Types.Mixed,
     default: {}
+  },
+  media:{
+    type:[String],
+    default:[]
   }
 }, { timestamps: true });
 

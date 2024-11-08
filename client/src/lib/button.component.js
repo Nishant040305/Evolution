@@ -36,7 +36,7 @@ const Button = (id, canvasEvents) => {
             ...canvasEvents(id),
             className: "canvas-component-dark",
         },
-        content: `Button ${id}`
+        content: `Button ${id}`,
     };
 };
 
