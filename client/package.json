@@ -10,7 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@codemirror/lang-css": "^6.3.0",
+    "@codemirror/lang-javascript": "^6.2.2",
+    "@codemirror/theme-one-dark": "^6.1.2",
     "@reduxjs/toolkit": "^2.3.0",
+    "@uiw/react-codemirror": "^4.23.6",
     "axios": "^1.7.7",
     "lucide-react": "^0.453.0",
     "react": "^18.3.1",

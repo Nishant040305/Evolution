@@ -11,6 +11,8 @@ import {
   ChevronUp,
   Grid,
   Image,
+  Code,
+  Palette
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -24,7 +26,7 @@ import RelativeChildrenTest from "../../test/RelativeChildrenTest";
 import ImageElement from "../../lib/img.component";
 import { setImagesMedia } from "../../Store/imageSlice";
 import { useParams } from "react-router-dom";
-const LeftSidebar = ({ sidebarOpen, toggleSidebar, toggleRight, setId }) => {
+const LeftSidebar = ({ sidebarOpen, toggleSidebar, toggleRight, setStatusCode,setId }) => {
   let BACKWEB = import.meta.env.VITE_REACT_APP_BACKWEB;
   const evalCounter = (webElements) => {
     let val = 0;
@@ -264,6 +266,7 @@ const LeftSidebar = ({ sidebarOpen, toggleSidebar, toggleRight, setId }) => {
                       {Object.keys(sidebarElements).map((element) => (
                         <button
                           onClick={() => {
+                            setStatusCode(0)
                             const id = counter + 1;
                             const hash = id.toString();
                             setCounter((prevCounter) => prevCounter + 1);
@@ -283,7 +286,7 @@ const LeftSidebar = ({ sidebarOpen, toggleSidebar, toggleRight, setId }) => {
                     </div>
                   )}
                 </div>
-                <div>
+                <div onClick={()=>setStatusCode(0)}>
                     <div className="flex justify-between items-center">
                       <h3 className="font-bold flex flex-row">
                         <Image className="w-4 h-4"></Image> Media
@@ -308,6 +311,7 @@ const LeftSidebar = ({ sidebarOpen, toggleSidebar, toggleRight, setId }) => {
                                 src={element}
                                 className="w-20 h-20 m-1"
                                 onClick={() => {
+                                  setStatusCode(0)
                                   let id = counter + 1;
                                   let hash = id.toString();
                                   setCounter((prevCounter) => prevCounter + 1);
@@ -325,6 +329,24 @@ const LeftSidebar = ({ sidebarOpen, toggleSidebar, toggleRight, setId }) => {
                       </div>
                     )}
                   </div>
+                  <div className="flex items-center justify-between mb-2" onClick={()=>{
+                    setStatusCode(1);
+                    toggleRight(false);
+                    }}>
+                    <h3 className="flex items-center text-sm font-semibold ">
+                      <Code className="w-4 h-4 mr-1" />
+                      JavaScript
+                    </h3>
+                  </div>
+                  <div className="flex items-center justify-between mb-2"  onClick={()=>{
+                    setStatusCode(2);
+                    toggleRight(false);
+                    }}>
+                    <h3 className="flex items-center text-sm font-semibold">
+                      <Palette className="w-4 h-4 mr-1" />
+                      Style CSS3
+                    </h3>
+                  </div>
                   </>
               ) : (
                 <div className="project-overview">
@@ -338,6 +360,7 @@ const LeftSidebar = ({ sidebarOpen, toggleSidebar, toggleRight, setId }) => {
                         onClick={() => {
                           setId(value.id);
                           toggleRight(true);
+                          setStatusCode(0)
                         }}
 
                         className="p-2 text-gray-700 transition duration-150 bg-white rounded-lg shadow-sm cursor-pointer hover:bg-red-50"
