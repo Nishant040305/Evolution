@@ -1,9 +1,38 @@
 // NotificationsPanel.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Bell, XCircle } from "lucide-react";
 
-const NotificationsPanel = ({ notifications, onClearAll }) => {
-  const [notificationList, setNotificationList] = useState(notifications);
+const NotificationsPanel = () => {
+  const [notificationList, setNotificationList] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Simulate API call to fetch notifications
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      setLoading(true);
+      // Simulate a network request with a delay
+      setTimeout(() => {
+        const dummyData = [
+          {
+            id: 1,
+            title: "New Comment",
+            message: "You have a new comment on your post.",
+            read: false,
+          },
+          {
+            id: 2,
+            title: "Update Available",
+            message: "A new update is ready to install.",
+            read: false,
+          },
+        ];
+        setNotificationList(dummyData);
+        setLoading(false);
+      }, 1000); // 1-second delay for loading simulation
+    };
+
+    fetchNotifications();
+  }, []);
 
   const markAsRead = (index) => {
     const updatedNotifications = notificationList.map((notification, i) =>
@@ -14,7 +43,6 @@ const NotificationsPanel = ({ notifications, onClearAll }) => {
 
   const clearAllNotifications = () => {
     setNotificationList([]);
-    onClearAll && onClearAll();
   };
 
   return (
@@ -23,11 +51,13 @@ const NotificationsPanel = ({ notifications, onClearAll }) => {
         <Bell className="w-6 h-6 mr-2" /> Notifications
       </h2>
 
-      {notificationList.length > 0 ? (
+      {loading ? (
+        <p className="text-gray-500">Loading notifications...</p>
+      ) : notificationList.length > 0 ? (
         <ul className="space-y-4">
           {notificationList.map((notification, index) => (
             <li
-              key={index}
+              key={notification.id}
               className={`flex items-start justify-between p-4 rounded-md ${
                 notification.read
                   ? "bg-gray-100 text-gray-500"
