@@ -123,6 +123,7 @@ module.exports = {
     getProjectById,
     createProject,
     updateProject,
+    deleteProject,
     updateComponents,
     updateImageProject,
 };
