@@ -12,11 +12,13 @@ import ApiDashboard from "../scripts/API.Dashboard";
 import { setData } from "../Store/imageSlice";
 import CodeEditorJS from "../components/MainPage/CodeEditorJS";
 import CodeEditorCSS from "../components/MainPage/CodeEditorCSS";
+import { useCanvasEvents } from "../hooks/DragDrop";
 
 const WebsiteBuilder = () => {
   const {userId,projectID} = useParams();
   const navigate = useNavigate();
   const webElement = useSelector(state=>state.webElement.present);
+  const [reloaded, setReloaded] = useState(false);
   const currentUserId = useSelector((state) => state.user.userInfo?._id); // Current logged-in user's ID
   const dispatch = useDispatch();
   const [leftSidebarOpen, setLeftSidebarOpen] = useState(true);
@@ -42,34 +44,8 @@ const WebsiteBuilder = () => {
       set(id)
     }
   }
-  const startDrag = (event, elementId) => {
-    event.preventDefault();
-    const element = document.getElementById(elementId);
-    let startX = event.clientX;
-    let startY = event.clientY;
 
-    const handleMouseMove = (moveEvent) => {
-      const dx = moveEvent.clientX - startX;
-      const dy = moveEvent.clientY - startY;
-   
-      dispatch(setPosition({id:elementId,dx:dx,dy:dy}))
-      startX = moveEvent.clientX;
-      startY = moveEvent.clientY;
-    };
-    const handleClick=(elementId)=>{
-      console.log("clicked")
-      setId(elementId);
-    }
-    const handleMouseUp = () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-    };
-
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
-    document.addEventListener("click", handleClick)
-  };
-
+  const { canvasEvents } = useCanvasEvents(set, setRightSidebarOpen, webElement);
 
   const API = useMemo(() => new ApiDashboard(), []); // Ensure API instance is stable
   const toggleCategory = (category) => {
@@ -84,56 +60,54 @@ const WebsiteBuilder = () => {
     setRightSidebarOpen(true);
   };
 
-  // Fetch project data when projectID or currentUserId changes
-  useEffect(() => {
-    let didCancel = false;
-
-    const fetchProject = async () => {
-      try {
-        const projectComp = await API.getProjectById(projectID);
-        if (!didCancel) {
-          if (!projectComp || projectComp.user._id !== currentUserId || currentUserId !== userId) {
-            navigate('/'); // Redirect if unauthorized
-          } else {
-            dispatch(setElement(projectComp.components));
-            dispatch(setData(projectComp.media));
-            dispatch(setProject(projectComp));
-            setCss(projectComp.cssContent || "/* Write your CSS code here... */");
-            setJs(projectComp.javascriptContent || "// Write your JS code here...");
-            Object.keys(webElement).forEach((key)=>{
-              dispatch(setAttribute(
-                {
-                  id:key,
-                  property:"onMouseDown",
-                  value:(event)=> startDrag(event,key)
-                }
-              ))
-              dispatch(setAttribute(
-                {
-                  id:key,
-                  property:"onClick",
-                  value:()=>setId(key)
-                }
-              ))
-            })
+  const reloadEvents = () => {
+    console.log("HERE", webElement);
+    Object.keys(webElement).forEach((key)=>{
+      const events = canvasEvents(key);
+      console.log("HERE", events);
+      Object.keys(events).forEach((event)=>{
+        console.log(id, event, events[event]);
+        dispatch(setAttribute(
+          {
+            id:key,
+            property:event,
+            value:events[event]
           }
-        }
-      } catch (error) {
-        console.error("Error fetching project data:", error);
-        if (!didCancel) navigate('/'); // Navigate away in case of error
-      }
-    };
+        ))
+      })
+    });
+  }
 
+  const fetchProject = async () => {
+    try {
+      const projectComp = await API.getProjectById(projectID);
+      if (!projectComp || projectComp.user._id !== currentUserId || currentUserId !== userId) {
+        navigate('/'); // Redirect if unauthorized
+      } else {
+        console.log(projectComp);
+        dispatch(setElement(projectComp.components));
+        dispatch(setData(projectComp.media));
+        dispatch(setProject(projectComp));
+        setCss(projectComp.cssContent || "/* Write your CSS code here... */");
+        setJs(projectComp.javascriptContent || "// Write your JS code here...");
+        
+        console.log(webElement);
+        reloadEvents();
+        console.log(webElement);
+
+      }
+    } catch (error) {
+      console.error("Error fetching project data:", error);
+    }
+  };
+
+  useEffect(() => {
     if (projectID && currentUserId) {
       fetchProject();
     }
-
-    return () => {
-      didCancel = true; // Clean up to avoid setting state on unmounted component
-    };
-  }, [projectID, currentUserId, userId, API, navigate]);
+  }, [projectID, currentUserId]);
   
-    return (
+  return (
     <div className="flex flex-col h-screen">
       <TopBar setScreenSize={setScreenSize} css={css} js={js}/>
       <div className="flex flex-1">
@@ -146,11 +120,13 @@ const WebsiteBuilder = () => {
           id={id}
           setId={set}
         />
-        {statusCode==0?<MainCanvas/>:statusCode==1?
+        {
+        statusCode==0?<MainCanvas ScreenSize={ScreenSize} reloadEvents={reloadEvents}/>
+        :statusCode==1?
           <CodeEditorJS js={js} setJs={setJs}/>
           :statusCode==2?
           <CodeEditorCSS css={css} setCss={setCss}/>
-        :<MainCanvas/>}
+        :<MainCanvas ScreenSize={ScreenSize} reloadEvents={reloadEvents}/>}
         {rightSidebarOpen && (
           <RightSidebar
             closeSidebar={() => {

@@ -3,7 +3,7 @@ import ComponentRenderer from "./ComponentRenderer";
 import { useSelector, useDispatch } from "react-redux";
 import { setPosition, removeChild } from "../../Store/webElementSlice";
 
-const MainCanvas = ({ScreenSize}) => {
+const MainCanvas = ({ScreenSize, reloadEvents}) => {
   const dispatch = useDispatch();
   const webElements = useSelector(state => state.webElement.present);
   const webElementsRef = useRef(webElements);
@@ -19,24 +19,30 @@ const MainCanvas = ({ScreenSize}) => {
   const handleDrop = (event) => {
     event.preventDefault();
 
-    const data = JSON.parse(event.dataTransfer.getData("text/plain"));
-    const { id: draggedElementId, offsetX, offsetY } = data;
-    const element = webElementsRef.current[draggedElementId];
+    try {
+      const data = JSON.parse(event.dataTransfer.getData("text/plain"));
+      const { id: draggedElementId, offsetX, offsetY } = data;
+      const element = webElementsRef.current[draggedElementId];
 
-    console.log("Dropped on canvas ", draggedElementId);
+      console.log("Dropped on canvas ", draggedElementId);
 
-    if (element) {
-      // Calculate drop position relative to the canvas
-      const canvasRect = event.currentTarget.getBoundingClientRect();
-      const dx = event.clientX - canvasRect.left - offsetX;
-      const dy = event.clientY - canvasRect.top - offsetY;
+      if (element) {
+        // Calculate drop position relative to the canvas
+        const canvasRect = event.currentTarget.getBoundingClientRect();
+        const dx = event.clientX - canvasRect.left - offsetX;
+        const dy = event.clientY - canvasRect.top - offsetY;
 
-      // Remove child from its parent
-      if (element.parent) {
-        dispatch(removeChild({ id: element.parent, child: draggedElementId }));
+        // Remove child from its parent
+        if (element.parent) {
+          dispatch(removeChild({ id: element.parent, child: draggedElementId }));
+        }
+        // Set new position if element has no parent (placed on canvas)
+        dispatch(setPosition({ id: draggedElementId, dx, dy }));
       }
-      // Set new position if element has no parent (placed on canvas)
-      dispatch(setPosition({ id: draggedElementId, dx, dy }));
+    } catch (error) {
+      console.log("Error dropping element:", error);
+      console.log("Reloading events...");
+      reloadEvents();
     }
   };
 
