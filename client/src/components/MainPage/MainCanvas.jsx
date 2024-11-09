@@ -3,9 +3,9 @@ import ComponentRenderer from "./ComponentRenderer";
 import { useSelector, useDispatch } from "react-redux";
 import { setPosition, removeChild } from "../../Store/webElementSlice";
 
-const MainCanvas = ({ScreenSize, reloadEvents}) => {
+const MainCanvas = ({ ScreenSize, reloadEvents, rightSidebarOpen }) => {
   const dispatch = useDispatch();
-  const webElements = useSelector(state => state.webElement.present);
+  const webElements = useSelector((state) => state.webElement.present);
   const webElementsRef = useRef(webElements);
 
   useEffect(() => {
@@ -34,7 +34,9 @@ const MainCanvas = ({ScreenSize, reloadEvents}) => {
 
         // Remove child from its parent
         if (element.parent) {
-          dispatch(removeChild({ id: element.parent, child: draggedElementId }));
+          dispatch(
+            removeChild({ id: element.parent, child: draggedElementId })
+          );
         }
         // Set new position if element has no parent (placed on canvas)
         dispatch(setPosition({ id: draggedElementId, dx, dy }));
@@ -46,37 +48,31 @@ const MainCanvas = ({ScreenSize, reloadEvents}) => {
     }
   };
 
-  const handleDragEnter = (event) => {
-    console.log("Drag entered canvas");
+  const getHeight = () => {
+    if (ScreenSize === "desktop") return "calc(85vh - 64px)";
+    if (ScreenSize === "mobile") return "calc(85vh - 48px)";
+    return "calc(85vh - 64px)"; // Default for tablet or other sizes
   };
 
-  const handleDragLeave = (event) => {
-    console.log("Drag left canvas");
-  };
-  const getHeight = () => {
-    if (ScreenSize === 'desktop') return 'calc(85vh - 64px)';
-    if (ScreenSize === 'mobile') return 'calc(85vh - 48px)';
-    return 'calc(85vh - 64px)'; // Default for tablet or other sizes
-  };
-  
   const getWidth = () => {
-    if (ScreenSize === 'desktop') return 'calc(80vw - 64px)';
-    if (ScreenSize === 'mobile') return 'calc(30vw - 48px)';
-    return 'calc(60vw - 64px)'; // Default for tablet or other sizes
+    if (ScreenSize === "desktop") return "calc(100vw - 64px)";
+    if (ScreenSize === "mobile") return "calc(30vw - 48px)";
+    if (rightSidebarOpen) return "calc(80vw - 320px)";
+    return "calc(60vw - 64px)"; // Default for tablet or other sizes
   };
-  
-  console.log(getWidth(),getHeight())
+
   return (
-    <div className="flex-1 p-8 overflow-auto bg-gray-100">
-      <div className="min-h-full bg-white rounded-lg shadow-lg" style={{ height: getHeight(), width: getWidth() }}>
+    <div className="flex-1 p-8 ml-auto mr-auto overflow-auto align-middle bg-gray-100">
+      <div
+        className="min-h-full bg-white rounded-lg shadow-lg"
+        style={{ height: getHeight(), width: getWidth() }}
+      >
         <div
           id="canvas"
-          className="flex items-center justify-center rounded-lg relative"
+          className="relative flex items-center justify-center rounded-lg"
           style={{ height: getHeight(), width: getWidth() }}
           onDragOver={handleDragOver}
           onDrop={handleDrop}
-          onDragEnter={handleDragEnter}
-          onDragLeave={handleDragLeave}
         >
           {Object.keys(webElements).length === 0 ? (
             <p className="text-gray-500">Drag and drop elements here</p>

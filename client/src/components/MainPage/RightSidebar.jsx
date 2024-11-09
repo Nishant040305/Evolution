@@ -7,12 +7,14 @@ import ComponentEditorAppearance from "./ComponentEditorAppearance";
 import ComponentEditorAdvanced from "./ComponentEditorAdvanced";
 import ComponentEditorContent from "./ComponentEditorContent";
 import { useSelector } from "react-redux";
+
 const RightSidebar = ({ closeSidebar, id }) => {
   const webElements = useSelector((state) => state.webElement.present);
   let idx = id;
   if (webElements[id] == null) {
     idx = 0;
   }
+
   document.addEventListener("mousedown", function (e) {
     // Check if the target is a resizable element
     const target = e.target.closest(
@@ -53,7 +55,6 @@ const RightSidebar = ({ closeSidebar, id }) => {
     window.addEventListener("mouseup", stopResize);
   });
 
-
   return (
     <div className="flex flex-col h-screen overflow-y-auto transition-all duration-300 bg-white border-l w-80">
       <div className="flex flex-row justify-between w-auto px-2 py-3 pt-2 text-white bg-red-500 border-b properties-section border-slate-200">
@@ -70,7 +71,7 @@ const RightSidebar = ({ closeSidebar, id }) => {
         />
       </div>
       <div className="p-4">
-        {idx != 0 ? (
+        {idx !== 0 && (
           <div>
             <div className="mb-4">
               {/* Updated Info Button Styling */}
@@ -84,7 +85,7 @@ const RightSidebar = ({ closeSidebar, id }) => {
             <ComponentEditorAdvanced id={idx} />
             <ComponentEditorContent id={idx} />
           </div>
-        ) : null}
+        )}
       </div>
     </div>
   );
