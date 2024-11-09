@@ -15,14 +15,13 @@ export const useCanvasEvents = (setId, toggleRight, webElements) => {
     webElementsRef.current = webElements;
   }, [webElements]);
 
+  const handleClick = (elementId) => {
+    setId(elementId);
+    toggleRight(true);
+  };
+
   const onDragStart = (event, elementId) => {
-    const handleClick = () => {
-      setId(elementId);
-      toggleRight(true);
-    };
-    document
-      .getElementById(`canvas-element ${elementId}`)
-      .addEventListener("click", handleClick);
+    handleClick(elementId);
     event.stopPropagation();
     console.log("Dragging.... ", elementId);
     setId(elementId);
@@ -96,6 +95,7 @@ export const useCanvasEvents = (setId, toggleRight, webElements) => {
       : {};
     return {
       onDragStart: (event) => onDragStart(event, id),
+      onClick: (event) => handleClick(id),
       ...dragTarget
     };
   };
