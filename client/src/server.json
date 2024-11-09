@@ -29,6 +29,11 @@
         "MediaUpdate":"/api/project/image/"
     },
     "User":{
-        "GetAllUsersProject":"/api/user/:id/project"
+        "GetAllUsersProject":"/api/user/:id/project",
+        "ChangeProfile":"/api/user/:id",
+        "GetAllSharedProjects":"/api/user/:id/shared"
+    },
+    "Image":{
+        "ImageUpload":"/api/image/imageUpload"
     }
 }
