@@ -148,6 +148,7 @@ const publishProject = async (req, res) => {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>${name}</title>
+        <meta name="description" content="${description}">
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
@@ -181,7 +182,7 @@ const publishProject = async (req, res) => {
         }
 
         // Increment the project version and save it
-        project.version += 1;
+        project.publishVersion += 1;
         await project.save();
 
         res.status(200).json({ message: 'Files saved successfully.', data: project });
