@@ -90,6 +90,9 @@ const VerifyUser = async (req, res) => {
 const LogIn = async (req, res) => {
   try {
     let user = await User.findOne({ email: req.body.EMAIL }).lean();
+    if(user.password==null){
+      return res.status(400).json({ error: "please try to login with correct credentials" })
+    }
     const passwordCompare = await bcrypt.compare(req.body.PASSWORD, user.password);
     if (!user.verify) {
       return res.status(400).json({ error: "please try to login with correct credentials" })
