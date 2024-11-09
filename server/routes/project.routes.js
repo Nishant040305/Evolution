@@ -35,7 +35,7 @@ router.get('/:id', UserVerifier, authorize(permissions.viewProject), getProjectB
 
 // @route    POST /api/project
 // @desc     Create a new project
-router.post('/', UserVerifier, authorize(permissions.createProject), createProject);
+router.post('/', UserVerifier,  createProject);
 
 // @route    POST /api/project/:id/invite/:userid
 // @desc     Invite a user to a project
