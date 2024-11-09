@@ -4,6 +4,8 @@ const path = require('path');
 const archiver = require('archiver');
 const User = require("../models/User");
 const Project = require('../models/Project');
+const lighthouse = require('../utils/lighthouse.js');
+require('dotenv').config({ path: path.resolve(__dirname, '../../.env') })
 
 const publishProject = async (req, res) => {
     const { id, htmlContent, style_css, script_js } = req.body;
@@ -120,8 +122,21 @@ const downloadProject = (req, res) => {
     archive.on('error', () => res.status(500).send('Error zipping the folder'));
 };
 
+const auditProject = async (req, res) => {
+    const { domain } = req.params;
+    const project = await Project.findOne({ domain });
+    if (!project) {
+        return res.status(404).json({ message: 'Project not found' });
+    }
+    const url = `${process.env.SERVER}/${domain}`;
+    const filePath = path.join(__dirname, `../public/${project._id}/report.html`);
+    await lighthouse(url, filePath);
+    return res.sendFile(filePath);
+};
+
 module.exports = {
     publishProject,
     openProject,
     downloadProject,
+    auditProject,
 };
