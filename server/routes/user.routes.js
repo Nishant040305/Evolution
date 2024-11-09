@@ -7,6 +7,7 @@ const { UserVerifier } = require('../middleware/credMiddleware');
 const {
     getAllUserProjects,
     getAllSharedProjects,
+    ChangeProfile
 } = userController;
 
 // @route    GET /api/user/:id/project
@@ -17,4 +18,5 @@ router.get('/:id/project', UserVerifier, getAllUserProjects);
 // @desc     Get all shared projects by user id
 router.get('/:id/shared', UserVerifier, getAllSharedProjects);
 
+router.put('/:id',UserVerifier,ChangeProfile);
 module.exports = router;

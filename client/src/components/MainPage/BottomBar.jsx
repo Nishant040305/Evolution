@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Timer, Save } from "lucide-react";
-import ApiDashboard from "../../scripts/API.Dashboard";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import useSaveProject from "../../hooks/useSaveProject";
 
 const BottomBar = () => {
-  const API = new ApiDashboard();
   const { userId, projectID } = useParams();
   const project = useSelector((state) => state.user.userInfo.projects);
   const webElements = useSelector((state) => state.webElement.present);
@@ -38,11 +36,11 @@ const BottomBar = () => {
   }, []);
 
   return (
-      <div
-        className={`fixed bottom-0 left-0 right-0 transition-transform duration-300 ${
-          isVisible ? "translate-y-0" : "translate-y-full"
-        } bg-gray-100 border-t border-gray-300 h-14`}
-      >
+    <div
+      className={`fixed bottom-0 left-0 right-0 transition-transform duration-300 ${
+        isVisible ? "translate-y-0" : "translate-y-full"
+      } bg-gray-100 border-t border-gray-300 h-14`}
+    >
       {/* Left side with Canvas details */}
       <div className="flex items-center justify-between px-6 text-sm text-gray-700">
         <span>Canvas Size: 1920 x 1080</span>

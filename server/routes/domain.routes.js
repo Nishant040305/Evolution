@@ -1,11 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const { projectController } = require('../controller');
-
-const {
-    openProject,
-} = projectController;
+const { publishController } = require('../controller');
+const { openProject } = publishController;
 
 // @route    GET /:domain
 // @desc     Open a project by domain

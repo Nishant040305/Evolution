@@ -2,9 +2,13 @@
 @tailwind components;
 
 /* canvas component global */
+.canvas-component {
+  overflow: auto !important;
+  resize: both !important;
+}
+
 .canvas-component:active {
   z-index: 1 !important;
-  transition: none !important;
 }
 
 /* canvas component dark */

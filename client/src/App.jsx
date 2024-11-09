@@ -8,6 +8,7 @@ import WebsiteBuilder from "./container/WebsiteBuilder";
 import ProjectDashboard from "./container/ProjectDashboard";
 import { verifyUser } from "./Store/userSlice";
 import ImageTest from "./test/ImageTest";
+import SettingsPage from "./components/Dashboard/SettingsPage";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -21,7 +22,7 @@ const App = () => {
     <Routes>
       <Route path={url.Dashboard} element={isAuthenticated ? <ProjectDashboard /> : <LoginMain />} />
       <Route path={url.Main} element={isAuthenticated ? <WebsiteBuilder /> : <LoginMain />} />
-      <Route path="Test" element={<ImageTest/>}></Route>
+      <Route path={url.Settings} element={isAuthenticated ? <SettingsPage /> : <LoginMain />} />
       <Route path="*" element={isAuthenticated ? <ProjectDashboard /> : <LoginMain />} />
     </Routes>
   );
