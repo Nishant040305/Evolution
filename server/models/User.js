@@ -27,7 +27,13 @@ const UserSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'Project',
     }
-  ]
+  ],
+  sharedProjects: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Project',
+    }
+  ],
 });
 
 module.exports = model('User', UserSchema);

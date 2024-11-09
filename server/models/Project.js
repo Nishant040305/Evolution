@@ -50,10 +50,20 @@ const ProjectSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
       },
+      /*
+       * viewer: can view
+       * editor: can also edit, publish, download
+       * admin: can also delete, update settings and members
+       */ 
       role: {
         type: String,
         enum: ['admin', 'editor', 'viewer', 'default'],
         default: 'default',
+      },
+      // additional permissions
+      permissions: {
+        type: Array,
+        default: [],
       },
     }
   ],
