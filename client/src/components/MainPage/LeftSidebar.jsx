@@ -128,10 +128,10 @@ const LeftSidebar = ({ sidebarOpen, toggleSidebar, toggleRight, setStatusCode,se
       {/* <RelativeChildrenTest canvasEvents={canvasEvents} /> */}
       {sidebarOpen ? (
         <div
-          className={`w-64 transition-all duration-300 border-r bg-white overflow-hidden shadow-lg`}
+          className={`w-64 transition-all duration-300 border-r bg-white h-full overflow-hidden shadow-lg`}
           style={{ backgroundColor: "#FFE5E5" }} // Light red background
         >
-          <div className="h-full p-4 overflow-y-auto">
+          <div className=" p-4 ">
             <div className="flex items-center justify-between mb-4">
               <button
                 onClick={() => {

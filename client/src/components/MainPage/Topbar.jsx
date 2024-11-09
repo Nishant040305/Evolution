@@ -1,4 +1,4 @@
-import React from "react";
+import React ,{useEffect} from "react";
 import { Undo, Redo, Monitor, Tablet, Smartphone } from "lucide-react";
 import { ActionCreators } from 'redux-undo';
 import { useDispatch,useSelector } from "react-redux";
@@ -33,6 +33,24 @@ const TopBar = ( {setScreenSize, css, js, setStatusCode} ) => {
       publish();
     }
   };
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if ((event.ctrlKey || event.metaKey) && event.key === "z") {
+        event.preventDefault();
+        handleUndo();
+      }
+      if ((event.ctrlKey || event.metaKey) && event.key === "y") {
+        event.preventDefault();
+        handleRedo();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
 
   return (
   <div className="flex items-center justify-between px-4 bg-white border-b h-14">
