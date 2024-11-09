@@ -29,6 +29,9 @@ app.use((err, req, res, next) => {
   res.status(500).send("Internal Server error");
 });
 
+// Static files
+app.use(express.static(path.join(__dirname, 'static')));
+
 // Set up routes
 const domainRoutes = require("./routes/domain.routes");
 app.use("/", domainRoutes);

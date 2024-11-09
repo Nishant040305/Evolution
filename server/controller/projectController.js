@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const archiver = require('archiver');
 const User = require("../models/User");
 const Project = require('../models/Project');
 const { ImageUpload } = require('../utils/ImageUpload');
@@ -210,6 +211,27 @@ const openProject = async (req, res) => {
     }
 }
 
+const downloadProject = (req, res) => {
+    const { id } = req.params;
+    const folderPath = path.join(__dirname, `../public/${id}`);
+    const zipFilePath = path.join(__dirname, `${id}.zip`);
+    const output = fs.createWriteStream(zipFilePath);
+    const archive = archiver('zip', { zlib: { level: 9 } });
+
+    archive.pipe(output);
+    archive.directory(folderPath, false);
+    archive.finalize();
+
+    output.on('close', () => {
+        res.sendFile(zipFilePath, (err) => {
+            if (err) res.status(500).send('Error downloading the file');
+            fs.unlinkSync(zipFilePath);
+        });
+    });
+
+    archive.on('error', () => res.status(500).send('Error zipping the folder'));
+};
+
 module.exports = {
     getAllProjects,
     getProjectById,
@@ -219,5 +241,6 @@ module.exports = {
     deleteProject,
     publishProject,
     openProject,
+    downloadProject,
     updateImageProject,
 };
