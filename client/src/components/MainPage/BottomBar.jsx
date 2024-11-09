@@ -8,7 +8,13 @@ const BottomBar = () => {
   const API = new ApiDashboard();
   const {userId,projectID} = useParams();
   const project = useSelector(state=>state.user.userInfo.projects);
-  const webElements = useSelector(state=>state.webElement.present)
+  const webElements = useSelector(state=>state.webElement.present);
+
+  const handleSave = () => {
+    if (webElements && project.includes(projectID)) {
+      API.updateProjectComponents(projectID, webElements);
+    }
+  }   
   // console.log(project)
   return(
   <div className="flex items-center justify-between h-12 px-4 bg-white border-t">
@@ -25,11 +31,10 @@ const BottomBar = () => {
         <Layout className="w-4 h-4" />
         <span>Grid: On</span>
       </button> */}
-      <button className="flex items-center p-2 space-x-1 text-sm text-white rounded-lg bg-rose-500 hover:bg-rose-600" onClick={()=>{
-        if (webElements && project.includes(projectID)) {
-          API.updateProjectComponents(projectID, webElements);
-      }        
-      }}>
+      <button 
+        className="flex items-center p-2 space-x-1 text-sm text-white rounded-lg bg-rose-500 hover:bg-rose-600" 
+        onClick={handleSave}
+      >
         <Save className="w-4 h-4" />
         <span>Save Changes</span>
       </button>
