@@ -12,7 +12,8 @@ import {
   Grid,
   Image,
   Code,
-  Palette
+  Palette,
+  X
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -20,7 +21,8 @@ import {
   setElement,
   setPosition,
   addChild,
-  removeChild
+  removeChild,
+  deleteElement
 } from "../../Store/webElementSlice";
 import RelativeChildrenTest from "../../test/RelativeChildrenTest";
 import ImageElement from "../../lib/img.component";
@@ -269,6 +271,7 @@ const LeftSidebar = ({ sidebarOpen, toggleSidebar, toggleRight, setStatusCode,se
                   </h2>
                   <div className="space-y-2 components">
                     {Object.entries(webElements).map(([index, value]) => (
+                      <div className="p-2 text-gray-700 transition duration-150 bg-white rounded-lg shadow-sm cursor-pointer hover:bg-red-50 flex flex-row justify-between">
                       <div
                         key={index}
                         onClick={() => {
@@ -277,9 +280,13 @@ const LeftSidebar = ({ sidebarOpen, toggleSidebar, toggleRight, setStatusCode,se
                           setStatusCode(0)
                         }}
 
-                        className="p-2 text-gray-700 transition duration-150 bg-white rounded-lg shadow-sm cursor-pointer hover:bg-red-50"
+                        className=""
                       >
                         {`${value.type} ${value.id}`}
+                      </div>
+                      <button onClick={()=> {
+                        setId(0)
+                        dispatch(deleteElement(value.id))}}><X ></X></button>
                       </div>
                     ))}
                   </div>

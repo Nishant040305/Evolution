@@ -102,6 +102,11 @@ const webElementSlice= createSlice({
                     
                 }
             }
+        },
+        deleteElement:(state,action)=>{
+            const newS = {...state}
+            delete newS[action.payload]
+            return newS;
         }
     }
 })
@@ -114,6 +119,7 @@ export const {
     setTransform,
     setProperty,
     setAttribute,
-    setContent
+    setContent,
+    deleteElement
 } = webElementSlice.actions;
 export default webElementSlice.reducer;
