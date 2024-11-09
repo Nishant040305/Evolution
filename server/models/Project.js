@@ -30,10 +30,12 @@ const ProjectSchema = new Schema({
     default: 1,
   },
   analytics: {
-    views: {
-      type: Number,
-      default: 0,
-    }
+    views: [
+      {
+        type: Date,
+        default: Date.now
+      }
+    ]
   },
 
   // project owner and collaborators

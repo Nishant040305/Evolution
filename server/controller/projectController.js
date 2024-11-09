@@ -189,13 +189,17 @@ const publishProject = async (req, res) => {
 
 const openProject = async (req, res) => {
     const { domain } = req.params;
+    console.log("Opening project", domain);
     try {
         const project = await Project.findOne({ domain });
 
         if (project) {
-            project.analytics.views += 1;
+            await Project.updateOne(
+                { domain },
+                { $push: { 'analytics.views': Date.now() } }
+            );
+            console.log(`Project ${project._id} opened | Views: ${1 + project.analytics.views.length}`);
             const filePath = path.join(__dirname, `../public/${project._id}/index.html`);
-            project.save();
             return res.sendFile(filePath);
         } else {
             return res.status(404).send('404 Page not found');
