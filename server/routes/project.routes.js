@@ -3,9 +3,13 @@ const router = express.Router();
 const multer = require("multer");
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
-const { projectController, memberController } = require("../controller");
-const { UserVerifier } = require("../middleware/credMiddleware");
-const { permissions, authorize } = require("../middleware/authMiddleware");
+
+// controllers
+const { 
+    projectController, 
+    publishController, 
+    memberController 
+} = require("../controller");
 
 const {
   getAllProjects,
@@ -13,13 +17,14 @@ const {
   createProject,
   updateProject,
   updateComponents,
-  deleteProject,
-  publishProject,
-  downloadProject,
   updateImageProject,
 } = projectController;
-
+const { publishProject, openProject, downloadProject } = publishController;
 const { inviteMember, updateMemberRole, removeMember } = memberController;
+
+// middlewares
+const { UserVerifier } = require("../middleware/credMiddleware");
+const { permissions, authorize } = require("../middleware/authMiddleware");
 
 // @route    GET /api/project
 // @desc     Get all projects
