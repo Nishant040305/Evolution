@@ -1,17 +1,28 @@
 import React, { useState } from "react";
-import { Folder, Trash2, Edit, Users } from "lucide-react";
-import ProjectSettingsModal from "./ProjectSettingsModal"; // Assuming this is in the same folder
+import { Folder, Trash2, Edit, Users, Settings } from "lucide-react";
+import ProjectSettingsModal from "./ProjectSettingsModal";
+import CombinedProjectModal from "./CombinedModal"; // Import the combined modal
 
 const ProjectCard = ({ project, onDelete, onClick, onUpdate }) => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isCombinedModalOpen, setIsCombinedModalOpen] = useState(false);
 
   const handleEditClick = (e) => {
     e.stopPropagation();
     setIsSettingsOpen(true);
   };
 
+  const handleCombinedModalClick = (e) => {
+    e.stopPropagation();
+    setIsCombinedModalOpen(true);
+  };
+
   const closeSettingsModal = () => {
     setIsSettingsOpen(false);
+  };
+
+  const closeCombinedModal = () => {
+    setIsCombinedModalOpen(false);
   };
 
   return (
@@ -31,6 +42,13 @@ const ProjectCard = ({ project, onDelete, onClick, onUpdate }) => {
         className="absolute p-2 text-red-700 transition-opacity top-4 right-12 hover:text-blue-600 group-hover:opacity-100"
       >
         <Edit className="w-5 h-5" />
+      </button>
+
+      <button
+        onClick={handleCombinedModalClick}
+        className="absolute p-2 text-red-700 transition-opacity top-4 right-20 hover:text-green-600 group-hover:opacity-100"
+      >
+        <Settings className="w-5 h-5" />
       </button>
 
       <div onClick={() => onClick(project._id)} className="cursor-pointer">
@@ -61,10 +79,19 @@ const ProjectCard = ({ project, onDelete, onClick, onUpdate }) => {
         )}
       </div>
 
+      {/* Conditional Rendering for Modals */}
       {isSettingsOpen && (
         <ProjectSettingsModal
           project={project}
           onClose={closeSettingsModal}
+          onUpdate={onUpdate}
+        />
+      )}
+
+      {isCombinedModalOpen && (
+        <CombinedProjectModal
+          project={project}
+          onClose={closeCombinedModal}
           onUpdate={onUpdate}
         />
       )}
