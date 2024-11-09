@@ -35,7 +35,6 @@ const BottomBar = () => {
         <button
           className="flex items-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-rose-500 hover:bg-rose-600"
           onClick={handleSave}
-          }}
         >
           <Save className="w-5 h-5 mr-1" />
           <span>Save Changes</span>
