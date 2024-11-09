@@ -3,7 +3,7 @@ import ComponentRenderer from "./ComponentRenderer";
 import { useSelector, useDispatch } from "react-redux";
 import { setPosition, removeChild } from "../../Store/webElementSlice";
 
-const MainCanvas = () => {
+const MainCanvas = ({ScreenSize}) => {
   const dispatch = useDispatch();
   const webElements = useSelector(state => state.webElement.present);
   const webElementsRef = useRef(webElements);
@@ -47,9 +47,21 @@ const MainCanvas = () => {
   const handleDragLeave = (event) => {
     console.log("Drag left canvas");
   };
-
+  const getHeight = () => {
+    if (ScreenSize === 'desktop') return 'calc(85vh - 64px)';
+    if (ScreenSize === 'mobile') return 'calc(85vh - 48px)';
+    return 'calc(85vh - 64px)'; // Default for tablet or other sizes
+  };
+  
+  const getWidth = () => {
+    if (ScreenSize === 'desktop') return 'calc(20vw - 64px)';
+    if (ScreenSize === 'mobile') return 'calc(10vw - 48px)';
+    return 'calc(50vw - 64px)'; // Default for tablet or other sizes
+  };
+  
+  console.log(getWidth(),getHeight())
   return (
-    <div className="flex-1 p-8 overflow-auto bg-gray-100">
+    <div className="flex-1 p-8 overflow-auto bg-gray-100" style={{ height: getHeight(), width: getWidth() }}>
       <div className="min-h-full p-8 bg-white rounded-lg shadow-lg">
         <div
           id="canvas"

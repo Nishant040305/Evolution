@@ -68,12 +68,15 @@ const webElementSlice= createSlice({
             }
         },
         setProperty:(state,action)=>{
+            console.log(action.payload)
+            const x =JSON.parse(JSON.stringify(state));
+            console.log(x)
             const newEl =  {
-                ...state,
+                ...x,
                 [action.payload.id]:{
-                    ...state[action.payload.id],
+                    ...x[action.payload.id],
                     styles:{
-                        ...state[action.payload.id].styles,
+                        ...x[action.payload.id].styles,
                         [action.payload.property]:action.payload.value
                     }
                 }

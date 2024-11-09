@@ -8,22 +8,23 @@ import CreateProjectForm from "../components/Dashboard/CreateProjectForm";
 import { useSelector } from "react-redux";
 import ApiDashboard from "../scripts/API.Dashboard";
 import User from "../scripts/API.User";
+
 const ProjectDashboard = () => {
   const navigate = useNavigate();
-  const user = useSelector(state=>state.user.userInfo._id)
+  const user = useSelector((state) => state.user.userInfo._id);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [projects, setProjects] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
   const API = new ApiDashboard();
-  let APIUser = new User(user);
+  const APIUser = new User(user); // Moved initialization inside useEffect
+
   useEffect(() => {
-    APIUser = new User(user);
     fetchProjects();
-    
-  }, [user]);
+  }, [user]); // Re-fetch when user changes
 
   useEffect(() => {
     const filterProjects = async () => {
@@ -57,7 +58,6 @@ const ProjectDashboard = () => {
 
   const handleCreateProject = async (newProject) => {
     try {
-      console.log(newProject)
       const createdProject = await API.createProject(newProject);
       setProjects((prev) => [...prev, createdProject]);
       setIsCreateModalOpen(false);
@@ -69,9 +69,8 @@ const ProjectDashboard = () => {
   const handleDeleteProject = async (projectId) => {
     if (window.confirm("Are you sure you want to delete this project?")) {
       try {
-        await API.deleteProject(projectId)
+        await API.deleteProject(projectId);
         setProjects((prev) => prev.filter((p) => p._id !== projectId));
-
       } catch (err) {
         console.error("Error deleting project:", err);
       }
@@ -85,7 +84,6 @@ const ProjectDashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <TopBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-
       <div className="px-4 py-8 mx-auto max-w-7xl">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           <button
@@ -94,7 +92,6 @@ const ProjectDashboard = () => {
           >
             Create New Project
           </button>
-
           {isLoading ? (
             <div className="col-span-3 py-12 text-center">
               Loading projects...
@@ -102,7 +99,7 @@ const ProjectDashboard = () => {
           ) : (
             filteredProjects.map((project) => (
               <ProjectCard
-                key={project.id}
+                key={project._id} // Ensure unique `key` prop based on `_id`
                 project={project}
                 onDelete={handleDeleteProject}
                 onClick={handleProjectClick}
@@ -111,7 +108,6 @@ const ProjectDashboard = () => {
           )}
         </div>
       </div>
-
       <Modal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}

@@ -2,11 +2,9 @@ import React from "react";
 import { Undo, Redo, Monitor, Tablet, Smartphone } from "lucide-react";
 import { ActionCreators } from 'redux-undo';
 import { useDispatch } from "react-redux";
-import ApiDashboard from "../../scripts/API.Dashboard";
-import { useSelector } from "react-redux";
 import PublishPage from "../../hooks/PublishPage";
 
-const TopBar = ( {css, js} ) => {
+const TopBar = ( {setScreenSize, css, js} ) => {
   const dispatch = useDispatch();
   const handleUndo = () => {
     dispatch(ActionCreators.undo())
@@ -34,12 +32,12 @@ const TopBar = ( {css, js} ) => {
     <div className="flex items-center space-x-4">
       <div className="flex p-1 border rounded-lg bg-rose-50">
         <button className="p-1 rounded hover:bg-white">
-          <Monitor className="w-4 h-4" />
+          <Monitor className="w-4 h-4" onClick={()=>setScreenSize('desktop')} />
         </button>
-        <button className="p-1 rounded hover:bg-white">
+        <button className="p-1 rounded hover:bg-white" onClick={()=>setScreenSize('tablet')}>
           <Tablet className="w-4 h-4" />
         </button>
-        <button className="p-1 rounded hover:bg-white">
+        <button className="p-1 rounded hover:bg-white" onClick={()=>setScreenSize('mobile')}>
           <Smartphone className="w-4 h-4" />
         </button>
       </div>

@@ -25,6 +25,7 @@ const WebsiteBuilder = () => {
   const [css, setCss] = useState("/* Write your CSS code here... */");
   const [js, setJs] = useState("// Write your JS code here...");
   const [id,set] = useState(0);
+  const [ScreenSize,setScreenSize] = useState('desktop');
   const webElementRef = useRef(webElement); // Create a ref for the last webElement
   const setId=(id)=>{
     //middleWare for setId
@@ -134,7 +135,7 @@ const WebsiteBuilder = () => {
   
     return (
     <div className="flex flex-col h-screen">
-      <TopBar css={css} js={js}/>
+      <TopBar setScreenSize={setScreenSize} css={css} js={js}/>
       <div className="flex flex-1">
         <LeftSidebar
           sidebarOpen={leftSidebarOpen}
