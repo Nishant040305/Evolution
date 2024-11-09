@@ -22,6 +22,7 @@ const WebsiteBuilder = () => {
   const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
   const [statusCode,setStatusCode] = useState(0);
   const [id,set] = useState(0);
+  const [ScreenSize,setScreenSize] = useState('desktop');
   const webElementRef = useRef(webElement); // Create a ref for the last webElement
   const setId=(id)=>{
     //middleWare for setId
@@ -128,7 +129,7 @@ const WebsiteBuilder = () => {
   
     return (
     <div className="flex flex-col h-screen">
-      <TopBar/>
+      <TopBar setScreenSize={setScreenSize}/> 
       <div className="flex flex-1">
         <LeftSidebar
           sidebarOpen={leftSidebarOpen}
@@ -139,7 +140,7 @@ const WebsiteBuilder = () => {
           id={id}
           setId={set}
         />
-        {statusCode==0?<MainCanvas/>:statusCode==1?<CodeEditorJS/>:statusCode==2?<CodeEditorCSS/>:<MainCanvas/>}
+        {statusCode==0?<MainCanvas ScreenSize={ScreenSize}/>:statusCode==1?<CodeEditorJS/>:statusCode==2?<CodeEditorCSS/>:<MainCanvas ScreeSize={ScreeSize} webElementRef={webElementRef}/>}
         {rightSidebarOpen && (
           <RightSidebar
             closeSidebar={() => {
