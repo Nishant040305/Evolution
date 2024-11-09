@@ -166,10 +166,10 @@ const LeftSidebar = ({
             <div className="flex items-center justify-between p-4 border-b bg-red-50">
               <div className="flex space-x-2">
                 <button
-                  onClick={() =>{
-                    setShowComponents(true);
-                    setStatusCode(0);
-                  } }
+                  onClick={() => {
+                  setShowComponents(true)
+                  setStatusCode(0)
+                }}
                   className={`px-3 py-1.5 rounded-md transition-all ${
                     showComponents
                       ? "bg-red-500 text-white"
@@ -180,9 +180,9 @@ const LeftSidebar = ({
                 </button>
                 <button
                   onClick={() => {
-                    setShowComponents(false)
-                    setStatusCode(0);
-                  }}
+                  setShowComponents(false)
+                  setStatusCode(0)
+                }}
                   className={`px-3 py-1.5 rounded-md transition-all ${
                     !showComponents
                       ? "bg-red-500 text-white"

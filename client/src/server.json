@@ -25,6 +25,7 @@
         "UpdateProjectComponents":"/api/project/:id/components",
         "DeleteProject":"/api/project/:id",
         "PublishProject": "/api/project/:id/publish",
+        "DownloadProject":"/api/project/:id/download",
         "MediaUpdate":"/api/project/image/"
     },
     "User":{

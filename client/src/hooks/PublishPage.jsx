@@ -42,20 +42,27 @@ const PublishPage = ( { css, js } ) => {
     URL.revokeObjectURL(url);
   };
 
-  const download = () => {
+  const download = async () => {
+    console.log("Downloading project...");
     saveProject();
-    const htmlContent = getHTMLContent();
-    const blob = new Blob([htmlContent], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
+    try {
+      const response = await apiDashboard.downloadProject(getProjectId());
+      console.log("Downloaded project:", response);
+      const blob = new Blob([response], { type: 'application/zip' });
+      const url = URL.createObjectURL(blob);
 
-    const a = document.createElement('a');
-    a.href = url;
-    a.target = '_blank';
-    a.download = 'canvas.html';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+      const a = document.createElement('a');
+      a.href = url;
+      a.target = '_blank';
+      a.download = `${getProjectId()}.zip`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Failed to download project:", error);
+      alert("Failed to download project. Please try again.");
+    }
   };
 
   const publish = async () => {

@@ -1,11 +1,15 @@
-import React, { useEffect, useState, useRef, useMemo} from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import TopBar from "../components/MainPage/Topbar";
 import LeftSidebar from "../components/MainPage/LeftSidebar";
 import MainCanvas from "../components/MainPage/MainCanvas";
 import RightSidebar from "../components/MainPage/RightSidebar";
 import BottomBar from "../components/MainPage/BottomBar";
-import { useSelector,useDispatch } from "react-redux";
-import { setElement ,setAttribute,setPosition} from "../Store/webElementSlice";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setElement,
+  setAttribute,
+  setPosition,
+} from "../Store/webElementSlice";
 import { setProject } from "../Store/projectSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import ApiDashboard from "../scripts/API.Dashboard";
@@ -15,37 +19,41 @@ import CodeEditorCSS from "../components/MainPage/CodeEditorCSS";
 import { useCanvasEvents } from "../hooks/DragDrop";
 
 const WebsiteBuilder = () => {
-  const {userId,projectID} = useParams();
+  const { userId, projectID } = useParams();
   const navigate = useNavigate();
-  const webElement = useSelector(state=>state.webElement.present);
+  const webElement = useSelector((state) => state.webElement.present);
   const [reloaded, setReloaded] = useState(false);
   const currentUserId = useSelector((state) => state.user.userInfo?._id); // Current logged-in user's ID
   const dispatch = useDispatch();
   const [leftSidebarOpen, setLeftSidebarOpen] = useState(true);
   const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
-  const [statusCode,setStatusCode] = useState(0);
+  const [statusCode, setStatusCode] = useState(0);
   const [css, setCss] = useState("/* Write your CSS code here... */");
   const [js, setJs] = useState("// Write your JS code here...");
-  const [id,set] = useState(0);
-  const [ScreenSize,setScreenSize] = useState('desktop');
+  const [id, set] = useState(0);
+  const [ScreenSize, setScreenSize] = useState("desktop");
   const webElementRef = useRef(webElement); // Create a ref for the last webElement
-  const setId=(id)=>{
+  const setId = (id) => {
     //middleWare for setId
-    console.log("hey",id)
+    console.log("hey", id);
     let x = parseInt(id);
-    if(webElement[x]==null){
+    if (webElement[x] == null) {
       console.log(webElement);
-      console.log(x,"not availabe")
+      console.log(x, "not availabe");
       setRightSidebarOpen(false);
       set(0);
-    }else{
+    } else {
       console.log(id);
       setRightSidebarOpen(true);
-      set(id)
+      set(id);
     }
-  }
+  };
 
-  const { canvasEvents } = useCanvasEvents(set, setRightSidebarOpen, webElement);
+  const { canvasEvents } = useCanvasEvents(
+    set,
+    setRightSidebarOpen,
+    webElement
+  );
 
   const API = useMemo(() => new ApiDashboard(), []); // Ensure API instance is stable
   const toggleCategory = (category) => {
@@ -62,27 +70,31 @@ const WebsiteBuilder = () => {
 
   const reloadEvents = () => {
     console.log("HERE", webElement);
-    Object.keys(webElement).forEach((key)=>{
+    Object.keys(webElement).forEach((key) => {
       const events = canvasEvents(key);
       console.log("HERE", events);
-      Object.keys(events).forEach((event)=>{
+      Object.keys(events).forEach((event) => {
         console.log(id, event, events[event]);
-        dispatch(setAttribute(
-          {
-            id:key,
-            property:event,
-            value:events[event]
-          }
-        ))
-      })
+        dispatch(
+          setAttribute({
+            id: key,
+            property: event,
+            value: events[event],
+          })
+        );
+      });
     });
-  }
+  };
 
   const fetchProject = async () => {
     try {
       const projectComp = await API.getProjectById(projectID);
-      if (!projectComp || projectComp.user._id !== currentUserId || currentUserId !== userId) {
-        navigate('/'); // Redirect if unauthorized
+      if (
+        !projectComp ||
+        projectComp.user._id !== currentUserId ||
+        currentUserId !== userId
+      ) {
+        navigate("/"); // Redirect if unauthorized
       } else {
         console.log(projectComp);
         dispatch(setElement(projectComp.components));
@@ -90,11 +102,10 @@ const WebsiteBuilder = () => {
         dispatch(setProject(projectComp));
         setCss(projectComp.cssContent || "/* Write your CSS code here... */");
         setJs(projectComp.javascriptContent || "// Write your JS code here...");
-        
+
         console.log(webElement);
         reloadEvents();
         console.log(webElement);
-
       }
     } catch (error) {
       console.error("Error fetching project data:", error);
@@ -106,7 +117,7 @@ const WebsiteBuilder = () => {
       fetchProject();
     }
   }, [projectID, currentUserId]);
-  
+
   return (
     <div className="flex flex-col h-screen">
       <TopBar setScreenSize={setScreenSize} css={css} js={js} setStatusCode={setStatusCode}/>
@@ -120,23 +131,26 @@ const WebsiteBuilder = () => {
           id={id}
           setId={set}
         />
-        {
-        statusCode==0?<MainCanvas ScreenSize={ScreenSize} reloadEvents={reloadEvents}/>
-        :statusCode==1?
-          <CodeEditorJS js={js} setJs={setJs}/>
-          :statusCode==2?
-          <CodeEditorCSS css={css} setCss={setCss}/>
-        :<MainCanvas ScreenSize={ScreenSize} reloadEvents={reloadEvents}/>}
+        {statusCode == 0 ? (
+          <MainCanvas ScreenSize={ScreenSize} reloadEvents={reloadEvents} />
+        ) : statusCode == 1 ? (
+          <CodeEditorJS js={js} setJs={setJs} />
+        ) : statusCode == 2 ? (
+          <CodeEditorCSS css={css} setCss={setCss} />
+        ) : (
+          <MainCanvas ScreenSize={ScreenSize} reloadEvents={reloadEvents} />
+        )}
         {rightSidebarOpen && (
           <RightSidebar
             closeSidebar={() => {
-              console.log("hey")
-              setRightSidebarOpen(false)}}
-          id={id}
+              console.log("hey");
+              setRightSidebarOpen(false);
+            }}
+            id={id}
           />
         )}
       </div>
-      <BottomBar/>
+      <BottomBar />
     </div>
   );
 };
