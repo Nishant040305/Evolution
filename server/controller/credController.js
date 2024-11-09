@@ -178,5 +178,4 @@ const logout = (req, res) => {
   res.clearCookie('uid', { httpOnly: true, secure: true, sameSite: 'Strict' });
   res.status(200).send({ message: 'Logged out successfully' });
 };
-
 module.exports = { Signin, LogIn, VerifyUser,PasswordRecovery,ConfirmPasswordChange,logout };
