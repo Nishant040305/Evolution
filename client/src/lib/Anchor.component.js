@@ -16,7 +16,8 @@ const Anchor = (id, canvasEvents) => ({
     },
     attributes: {
         ...canvasEvents(id),
-        className: "canvas-component-link",
+        className: "canvas-component-link no-scrollbar",
+        href: "https://www.example.com"
     },
     content: `Link ${id}`,
 });

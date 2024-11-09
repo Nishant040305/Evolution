@@ -68,6 +68,7 @@ const LeftSidebar = ({
         val = parsedKey + 1;
       }
     });
+    console.log("COUNTER", val);
     return val;
   };
   const [counter, setCounter] = useState(evalCounter(webElements));

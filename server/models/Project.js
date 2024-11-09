@@ -18,7 +18,7 @@ const ProjectSchema = new Schema({
     }
   ],
 
-  // domain provided by server and custom domain provided by user
+  // domain provided by server and custom domain provided by user (not implemented)
   domain: {
     type: String,
     unique: true,
@@ -34,7 +34,7 @@ const ProjectSchema = new Schema({
   // site analytics
   publishVersion: {
     type: Number,
-    default: 1,
+    default: 0,
   },
   analytics: {
     views: [

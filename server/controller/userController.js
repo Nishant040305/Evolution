@@ -68,8 +68,27 @@ const ChangeProfile = async (req,res)=>{
         return res.status(500).json({message:"Internal Server Error"})
     }
 }       
+const FindUserEmail = async (req,res)=>{
+    try{
+        const userId = req.params.email;
+        const user = await User.findOne({email:userId});
+        if(!user){
+            return res.status(404).json({message:"User not found"})
+        }
+        return res.status(200).json({
+            displayname:user.displayname,
+            _id:user._id,
+            avatar:user.avatar,
+            email:user.email,
+
+        })
+    }catch(e){
+        return res.status(500).json({message:"Internal Server Error"})
+    }
+}
 module.exports = {
     getAllUserProjects,
     getAllSharedProjects,
-    ChangeProfile
+    ChangeProfile,
+    FindUserEmail
 };

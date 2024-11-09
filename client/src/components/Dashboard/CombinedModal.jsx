@@ -25,12 +25,23 @@ ChartJS.register(
 
 const CombinedProjectModal = ({ project, onClose, onUpdate }) => {
   const [activeTab, setActiveTab] = useState("settings");
+  const [emailInput, setEmailInput] = useState("");
+  const [userSuggestions, setUserSuggestions] = useState([]);
+  
   const [updatedProject, setUpdatedProject] = useState({
     name: project.name,
     description: project.description,
     keywords: project.keywords,
     domain: project.domain,
   });
+  const [timeScale, setTimeScale] = useState("month"); // Default view by month
+  const convertTimeToDate = (timeString) => {
+    const [hours, minutes] = timeString.split(":").map(Number);
+    const now = new Date(); // Get today's date
+    now.setHours(hours, minutes, 0, 0); // Set the time to the given hours and minutes
+    return now;
+  };
+  
   const [collaborators, setCollaborators] = useState(
     project.collaborators || [{ email: "" }]
   );
@@ -40,25 +51,69 @@ const CombinedProjectModal = ({ project, onClose, onUpdate }) => {
     { email: "samuel.green@example.com", role: "Viewer" },
   ]);
   const [analyticsData, setAnalyticsData] = useState({
-    views: 1500, // Total views as an example
-    viewHistory: [100, 200, 150, 300, 250, 350], // Dummy data for views over time
+    views: project.analytics.views.length, // Total views as an example
+    viewHistory: project.analytics.views, // Dummy data for views over time
   });
 
-  // Version control state
-  const [versionHistory, setVersionHistory] = useState([
-    {
-      version: "v1.0",
-      date: "2024-10-01",
-      description: "Initial project setup",
-    },
-    { version: "v1.1", date: "2024-10-15", description: "Added new features" },
-    {
-      version: "v1.2",
-      date: "2024-11-01",
-      description: "Bug fixes and improvements",
-    },
-  ]); // Dummy version history
+// Group views by time scale (day, month, year, hour, or minute)
+// Function to group views by time scale (day, month, year, hour, or minute)
+const groupViewsByTime = (views, scale) => {
+  const groupedData = {};
 
+  views.forEach(view => {
+    // Check if the input is an ISO timestamp or time string and convert accordingly
+    let timestamp;
+    if (typeof view === "string" && view.includes("T")) {
+      // If the view is an ISO string (like 2024-11-09T13:29:23.228Z)
+      timestamp = new Date(view);
+    } else {
+      // If it's a time string in HH:mm format (e.g., "14:30")
+      timestamp = convertTimeToDate(view);
+    }
+
+    // Check if the timestamp is valid
+    if (isNaN(timestamp)) {
+      console.error(`Invalid time value: ${view}`);
+      return; // Skip invalid time value
+    }
+
+    let key;
+
+    // Group views by selected time scale
+    switch (scale) {
+      case "day":
+        key = timestamp.toISOString().split("T")[0]; // YYYY-MM-DD
+        break;
+      case "month":
+        key = `${timestamp.getFullYear()}-${timestamp.getMonth() + 1}`; // YYYY-MM
+        break;
+      case "year":
+        key = `${timestamp.getFullYear()}`; // YYYY
+        break;
+      case "hour":
+        key = `${timestamp.toISOString().split("T")[0]} ${timestamp.getHours()}`; // YYYY-MM-DD HH
+        break;
+      case "minute":
+        key = `${timestamp.toISOString().split("T")[0]} ${timestamp.getHours()}:${timestamp.getMinutes()}`; // YYYY-MM-DD HH:mm
+        break;
+      default:
+        key = timestamp.toISOString().split("T")[0]; // Default to day grouping
+    }
+
+    // Group views by the selected time key
+    if (!groupedData[key]) {
+      groupedData[key] = 0;
+    }
+    groupedData[key]++;
+  });
+
+  // Convert grouped data to arrays for chart rendering
+  const labels = Object.keys(groupedData);
+  const data = Object.values(groupedData);
+
+  return { labels, data };
+};
+    const { labels, data } = groupViewsByTime(analyticsData.viewHistory, timeScale);
   const API = new ApiDashboard();
 
   const handleInputChange = (e) => {
@@ -168,17 +223,59 @@ const CombinedProjectModal = ({ project, onClose, onUpdate }) => {
 
   const renderAnalyticsTab = () => {
     const chartData = {
-      labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"], // Months for example
+      labels, // Dynamically set based on the selected time scale
       datasets: [
         {
           label: "Views Over Time",
-          data: analyticsData.viewHistory,
+          data,
           borderColor: "#f44336",
           backgroundColor: "rgba(244, 67, 54, 0.2)",
           fill: true,
         },
       ],
     };
+    
+    // Chart options to handle small datasets and responsive behavior
+    const chartOptions = {
+      responsive: true, // Makes the chart responsive to window resizing
+      maintainAspectRatio: false, // Allows the chart to adjust to available space
+      scales: {
+        x: {
+          // Automatically adjust the ticks on the x-axis based on the data
+          ticks: {
+            autoSkip: true, // Skip ticks for smaller datasets
+            maxRotation: 45, // Rotate labels for better readability
+            minRotation: 0,
+          },
+          title: {
+            display: true,
+            text: "Time",
+          },
+        },
+        y: {
+          // Dynamically adjusts the y-axis scale based on the dataset
+          beginAtZero: true,
+          ticks: {
+            min: 0, // Ensures the y-axis doesn't go below 0
+            stepSize: 1, // Adjust step size for sparse data
+          },
+          title: {
+            display: true,
+            text: "Views",
+          },
+        },
+      },
+      plugins: {
+        tooltip: {
+          mode: 'index', // Shows tooltip for each data point
+          intersect: false,
+        },
+        legend: {
+          position: 'top', // Places the legend at the top
+        },
+      },
+    };
+    
 
     return (
       <div>
@@ -186,9 +283,108 @@ const CombinedProjectModal = ({ project, onClose, onUpdate }) => {
           Project Analytics
         </h2>
         <p>Total Views: {analyticsData.views}</p>
-        <div>
-          <Line data={chartData} />
+        <div className="chart-container" style={{width:610,height:400}}>
+          <Line data={chartData} options={chartOptions} />
         </div>
+        <div className="time-scale-selector mt-4">
+        <button
+            onClick={() => setTimeScale("minute")}
+            className={`mr-2 px-4 py-2 bg-red-200 text-red-800 rounded-md ${
+              timeScale === "day" ? "font-semibold" : ""
+            }`}
+          >
+            Minutes
+          </button>
+          <button
+            onClick={() => setTimeScale("hour")}
+            className={`mr-2 px-4 py-2 bg-red-200 text-red-800 rounded-md ${
+              timeScale === "month" ? "font-semibold" : ""
+            }`}
+          >
+          Hours
+        </button>
+          <button
+            onClick={() => setTimeScale("day")}
+            className={`mr-2 px-4 py-2 bg-red-200 text-red-800 rounded-md ${
+              timeScale === "day" ? "font-semibold" : ""
+            }`}
+          >
+            Day
+          </button>
+          <button
+            onClick={() => setTimeScale("month")}
+            className={`mr-2 px-4 py-2 bg-red-200 text-red-800 rounded-md ${
+              timeScale === "month" ? "font-semibold" : ""
+            }`}
+          >
+            Month
+          </button>
+          <button
+            onClick={() => setTimeScale("year")}
+            className={`mr-2 px-4 py-2 bg-red-200 text-red-800 rounded-md ${
+              timeScale === "year" ? "font-semibold" : ""
+            }`}
+          >
+            Year
+          </button>
+        </div>
+      </div>
+    );
+  };
+  const fetchUserSuggestions = async (email) => {
+    if (email) {
+      try {
+        const response = await fetch(`/user/${email}`);
+        const user = await response.json();
+        if (user) {
+          setUserSuggestions([user]); // Display suggestion only for one matched user
+        } else {
+          setUserSuggestions([]); // If no user found, clear suggestions
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    } else {
+      setUserSuggestions([]); // Clear suggestions when input is empty
+    }
+  };
+
+  const handleEmailInputChange = (e) => {
+    const value = e.target.value;
+    setEmailInput(value);
+    fetchUserSuggestions(value);
+  };
+
+  const handleSelectUser = (user) => {
+    // When a user clicks on a suggestion, autofill the email input
+    setEmailInput(user.email);
+    setUserSuggestions([]); // Clear suggestions after selection
+  };
+
+  const renderCollaboratorSuggestions = () => {
+    return (
+      <div className="suggestions-list">
+        {userSuggestions.length > 0 ? (
+          userSuggestions.map((user, index) => (
+            <div
+              key={index}
+              onClick={() => handleSelectUser(user)}
+              className="suggestion-item flex items-center space-x-4 p-2 border-b hover:bg-gray-100 cursor-pointer"
+            >
+              <img
+                src={user.image || "/default-avatar.png"}
+                alt={user.username}
+                className="w-8 h-8 rounded-full"
+              />
+              <div>
+                <p className="text-sm font-semibold text-gray-800">{user.username}</p>
+                <p className="text-sm text-gray-500">{user.email}</p>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="text-sm text-gray-500 p-2">No user found</p>
+        )}
       </div>
     );
   };
@@ -207,12 +403,13 @@ const CombinedProjectModal = ({ project, onClose, onUpdate }) => {
             onChange={(e) => handleCollaboratorChange(index, e.target.value)}
             className="w-full p-2 text-red-800 border border-red-300 rounded-md"
           />
+          {index === collaborators.length - 1 && emailInput && renderCollaboratorSuggestions()}
           <button
             type="button"
             onClick={() => removeCollaborator(index)}
-            className="px-3 py-1 text-red-600 bg-red-100 rounded-md hover:bg-red-200"
+            className="px-3 py-1 bg-green-500 text-white rounded-md hover:bg-red-700"
           >
-            Delete
+            Add
           </button>
         </div>
       ))}
