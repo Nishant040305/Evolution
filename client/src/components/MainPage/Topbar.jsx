@@ -3,19 +3,20 @@ import { Undo, Redo, Monitor, Tablet, Smartphone } from "lucide-react";
 import { ActionCreators } from 'redux-undo';
 import { useDispatch } from "react-redux";
 import PublishPage from "../../hooks/PublishPage";
-
+import { useNavigate } from "react-router-dom";
 const TopBar = ( {setScreenSize, css, js} ) => {
   const dispatch = useDispatch();
   const handleUndo = () => {
     dispatch(ActionCreators.undo())
   };
+  const navigate = useNavigate();
   const handleRedo = () => dispatch(ActionCreators.redo());
   const { preview, download, publish } = PublishPage( { css, js } );
 
   return (
   <div className="flex items-center justify-between px-4 bg-white border-b h-14">
     <div className="flex items-center space-x-4">
-      <h1 className="text-xl font-semibold text-rose-800">Evolution</h1>
+      <h1 className="text-xl font-semibold text-rose-800" onClick={()=>navigate('/main')}>Evolution</h1>
       <div className="flex space-x-2">
         <button className="p-2 rounded-lg hover:bg-rose-50" onClick={()=>{
           handleUndo();
