@@ -160,32 +160,34 @@ const LeftSidebar = ({
   return (
     <div className="relative h-full">
       {sidebarOpen ? (
-        <div className="h-full transition-all duration-300 bg-white border-r shadow-lg w-72">
-          <div className="flex flex-col h-full">
-            {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b bg-red-50">
-              <div className="flex space-x-2">
-                <button
-                  onClick={() => setShowComponents(true)}
-                  className={`px-3 py-1.5 rounded-md transition-all ${
-                    showComponents
-                      ? "bg-red-500 text-white"
-                      : "text-gray-600 hover:bg-red-100"
-                  }`}
-                >
-                  Components
-                </button>
-                <button
-                  onClick={() => setShowComponents(false)}
-                  className={`px-3 py-1.5 rounded-md transition-all ${
-                    !showComponents
-                      ? "bg-red-500 text-white"
-                      : "text-gray-600 hover:bg-red-100"
-                  }`}
-                >
-                  Project
-                </button>
-              </div>
+        <div
+          className={`w-64 transition-all duration-300 border-r bg-white overflow-hidden shadow-lg`}
+          style={{ backgroundColor: "#FFE5E5" }} // Light red background
+        >
+          <div className="h-full p-4 overflow-y-auto">
+            <div className="flex items-center justify-between mb-4">
+              <button
+                onClick={() => {
+                  setShowComponents(true);
+                  setStatusCode(0);
+                }}
+                className={`p-2 ${
+                  showComponents ? "font-bold text-red-500" : "text-gray-600"
+                } `}
+              >
+                Components
+              </button>
+              <button
+                onClick={() => {
+                  setShowComponents(false);
+                  setStatusCode(0);
+                }}
+                className={`p-2 ${
+                  !showComponents ? "font-bold text-red-500" : "text-gray-600"
+                } `}
+              >
+                Project
+              </button>
               <button
                 onClick={toggleSidebar}
                 className="p-2 transition-all rounded-full hover:bg-red-100"
