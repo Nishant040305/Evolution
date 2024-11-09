@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setAttribute, setContent ,setProperty} from "../../Store/webElementSlice";
+import { setAttribute, setContent, setProperty } from "../../Store/webElementSlice";
 
 const ComponentEditorContent = ({ id }) => {
   const webElements = useSelector((state) => state.webElement.present);
@@ -13,6 +13,10 @@ const ComponentEditorContent = ({ id }) => {
 
   const handleAttributeChange = (property, value) => {
     dispatch(setAttribute({ id, property, value }));
+  };
+
+  const updateGridStyles = (property, value) => {
+    dispatch(setProperty({ id, property, value }));
   };
 
   return (
@@ -136,71 +140,140 @@ const ComponentEditorContent = ({ id }) => {
         </div>
       )}
 
-    {element.type === "div" && (
-      <div>
-        <label className="block mb-1 font-medium text-gray-600">
-          Display Type:
-          <select
-            value={element.styles.display || ""}
-            onChange={(e) => dispatch(setProperty({id:element.id, property:"display", value:e.target.value}))}
-            className="w-full p-2 mt-1 border border-gray-300 rounded"
-          >
-            <option value="block">Block</option>
-            <option value="flex">Flex</option>
-            <option value="grid">Grid</option>
-          </select>
-        </label>
+      {/* Layout Options */}
+      {element.type === "div" && (
+        <div>
+          <label className="block mb-1 font-medium text-gray-600">
+            Display Type:
+            <select
+              value={element.styles.display || ""}
+              onChange={(e) =>
+                dispatch(
+                  setProperty({ id: element.id, property: "display", value: e.target.value })
+                )
+              }
+              className="w-full p-2 mt-1 border border-gray-300 rounded"
+            >
+              <option value="block">Block</option>
+              <option value="flex">Flex</option>
+              <option value="grid">Grid</option>
+            </select>
+          </label>
 
-        {element.styles.display === "flex" && (
-          <>
-            <label className="block mb-1 font-medium text-gray-600">
-              Flex Direction:
-              <select
-                value={element.styles.flexDirection || ""}
-                onChange={(e) => dispatch(setProperty({id:element.id, property:"flexDirection", value:e.target.value}))}
-                className="w-full p-2 mt-1 border border-gray-300 rounded"
-              >
-                <option value="row">Row</option>
-                <option value="column">Column</option>
-              </select>
-            </label>
+          {/* Flex Layout Controls */}
+          {element.styles.display === "flex" && (
+            <>
+              <label className="block mb-1 font-medium text-gray-600">
+                Flex Direction:
+                <select
+                  value={element.styles.flexDirection || ""}
+                  onChange={(e) =>
+                    dispatch(
+                      setProperty({
+                        id: element.id,
+                        property: "flexDirection",
+                        value: e.target.value,
+                      })
+                    )
+                  }
+                  className="w-full p-2 mt-1 border border-gray-300 rounded"
+                >
+                  <option value="row">Row</option>
+                  <option value="column">Column</option>
+                </select>
+              </label>
 
-            <label className="block mb-1 font-medium text-gray-600">
-              Justify Content:
-              <select
-                value={element.styles.justifyContent || ""}
-                onChange={(e) => dispatch(setProperty({id:element.id, property:"justifyContent", value:e.target.value}))}
-                className="w-full p-2 mt-1 border border-gray-300 rounded"
-              >
-                <option value="flex-start">Flex Start</option>
-                <option value="center">Center</option>
-                <option value="flex-end">Flex End</option>
-                <option value="space-between">Space Between</option>
-                <option value="space-around">Space Around</option>
-                <option value="space-evenly">Space Evenly</option>
-              </select>
-            </label>
+              <label className="block mb-1 font-medium text-gray-600">
+                Justify Content:
+                <select
+                  value={element.styles.justifyContent || ""}
+                  onChange={(e) =>
+                    dispatch(
+                      setProperty({
+                        id: element.id,
+                        property: "justifyContent",
+                        value: e.target.value,
+                      })
+                    )
+                  }
+                  className="w-full p-2 mt-1 border border-gray-300 rounded"
+                >
+                  <option value="flex-start">Flex Start</option>
+                  <option value="center">Center</option>
+                  <option value="flex-end">Flex End</option>
+                  <option value="space-between">Space Between</option>
+                  <option value="space-around">Space Around</option>
+                  <option value="space-evenly">Space Evenly</option>
+                </select>
+              </label>
 
-            <label className="block mb-1 font-medium text-gray-600">
-              Align Items:
-              <select
-                value={element.styles.alignItems || ""}
-                onChange={(e) => dispatch(setProperty({id:element.id, property:"alignItems", value:e.target.value}))}
-                className="w-full p-2 mt-1 border border-gray-300 rounded"
-              >
-                <option value="stretch">Stretch</option>
-                <option value="center">Center</option>
-                <option value="flex-start">Flex Start</option>
-                <option value="flex-end">Flex End</option>
-              </select>
-            </label>
-          </>
-        )}
-      </div>
-    )}
+              <label className="block mb-1 font-medium text-gray-600">
+                Align Items:
+                <select
+                  value={element.styles.alignItems || ""}
+                  onChange={(e) =>
+                    dispatch(
+                      setProperty({
+                        id: element.id,
+                        property: "alignItems",
+                        value: e.target.value,
+                      })
+                    )
+                  }
+                  className="w-full p-2 mt-1 border border-gray-300 rounded"
+                >
+                  <option value="stretch">Stretch</option>
+                  <option value="center">Center</option>
+                  <option value="flex-start">Flex Start</option>
+                  <option value="flex-end">Flex End</option>
+                </select>
+              </label>
+            </>
+          )}
 
+          {/* Grid Layout Controls */}
+          {element.styles.display === "grid" && (
+            <>
+              <label className="block mb-1 font-medium text-gray-600">
+                Grid Template Columns:
+                <input
+                  type="text"
+                  value={element.styles.gridTemplateColumns || ""}
+                  onChange={(e) =>
+                    updateGridStyles("gridTemplateColumns", e.target.value)
+                  }
+                  className="w-full p-2 mt-1 border border-gray-300 rounded"
+                  placeholder="e.g., 1fr 1fr"
+                />
+              </label>
 
-      
+              <label className="block mb-1 font-medium text-gray-600">
+                Grid Template Rows:
+                <input
+                  type="text"
+                  value={element.styles.gridTemplateRows || ""}
+                  onChange={(e) =>
+                    updateGridStyles("gridTemplateRows", e.target.value)
+                  }
+                  className="w-full p-2 mt-1 border border-gray-300 rounded"
+                  placeholder="e.g., auto"
+                />
+              </label>
+
+              <label className="block mb-1 font-medium text-gray-600">
+                Gap:
+                <input
+                  type="text"
+                  value={element.styles.gap || ""}
+                  onChange={(e) => updateGridStyles("gap", e.target.value)}
+                  className="w-full p-2 mt-1 border border-gray-300 rounded"
+                  placeholder="e.g., 10px"
+                />
+              </label>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 };
