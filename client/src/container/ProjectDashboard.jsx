@@ -109,15 +109,16 @@ const ProjectDashboard = () => {
               Loading projects...
             </div>
           ) : (
-            filteredProjects.map((project) => (
-              <ProjectCard
+            filteredProjects.map((project) => {
+              if (!project) return;
+              return (<ProjectCard
                 key={project._id} // Ensure unique `key` prop based on `_id`
                 project={project}
                 onDelete={handleDeleteProject}
                 onClick={handleProjectClick}
                 onUpdate={handleUpdateProject}
-              />
-            ))
+              />)
+            })
           )}
         </div>
       </div>

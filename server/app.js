@@ -30,7 +30,7 @@ app.use((err, req, res, next) => {
 });
 
 // Static files
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, 'static')));
 
 // Set up routes
 const domainRoutes = require("./routes/domain.routes");

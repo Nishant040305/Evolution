@@ -8,6 +8,12 @@ const PublishPage = ( { css, js } ) => {
 
   const getProjectId = () => project._id;
 
+  const saveProject = () => {
+    if (webElements) {
+      apiDashboard.updateProjectComponents(getProjectId(), webElements);
+    }
+  }
+
   const getHTMLContent = () => {
     let htmlContent = document.getElementById("canvas").innerHTML;
 
@@ -37,6 +43,7 @@ const PublishPage = ( { css, js } ) => {
   };
 
   const download = () => {
+    saveProject();
     const htmlContent = getHTMLContent();
     const blob = new Blob([htmlContent], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
@@ -52,6 +59,7 @@ const PublishPage = ( { css, js } ) => {
   };
 
   const publish = async () => {
+    saveProject();
     const htmlContent = getHTMLContent();
     const id = getProjectId();
 

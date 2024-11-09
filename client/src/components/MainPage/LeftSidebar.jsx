@@ -134,7 +134,10 @@ const LeftSidebar = ({ sidebarOpen, toggleSidebar, toggleRight, setStatusCode,se
           <div className="h-full p-4 overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
               <button
-                onClick={() => setShowComponents(true)}
+                onClick={() => {
+                  setShowComponents(true)
+                  setStatusCode(0)
+                }}
                 className={`p-2 ${
                   showComponents ? "font-bold text-red-500" : "text-gray-600"
                 } `}
@@ -142,7 +145,10 @@ const LeftSidebar = ({ sidebarOpen, toggleSidebar, toggleRight, setStatusCode,se
                 Components
               </button>
               <button
-                onClick={() => setShowComponents(false)}
+                onClick={() => {
+                  setShowComponents(false)
+                  setStatusCode(0)
+                }}
 
                 className={`p-2 ${
                   !showComponents ? "font-bold text-red-500" : "text-gray-600"

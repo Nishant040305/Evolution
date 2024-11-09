@@ -109,7 +109,7 @@ const WebsiteBuilder = () => {
   
   return (
     <div className="flex flex-col h-screen">
-      <TopBar setScreenSize={setScreenSize} css={css} js={js}/>
+      <TopBar setScreenSize={setScreenSize} css={css} js={js} setStatusCode={setStatusCode}/>
       <div className="flex flex-1">
         <LeftSidebar
           sidebarOpen={leftSidebarOpen}

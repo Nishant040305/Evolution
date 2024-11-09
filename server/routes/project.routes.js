@@ -13,6 +13,7 @@ const {
     updateComponents,
     deleteProject,
     publishProject,
+    downloadProject,
     updateImageProject
 } = projectController;
 
@@ -33,16 +34,23 @@ router.post('/', createProject);
 router.put('/:id', updateProject);
 
 // @route    PUT /api/project/:id/components
-// @desc     Update a project by id
+// @desc     Update a project's components by id
 router.put('/:id/components', updateComponents);
 
 // @route    DELETE /api/project/:id
 // @desc     Delete a project by id
 router.delete('/:id', deleteProject);
 
-router.post('/image/:id',upload.single('file'),updateImageProject);
+// @route    POST /api/project/image/:id
+// @desc     Update a project's media by id
+router.post('/image/:id', upload.single('file'), updateImageProject);
+
 // @route    POST /api/project/:id/publish
 // @desc     Publish a project by id
 router.post('/:id/publish', publishProject);
+
+// @route    GET /:domain/download
+// @desc     Download a project zip by domain
+router.get('/:id/download', downloadProject);
 
 module.exports = router;

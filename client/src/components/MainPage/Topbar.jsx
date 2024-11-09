@@ -4,7 +4,8 @@ import { ActionCreators } from 'redux-undo';
 import { useDispatch,useSelector } from "react-redux";
 import PublishPage from "../../hooks/PublishPage";
 import { useNavigate } from "react-router-dom";
-const TopBar = ( {setScreenSize, css, js} ) => {
+
+const TopBar = ( {setScreenSize, css, js, setStatusCode} ) => {
   const dispatch = useDispatch();
   const handleUndo = () => {
     dispatch(ActionCreators.undo())
@@ -13,6 +14,25 @@ const TopBar = ( {setScreenSize, css, js} ) => {
   const navigate = useNavigate();
   const handleRedo = () => dispatch(ActionCreators.redo());
   const { preview, download, publish } = PublishPage( { css, js } );
+
+  const handlePreview = () => {
+    setStatusCode(0);
+    preview();
+  };
+
+  const handleDownload = () => {
+    setStatusCode(0);
+    if (window.confirm("Are you sure you want to download this project? All changes will be saved.")) {
+      download();
+    }
+  };
+
+  const handlePublish = () => {
+    setStatusCode(0);
+    if (window.confirm("Are you sure you want to publish this project? All changes will be saved.")) {
+      publish();
+    }
+  };
 
   return (
   <div className="flex items-center justify-between px-4 bg-white border-b h-14">
@@ -48,19 +68,19 @@ const TopBar = ( {setScreenSize, css, js} ) => {
       </div>
       <button 
         className="px-3 py-1.5 bg-rose-100 hover:bg-rose-200 rounded-lg text-rose-800"
-        onClick={preview}
+        onClick={handlePreview}
    >
         Preview
       </button>
       <button 
         className="px-3 py-1.5 bg-rose-100 hover:bg-rose-200 rounded-lg text-rose-800"
-        onClick={download}
+        onClick={handleDownload}
   >
         Download
       </button>
       <button 
         className="px-3 py-1.5 bg-rose-800 text-white rounded-lg hover:bg-rose-900"
-        onClick={publish}
+        onClick={handlePublish}
       >
         Publish
       </button>
