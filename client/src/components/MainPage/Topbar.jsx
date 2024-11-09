@@ -1,7 +1,7 @@
 import React from "react";
 import { Undo, Redo, Monitor, Tablet, Smartphone } from "lucide-react";
 import { ActionCreators } from 'redux-undo';
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import PublishPage from "../../hooks/PublishPage";
 import { useNavigate } from "react-router-dom";
 const TopBar = ( {setScreenSize, css, js} ) => {
@@ -9,6 +9,7 @@ const TopBar = ( {setScreenSize, css, js} ) => {
   const handleUndo = () => {
     dispatch(ActionCreators.undo())
   };
+  const projectinfo = useSelector((state) => state.project);
   const navigate = useNavigate();
   const handleRedo = () => dispatch(ActionCreators.redo());
   const { preview, download, publish } = PublishPage( { css, js } );
@@ -30,6 +31,9 @@ const TopBar = ( {setScreenSize, css, js} ) => {
         </button>
       </div>
     </div>
+    <div className="flex items-center space-x-4 mb-2 text-rose-800 font-semibold text-lg">
+        {projectinfo.name}
+      </div>
     <div className="flex items-center space-x-4">
       <div className="flex p-1 border rounded-lg bg-rose-50">
         <button className="p-1 rounded hover:bg-white">

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import ApiDashboard from "../../scripts/API.Dashboard";
 
 const ProjectSettingsModal = ({ project, onClose, onUpdate }) => {
   const [updatedProject, setUpdatedProject] = useState({
     name: project.name,
     description: project.description,
   });
+  const API = new ApiDashboard();
   const [collaborators, setCollaborators] = useState(
     project.collaborators || [{ email: "" }]
   );
@@ -25,7 +27,9 @@ const ProjectSettingsModal = ({ project, onClose, onUpdate }) => {
   };
 
   const handleSave = () => {
-    onUpdate({ ...updatedProject, collaborators });
+    console.log({...project,...updatedProject})
+    API.updateProject(project._id, updatedProject);
+    onUpdate(project._id,updatedProject);
     onClose();
   };
 

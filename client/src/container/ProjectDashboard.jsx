@@ -21,8 +21,20 @@ const ProjectDashboard = () => {
 
   const API = new ApiDashboard();
   const APIUser = new User(user); // Moved initialization inside useEffect
-
-  useEffect(() => {
+  const handleUpdateProject = (projectId, projectData) => {
+    // Find the project to update by its ID
+    const updatedProjects = projects.map((project) => {
+      if (project._id === projectId) {
+        // Return a new object with updated project data
+        return { ...project, name: projectData.name, description: projectData.description };
+      }
+      return project; // Keep other projects unchanged
+    });
+  
+    // Update the state with the new projects array
+    setProjects(updatedProjects);
+  };
+    useEffect(() => {
     fetchProjects();
   }, [user]); // Re-fetch when user changes
 
@@ -103,6 +115,7 @@ const ProjectDashboard = () => {
                 project={project}
                 onDelete={handleDeleteProject}
                 onClick={handleProjectClick}
+                onUpdate={handleUpdateProject}
               />
             ))
           )}
