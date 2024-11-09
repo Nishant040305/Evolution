@@ -56,7 +56,7 @@ const RightSidebar = ({ closeSidebar, id }) => {
   });
 
   return (
-    <div className="flex flex-col h-screen overflow-y-auto transition-all duration-300 bg-white border-l w-80">
+    <div className="flex flex-col h-[50vh] overflow-y-auto transition-all duration-300 bg-white border-l w-80 z-50">
       <div className="flex flex-row justify-between w-auto px-2 py-3 pt-2 text-white bg-red-500 border-b properties-section border-slate-200">
         <div className="flex flex-row items-center text-lg font-semibold">
           <ChartColumn size={25} color="#fff" className="mr-2" />
