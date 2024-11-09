@@ -85,10 +85,6 @@ const CombinedProjectModal = ({ project, onClose, onUpdate }) => {
     onClose();
   };
 
-  const handleCancel = () => {
-    onClose(); // Close the modal without saving
-  };
-
   const handleRevertVersion = (version) => {
     // Logic to revert to a selected version
     // You can implement an API call to fetch that specific version's data
@@ -231,28 +227,24 @@ const CombinedProjectModal = ({ project, onClose, onUpdate }) => {
       <h2 className="mb-4 text-lg font-semibold text-red-800">
         Version History
       </h2>
-      <div className="overflow-y-auto max-h-72">
-        {" "}
-        {/* Added scrollable container */}
-        <ul className="space-y-2">
-          {versionHistory.map((versionItem, index) => (
-            <li
-              key={index}
-              className="flex justify-between p-2 bg-red-100 rounded-md"
+      <ul className="space-y-2">
+        {versionHistory.map((versionItem, index) => (
+          <li
+            key={index}
+            className="flex justify-between p-2 bg-red-100 rounded-md"
+          >
+            <div>
+              <strong>{versionItem.version}</strong> - {versionItem.date}
+            </div>
+            <button
+              onClick={() => handleRevertVersion(versionItem.version)}
+              className="text-red-600 hover:text-red-800"
             >
-              <div>
-                <strong>{versionItem.version}</strong> - {versionItem.date}
-              </div>
-              <button
-                onClick={() => handleRevertVersion(versionItem.version)}
-                className="text-red-600 hover:text-red-800"
-              >
-                Revert
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
+              Revert
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 
@@ -260,81 +252,66 @@ const CombinedProjectModal = ({ project, onClose, onUpdate }) => {
     <div className="fixed inset-0 z-10 flex items-center justify-center bg-opacity-50 bg-black-200">
       <div className="flex w-full max-w-4xl p-6 rounded-lg shadow-lg bg-red-50">
         {/* Sidebar */}
-        <div className="w-1/4 pr-4 border-r border-gray-300">
+        <div className="w-1/4 border-r border-gray-300">
           <button
-            className={`w-full text-left p-3 rounded-md mb-2 ${
-              activeTab === "settings"
-                ? "bg-red-200 text-red-800"
-                : "hover:bg-red-100"
-            }`}
             onClick={() => setActiveTab("settings")}
+            className={`w-full p-4 text-left ${
+              activeTab === "settings" ? "bg-red-200" : ""
+            }`}
           >
-            Project Settings
+            Settings
           </button>
           <button
-            className={`w-full text-left p-3 rounded-md mb-2 ${
-              activeTab === "analytics"
-                ? "bg-red-200 text-red-800"
-                : "hover:bg-red-100"
-            }`}
             onClick={() => setActiveTab("analytics")}
+            className={`w-full p-4 text-left ${
+              activeTab === "analytics" ? "bg-red-200" : ""
+            }`}
           >
             Analytics
           </button>
           <button
-            className={`w-full text-left p-3 rounded-md mb-2 ${
-              activeTab === "collaborators"
-                ? "bg-red-200 text-red-800"
-                : "hover:bg-red-100"
-            }`}
             onClick={() => setActiveTab("collaborators")}
+            className={`w-full p-4 text-left ${
+              activeTab === "collaborators" ? "bg-red-200" : ""
+            }`}
           >
             Manage Collaborators
           </button>
           <button
-            className={`w-full text-left p-3 rounded-md mb-2 ${
-              activeTab === "roles"
-                ? "bg-red-200 text-red-800"
-                : "hover:bg-red-100"
-            }`}
             onClick={() => setActiveTab("roles")}
+            className={`w-full p-4 text-left ${
+              activeTab === "roles" ? "bg-red-200" : ""
+            }`}
           >
             Roles
           </button>
           <button
-            className={`w-full text-left p-3 rounded-md mb-2 ${
-              activeTab === "versionHistory"
-                ? "bg-red-200 text-red-800"
-                : "hover:bg-red-100"
-            }`}
             onClick={() => setActiveTab("versionHistory")}
+            className={`w-full p-4 text-left ${
+              activeTab === "versionHistory" ? "bg-red-200" : ""
+            }`}
           >
             Version History
           </button>
         </div>
 
         {/* Content */}
-        <div className="flex-1 pl-4">
-          {activeTab === "settings" && renderSettingsTab()}
-          {activeTab === "analytics" && renderAnalyticsTab()}
-          {activeTab === "collaborators" && renderManageCollaboratorsTab()}
-          {activeTab === "roles" && renderRolesTab()}
-          {activeTab === "versionHistory" && renderVersionHistoryTab()}
+        <div className="w-3/4 p-6">{renderSettingsTab()}</div>
 
-          <div className="flex justify-end mt-6 space-x-4">
-            <button
-              onClick={handleCancel}
-              className="px-4 py-2 text-white bg-gray-500 rounded-md hover:bg-gray-600"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={handleSave}
-              className="px-4 py-2 text-white bg-red-600 rounded-md hover:bg-red-700"
-            >
-              Save
-            </button>
-          </div>
+        {/* Modal Footer */}
+        <div className="flex items-center justify-between w-full p-2 mt-4 bg-gray-100">
+          <button
+            className="px-4 py-2 text-white bg-gray-400 rounded-lg"
+            onClick={onClose}
+          >
+            Cancel
+          </button>
+          <button
+            className="px-4 py-2 text-white bg-red-600 rounded-lg"
+            onClick={handleSave}
+          >
+            Save Changes
+          </button>
         </div>
       </div>
     </div>
