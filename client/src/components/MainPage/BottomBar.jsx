@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Timer, Save } from "lucide-react";
 import { useParams } from "react-router-dom";
 import useSaveProject from "../../hooks/useSaveProject";
-
+import { useSelector } from "react-redux";
 const BottomBar = () => {
   const { userId, projectID } = useParams();
   const project = useSelector((state) => state.user.userInfo.projects);

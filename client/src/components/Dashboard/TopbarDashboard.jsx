@@ -1,4 +1,5 @@
 // src/components/Dashboard/Topbar.js
+
 import React, { useState } from "react";
 import { Search, Settings, User, LogOut, Bell } from "lucide-react";
 import NotificationsPanel from "./NotificationsPanel";
@@ -19,7 +20,7 @@ const TopBar = ({ searchQuery, setSearchQuery }) => {
   };
 
   const handleNavigateToSettings = () => {
-    navigate("/main/settings");
+    navigate("/main/settings"); // Navigate to Settings Page
   };
 
   return (
@@ -50,7 +51,6 @@ const TopBar = ({ searchQuery, setSearchQuery }) => {
 
           {/* User Options */}
           <div className="flex items-center space-x-4">
-            {/* Notifications */}
             <button
               onClick={toggleNotifications}
               className="relative p-2 rounded-full hover:bg-red-300"
@@ -94,7 +94,6 @@ const TopBar = ({ searchQuery, setSearchQuery }) => {
         </div>
       </div>
 
-      {/* Notifications Panel */}
       {showNotifications && (
         <div className="absolute right-0 w-full max-w-xs mt-2 top-full">
           <NotificationsPanel />
