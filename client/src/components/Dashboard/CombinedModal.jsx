@@ -208,7 +208,7 @@ const CombinedProjectModal = ({ project, onClose, onUpdate }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-opacity-50 bg-black-200">
+    <div className="fixed inset-0 flex items-center justify-center z-10 bg-opacity-50 bg-black-200">
       <div className="flex w-full max-w-4xl p-6 rounded-lg shadow-lg bg-red-50">
         {/* Sidebar */}
         <div className="w-1/4 border-r border-gray-300">
