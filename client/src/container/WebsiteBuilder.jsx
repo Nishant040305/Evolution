@@ -6,6 +6,7 @@ import RightSidebar from "../components/MainPage/RightSidebar";
 import BottomBar from "../components/MainPage/BottomBar";
 import { useSelector,useDispatch } from "react-redux";
 import { setElement ,setAttribute,setPosition} from "../Store/webElementSlice";
+import { setProject } from "../Store/projectSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import ApiDashboard from "../scripts/API.Dashboard";
 import { setData } from "../Store/imageSlice";
@@ -21,6 +22,8 @@ const WebsiteBuilder = () => {
   const [leftSidebarOpen, setLeftSidebarOpen] = useState(true);
   const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
   const [statusCode,setStatusCode] = useState(0);
+  const [css, setCss] = useState("/* Write your CSS code here... */");
+  const [js, setJs] = useState("// Write your JS code here...");
   const [id,set] = useState(0);
   const webElementRef = useRef(webElement); // Create a ref for the last webElement
   const setId=(id)=>{
@@ -93,6 +96,9 @@ const WebsiteBuilder = () => {
           } else {
             dispatch(setElement(projectComp.components));
             dispatch(setData(projectComp.media));
+            dispatch(setProject(projectComp));
+            setCss(projectComp.cssContent || "/* Write your CSS code here... */");
+            setJs(projectComp.javascriptContent || "// Write your JS code here...");
             Object.keys(webElement).forEach((key)=>{
               dispatch(setAttribute(
                 {
@@ -128,7 +134,7 @@ const WebsiteBuilder = () => {
   
     return (
     <div className="flex flex-col h-screen">
-      <TopBar/>
+      <TopBar css={css} js={js}/>
       <div className="flex flex-1">
         <LeftSidebar
           sidebarOpen={leftSidebarOpen}
@@ -139,7 +145,11 @@ const WebsiteBuilder = () => {
           id={id}
           setId={set}
         />
-        {statusCode==0?<MainCanvas/>:statusCode==1?<CodeEditorJS/>:statusCode==2?<CodeEditorCSS/>:<MainCanvas/>}
+        {statusCode==0?<MainCanvas/>:statusCode==1?
+          <CodeEditorJS js={js} setJs={setJs}/>
+          :statusCode==2?
+          <CodeEditorCSS css={css} setCss={setCss}/>
+        :<MainCanvas/>}
         {rightSidebarOpen && (
           <RightSidebar
             closeSidebar={() => {

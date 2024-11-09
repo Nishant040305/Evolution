@@ -21,6 +21,7 @@
         "GetProjectById":"/api/project/:id",
         "CreatProject":"/api/project",
         "UpdateProject":"/api/project/:id",
+        "UpdateProjectComponents":"/api/project/:id/components",
         "DeleteProject":"/api/project/:id",
         "PublishProject": "/api/project/:id/publish",
         "MediaUpdate":"/api/project/image/"

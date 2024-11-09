@@ -19,7 +19,7 @@ const ComponentRenderer = ({ instance, recursionDepth = 0 }) => {
     ...instance.styles 
   };
 
-  const classNames = instance.attributes.className 
+  const classNames = instance.attributes?.className
     ? [ "canvas-component", ...instance.attributes.className.split(" ") ]
     : [ "canvas-component", "canvas-component-light" ];
 

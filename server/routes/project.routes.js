@@ -10,6 +10,7 @@ const {
     getProjectById,
     createProject,
     updateProject,
+    updateComponents,
     deleteProject,
     publishProject,
     updateImageProject
@@ -30,6 +31,10 @@ router.post('/', createProject);
 // @route    PUT /api/project/:id
 // @desc     Update a project by id
 router.put('/:id', updateProject);
+
+// @route    PUT /api/project/:id/components
+// @desc     Update a project by id
+router.put('/:id/components', updateComponents);
 
 // @route    DELETE /api/project/:id
 // @desc     Delete a project by id

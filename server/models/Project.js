@@ -65,9 +65,13 @@ const ProjectSchema = new Schema({
     type: Schema.Types.Mixed,
     default: {}
   },
-  text: {
-    "js": String,
-    "css": String,
+  javascriptContent: {
+    type: String,
+    default: ""
+  },
+  cssContent: {
+    type: String,
+    default: ""
   },
   media:{
     type:[String],
@@ -79,13 +83,11 @@ const ProjectSchema = new Schema({
     {
       version: Number,
       components: Schema.Types.Mixed,
-      text: {
-        "js": String,
-        "css": String,
-      },
+      javascriptContent: String,
+      cssContent: String,
       timestamp: { type: Date, default: Date.now },
       message: { type: String, default: 'No message provided.' },
-      user: {
+      member: {
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true,
@@ -96,12 +98,13 @@ const ProjectSchema = new Schema({
 
 // Pre-save hook to track changes and version control
 ProjectSchema.pre('save', function (next) {
-  if (this.isModified('components') || this.isModified('text')) {
+  if (this.isModified('components') || this.isModified('javascriptContent') || this.isModified('cssContent')) {
     const newVersion = {
       version: this.version + 1,
       components: this.components,
-      text: this.text,
-      user: this.user,
+      javascriptContent: this.javascriptContent,
+      cssContent: this.cssContent,
+      member: this.user,
     };
     this.versions.push(newVersion);
   }

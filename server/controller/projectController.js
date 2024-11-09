@@ -46,7 +46,7 @@ const createProject = async (req, res) => {
     }
 };
 
-const updateProject = async (req, res) => {
+const updateComponents = async (req, res) => {
     try {
         const updatedProject = await Project.findByIdAndUpdate(
             req.params.id,
@@ -62,6 +62,24 @@ const updateProject = async (req, res) => {
         return res.status(500).json({ message: 'Error updating project', error });
     }
 };
+
+const updateProject = async (req, res) => {
+    try {
+        const updatedProject = await Project.findByIdAndUpdate(
+            req.params.id,
+            { $set: req.body },
+            { new: true } // Return the updated document
+        );
+
+        if (!updatedProject) {
+            return res.status(404).json({ message: 'Project not found' });
+        }
+        return res.status(200).json(updatedProject);
+    } catch (error) {
+        return res.status(500).json({ message: 'Error updating project', error });
+    }
+};
+
 const updateImageProject = async (req,res)=>{
     try{
         const valid = Project.findById(req.body.params);
@@ -193,6 +211,7 @@ module.exports = {
     getProjectById,
     createProject,
     updateProject,
+    updateComponents,
     deleteProject,
     publishProject,
     openProject,

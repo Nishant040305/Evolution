@@ -6,12 +6,13 @@ import undoable from 'redux-undo';
 import webElementsSlice from './Store/webElementSlice'; // import your slice
 import userReducer from './Store/userSlice';
 import ImageSlice from './Store/imageSlice';
+import projectSlice from './Store/projectSlice';
 // Root reducer with undo functionality for specific slices
 const rootReducer = combineReducers({
   webElement: undoable(webElementsSlice),
   user: userReducer,
   image:ImageSlice,
-
+  project:projectSlice,
 });
 const persistConfig = {
   key: 'root',

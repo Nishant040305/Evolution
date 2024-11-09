@@ -27,7 +27,7 @@ const BottomBar = () => {
       </button> */}
       <button className="flex items-center p-2 space-x-1 text-sm text-white rounded-lg bg-rose-500 hover:bg-rose-600" onClick={()=>{
         if (webElements && project.includes(projectID)) {
-          API.updateProject(projectID, webElements);
+          API.updateProjectComponents(projectID, webElements);
       }        
       }}>
         <Save className="w-4 h-4" />
