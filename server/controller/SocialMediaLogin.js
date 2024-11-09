@@ -19,4 +19,4 @@ const googleCallback = (req, res) => {
   })(req, res);
 };
 
-module.exports = { googleLogin, googleCallback };
+module.exports = { googleCallback };
