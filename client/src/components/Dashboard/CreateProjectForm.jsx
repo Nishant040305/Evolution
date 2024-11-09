@@ -41,8 +41,6 @@ const CreateProjectForm = ({ onCreateProject }) => {
     try {
       // Create Project
       const projectData = { ...newProject, user };
-      await API.createProject(projectData);
-
       setMessage("Project created successfully!");
 
       // Invite Collaborators

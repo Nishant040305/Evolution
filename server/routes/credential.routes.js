@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const credController = require("../controller/credController");
 const credMiddleware = require("../middleware/credMiddleware");
+const {googleLogin} = require("../middleware/googleMiddleware"); // Import the passport configuration
+const {googleCallback} = require("../controller/SocialMediaLogin");
 const User = require('../models/User');
 
 // @routes   GET /api/auth/
@@ -34,4 +36,13 @@ router.post('/passwordChange', credController.ConfirmPasswordChange);
 // @routes   POST /api/auth/logout
 // @desc     Logout user
 router.post('/logout', credController.logout);
+
+// @routes   GET /api/auth/google
+// @desc     Google OAuth login
+router.get('/auth/google', googleLogin);
+
+// @roues    GET /api/auth/google/callback
+// @desc     Google OAuth callback
+router.get('/auth/google/callback', googleCallback);
+
 module.exports = router;
