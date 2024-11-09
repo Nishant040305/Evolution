@@ -124,7 +124,7 @@ const publishProject = async (req, res) => {
     const { id, htmlContent, style_css, script_js } = req.body;
 
     const project = await Project.findById(id);
-    const { name, description } = project;
+    const { name, description, keywords } = project;
     
     if (!id || !htmlContent) {
         return res.status(400).json({ error: 'ID and HTML content are required.' });
@@ -149,6 +149,7 @@ const publishProject = async (req, res) => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>${name}</title>
         <meta name="description" content="${description}">
+        ${keywords.map(keyword => `<meta name="keywords" content="${keyword}">`).join('')}
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
@@ -197,7 +198,7 @@ const openProject = async (req, res) => {
 
         if (project) {
             await Project.updateOne(
-                { domain },
+                { _id: project._id },
                 { $push: { 'analytics.views': Date.now() } }
             );
             console.log(`Project ${project._id} opened | Views: ${1 + project.analytics.views.length}`);

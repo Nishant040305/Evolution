@@ -10,6 +10,13 @@ const ProjectSchema = new Schema({
     type: String,
     default: 'No description provided.',
   },
+  
+  // search engine optimization
+  keywords: [
+    {
+      type: String,
+    }
+  ],
 
   // domain provided by server and custom domain provided by user
   domain: {
