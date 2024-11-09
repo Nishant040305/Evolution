@@ -88,11 +88,11 @@ const LoginBlock = ({setRegister}) => {
       
       {/* Social login buttons */}
       <div className='special-login'>
-        <button className="google-signin-button">
+        <button className="google-signin-button" onClick={()=>{window.open("http://localhost:4000/api/auth/google/callback","_self")}}>
           <img src="https://banner2.cleanpng.com/20240111/qtv/transparent-google-logo-colorful-google-logo-with-bold-green-1710929465092.webp" alt="Google logo" />
           <span>Sign in with Google</span>
         </button>
-        <button className="github-signin-button">
+        <button className="github-signin-button" onClick={()=>{window.open("http://localhost:4000/api/auth/github","_self")}}>
           <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub logo" />
           <span>Sign in with GitHub</span>
         </button>
