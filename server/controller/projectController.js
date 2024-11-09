@@ -124,6 +124,5 @@ module.exports = {
     createProject,
     updateProject,
     updateComponents,
-    downloadProject,
     updateImageProject,
 };
