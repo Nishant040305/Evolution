@@ -25,6 +25,9 @@ ChartJS.register(
 
 const CombinedProjectModal = ({ project, onClose, onUpdate }) => {
   const [activeTab, setActiveTab] = useState("settings");
+  const [emailInput, setEmailInput] = useState("");
+  const [userSuggestions, setUserSuggestions] = useState([]);
+  
   const [updatedProject, setUpdatedProject] = useState({
     name: project.name,
     description: project.description,
@@ -278,6 +281,64 @@ const groupViewsByTime = (views, scale) => {
       </div>
     );
   };
+  const fetchUserSuggestions = async (email) => {
+    if (email) {
+      try {
+        const response = await fetch(`/user/${email}`);
+        const user = await response.json();
+        if (user) {
+          setUserSuggestions([user]); // Display suggestion only for one matched user
+        } else {
+          setUserSuggestions([]); // If no user found, clear suggestions
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    } else {
+      setUserSuggestions([]); // Clear suggestions when input is empty
+    }
+  };
+
+  const handleEmailInputChange = (e) => {
+    const value = e.target.value;
+    setEmailInput(value);
+    fetchUserSuggestions(value);
+  };
+
+  const handleSelectUser = (user) => {
+    // When a user clicks on a suggestion, autofill the email input
+    setEmailInput(user.email);
+    setUserSuggestions([]); // Clear suggestions after selection
+  };
+
+  const renderCollaboratorSuggestions = () => {
+    return (
+      <div className="suggestions-list">
+        {userSuggestions.length > 0 ? (
+          userSuggestions.map((user, index) => (
+            <div
+              key={index}
+              onClick={() => handleSelectUser(user)}
+              className="suggestion-item flex items-center space-x-4 p-2 border-b hover:bg-gray-100 cursor-pointer"
+            >
+              <img
+                src={user.image || "/default-avatar.png"}
+                alt={user.username}
+                className="w-8 h-8 rounded-full"
+              />
+              <div>
+                <p className="text-sm font-semibold text-gray-800">{user.username}</p>
+                <p className="text-sm text-gray-500">{user.email}</p>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="text-sm text-gray-500 p-2">No user found</p>
+        )}
+      </div>
+    );
+  };
+
   const renderManageCollaboratorsTab = () => (
     <div>
       <h2 className="mb-4 text-lg font-semibold text-red-800">
@@ -292,12 +353,13 @@ const groupViewsByTime = (views, scale) => {
             onChange={(e) => handleCollaboratorChange(index, e.target.value)}
             className="w-full p-2 text-red-800 border border-red-300 rounded-md"
           />
+          {index === collaborators.length - 1 && emailInput && renderCollaboratorSuggestions()}
           <button
             type="button"
             onClick={() => removeCollaborator(index)}
-            className="px-3 py-1 text-red-600 bg-red-100 rounded-md hover:bg-red-200"
+            className="px-3 py-1 bg-green-500 text-white rounded-md hover:bg-red-700"
           >
-            Delete
+            Add
           </button>
         </div>
       ))}
