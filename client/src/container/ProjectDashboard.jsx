@@ -117,8 +117,8 @@ const ProjectDashboard = () => {
                 onDelete={handleDeleteProject}
                 onClick={handleProjectClick}
                 onUpdate={handleUpdateProject}
-              />
-            ))
+              />)
+            })
           )}
         </div>
       </div>
