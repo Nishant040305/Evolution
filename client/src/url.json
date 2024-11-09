@@ -1,5 +1,6 @@
 {
   "Main": "/main/:userId/:projectID",
   "Login": "/login-page",
-  "Dashboard": "/"
+  "Dashboard": "/",
+  "Settings": "/settings"
 }

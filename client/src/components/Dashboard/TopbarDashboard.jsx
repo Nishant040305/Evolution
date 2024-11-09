@@ -1,19 +1,25 @@
+// src/components/Dashboard/Topbar.js
 import React, { useState } from "react";
 import { Search, Settings, User, LogOut, Bell } from "lucide-react";
 import NotificationsPanel from "./NotificationsPanel";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../Store/userSlice";
 import AuthService from "../../scripts/API.Login";
-import {useNavigate} from "react-router-dom";
-import url from "../../url.json";
+import { useNavigate } from "react-router-dom";
+
 const TopBar = ({ searchQuery, setSearchQuery }) => {
   const [showNotifications, setShowNotifications] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.userInfo.avatar);
   const APT = new AuthService();
+
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
+  };
+
+  const handleNavigateToSettings = () => {
+    navigate("/main/settings");
   };
 
   return (
@@ -54,7 +60,10 @@ const TopBar = ({ searchQuery, setSearchQuery }) => {
             </button>
 
             {/* Settings */}
-            <button className="p-2 rounded-full hover:bg-red-300" onClick={()=>navigate(url.Settings)}>
+            <button
+              onClick={handleNavigateToSettings}
+              className="p-2 rounded-full hover:bg-red-300"
+            >
               <Settings className="w-5 h-5 text-red-600" />
             </button>
 
@@ -87,13 +96,8 @@ const TopBar = ({ searchQuery, setSearchQuery }) => {
 
       {/* Notifications Panel */}
       {showNotifications && (
-        <div
-          className=""
-          style={{ position: "absolute", right: 0, zIndex: 2000 }}
-        >
-          <div className="relative w-full max-w-xs mt-2 top-full">
-            <NotificationsPanel />
-          </div>
+        <div className="absolute right-0 w-full max-w-xs mt-2 top-full">
+          <NotificationsPanel />
         </div>
       )}
     </div>

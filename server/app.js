@@ -2,7 +2,8 @@ const express = require("express");
 const path = require("path");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-
+const passport = require("passport");
+const session = require("express-session");
 // Load environment variables
 require("dotenv").config();
 
@@ -19,7 +20,14 @@ app.use(
     credentials: true,
   })
 );
-
+app.use(session({
+  secret: process.env.SESSION_SECRET, // Replace with a secure key or an environment variable
+  resave: false, // Don't save session if unmodified
+  saveUninitialized: false, // Doesn't save empty sessions
+  cookie: { secure: process.env.NODE_ENV === 'production' } // Set to true if using HTTPS in production
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.json());
 app.use(cookieParser());
 
