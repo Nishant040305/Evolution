@@ -60,18 +60,19 @@ const MainCanvas = ({ScreenSize, reloadEvents}) => {
   };
   
   const getWidth = () => {
-    if (ScreenSize === 'desktop') return 'calc(20vw - 64px)';
-    if (ScreenSize === 'mobile') return 'calc(10vw - 48px)';
-    return 'calc(50vw - 64px)'; // Default for tablet or other sizes
+    if (ScreenSize === 'desktop') return 'calc(80vw - 64px)';
+    if (ScreenSize === 'mobile') return 'calc(30vw - 48px)';
+    return 'calc(60vw - 64px)'; // Default for tablet or other sizes
   };
   
   console.log(getWidth(),getHeight())
   return (
-    <div className="flex-1 p-8 overflow-auto bg-gray-100" style={{ height: getHeight(), width: getWidth() }}>
-      <div className="min-h-full p-8 bg-white rounded-lg shadow-lg">
+    <div className="flex-1 p-8 overflow-auto bg-gray-100">
+      <div className="min-h-full bg-white rounded-lg shadow-lg" style={{ height: getHeight(), width: getWidth() }}>
         <div
           id="canvas"
-          className="flex items-center justify-center rounded-lg h-96 relative"
+          className="flex items-center justify-center rounded-lg relative"
+          style={{ height: getHeight(), width: getWidth() }}
           onDragOver={handleDragOver}
           onDrop={handleDrop}
           onDragEnter={handleDragEnter}
