@@ -3,7 +3,7 @@ import React from "react";
 import components from "../../lib";
 import server from "../../server.json";
 import axios from "axios";
-const { Button, TextArea, Label, Input, Select, Div,Anchor,Article,Section,Nav,Footer,Header } = components;
+const { Button, TextArea, Label, Input, Select, Div, Anchor, Article, Section, Nav, Footer, Header, H1, H2, H3, H4, H5, H6, Paragraph } = components;
 import {
   ChevronRight,
   ChevronLeft,
@@ -92,7 +92,14 @@ const LeftSidebar = ({
     Section:(hash)=>Section(hash,canvasEvents),
     Nav:(hash)=>Nav(hash,canvasEvents),
     Footer:(hash)=>Footer(hash,canvasEvents), 
-    Header:(hash)=>Header(hash,canvasEvents)  
+    Header:(hash)=>Header(hash,canvasEvents),
+    H1:(hash)=>H1(hash,canvasEvents),
+    H2:(hash)=>H2(hash,canvasEvents),
+    H3:(hash)=>H3(hash,canvasEvents),
+    H4:(hash)=>H4(hash,canvasEvents),
+    H5:(hash)=>H5(hash,canvasEvents),
+    H6:(hash)=>H6(hash,canvasEvents),
+    Paragraph:(hash)=>Paragraph(hash,canvasEvents)
   };
 
   const sidebarMedia = {

@@ -1,4 +1,4 @@
-const Paragraph = (id, text = "Paragraph", canvasEvents) => {
+const Paragraph = (id, canvasEvents, text = "Paragraph") => {
     return {
         id: `${id}`,
         type: "p",
@@ -19,3 +19,5 @@ const Paragraph = (id, text = "Paragraph", canvasEvents) => {
         },
     };
 };
+
+export default Paragraph;
