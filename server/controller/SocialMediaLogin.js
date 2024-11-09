@@ -33,53 +33,62 @@ const GithubRedirect = async (req, res) => {
 };
 
 
-// Step 2: Handle GitHub callback and get the access token
 const GithubCallback = async (req, res) => {
   const { code } = req.query;
   const client_id = process.env.GITHUB_CLIENT_ID;
   const client_secret = process.env.GITHUB_CLIENT_SECREAT;
   const redirect_uri = 'http://localhost:4000/api/auth/github/callback';
+
   try {
-    // Exchange the code for an access token
-    const response = await axios.post('https://github.com/login/oauth/access_token', querystring.stringify({
-      client_id,
-      client_secret,
-      code,
-      redirect_uri,
-    }), {
-      headers: {
-        'Accept': 'application/json',
-      },
-    });
+    // Step 1: Exchange the code for an access token
+    const response = await axios.post(
+      'https://github.com/login/oauth/access_token',
+      querystring.stringify({
+        client_id,
+        client_secret,
+        code,
+        redirect_uri,
+      }),
+      {
+        headers: {
+          Accept: 'application/json',
+        },
+      }
+    );
+
     const { access_token } = response.data;
 
-    // Use the access token to get user details
+    // Step 2: Get user details
     const userResponse = await axios.get('https://api.github.com/user', {
       headers: {
         Authorization: `Bearer ${access_token}`,
       },
     });
-
-    // Save user data or create session
-    const user = await User.findOne({ email: userResponse.data.email }).lean();
-    if(!user){
-      user = await new User({ displayname: userResponse.data.name, email: userResponse.data.email, password: null, avatar: userResponse.data.avatar_url, verify: true }).save();
-      delete user.password;
-      delete user.verify;
-      const jwtData = jwtToken.sign(user, process.env.JWTSECREAT)
-      res.cookie('uid', jwtData, { httpOnly: true, secure: true, sameSite: 'Strict' }); 
-      return res.redirect(process.env.CLIENT);
- 
-    }else{
-      delete user.password;
-      delete user.verify;
-      const jwtData = jwtToken.sign(user, process.env.JWTSECREAT)
-      res.cookie('uid', jwtData, { httpOnly: true, secure: true, sameSite: 'Strict' });  
-      return res.redirect(process.env.CLIENT);
-
+    
+    let user = await User.findOne({ email:userResponse.data.email?userResponse.data.email:userResponse.data.login }).lean();
+    if (!user) {
+      user = await new User({
+        displayname: userResponse.data.name,
+        email:userResponse.data.email?userResponse.data.email:userResponse.data.login,
+        password: null,
+        avatar: userResponse.data.avatar_url,
+        verify: true,
+      }).save();
     }
+
+    // JWT token creation and redirect
+    const jwtPayload = {
+      displayname: user.displayname,
+      email:userResponse.data.email?userResponse.data.email:userResponse.data.login,
+      avatar: user.avatar,
+      _id: user._id,
+    };
+    const jwtData = jwtToken.sign(jwtPayload, process.env.JWTSECREAT);
+    res.cookie('uid', jwtData, { httpOnly: true, secure: true, sameSite: 'Strict' });
+    return res.redirect(process.env.CLIENT);
+
   } catch (error) {
-    console.error('Error during GitHub OAuth', error);
+    console.error('Error during GitHub OAuth:', error.response ? error.response.data : error.message);
     res.status(500).send('Authentication failed');
   }
 };
