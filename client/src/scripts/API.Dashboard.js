@@ -97,6 +97,21 @@ class ApiDashboard {
             throw error;
         }
     }
+
+    // Download a project by ID
+    async downloadProject(id) {
+        const endpoint = this.endpoints.DownloadProject.replace(':id', id);
+        try {
+            const response = await axios.get(`${this.baseURL}${endpoint}`, {
+                responseType: 'blob' // Set response type to 'blob' to handle binary data
+            });
+            return response.data;
+        } catch (error) {
+            console.error(`Failed to download project with ID ${id}:`, error);
+            throw error;
+        }
+    }
+
 }
 
 export default ApiDashboard;
