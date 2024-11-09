@@ -1,21 +1,11 @@
 import React from "react";
 import { Timer, Save } from "lucide-react";
-import ApiDashboard from "../../scripts/API.Dashboard";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import useSaveProject from "../../hooks/useSaveProject";
 
 const BottomBar = () => {
-  const API = new ApiDashboard();
   const { userId, projectID } = useParams();
-  const project = useSelector((state) => state.user.userInfo.projects);
-  const webElements = useSelector((state) => state.webElement.present);
-
-  
-  const handleSave = () => {
-    if (webElements && project.includes(projectID)) {
-      API.updateProjectComponents(projectID, webElements);
-    }
-  }   
+  const { handleSave } = useSaveProject(projectID);
 
   return (
     <div className="flex items-center justify-between px-6 bg-gray-100 border-t border-gray-300 h-14">

@@ -95,7 +95,7 @@ export const useCanvasEvents = (setId, toggleRight, webElements) => {
       : {};
     return {
       onDragStart: (event) => onDragStart(event, id),
-      onClick: (event) => handleClick(id),
+      onDoubleClick: (event) => handleClick(id),
       ...dragTarget
     };
   };
