@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import React from "react";
 import components from "../../lib";
-import server from "../../server.json"
-import axios from "axios"
+import server from "../../server.json";
+import axios from "axios";
 const { Button, TextArea, Label, Input, Select, Div } = components;
 import {
   ChevronRight,
@@ -13,7 +13,9 @@ import {
   Image,
   Code,
   Palette,
-  X
+  X,
+  Upload,
+  Plus,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -22,43 +24,58 @@ import {
   setPosition,
   addChild,
   removeChild,
-  deleteElement
+  deleteElement,
 } from "../../Store/webElementSlice";
-import RelativeChildrenTest from "../../test/RelativeChildrenTest";
 import ImageElement from "../../lib/img.component";
 import { setImagesMedia } from "../../Store/imageSlice";
 import { useParams } from "react-router-dom";
 import { useCanvasEvents } from "../../hooks/DragDrop";
-const LeftSidebar = ({ sidebarOpen, toggleSidebar, toggleRight, setStatusCode,setId }) => {
-  let BACKWEB = import.meta.env.VITE_REACT_APP_BACKWEB;
+
+const LeftSidebar = ({
+  sidebarOpen,
+  toggleSidebar,
+  toggleRight,
+  setStatusCode,
+  setId,
+}) => {
+  const BACKWEB = import.meta.env.VITE_REACT_APP_BACKWEB;
+  const { projectID } = useParams();
+  const dispatch = useDispatch();
+
+  // States
+  const [showComponents, setShowComponents] = useState(true);
+  const [showElements, setShowElements] = useState(true);
+  const [showMedia, setShowMedia] = useState(true);
+  const [imageToUpload, setImageToUpload] = useState({ image: "", file: "" });
+  const [isDraggingImage, setIsDraggingImage] = useState(false);
+
+  // Selectors
+  const webElements = useSelector((state) => state.webElement.present);
+  const imagesMedia = useSelector((state) => state.image);
+  const user = useSelector((state) => state.user.userInfo._id);
+
+  // Refs
+  const webElementsRef = useRef(webElements);
+  const fileInputRef = useRef(null);
+
+  // Counter logic
   const evalCounter = (webElements) => {
     let val = 0;
     Object.keys(webElements).forEach((key) => {
-      const parsedKey = parseInt(key, 10); // Convert string to integer using base 10
+      const parsedKey = parseInt(key, 10);
       if (!isNaN(parsedKey) && parsedKey >= val) {
         val = parsedKey + 1;
       }
     });
     return val;
   };
-  const {projectID} = useParams();
-  const [showComponents, setShowComponents] = useState(true); // New state to toggle sections
-  const [showElements, setShowElements] = useState(true); // State to toggle elements
-  const webElements = useSelector(state=>state.webElement.present);
-  const webElementsRef = useRef(webElements);
   const [counter, setCounter] = useState(evalCounter(webElements));
-  const user = useSelector(state=>state.user.userInfo._id)
-  const [imageToUpload,setImageToUpload] = useState({image:"",file:""})
-  const [showMedia,setShowMedia] = useState(true);
-  const imagesMedia = useSelector(state=>state.image)
+
+  const { canvasEvents } = useCanvasEvents(setId, toggleRight, webElements);
 
   useEffect(() => {
     webElementsRef.current = webElements;
   }, [webElements]);
-
-  const dispatch = useDispatch();
-  const { canvasEvents } = useCanvasEvents(setId, toggleRight, webElements);
- 
 
   const sidebarElements = {
     Button: (hash) => Button(hash, canvasEvents),
@@ -70,239 +87,326 @@ const LeftSidebar = ({ sidebarOpen, toggleSidebar, toggleRight, setStatusCode,se
     Div: (hash) => Div(hash, canvasEvents),
   };
 
-  const sidebarMedia={
-    ImageElement:(hash,image)=>ImageElement(hash,image,"Image",canvasEvents)
-  }
+  const sidebarMedia = {
+    ImageElement: (hash, image) =>
+      ImageElement(hash, image, "Image", canvasEvents),
+  };
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
+    if (!file) return;
 
-    if (file) {
-      const validImageTypes = ['image/jpg', 'image/jpeg', 'image/png'];
-      if (!validImageTypes.includes(file.type)) {
-        alert('Invalid file type. Please upload an image (jpg or png).');
-        return;
-      }
-
-      const maxSizeInBytes = 200 * 1024;
-      if (file.size > maxSizeInBytes) {
-        alert('File size exceeds 200KB. Please upload a smaller image.');
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = () => {
-        const previewUrl = reader.result;
-        setImageToUpload({ file, image: previewUrl });
-      };
-      reader.readAsDataURL(file);
-
-      
+    const validImageTypes = ["image/jpg", "image/jpeg", "image/png"];
+    if (!validImageTypes.includes(file.type)) {
+      alert("Please upload a JPG or PNG image.");
+      return;
     }
+
+    const maxSizeInBytes = 200 * 1024;
+    if (file.size > maxSizeInBytes) {
+      alert("Image must be under 200KB.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImageToUpload({ file, image: reader.result });
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleEditSubmit = async () => {
     try {
-      if (imageToUpload.file) {
-        const formData = new FormData();
-        formData.append('file', imageToUpload.file);
-        const response = await axios.post(`${BACKWEB}${server.Project.MediaUpdate}${projectID}`,formData);
+      if (!imageToUpload.file) return;
 
-        if (response.status==200) {
-          const responseData = await response.data;
-          const newImageUrl = responseData.url;
-          dispatch(setImagesMedia(newImageUrl));
-          setImageToUpload({ image: "", file: "" });
-          alert("Image Uploaded Successfully");
-        } else {
+      const formData = new FormData();
+      formData.append("file", imageToUpload.file);
 
-          throw new Error('Image upload failed');
-        }
+      const response = await axios.post(
+        `${BACKWEB}${server.Project.MediaUpdate}${projectID}`,
+        formData
+      );
+
+      if (response.status === 200) {
+        dispatch(setImagesMedia(response.data.url));
+        setImageToUpload({ image: "", file: "" });
+        alert("Image uploaded successfully!");
       }
     } catch (error) {
       console.error(error);
-      alert('There was an error uploading the image');
-    }}
+      alert("Failed to upload image. Please try again.");
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDraggingImage(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDraggingImage(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDraggingImage(false);
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      const fakeEvent = { target: { files: [file] } };
+      handleImageChange(fakeEvent);
+    }
+  };
 
   return (
-    <div className="relative">
-      {/* <RelativeChildrenTest canvasEvents={canvasEvents} /> */}
+    <div className="relative h-full">
       {sidebarOpen ? (
-        <div
-          className={`w-64 transition-all duration-300 border-r bg-white overflow-hidden shadow-lg`}
-          style={{ backgroundColor: "#FFE5E5" }} // Light red background
-        >
-          <div className="h-full p-4 overflow-y-auto">
-            <div className="flex items-center justify-between mb-4">
-              <button
-                onClick={() => setShowComponents(true)}
-                className={`p-2 ${
-                  showComponents ? "font-bold text-red-500" : "text-gray-600"
-                } `}
-              >
-                Components
-              </button>
-              <button
-                onClick={() => setShowComponents(false)}
-
-                className={`p-2 ${
-                  !showComponents ? "font-bold text-red-500" : "text-gray-600"
-                } `}
-              >
-                Project
-              </button>
+        <div className="h-full transition-all duration-300 bg-white border-r shadow-lg w-72">
+          <div className="flex flex-col h-full">
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b bg-red-50">
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => setShowComponents(true)}
+                  className={`px-3 py-1.5 rounded-md transition-all ${
+                    showComponents
+                      ? "bg-red-500 text-white"
+                      : "text-gray-600 hover:bg-red-100"
+                  }`}
+                >
+                  Components
+                </button>
+                <button
+                  onClick={() => setShowComponents(false)}
+                  className={`px-3 py-1.5 rounded-md transition-all ${
+                    !showComponents
+                      ? "bg-red-500 text-white"
+                      : "text-gray-600 hover:bg-red-100"
+                  }`}
+                >
+                  Project
+                </button>
+              </div>
               <button
                 onClick={toggleSidebar}
-
-                className="z-10 p-2 bg-white rounded-full shadow-md"
+                className="p-2 transition-all rounded-full hover:bg-red-100"
               >
-                <ChevronLeft className="w-4 h-4 text-gray-600" />
+                <ChevronLeft className="w-5 h-5 text-gray-600" />
               </button>
             </div>
 
-            <>
+            {/* Content */}
+            <div className="flex-1 p-4 space-y-6 overflow-y-auto">
               {showComponents ? (
                 <>
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="flex items-center text-sm font-semibold text-red-600">
-                      <Grid className="w-4 h-4 mr-1" />
-                      Elements
-                    </h3>
-                    <button onClick={() => setShowElements((prev) => !prev)}>
-                      {showElements ? (
-                        <ChevronUp className="w-4 h-4 text-gray-600" />
-                      ) : (
-                        <ChevronDown className="w-4 h-4 text-gray-600" />
-                      )}
-                    </button>
+                  {/* Elements Section */}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h3 className="flex items-center text-sm font-semibold text-gray-700">
+                        <Grid className="w-4 h-4 mr-2" />
+                        Elements
+                      </h3>
+                      <button
+                        onClick={() => setShowElements((prev) => !prev)}
+                        className="p-1 transition-all rounded-full hover:bg-red-100"
+                      >
+                        {showElements ? (
+                          <ChevronUp className="w-4 h-4 text-gray-600" />
+                        ) : (
+                          <ChevronDown className="w-4 h-4 text-gray-600" />
+                        )}
+                      </button>
+                    </div>
+
+                    {showElements && (
+                      <div className="grid grid-cols-2 gap-2">
+                        {Object.keys(sidebarElements).map((element) => (
+                          <button
+                            key={element}
+                            onClick={() => {
+                              setStatusCode(0);
+                              const id = counter + 1;
+                              const hash = id.toString();
+                              setCounter((prev) => prev + 1);
+                              dispatch(
+                                addElement({
+                                  hash: hash,
+                                  value: sidebarElements[element](hash),
+                                })
+                              );
+                            }}
+                            className="px-3 py-2 text-sm text-gray-700 transition-all bg-white border border-gray-100 rounded-lg shadow-sm hover:bg-red-50"
+                          >
+                            {element}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
-                  {showElements && (
-                    <div className="flex flex-col items-start mt-2 space-y-2 Elements">
-                      {Object.keys(sidebarElements).map((element) => (
-                        <button
-                          onClick={() => {
-                            setStatusCode(0)
-                            const id = counter + 1;
-                            const hash = id.toString();
-                            setCounter((prevCounter) => prevCounter + 1);
-                            dispatch(
-                              addElement({
-                                hash: hash,
-                                value: sidebarElements[element](hash),
-                              })
-                            );
-                          }}
-                          key={element}
-                          className="w-full px-4 py-2 text-left text-gray-700 transition duration-150 bg-white rounded-md shadow hover:bg-red-50"
-                        >
-                          {element}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-                <div onClick={()=>setStatusCode(0)}>
-                    <div className="flex justify-between items-center">
-                      <h3 className="font-bold flex flex-row">
-                        <Image className="w-4 h-4"></Image> Media
+                  {/* Media Section */}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h3 className="flex items-center text-sm font-semibold text-gray-700">
+                        <Image className="w-4 h-4 mr-2" />
+                        Media
                       </h3>
-                      <button onClick={() => setShowMedia((prev) => !prev)}>
-                        {showElements ? (
-                          <ChevronUp className="w-4 h-4" />
+                      <button
+                        onClick={() => setShowMedia((prev) => !prev)}
+                        className="p-1 transition-all rounded-full hover:bg-red-100"
+                      >
+                        {showMedia ? (
+                          <ChevronUp className="w-4 h-4 text-gray-600" />
                         ) : (
-                          <ChevronDown className="w-4 h-4" />
+                          <ChevronDown className="w-4 h-4 text-gray-600" />
                         )}
                       </button>
                     </div>
 
                     {showMedia && (
-                      <div className="Elements transition-all duration-300 flex flex-row mt-2 items-start flex-wrap">
-                                  <input type="file" onChange={handleImageChange} />
-                                  <button onClick={handleEditSubmit}>Upload</button>
+                      <div className="space-y-3">
+                        <div
+                          onDragOver={handleDragOver}
+                          onDragLeave={handleDragLeave}
+                          onDrop={handleDrop}
+                          className={`border-2 border-dashed rounded-lg p-4 text-center transition-all ${
+                            isDraggingImage
+                              ? "border-red-500 bg-red-50"
+                              : "border-gray-300 hover:border-red-400"
+                          }`}
+                        >
+                          <input
+                            type="file"
+                            onChange={handleImageChange}
+                            className="hidden"
+                            ref={fileInputRef}
+                            accept="image/png,image/jpeg,image/jpg"
+                          />
+                          <button
+                            onClick={() => fileInputRef.current?.click()}
+                            className="flex flex-col items-center w-full space-y-2 text-gray-500 hover:text-red-500"
+                          >
+                            <Upload className="w-6 h-6" />
+                            <span className="text-sm">Click to Upload</span>
+                          </button>
+                        </div>
 
-                        {imagesMedia.map((element, index) => {
-                            return (
+                        {imageToUpload.image && (
+                          <div className="flex items-center justify-between p-2 bg-white rounded-lg shadow-sm">
+                            <img
+                              src={imageToUpload.image}
+                              alt="Preview"
+                              className="object-cover w-16 h-16 rounded"
+                            />
+                            <button
+                              onClick={handleEditSubmit}
+                              className="px-3 py-1.5 bg-red-500 text-white rounded-md hover:bg-red-600 transition-all text-sm"
+                            >
+                              Upload
+                            </button>
+                          </div>
+                        )}
+
+                        <div className="grid grid-cols-3 gap-2">
+                          {imagesMedia.map((element, index) => (
+                            <div
+                              key={index}
+                              onClick={() => {
+                                setStatusCode(0);
+                                const id = counter + 1;
+                                const hash = id.toString();
+                                setCounter((prev) => prev + 1);
+                                dispatch(
+                                  addElement({
+                                    hash: hash,
+                                    value: sidebarMedia.ImageElement(
+                                      hash,
+                                      element
+                                    ),
+                                  })
+                                );
+                              }}
+                              className="relative cursor-pointer group"
+                            >
                               <img
                                 src={element}
-                                className="w-20 h-20 m-1"
-                                onClick={() => {
-                                  setStatusCode(0)
-                                  let id = counter + 1;
-                                  let hash = id.toString();
-                                  setCounter((prevCounter) => prevCounter + 1);
-                                  dispatch(
-                                    addElement({
-                                      hash: hash,
-                                      value: sidebarMedia.ImageElement(hash, element),
-                                    })
-                                  );
-                                }}
-                                key={index}
+                                alt={`Media ${index + 1}`}
+                                className="object-cover w-full h-20 transition-all rounded-lg shadow-sm hover:shadow-md"
                               />
-                            );
-                          })}
+                              <div className="absolute inset-0 flex items-center justify-center transition-all bg-opacity-0 rounded-lg group-hover:bg-opacity-20">
+                                <Plus className="w-6 h-6 text-white transition-all opacity-0 group-hover:opacity-100" />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     )}
                   </div>
-                  <div className="flex items-center justify-between mb-2" onClick={()=>{
-                    setStatusCode(1);
-                    toggleRight(false);
-                    }}>
-                    <h3 className="flex items-center text-sm font-semibold ">
-                      <Code className="w-4 h-4 mr-1" />
-                      JavaScript
-                    </h3>
+
+                  {/* Additional Sections */}
+                  <div className="space-y-3">
+                    <button
+                      onClick={() => {
+                        setStatusCode(1);
+                        toggleRight(false);
+                      }}
+                      className="flex items-center w-full px-4 py-2 space-x-2 text-gray-700 transition-all rounded-lg hover:bg-red-50"
+                    >
+                      <Code className="w-4 h-4" />
+                      <span>Custom JavaScript</span>
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        setStatusCode(2);
+                        toggleRight(false);
+                      }}
+                      className="flex items-center w-full px-4 py-2 space-x-2 text-gray-700 transition-all rounded-lg hover:bg-red-50"
+                    >
+                      <Palette className="w-4 h-4" />
+                      <span>Style CSS3</span>
+                    </button>
                   </div>
-                  <div className="flex items-center justify-between mb-2"  onClick={()=>{
-                    setStatusCode(2);
-                    toggleRight(false);
-                    }}>
-                    <h3 className="flex items-center text-sm font-semibold">
-                      <Palette className="w-4 h-4 mr-1" />
-                      Style CSS3
-                    </h3>
-                  </div>
-                  </>
+                </>
               ) : (
-                <div className="project-overview">
-                  <h2 className="mb-3 text-lg font-bold text-red-500">
+                // Project Overview
+                <div className="space-y-4">
+                  <h2 className="text-lg font-semibold text-gray-700">
                     Project Overview
                   </h2>
-                  <div className="space-y-2 components">
+                  <div className="space-y-2">
                     {Object.entries(webElements).map(([index, value]) => (
-                      <div className="p-2 text-gray-700 transition duration-150 bg-white rounded-lg shadow-sm cursor-pointer hover:bg-red-50 flex flex-row justify-between">
                       <div
                         key={index}
-                        onClick={() => {
-                          setId(value.id);
-                          toggleRight(true);
-                          setStatusCode(0)
-                        }}
-
-                        className=""
+                        className="flex items-center justify-between p-3 transition-all bg-white border border-gray-100 rounded-lg shadow-sm hover:shadow-md"
                       >
-                        {`${value.type} ${value.id}`}
-                      </div>
-                      <button onClick={()=> {
-                        setId(0)
-                        dispatch(deleteElement(value.id))}}><X ></X></button>
+                        <button
+                          onClick={() => {
+                            setId(value.id);
+                            toggleRight(true);
+                            setStatusCode(0);
+                          }}
+                          className="text-gray-700 hover:text-red-500"
+                        >
+                          {`${value.type} ${value.id}`}
+                        </button>
+                        <button
+                          onClick={() => {
+                            setId(0);
+                            dispatch(deleteElement(value.id));
+                          }}
+                          className="p-1 text-gray-400 transition-all rounded-full hover:text-red-500 hover:bg-red-50"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
                       </div>
                     ))}
                   </div>
                 </div>
               )}
-            </>
+            </div>
           </div>
         </div>
-      ) : (
-        <button
-          onClick={toggleSidebar}
-          className="absolute top-0 left-0 z-10 p-2 transform bg-white rounded-full shadow-md"
-        >
-          <ChevronRight className="w-4 h-4 text-gray-600" />
-        </button>
-      )}
+      ) : null}
     </div>
   );
 };
