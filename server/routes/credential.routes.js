@@ -31,4 +31,7 @@ router.post('/forgetPassword', credController.PasswordRecovery);
 // @desc     Change user's password
 router.post('/passwordChange', credController.ConfirmPasswordChange);
 
+// @routes   POST /api/auth/logout
+// @desc     Logout user
+router.post('/logout', credController.logout);
 module.exports = router;

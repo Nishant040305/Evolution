@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { Search, Settings, User, LogOut, Bell } from "lucide-react";
 import NotificationsPanel from "./NotificationsPanel";
+import { useDispatch } from "react-redux";
+import { logout } from "../../Store/userSlice";
+import AuthService from "../../scripts/API.Login";
 
 const TopBar = ({ searchQuery, setSearchQuery }) => {
   const [showNotifications, setShowNotifications] = useState(false);
-
+  const dispatch = useDispatch();
+  const APT = new AuthService();
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
   };
@@ -57,7 +61,10 @@ const TopBar = ({ searchQuery, setSearchQuery }) => {
             </button>
 
             {/* Logout */}
-            <button className="p-2 rounded-full hover:bg-red-300">
+            <button className="p-2 rounded-full hover:bg-red-300" onClick={()=>{
+              dispatch(logout());
+              APT.logout();
+            }}>
               <LogOut className="w-5 h-5 text-red-600" />
             </button>
           </div>

@@ -14,7 +14,8 @@
         "forget":"/api/auth/forgetPassword",
         "confirmPasswordChange":"/api/auth/passwordChange",
         "resend":"/api/auth/OTPverification",
-        "verify":"/api/auth/"
+        "verify":"/api/auth/",
+        "logout":"/api/auth/logout"
     },
     "Project":{
         "GetAllProject":"/api/project",

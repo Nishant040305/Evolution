@@ -123,6 +123,18 @@ class AuthService {
       console.error(e);
     }
   }
+  async logout() {
+    try {
+      const response = await axios.post(`${this.baseURL}${this.server.Auth.logout}`, {}, {
+        headers: { 'Accept': 'application/json' },
+      });
+      if (response.status !== 200) throw new Error('Failed to logout');
+      
+      window.location.reload(true);
+    } catch (e) {
+      console.error(e);
+    }
+  }
 }
 
 export default AuthService;
