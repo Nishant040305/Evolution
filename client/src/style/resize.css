@@ -1,49 +1,56 @@
-/* Base class to make a div resizable */
-.resizable {
-    position: relative;
-    overflow: hidden;
-}
-
-/* Resizer handle for resizing from the right */
-.resizable-right::after {
-    content: '';
+.resize-handle {
     position: absolute;
     width: 10px;
-    height: 100%;
-    right: 0;
-    top: 0;
-    cursor: ew-resize; /* Left-right resize cursor */
-    background: transparent;
-}
-
-/* Resizer handle for resizing from the left */
-.resizable-left::before {
-    content: '';
-    position: absolute;
-    width: 10px;
-    height: 100%;
-    left: 0;
-    top: 0;
-    cursor: ew-resize; /* Left-right resize cursor */
-    background: transparent;
-}
-
-/* Resizer handle for resizing from both left and right */
-.resizable-left-right::before,
-.resizable-left-right::after {
-    content: '';
-    position: absolute;
-    width: 10px;
-    height: 100%;
-    top: 0;
+    height: 10px;
+    background-color: #333;
+    z-index: 1;
+  }
+  
+  /* Side handles */
+  .resize-handle.top {
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: ns-resize;
+  }
+  .resize-handle.right {
+    right: -5px;
+    top: 50%;
+    transform: translateY(-50%);
     cursor: ew-resize;
-    background: transparent;
-}
-
-.resizable-left-right::before {
-    left: 0;
-}
-
-.resizable-left-right::after {
-    right: 0;
-}
+  }
+  .resize-handle.bottom {
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: ns-resize;
+  }
+  .resize-handle.left {
+    left: -5px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: ew-resize;
+  }
+  
+  /* Corner handles */
+  .resize-handle.top-left {
+    top: -5px;
+    left: -5px;
+    cursor: nwse-resize;
+  }
+  .resize-handle.top-right {
+    top: -5px;
+    right: -5px;
+    cursor: nesw-resize;
+  }
+  .resize-handle.bottom-left {
+    bottom: -5px;
+    left: -5px;
+    cursor: nesw-resize;
+  }
+  .resize-handle.bottom-right {
+    bottom: -5px;
+    right: -5px;
+    cursor: nwse-resize;
+  }
+  
