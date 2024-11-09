@@ -25,7 +25,7 @@ const ProjectSchema = new Schema({
   },
 
   // site analytics
-  version: {
+  publishVersion: {
     type: Number,
     default: 1,
   },
@@ -51,13 +51,14 @@ const ProjectSchema = new Schema({
         ref: 'User',
       },
       /*
-       * viewer: can view
-       * editor: can also edit, publish, download
-       * admin: can also delete, update settings and members
+       * viewer: can VIEW
+       * editor: can also EDIT, PUBLISH, DOWNLOAD
+       * admin: can MANAGE PROJECT
+       * owner: can MANAGE MEMBERS, DELETE
        */ 
       role: {
         type: String,
-        enum: ['admin', 'editor', 'viewer', 'default'],
+        enum: ['admin', 'editor', 'viewer', 'default'], // 'owner' is not a role
         default: 'default',
       },
       // additional permissions
@@ -89,6 +90,10 @@ const ProjectSchema = new Schema({
     type:[String],
     default:[]
   },
+  commitMessage: {
+    type: String,
+    default: "Initial commit"
+  },
 
   // development version control
   versions: [
@@ -98,7 +103,7 @@ const ProjectSchema = new Schema({
       javascriptContent: String,
       cssContent: String,
       timestamp: { type: Date, default: Date.now },
-      message: { type: String, default: 'No message provided.' },
+      commitMessage: String,
       member: {
         type: Schema.Types.ObjectId,
         ref: 'User',
@@ -110,12 +115,13 @@ const ProjectSchema = new Schema({
 
 // Pre-save hook to track changes and version control
 ProjectSchema.pre('save', function (next) {
-  if (this.isModified('components') || this.isModified('javascriptContent') || this.isModified('cssContent')) {
+  if (this.isModified('commitMessage')) {
     const newVersion = {
-      version: this.version + 1,
+      version: this.versions.length,
       components: this.components,
       javascriptContent: this.javascriptContent,
       cssContent: this.cssContent,
+      commitMessage: this.commitMessage,
       member: this.user,
     };
     this.versions.push(newVersion);
