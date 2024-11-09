@@ -5,7 +5,7 @@ const archiver = require('archiver');
 const User = require("../models/User");
 const Project = require('../models/Project');
 const lighthouse = require('../utils/lighthouse.js');
-require('dotenv').config({ path: path.resolve(__dirname, '../../.env') })
+require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
 
 const publishProject = async (req, res) => {
     const { id, htmlContent, style_css, script_js } = req.body;
@@ -101,10 +101,21 @@ const openProject = async (req, res) => {
     }
 }
 
-const downloadProject = (req, res) => {
+const downloadProject = async (req, res) => {
     const { id } = req.params;
+
+    const project = await Project.findById(id);
+    if (!project) {
+        return res.status(404).json({ message: 'Project not found' });
+    }
+
+    const { publishVersion } = project;
+    if (publishVersion === 0) {
+        return res.status(400).json({ message: 'Project not published' });
+    }
+
     const folderPath = path.join(__dirname, `../public/${id}`);
-    const zipFilePath = path.join(__dirname, `${id}.zip`);
+    const zipFilePath = path.join(__dirname, `${id}_${publishVersion}.zip`);
     const output = fs.createWriteStream(zipFilePath);
     const archive = archiver('zip', { zlib: { level: 9 } });
 
