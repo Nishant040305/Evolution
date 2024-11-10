@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { setPosition, removeChild } from "../../Store/webElementSlice";
 import ApiDashboard from "../../scripts/API.Dashboard";
 import { useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const MainCanvas = ({ ScreenSize, reloadEvents, rightSidebarOpen }) => {
   const dispatch = useDispatch();
@@ -39,6 +41,7 @@ const MainCanvas = ({ ScreenSize, reloadEvents, rightSidebarOpen }) => {
     try {
       const response = await apiDashboard.updateProjectComponents(pid, updateWebElements());
       console.log('Components Saved:', response);
+      toast.success("Components Saved!");
     } catch (error) {
       console.error("Failed to save by Ctrl+S:", error);
     }
@@ -118,6 +121,7 @@ const MainCanvas = ({ ScreenSize, reloadEvents, rightSidebarOpen }) => {
         className="min-h-full bg-white rounded-lg shadow-lg"
         style={{ height: getHeight(), width: getWidth() }}
       >
+        <ToastContainer />
         <div
           id="canvas"
           className="relative flex items-center justify-center rounded-lg"
