@@ -97,7 +97,7 @@ const ProjectDashboard = () => {
   };
 
   const handleProjectClick = (projectID) => {
-    navigate(url.Main.replace("projectID", projectID));
+    navigate(url.Main.replace(":projectID", projectID));
   };
 
   return (

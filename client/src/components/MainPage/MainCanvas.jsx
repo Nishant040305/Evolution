@@ -2,17 +2,47 @@ import { useEffect, useCallback, useRef } from "react";
 import ComponentRenderer from "./ComponentRenderer";
 import { useSelector, useDispatch } from "react-redux";
 import { setPosition, removeChild } from "../../Store/webElementSlice";
-import useSaveProject from "../../hooks/useSaveProject";
+import ApiDashboard from "../../scripts/API.Dashboard";
+import { useParams } from "react-router-dom";
 
 const MainCanvas = ({ ScreenSize, reloadEvents, rightSidebarOpen }) => {
   const dispatch = useDispatch();
   const webElements = useSelector((state) => state.webElement.present);
   const webElementsRef = useRef(webElements);
   const project = useSelector((state) => state.project);
-  const { saveProject } = useSaveProject();
+  const apiDashboard = new ApiDashboard();
 
   // Event listener for Ctrl+S
-  const handleSaveCallback = useCallback(saveProject, [saveProject, project._id]);
+  const updateWebElements = () => {
+    // Create a copy of webElements with updated dimensions
+    const updatedElements = JSON.parse(JSON.stringify(webElementsRef.current));
+    
+    Object.keys(webElementsRef.current).forEach((key) => {
+      const element = document.getElementById("canvas-element " + key);
+      const { height, width } = element.getBoundingClientRect();
+      console.log(height, width);
+
+      updatedElements[key].styles = {
+        ...updatedElements[key].styles || {},
+        height,
+        width,
+      };
+    });
+  
+    return updatedElements;
+  };
+
+  const { projectID } = useParams();
+  const pid = projectID || project._id;
+
+  const handleSaveCallback = useCallback(async () => {
+    try {
+      const response = await apiDashboard.updateProjectComponents(pid, updateWebElements());
+      console.log('Components Saved:', response);
+    } catch (error) {
+      console.error("Failed to save by Ctrl+S:", error);
+    }
+  }, [apiDashboard, pid]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {

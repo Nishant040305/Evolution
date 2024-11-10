@@ -1,14 +1,14 @@
-import { useDispatch,useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import ApiDashboard from "../scripts/API.Dashboard";
-import { setProperty } from "../Store/webElementSlice";
+import { useParams } from "react-router-dom";
 
 const useSaveProject = () => {
   const webElements = useSelector(state => state.webElement.present);
   const project = useSelector(state => state.project);
   const apiDashboard = new ApiDashboard();
-  const dispatch = useDispatch();
+  const { projectID } = useParams();
 
-  const getProjectId = () => project._id;
+  const getProjectId = () => project._id || projectID;
 
   const updateWebElements = () => {
     // Create a copy of webElements with updated dimensions
