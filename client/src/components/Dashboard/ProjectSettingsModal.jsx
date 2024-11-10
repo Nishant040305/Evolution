@@ -6,9 +6,12 @@ const ProjectSettingsModal = ({ project, onClose, onUpdate }) => {
     name: project.name,
     description: project.description,
   });
+  const [collaboratorEmail, setCollaboratorEmail] = useState("");
+  const [collaborator, setCollaborator] = useState(null);
+
   const API = new ApiDashboard();
   const [collaborators, setCollaborators] = useState(
-    project.collaborators || [{ email: "" }]
+    [...project.members]
   );
 
   const handleInputChange = (e) => {
@@ -32,7 +35,26 @@ const ProjectSettingsModal = ({ project, onClose, onUpdate }) => {
     onUpdate(project._id,updatedProject);
     onClose();
   };
-
+  const handleCollaboratorEmailChange = async (e) => {
+    console.log(e.target.value);
+    const email = e.target.value;
+    setCollaboratorEmail(e.target.value);
+    if (email.length>0) {
+      try {
+        console.log("TEst",email)
+        const userData = await API.FindUserByEmail(email); // API call to get user by email
+        console.log("userData",userData)
+        setCollaborator(userData);
+        console.log(userData);
+      } catch(e) {
+        console.log(e)
+        setCollaborator(null);
+      }
+    } else {
+      setCollaborator(null);
+    }
+  };
+  
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-opacity-50 bg-black-200">
       <div className="w-full max-w-lg p-6 rounded-lg shadow-lg bg-red-50">
@@ -61,16 +83,19 @@ const ProjectSettingsModal = ({ project, onClose, onUpdate }) => {
           Manage Collaborators
         </h3>
 
-        {collaborators.map((collaborator, index) => (
-          <input
-            key={index}
-            type="email"
-            placeholder="Collaborator Email"
-            value={collaborator.email}
-            onChange={(e) => handleCollaboratorChange(index, e.target.value)}
-            className="w-full p-2 mb-2 text-red-800 border border-red-300 rounded-md"
-          />
-        ))}
+        <input
+        type="email"
+        placeholder="Collaborator Email"
+        value={collaboratorEmail}
+        onChange={(e)=>handleCollaboratorEmailChange(e)}
+        className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-300"
+      />
+      {collaborator && (
+        <p className="text-sm text-green-500">Collaborator found: {collaborator.name}</p>
+      )}
+      {!collaborator && collaboratorEmail && (
+        <p className="text-sm text-red-500">No user found with this email</p>
+      )}
 
         <button
           type="button"

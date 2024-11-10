@@ -136,10 +136,8 @@ class ApiDashboard {
         }
     }
     async DeleteCollaborator(projectId, userId) {
-        // const endpoint = this.endpoints.DeleteCollaborator.replace(':id', projectId);
-        console.log(`${this.baseURL}/api/project/${projectId}/member/${userId}`)
         try {
-            const response = await axios.delete(`${this.baseURL}/api/project/${projectId}/member`,{userid:userId});
+            const response = await axios.delete(`${this.baseURL}/api/project/${projectId}/member`,{ data: { userid: userId } } );
             return response.data;
         } catch (error) {
             console.error(`Failed to delete collaborator from project ${projectId}:`, error);
