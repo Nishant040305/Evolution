@@ -11,6 +11,7 @@ import { ActionCreators } from "redux-undo";
 import { useDispatch, useSelector } from "react-redux";
 import PublishPage from "../../hooks/PublishPage";
 import { useNavigate } from "react-router-dom";
+import url from "../../url.json";
 
 const TopBar = ({ setScreenSize, css, js, setStatusCode }) => {
   const dispatch = useDispatch();
@@ -98,7 +99,10 @@ const TopBar = ({ setScreenSize, css, js, setStatusCode }) => {
         {projectinfo.name}
       </div>
       <div className="flex items-center space-x-4">
-        <button className="p-2 rounded-full hover:bg-red-300">
+        <button
+          onClick={() => navigate(url.Settings)}
+          className="p-2 rounded-full hover:bg-red-300"
+        >
           <Settings className="w-5 h-5 text-black-600" />
         </button>
         <div className="flex p-1 border rounded-lg bg-rose-50">
