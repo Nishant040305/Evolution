@@ -3,6 +3,10 @@ import { Timer, Save } from "lucide-react";
 import useSaveProject from "../../hooks/useSaveProject";
 
 const BottomBar = () => {
+  const { projectID } = useParams();
+  const project = useSelector((state) => state.user.userInfo.projects);
+  const webElements = useSelector((state) => state.webElement.present);
+
   const [isVisible, setIsVisible] = useState(false);
   const { saveProject } = useSaveProject();
 

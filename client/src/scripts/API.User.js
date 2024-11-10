@@ -20,6 +20,18 @@ class User {
         throw error;
       }
     }
+        // Fetch all projects
+        async getAllSharedProjects() {
+          try {
+            let endpoint = `${this.baseURL}${server.User.GetAllSharedProjects}`
+            endpoint = endpoint.replace(':id', this.id);
+              const response = await axios.get(endpoint);
+              return response.data;
+          } catch (error) {
+              console.error("Failed to fetch projects:", error);
+              throw error;
+          }
+      }
   }
 
 export default User;

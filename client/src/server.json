@@ -26,12 +26,14 @@
         "DeleteProject":"/api/project/:id",
         "PublishProject": "/api/project/:id/publish",
         "DownloadProject":"/api/project/:id/download",
-        "MediaUpdate":"/api/project/image/"
+        "MediaUpdate":"/api/project/image/",
+        "SharedProject":"/api/project/shared"
     },
     "User":{
         "GetAllUsersProject":"/api/user/:id/project",
         "ChangeProfile":"/api/user/:id",
-        "GetAllSharedProjects":"/api/user/:id/shared"
+        "GetAllSharedProjects":"/api/user/:id/shared",
+        "FindUserEmail":"/api/user/:email"
     },
     "Image":{
         "ImageUpload":"/api/image/imageUpload"

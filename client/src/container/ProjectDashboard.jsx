@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-// import { API } from "./apiService";
 import TopBar from "../components/Dashboard/Topbar";
 import ProjectCard from "../components/Dashboard/ProjectCard";
 import Modal from "../components/Dashboard/Modal";
@@ -18,51 +17,58 @@ const ProjectDashboard = () => {
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const API = new ApiDashboard();
-  const APIUser = new User(user); // Moved initialization inside useEffect
-  const handleUpdateProject = (projectId, projectData) => {
-    // Find the project to update by its ID
-    const updatedProjects = projects.map((project) => {
-      if (project._id === projectId) {
-        // Return a new object with updated project data
-        return { ...project, name: projectData.name, description: projectData.description };
-      }
-      return project; // Keep other projects unchanged
-    });
+  const [sharedProjects, setSharedProjects] = useState([]);
+  const [isSharedView, setIsSharedView] = useState(false);
+  const [sharedFilteredProjects, setSharedFilteredProjects] = useState([]);
   
-    // Update the state with the new projects array
+  const API = new ApiDashboard();
+  const APIUser = new User(user);
+
+  const updateProject = (projectId, projectData) => {
+    const updatedProjects = projects.map((project) =>
+      project._id === projectId
+        ? { ...project, name: projectData.name, description: projectData.description }
+        : project
+    );
     setProjects(updatedProjects);
   };
-    useEffect(() => {
-    fetchProjects();
-  }, [user]); // Re-fetch when user changes
 
   useEffect(() => {
-    const filterProjects = async () => {
-      try {
-        const results = searchQuery
-          ? projects.filter((project) =>
-              project.name.toLowerCase().includes(searchQuery.toLowerCase())
-            )
-          : projects;
-        setFilteredProjects(results);
-      } catch (err) {
-        console.error("Error searching projects:", err);
-        setError("Failed to search projects");
-      }
+    fetchProjects();
+  }, [user]);
+
+  useEffect(() => {
+    const filterProjects = () => {
+      const results = searchQuery
+        ? projects.filter((project) =>
+            project.name.toLowerCase().includes(searchQuery.toLowerCase())
+          )
+        : projects;
+      setFilteredProjects(results);
+
+      const sharedResults = searchQuery
+        ? sharedProjects.filter((project) =>
+            project.name.toLowerCase().includes(searchQuery.toLowerCase())
+          )
+        : sharedProjects;
+      setSharedFilteredProjects(sharedResults);
     };
+
     filterProjects();
-  }, [searchQuery, projects]);
+  }, [searchQuery, projects, sharedProjects]);
 
   const fetchProjects = async () => {
     try {
       setIsLoading(true);
-      const data = await APIUser.getAllUsersProject();
-      setProjects(data);
-      setFilteredProjects(data);
+      const personalProjects = await APIUser.getAllUsersProject();
+      const fetchedSharedProjects = await APIUser.getAllSharedProjects();
+      setProjects(personalProjects);
+      setFilteredProjects(personalProjects);
+      setSharedProjects(fetchedSharedProjects);
+      setSharedFilteredProjects(fetchedSharedProjects);
     } catch (err) {
       setError("Failed to load projects");
+      console.error("Error fetching projects:", err);
     } finally {
       setIsLoading(false);
     }
@@ -97,6 +103,21 @@ const ProjectDashboard = () => {
     <div className="min-h-screen bg-gray-50">
       <TopBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <div className="px-4 py-8 mx-auto max-w-7xl">
+        <div className="flex space-x-4 mb-6">
+          <button
+            onClick={() => setIsSharedView(false)}
+            className={`px-4 py-2 rounded ${!isSharedView ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-800'}`}
+          >
+            Projects
+          </button>
+          <button
+            onClick={() => setIsSharedView(true)}
+            className={`px-4 py-2 rounded ${isSharedView ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-800'}`}
+          >
+            Shared Projects
+          </button>
+        </div>
+
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           <button
             onClick={() => setIsCreateModalOpen(true)}
@@ -109,23 +130,20 @@ const ProjectDashboard = () => {
               Loading projects...
             </div>
           ) : (
-            filteredProjects.map((project) => {
-              if (!project) return;
-              return (<ProjectCard
-                key={project._id} // Ensure unique `key` prop based on `_id`
+            (isSharedView ? sharedFilteredProjects : filteredProjects).map((project) => (
+              <ProjectCard
+                key={project._id}
                 project={project}
                 onDelete={handleDeleteProject}
                 onClick={handleProjectClick}
-                onUpdate={handleUpdateProject}
-              />)
-            })
+                onUpdate={updateProject}
+              />
+            ))
           )}
         </div>
       </div>
-      <Modal
-        isOpen={isCreateModalOpen}
-        onClose={() => setIsCreateModalOpen(false)}
-      >
+
+      <Modal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)}>
         <CreateProjectForm onCreateProject={handleCreateProject} />
       </Modal>
     </div>
