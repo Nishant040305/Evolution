@@ -3,6 +3,7 @@ const User = require('../models/User');
 
 const inviteMember = async (req, res) => {
     try {
+        console.log("HERE")
         const { id } = req.params;
         const { userid, role } = req.body;
         const user = await User.findById(userid);

@@ -25,6 +25,7 @@ ChartJS.register(
 );
 
 const CombinedProjectModal = ({ project, onClose, onUpdate }) => {
+  console.log(project)
   const [activeTab, setActiveTab] = useState("settings");
   const [emailInput, setEmailInput] = useState("");
   const [userSuggestions, setUserSuggestions] = useState([]);
@@ -44,7 +45,7 @@ const CombinedProjectModal = ({ project, onClose, onUpdate }) => {
   };
   
   const [collaborators, setCollaborators] = useState(
-    project.members
+    [...project.members]
   );
   const [roleAssignments, setRoleAssignments] = useState([
     { email: "john.doe@example.com", role: "Admin" },
@@ -341,65 +342,46 @@ const groupViewsByTime = (views, scale) => {
     setUserSuggestions([]); // Clear suggestions after selection
   };
   
-  const handleRemoveCollaborator = async (collaboratorIndex, projectId) => {
+  const handleRemoveCollaborator = async (collaboratorIndex) => {
     const collaborator = collaborators[collaboratorIndex];
     try {
-      await API.DeleteCollaborator(projectId, collaborator.email); // Call API to delete collaborator
+      await API.DeleteCollaborator(project._id, collaborator.user); // Call API to delete collaborator
       removeCollaborator(collaboratorIndex); // Remove collaborator from state
     } catch (error) {
       console.error("Error deleting collaborator:", error);
     }
   };
-  
-  const renderCollaboratorSuggestions = () => {
-    return (
-      <div className="suggestions-list">
-        {userSuggestions.length > 0 ? (
-          userSuggestions.map((user, index) => (
-            <div
-              key={index}
-              onClick={() => handleSelectUser(user)}
-              className="suggestion-item flex items-center space-x-4 p-2 border-b hover:bg-gray-100 cursor-pointer"
-            >
-              <img
-                src={user.image || "/default-avatar.png"}
-                alt={user.username}
-                className="w-8 h-8 rounded-full"
-              />
-              <div>
-                <p className="text-sm font-semibold text-gray-800">{user.username}</p>
-                <p className="text-sm text-gray-500">{user.email}</p>
-              </div>
-            </div>
-          ))
-        ) : (
-          <p className="text-sm text-gray-500 p-2">No user found</p>
-        )}
-      </div>
-    );
-  };
-  
-  const renderManageCollaboratorsTab = (projectId) => (
+  const renderManageCollaboratorsTab = (projectId) => {
+    console.log(collaborators)
+    return(
     <div>
       <h2 className="mb-4 text-lg font-semibold text-red-800">
         Manage Collaborators
       </h2>
-      {collaborators.map((collaborator, index) => (
-        <div key={index} className="flex items-center mb-2 space-x-4">
-          <div className="flex items-center space-x-2">
-            collaborator.email
-            </div>
-          <button
-            type="button"
-            onClick={() => handleRemoveCollaborator(index, projectId)} // Pass projectId for deletion
-            className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-700"
-          >
-            Remove
-          </button>
-        </div>
-      ))}
+      {collaborators.length === 0 ? (
+  <div className="mb-4 text-gray-500">
+    No collaborators added yet. Click "Add Collaborator" to invite someone.
+  </div>
+) : (
+  collaborators.map((collaborator, index) => (
+    <div key={index} className="flex items-center mb-2 space-x-4">
+      <div className="flex items-center space-x-2">
+        {collaborator.user}
+      </div>
+      <button
+        type="button"
+        onClick={() => handleRemoveCollaborator(index)}
+        className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-700"
+      >
+        Remove
+      </button>
     </div>
-  );
+  ))
+)
+}
+
+    </div>
+  )};
   
 
   const renderRolesTab = () => {

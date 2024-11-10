@@ -27,7 +27,8 @@
         "PublishProject": "/api/project/:id/publish",
         "DownloadProject":"/api/project/:id/download",
         "MediaUpdate":"/api/project/image/",
-        "SharedProject":"/api/project/shared"
+        "SharedProject":"/api/project/shared",
+        "InviteUser":"/api/project/:id/invite"
     },
     "User":{
         "GetAllUsersProject":"/api/user/:id/project",

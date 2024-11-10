@@ -112,9 +112,12 @@ class ApiDashboard {
         }
     }
     async FindUserByEmail(email) {
-        const endpoint = this.endpoints.FindUserEmail.replace(':email', email);
+        // const endpoint = this.endpoints.FindUserEmail.replace(':email', email);
+        // console.log(endpoint)
         try {
-            const response = await axios.get(`${this.baseURL}${endpoint}`);
+            // const response = await axios.get(`${this.baseURL}${endpoint}`);
+            console.log(`${this.baseURL}/user/${email}`);
+            const response = await axios.get(`${this.baseURL}/api/user/${email}`)
             return response.data;
         } catch (error) {
             console.error(`Failed to find user by email ${email}:`, error);
@@ -122,15 +125,27 @@ class ApiDashboard {
         }
     }
     async inviteCollaborator(projectId, role, userId) {
-        const endpoint = this.endpoints.InviteCollaborator.replace(':id', projectId);
+        // const endpoint = this.endpoints.InviteCollaborator.replace(':id', projectId);
+        // console.log(endpoint)
         try {
-            const response = await axios.put(`${this.baseURL}${endpoint}`, { role, userId });
+            const response = await axios.post(`${this.baseURL}/api/project/${projectId}/invite`, { role, userid:userId });
             return response.data;
         } catch (error) {
             console.error(`Failed to invite collaborator to project ${projectId}:`, error);
             throw error;
         }
     }
+    async DeleteCollaborator(projectId, userId) {
+        // const endpoint = this.endpoints.DeleteCollaborator.replace(':id', projectId);
+        console.log(`${this.baseURL}/api/project/${projectId}/member/${userId}`)
+        try {
+            const response = await axios.delete(`${this.baseURL}/api/project/${projectId}/member`,{userid:userId});
+            return response.data;
+        } catch (error) {
+            console.error(`Failed to delete collaborator from project ${projectId}:`, error);
+            throw error;
+        }
+    }           
 }
 
 export default ApiDashboard;

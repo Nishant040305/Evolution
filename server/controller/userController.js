@@ -69,11 +69,12 @@ const ChangeProfile = async (req,res)=>{
     }
 }       
 const FindUserEmail = async (req,res)=>{
+    console.log(req.params.email)
     try{
         const userId = req.params.email;
         const user = await User.findOne({email:userId});
         console.log(userId)
-        
+        console.log(userId)
         if(!user){
             return res.status(200).json({})
         }

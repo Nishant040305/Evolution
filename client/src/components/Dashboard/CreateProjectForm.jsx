@@ -21,14 +21,19 @@ const CreateProjectForm = ({ onCreateProject }) => {
     const { name, value } = e.target;
     setNewProject((prev) => ({ ...prev, [name]: value }));
   };
-
   const handleCollaboratorEmailChange = async (e) => {
+    console.log(e.target.value);
+    const email = e.target.value;
     setCollaboratorEmail(e.target.value);
-    if (e.target.value) {
+    if (email.length>0) {
       try {
-        const userData = await API.FindUserByEmail(e.target.value); // API call to get user by email
+        console.log("TEst",email)
+        const userData = await API.FindUserByEmail(email); // API call to get user by email
+        console.log("userData",userData)
         setCollaborator(userData);
-      } catch {
+        console.log(userData);
+      } catch(e) {
+        console.log(e)
         setCollaborator(null);
       }
     } else {
@@ -47,14 +52,14 @@ const CreateProjectForm = ({ onCreateProject }) => {
       // Create Project
       const projectData = await API.createProject({ ...newProject, user });
       setMessage("Project created successfully!");
-
+      console.log(collaborator)
       // Invite Collaborator if email is valid and collaborator is found
       if (collaborator) {
-        await API.inviteCollaborator({
-          projectId: projectData._id,
-          role: "editor",
-          userId: collaborator._id,
-        });
+        await API.inviteCollaborator(
+          projectData._id,
+          "editor",
+           collaborator._id,
+        );
         setMessage("Collaborator invited successfully.");
       }
 
@@ -71,6 +76,7 @@ const CreateProjectForm = ({ onCreateProject }) => {
       setCollaboratorEmail("");
       setCollaborator(null);
     } catch (error) {
+      console.log(error)
       setMessage("Error creating project or inviting collaborator.");
     } finally {
       setLoading(false);
@@ -110,7 +116,7 @@ const CreateProjectForm = ({ onCreateProject }) => {
         type="email"
         placeholder="Collaborator Email"
         value={collaboratorEmail}
-        onChange={handleCollaboratorEmailChange}
+        onChange={(e)=>handleCollaboratorEmailChange(e)}
         className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-300"
       />
       {collaborator && (
