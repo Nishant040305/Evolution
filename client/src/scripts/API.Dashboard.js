@@ -111,7 +111,26 @@ class ApiDashboard {
             throw error;
         }
     }
-
+    async FindUserByEmail(email) {
+        const endpoint = this.endpoints.FindUserEmail.replace(':email', email);
+        try {
+            const response = await axios.get(`${this.baseURL}${endpoint}`);
+            return response.data;
+        } catch (error) {
+            console.error(`Failed to find user by email ${email}:`, error);
+            throw error;
+        }
+    }
+    async inviteCollaborator(projectId, role, userId) {
+        const endpoint = this.endpoints.InviteCollaborator.replace(':id', projectId);
+        try {
+            const response = await axios.put(`${this.baseURL}${endpoint}`, { role, userId });
+            return response.data;
+        } catch (error) {
+            console.error(`Failed to invite collaborator to project ${projectId}:`, error);
+            throw error;
+        }
+    }
 }
 
 export default ApiDashboard;

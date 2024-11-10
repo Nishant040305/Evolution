@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ApiDashboard from "../../scripts/API.Dashboard";
+import server from "../../server.json";
 import { Line } from "react-chartjs-2"; // For displaying the graph (using dummy data)
 import {
   Chart as ChartJS,
@@ -27,7 +28,7 @@ const CombinedProjectModal = ({ project, onClose, onUpdate }) => {
   const [activeTab, setActiveTab] = useState("settings");
   const [emailInput, setEmailInput] = useState("");
   const [userSuggestions, setUserSuggestions] = useState([]);
-  
+  const BACKWEB = import.meta.env.VITE_REACT_APP_BACKWEB;
   const [updatedProject, setUpdatedProject] = useState({
     name: project.name,
     description: project.description,
@@ -41,7 +42,7 @@ const CombinedProjectModal = ({ project, onClose, onUpdate }) => {
   };
   
   const [collaborators, setCollaborators] = useState(
-    project.collaborators || [{ email: "" }]
+    project.members
   );
   const [roleAssignments, setRoleAssignments] = useState([
     { email: "john.doe@example.com", role: "Admin" },
@@ -123,10 +124,6 @@ const groupViewsByTime = (views, scale) => {
     const newCollaborators = [...collaborators];
     newCollaborators[index].email = value;
     setCollaborators(newCollaborators);
-  };
-
-  const addCollaboratorField = () => {
-    setCollaborators([...collaborators, { email: "" }]);
   };
 
   const removeCollaborator = (index) => {
@@ -284,36 +281,29 @@ const groupViewsByTime = (views, scale) => {
       </div>
     );
   };
-  const fetchUserSuggestions = async (email) => {
-    if (email) {
-      try {
-        const response = await fetch(`/user/${email}`);
-        const user = await response.json();
-        if (user) {
-          setUserSuggestions([user]); // Display suggestion only for one matched user
-        } else {
-          setUserSuggestions([]); // If no user found, clear suggestions
-        }
-      } catch (error) {
-        console.error("Error fetching user:", error);
-      }
-    } else {
-      setUserSuggestions([]); // Clear suggestions when input is empty
-    }
-  };
 
   const handleEmailInputChange = (e) => {
     const value = e.target.value;
     setEmailInput(value);
     fetchUserSuggestions(value);
   };
-
+  
   const handleSelectUser = (user) => {
     // When a user clicks on a suggestion, autofill the email input
     setEmailInput(user.email);
     setUserSuggestions([]); // Clear suggestions after selection
   };
-
+  
+  const handleRemoveCollaborator = async (collaboratorIndex, projectId) => {
+    const collaborator = collaborators[collaboratorIndex];
+    try {
+      await API.DeleteCollaborator(projectId, collaborator.email); // Call API to delete collaborator
+      removeCollaborator(collaboratorIndex); // Remove collaborator from state
+    } catch (error) {
+      console.error("Error deleting collaborator:", error);
+    }
+  };
+  
   const renderCollaboratorSuggestions = () => {
     return (
       <div className="suggestions-list">
@@ -341,44 +331,32 @@ const groupViewsByTime = (views, scale) => {
       </div>
     );
   };
-
-  const renderManageCollaboratorsTab = () => (
+  
+  const renderManageCollaboratorsTab = (projectId) => (
     <div>
       <h2 className="mb-4 text-lg font-semibold text-red-800">
         Manage Collaborators
       </h2>
       {collaborators.map((collaborator, index) => (
         <div key={index} className="flex items-center mb-2 space-x-4">
-          <input
-            type="email"
-            placeholder="Collaborator Email"
-            value={collaborator.email}
-            onChange={(e) => handleCollaboratorChange(index, e.target.value)}
-            className="w-full p-2 text-red-800 border border-red-300 rounded-md"
-          />
-          {index === collaborators.length - 1 && emailInput && renderCollaboratorSuggestions()}
+          <div className="flex items-center space-x-2">
+            collaborator.email
+            </div>
           <button
             type="button"
-            onClick={() => removeCollaborator(index)}
-            className="px-3 py-1 bg-green-500 text-white rounded-md hover:bg-red-700"
+            onClick={() => handleRemoveCollaborator(index, projectId)} // Pass projectId for deletion
+            className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-700"
           >
-            Add
+            Remove
           </button>
         </div>
       ))}
-      <button
-        type="button"
-        onClick={addCollaboratorField}
-        className="w-full py-2 mb-4 text-red-700 bg-red-100 rounded-md hover:bg-red-200"
-      >
-        + Add Collaborator
-      </button>
     </div>
   );
+  
 
   const renderRolesTab = () => {
     const roleOptions = ["Admin", "Editor", "Viewer"];
-
     return (
       <div>
         <h2 className="mb-4 text-lg font-semibold text-red-800">Roles</h2>

@@ -11,7 +11,8 @@ const CreateProjectForm = ({ onCreateProject }) => {
     endDate: "",
     priority: "Medium",
   });
-  const [collaborators, setCollaborators] = useState([{ email: "" }]);
+  const [collaboratorEmail, setCollaboratorEmail] = useState("");
+  const [collaborator, setCollaborator] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const API = new ApiDashboard();
@@ -21,14 +22,18 @@ const CreateProjectForm = ({ onCreateProject }) => {
     setNewProject((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleCollaboratorChange = (index, value) => {
-    const newCollaborators = [...collaborators];
-    newCollaborators[index].email = value;
-    setCollaborators(newCollaborators);
-  };
-
-  const addCollaboratorField = () => {
-    setCollaborators([...collaborators, { email: "" }]);
+  const handleCollaboratorEmailChange = async (e) => {
+    setCollaboratorEmail(e.target.value);
+    if (e.target.value) {
+      try {
+        const userData = await API.FindUserByEmail(e.target.value); // API call to get user by email
+        setCollaborator(userData);
+      } catch {
+        setCollaborator(null);
+      }
+    } else {
+      setCollaborator(null);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -40,22 +45,19 @@ const CreateProjectForm = ({ onCreateProject }) => {
 
     try {
       // Create Project
-      const projectData = { ...newProject, user };
+      const projectData = await API.createProject({ ...newProject, user });
       setMessage("Project created successfully!");
 
-      // Invite Collaborators
-      await Promise.all(
-        collaborators
-          .filter((collab) => collab.email.trim())
-          .map((collab) =>
-            API.inviteCollaborator({
-              projectId: projectData.id,
-              email: collab.email,
-            })
-          )
-      );
+      // Invite Collaborator if email is valid and collaborator is found
+      if (collaborator) {
+        await API.inviteCollaborator({
+          projectId: projectData._id,
+          role: "editor",
+          userId: collaborator._id,
+        });
+        setMessage("Collaborator invited successfully.");
+      }
 
-      setMessage("Collaborators invited successfully.");
       onCreateProject(projectData);
 
       // Reset form
@@ -66,9 +68,10 @@ const CreateProjectForm = ({ onCreateProject }) => {
         endDate: "",
         priority: "Medium",
       });
-      setCollaborators([{ email: "" }]);
+      setCollaboratorEmail("");
+      setCollaborator(null);
     } catch (error) {
-      setMessage("Error creating project or inviting collaborators.");
+      setMessage("Error creating project or inviting collaborator.");
     } finally {
       setLoading(false);
     }
@@ -101,27 +104,21 @@ const CreateProjectForm = ({ onCreateProject }) => {
       />
 
       <h3 className="mb-2 text-lg font-semibold text-red-600">
-        Invite Collaborators
+        Invite Collaborator
       </h3>
-      {collaborators.map((collaborator, index) => (
-        <div key={index} className="flex mb-2">
-          <input
-            type="email"
-            placeholder="Collaborator Email"
-            value={collaborator.email}
-            onChange={(e) => handleCollaboratorChange(index, e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-300"
-          />
-        </div>
-      ))}
-
-      <button
-        type="button"
-        onClick={addCollaboratorField}
-        className="w-full py-2 mt-2 mb-4 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300"
-      >
-        + Add Collaborator
-      </button>
+      <input
+        type="email"
+        placeholder="Collaborator Email"
+        value={collaboratorEmail}
+        onChange={handleCollaboratorEmailChange}
+        className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-300"
+      />
+      {collaborator && (
+        <p className="text-sm text-green-500">Collaborator found: {collaborator.name}</p>
+      )}
+      {!collaborator && collaboratorEmail && (
+        <p className="text-sm text-red-500">No user found with this email</p>
+      )}
 
       <button
         type="submit"
