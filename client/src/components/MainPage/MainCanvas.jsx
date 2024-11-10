@@ -14,6 +14,39 @@ const MainCanvas = ({ ScreenSize, reloadEvents, rightSidebarOpen }) => {
   const project = useSelector((state) => state.project);
   const apiDashboard = new ApiDashboard();
 
+  const tips = [
+    "Tip: Use Ctrl+S to save your changes.",
+    "Tip: You can drag and drop components to rearrange them.",
+    "Tip: Double click on a component to open its properties.",
+    "Tip: Place components inside other components to create a hierarchy.",
+    "Tip: Use the right sidebar to customize your components.",
+    "Tip: Write custom JavaScript code to add interactivity to your components.",
+    "Tip: Use the code editor to edit your CSS styles.",
+    "Tip: Preview your changes before publishing your project.",
+    "Tip: Publish your project to share it with others.",
+    "Tip: You can change your project's domain to a custom domain.",
+    "Tip: Collaborate with other users to work on the same project.",
+    "Tip: View the analytics of your project to see how many views it has.",
+    "Tip: Customize keywords and descriptions to make your project more discoverable.",
+    "Tip: Add media to your project to showcase it.",
+    "Tip: Use the version history to revert to a previous version of your project.",
+    "Tip: View SEO analysis to optimize your project for search engines.",
+  ];
+
+  useEffect(() => {
+    toast.success(tips[Math.floor(Math.random() * tips.length)],
+      {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+      }
+    );
+  }, []);
+
   // Event listener for Ctrl+S
   const updateWebElements = () => {
     // Create a copy of webElements with updated dimensions
