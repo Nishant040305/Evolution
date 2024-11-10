@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import ApiDashboard from "../scripts/API.Dashboard";
+import useSaveProject from "../hooks/useSaveProject";
 
 const PublishPage = ( { css, js } ) => {
   const webElements = useSelector(state => state.webElement.present);
@@ -8,11 +9,7 @@ const PublishPage = ( { css, js } ) => {
 
   const getProjectId = () => project._id;
 
-  const saveProject = () => {
-    if (webElements) {
-      apiDashboard.updateProjectComponents(getProjectId(), webElements);
-    }
-  }
+  const { saveProject } = useSaveProject();
 
   const getHTMLContent = () => {
     let htmlContent = document.getElementById("canvas").innerHTML;

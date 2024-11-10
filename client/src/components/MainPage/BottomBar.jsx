@@ -4,7 +4,9 @@ import useSaveProject from "../../hooks/useSaveProject";
 
 const BottomBar = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const { handleSave } = useSaveProject();
+  const { saveProject } = useSaveProject();
+
+  const handleSave = () => saveProject();
 
   // Function to handle mouse movement
   const handleMouseMove = (event) => {

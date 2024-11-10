@@ -1,30 +1,46 @@
-import { useDispatch, useSelector } from "react-redux";
-import { setProperty } from "../Store/webElementSlice";
+import { useDispatch,useSelector } from "react-redux";
 import ApiDashboard from "../scripts/API.Dashboard";
+import { setProperty } from "../Store/webElementSlice";
 
-const useSaveProject = (projectID) => {
-  const API = new ApiDashboard();
-  const webElements = useSelector((state) => state.webElement.present);
-  const project = useSelector((state) => state.user.userInfo.projects);
+const useSaveProject = () => {
+  const webElements = useSelector(state => state.webElement.present);
+  const project = useSelector(state => state.project);
+  const apiDashboard = new ApiDashboard();
   const dispatch = useDispatch();
 
+  const getProjectId = () => project._id;
+
   const updateWebElements = () => {
+    // Create a copy of webElements with updated dimensions
+    const updatedElements = JSON.parse(JSON.stringify(webElements));
+    
     Object.keys(webElements).forEach((key) => {
       const element = document.getElementById("canvas-element " + key);
       const { height, width } = element.getBoundingClientRect();
-      dispatch(setProperty({ id: key, property: "height", value: height }));
-      dispatch(setProperty({ id: key, property: "width", value: width }));
-    });
-  };
+      console.log(height, width);
 
-  const handleSave = () => {
-    updateWebElements();
-    if (webElements && project.includes(projectID)) {
-      API.updateProjectComponents(projectID, webElements);
+      updatedElements[key].styles = {
+        ...updatedElements[key].styles || {},
+        height,
+        width,
+      };
+    });
+  
+    return updatedElements;
+  };
+  
+  const saveProject = () => {
+    if (webElements) {
+      const updatedWebElements = updateWebElements();
+      console.log(updatedWebElements);
+      apiDashboard.updateProjectComponents(getProjectId(), updatedWebElements);
     }
   };
+  
 
-  return { handleSave };
+  return {
+    saveProject,
+  };
 };
 
 export default useSaveProject;

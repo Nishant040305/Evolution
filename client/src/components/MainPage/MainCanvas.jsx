@@ -1,12 +1,33 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useCallback, useRef } from "react";
 import ComponentRenderer from "./ComponentRenderer";
 import { useSelector, useDispatch } from "react-redux";
 import { setPosition, removeChild } from "../../Store/webElementSlice";
+import useSaveProject from "../../hooks/useSaveProject";
 
 const MainCanvas = ({ ScreenSize, reloadEvents, rightSidebarOpen }) => {
   const dispatch = useDispatch();
   const webElements = useSelector((state) => state.webElement.present);
   const webElementsRef = useRef(webElements);
+  const project = useSelector((state) => state.project);
+  const { saveProject } = useSaveProject();
+
+  // Event listener for Ctrl+S
+  const handleSaveCallback = useCallback(saveProject, [saveProject, project._id]);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.key === 's') {
+        event.preventDefault();
+        console.log('Ctrl+S pressed');
+        handleSaveCallback();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown); // Cleanup on unmount
+    };
+  }, []);
 
   useEffect(() => {
     webElementsRef.current = webElements;
