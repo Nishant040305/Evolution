@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Timer, Save } from "lucide-react";
 import useSaveProject from "../../hooks/useSaveProject";
+import { useSelector } from "react-redux";
 
 const BottomBar = () => {
-  const { projectID } = useParams();
+  const projectID = useSelector((state) => state.project._id);
   const project = useSelector((state) => state.user.userInfo.projects);
   const webElements = useSelector((state) => state.webElement.present);
 

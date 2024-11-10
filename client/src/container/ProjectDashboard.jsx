@@ -25,11 +25,11 @@ const ProjectDashboard = () => {
   const APIUser = new User(user);
 
   const updateProject = (projectId, projectData) => {
-    const updatedProjects = projects.map((project) =>
-      project._id === projectId
+    const updatedProjects = projects.map((project) => {
+      return project?._id === projectId
         ? { ...project, name: projectData.name, description: projectData.description }
         : project
-    );
+    });
     setProjects(updatedProjects);
   };
 
@@ -96,7 +96,7 @@ const ProjectDashboard = () => {
   };
 
   const handleProjectClick = (projectId) => {
-    navigate(`main/${user}/${projectId}`);
+    navigate(`main/${projectId}`);
   };
 
   return (
@@ -130,7 +130,7 @@ const ProjectDashboard = () => {
               Loading projects...
             </div>
           ) : (
-            (isSharedView ? sharedFilteredProjects : filteredProjects).map((project) => (
+            (isSharedView ? sharedFilteredProjects : filteredProjects).map((project) => project && (
               <ProjectCard
                 key={project._id}
                 project={project}

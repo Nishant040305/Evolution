@@ -19,11 +19,10 @@ import CodeEditorCSS from "../components/MainPage/CodeEditorCSS";
 import { useCanvasEvents } from "../hooks/DragDrop";
 
 const WebsiteBuilder = () => {
-  const { userId, projectID } = useParams();
+  const { projectID } = useParams();
   const navigate = useNavigate();
   const webElement = useSelector((state) => state.webElement.present);
   const [reloaded, setReloaded] = useState(false);
-  const currentUserId = useSelector((state) => state.user.userInfo?._id); // Current logged-in user's ID
   const dispatch = useDispatch();
   const [leftSidebarOpen, setLeftSidebarOpen] = useState(true);
   const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
@@ -89,13 +88,7 @@ const WebsiteBuilder = () => {
   const fetchProject = async () => {
     try {
       const projectComp = await API.getProjectById(projectID);
-      if (
-        !projectComp ||
-        projectComp.user._id !== currentUserId ||
-        currentUserId !== userId
-      ) {
-        navigate("/"); // Redirect if unauthorized
-      } else {
+     
         console.log(projectComp);
         dispatch(setElement(projectComp.components));
         dispatch(setData(projectComp.media));
@@ -106,17 +99,17 @@ const WebsiteBuilder = () => {
         console.log(webElement);
         reloadEvents();
         console.log(webElement);
-      }
+      
     } catch (error) {
       console.error("Error fetching project data:", error);
     }
   };
 
   useEffect(() => {
-    if (projectID && currentUserId) {
+    if (projectID) {
       fetchProject();
     }
-  }, [projectID, currentUserId]);
+  }, [projectID]);
 
   return (
     <div className="flex flex-col h-screen">
