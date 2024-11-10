@@ -15,7 +15,7 @@ const Nav = (id, canvasEvents) => ({
     },
     attributes: {
         ...canvasEvents(id),
-        className: "canvas-component-dark",
+        className: "canvas-component-dark no-scrollbar",
     },
     content: `Navigation ${id}`,
 });

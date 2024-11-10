@@ -10,6 +10,8 @@ import Section from './section.component';
 import Nav from './nav.component';
 import Footer from './footer.component';
 import Header from './header.component';
+import { H1, H2, H3, H4, H5, H6 } from './Heading.component';
+import Paragraph from './Paragraph.component';
 
 export default {
   Button,
@@ -24,4 +26,11 @@ export default {
   Nav,
   Footer,
   Header,
+  H1,
+  H2,
+  H3,
+  H4,
+  H5,
+  H6, 
+  Paragraph
 };

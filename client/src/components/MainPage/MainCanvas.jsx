@@ -49,9 +49,9 @@ const MainCanvas = ({ ScreenSize, reloadEvents, rightSidebarOpen }) => {
   };
 
   const getHeight = () => {
-    if (ScreenSize === "desktop") return "calc(85vh - 64px)";
-    if (ScreenSize === "mobile") return "calc(85vh - 48px)";
-    return "calc(85vh - 64px)"; // Default for tablet or other sizes
+    if (ScreenSize === "desktop") return "calc(90vh - 64px)";
+    if (ScreenSize === "mobile") return "calc(90vh - 48px)";
+    return "calc(90vh - 64px)"; // Default for tablet or other sizes
   };
 
   const getWidth = () => {

@@ -32,6 +32,8 @@ const CombinedProjectModal = ({ project, onClose, onUpdate }) => {
   const [updatedProject, setUpdatedProject] = useState({
     name: project.name,
     description: project.description,
+    keywords: project.keywords,
+    domain: project.domain,
   });
   const [timeScale, setTimeScale] = useState("month"); // Default view by month
   const convertTimeToDate = (timeString) => {
@@ -148,6 +150,13 @@ const groupViewsByTime = (views, scale) => {
     alert(`Reverted to version: ${version}`);
   };
 
+  const handleKeywordChange = (e) => {
+    const { value } = e.target;
+    setUpdatedProject((prevProject) => ({
+      ...prevProject,
+      keywords: value.split(",").map((keyword) => keyword.trim()), // Split the string into an array of keywords
+    }));
+  };
   const renderSettingsTab = () => (
     <div>
       <h2 className="mb-4 text-lg font-semibold text-red-800">
@@ -168,6 +177,44 @@ const groupViewsByTime = (views, scale) => {
         placeholder="Project Description"
         className="w-full p-2 mb-4 text-red-800 border border-red-300 rounded-md"
       />
+
+      <div className="mb-4">
+        <label
+          htmlFor="keywords"
+          className="block mb-2 text-sm font-semibold text-red-800"
+        >
+          Keywords (for Website)
+        </label>
+        <input
+          type="text"
+          name="keywords"
+          value={updatedProject.keywords.join(", ")}
+          string
+          onChange={handleKeywordChange}
+          placeholder="Enter keywords, separated by commas"
+          className="w-full p-2 mb-4 text-red-800 border border-red-300 rounded-md"
+        />
+        <p className="text-sm text-red-500">
+          Enter keywords related to your project for better SEO optimization.
+        </p>
+      </div>
+
+      <div className="mb-4">
+        <label
+          htmlFor="domain"
+          className="block mb-2 text-sm font-semibold text-red-800"
+        >
+          Domain
+        </label>
+        <input
+          type="text"
+          name="domain"
+          value={updatedProject.domain}
+          onChange={handleInputChange}
+          placeholder="Enter project domain"
+          className="w-full p-2 mb-4 text-red-800 border border-red-300 rounded-md"
+        />
+      </div>
     </div>
   );
 

@@ -16,16 +16,19 @@ const SettingsPage = () => {
   const fileInputRef = useRef(null);
   const dispatch = useDispatch();
 
-  const imagesMedia = useSelector((state) => state.image); // Access Redux image state
   const user = useSelector((state) => state.user.userInfo); // Access Redux user state
 
   const BACKWEB = import.meta.env.VITE_REACT_APP_BACKWEB;
 
-  const defaultImage = `https://dummyimage.com/200x200/000/fff&text=${user?.name?.charAt(0).toUpperCase()}`;
+  const defaultImage = `https://dummyimage.com/200x200
+    ?.charAt(0)
+    .toUpperCase()}`;
 
   useEffect(() => {
+    const usernameFromEmail = user.email ? user.email.split("@")[0] : ""; // Extract the part before '@'
+
     setEditForm({
-      username: user.username || "",
+      username: usernameFromEmail || "",
       email: user.email || "",
     });
     setProfileImage(user.avatar || defaultImage);
@@ -80,7 +83,7 @@ const SettingsPage = () => {
   const handleEditSubmit = async () => {
     try {
       const urlB = `${BACKWEB}${server.User.ChangeProfile}`;
-      const endpoint = urlB.replace(':id', user._id);
+      const endpoint = urlB.replace(":id", user._id);
       const response = await axios.put(endpoint, {
         username: editForm.username,
         avatar: profileImage,
@@ -100,25 +103,30 @@ const SettingsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <div className="px-4 py-8 mx-auto max-w-7xl">
-        <div className="p-6 bg-white rounded-lg shadow-lg">
-          <h2 className="mb-4 text-2xl font-semibold text-red-600">Profile Settings</h2>
+        <div className="p-6 rounded-lg shadow-lg bg-red-50">
+          <h2 className="mb-4 text-2xl font-semibold text-red-600">
+            Profile Settings
+          </h2>
 
           {/* Profile Image Section */}
-          <div className="flex items-center mb-6 space-x-4">
-            <div className="w-20 h-20 overflow-hidden border-2 border-gray-300 rounded-full">
+          <div className="flex items-center justify-center mb-6 space-x-4">
+            <div className="w-24 h-24 overflow-hidden border-4 border-red-300 rounded-full">
               <img
                 src={profileImage || defaultImage} // Use either uploaded image or default
                 alt="Profile"
                 className="object-cover w-full h-full"
               />
             </div>
+          </div>
 
+          {/* Image Upload Button */}
+          <div className="flex justify-center mb-4">
             <input
               type="file"
               onChange={handleImageChange}
-              className="px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-md"
+              className="px-4 py-2 text-sm text-gray-700 border-2 border-gray-300 rounded-md"
               ref={fileInputRef}
               accept="image/png,image/jpeg,image/jpg"
             />
@@ -126,26 +134,43 @@ const SettingsPage = () => {
 
           {/* Image Preview & Upload Button */}
           {imageToUpload.image && (
-            <div className="flex items-center justify-between p-2 bg-white rounded-lg shadow-sm">
+            <div className="flex justify-center mb-6">
               <img
                 src={imageToUpload.image}
                 alt="Preview"
-                className="object-cover w-16 h-16 rounded"
+                className="object-cover w-16 h-16 rounded-full"
               />
               <button
                 onClick={uploadProfileImage}
-                className="px-3 py-1.5 bg-red-500 text-white rounded-md hover:bg-red-600 transition-all text-sm"
+                className="px-4 py-2 ml-4 text-sm text-white transition-all bg-red-500 rounded-md hover:bg-red-600"
               >
                 Upload
               </button>
             </div>
           )}
 
-          {/* Username and Email */}
+          {/* Display Name */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-gray-800">
+              Display Name
+            </h3>
+            <div className="text-sm text-gray-600">{user.username}</div>
+          </div>
+
+          {/* Email */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-gray-800">Email</h3>
+            <div className="text-sm text-gray-600">{user.email}</div>
+          </div>
+
+          {/* Edit Form */}
           {isEditing ? (
             <>
               <div className="my-4">
-                <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="username"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Username
                 </label>
                 <input
@@ -153,13 +178,18 @@ const SettingsPage = () => {
                   id="username"
                   name="username"
                   value={editForm.username}
-                  onChange={(e) => setEditForm({ ...editForm, username: e.target.value })}
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, username: e.target.value })
+                  }
+                  className="block w-full p-2 mt-1 border border-gray-300 rounded-md"
                 />
               </div>
 
               <div className="my-4">
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Email
                 </label>
                 <input
@@ -167,45 +197,37 @@ const SettingsPage = () => {
                   id="email"
                   name="email"
                   value={editForm.email}
-                  onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, email: e.target.value })
+                  }
+                  className="block w-full p-2 mt-1 border border-gray-300 rounded-md"
                 />
               </div>
 
-              <div className="flex space-x-4">
+              <div className="flex justify-center space-x-4">
                 <button
                   onClick={handleEditSubmit}
-                  className="px-4 py-2 bg-green-500 text-white rounded-md"
+                  className="px-4 py-2 text-white bg-green-500 rounded-md"
                 >
                   Save
                 </button>
                 <button
                   onClick={() => setIsEditing(false)}
-                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md"
+                  className="px-4 py-2 text-gray-700 bg-gray-300 rounded-md"
                 >
                   Cancel
                 </button>
               </div>
             </>
           ) : (
-            <>
-              <div className="my-4">
-                <div className="text-sm font-medium text-gray-700">Username</div>
-                <div>{user.username}</div>
-              </div>
-
-              <div className="my-4">
-                <div className="text-sm font-medium text-gray-700">Email</div>
-                <div>{user.email}</div>
-              </div>
-
+            <div className="flex justify-center mt-6">
               <button
                 onClick={() => setIsEditing(true)}
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
+                className="px-6 py-3 text-white bg-blue-500 rounded-md hover:bg-blue-600"
               >
                 Edit
               </button>
-            </>
+            </div>
           )}
         </div>
       </div>

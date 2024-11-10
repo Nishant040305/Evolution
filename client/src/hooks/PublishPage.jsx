@@ -43,7 +43,6 @@ const PublishPage = ( { css, js } ) => {
   };
 
   const download = async () => {
-    console.log("Downloading project...");
     saveProject();
     try {
       const response = await apiDashboard.downloadProject(getProjectId());
@@ -61,7 +60,7 @@ const PublishPage = ( { css, js } ) => {
       URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Failed to download project:", error);
-      alert("Failed to download project. Please try again.");
+      alert("Failed to download project. Have you published it yet?");
     }
   };
 
