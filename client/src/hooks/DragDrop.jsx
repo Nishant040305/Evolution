@@ -24,7 +24,6 @@ export const useCanvasEvents = (setId, toggleRight, webElements) => {
     handleClick(elementId);
     event.stopPropagation();
     console.log("Dragging.... ", elementId);
-    setId(elementId);
     const rect = event.currentTarget.getBoundingClientRect();
 
     const offsetX = event.clientX - rect.left;

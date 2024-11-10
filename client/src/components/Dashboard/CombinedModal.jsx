@@ -116,6 +116,11 @@ const groupViewsByTime = (views, scale) => {
     const { labels, data } = groupViewsByTime(analyticsData.viewHistory, timeScale);
   const API = new ApiDashboard();
 
+  const SEO = () => {
+    const server = import.meta.env.VITE_REACT_APP_BACKWEB;
+    window.open(`${server}/audit/${project.domain}`, "_blank");
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUpdatedProject((prev) => ({ ...prev, [name]: value }));
@@ -282,7 +287,17 @@ const groupViewsByTime = (views, scale) => {
         <h2 className="mb-4 text-lg font-semibold text-red-800">
           Project Analytics
         </h2>
-        <p>Total Views: {analyticsData.views}</p>
+        <div className="flex justify-between items-center">
+          <p>Total Views: {analyticsData.views}</p>
+          <button
+            onClick={SEO}
+            className={`ml-2 px-4 py-2 bg-red-200 text-red-800 rounded-md ${
+              timeScale === "day" ? "font-semibold" : ""
+            }`}
+          >
+            Lighthouse SEO
+          </button>
+        </div>
         <div className="chart-container" style={{width:610,height:400}}>
           <Line data={chartData} options={chartOptions} />
         </div>

@@ -1,5 +1,5 @@
 {
-  "Main": "/main/:projectID",
+  "Main": "/edit/:projectID",
   "Login": "/login-page",
   "Dashboard": "/",
   "Settings": "/settings"

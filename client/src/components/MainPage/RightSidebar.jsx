@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { X, ChartColumn } from "lucide-react";
 import ComponentEditor from "./componentEditor";
 import ComponentEditorTransform from "./ComponentEditorTransform";
@@ -56,7 +56,8 @@ const RightSidebar = ({ closeSidebar, id }) => {
   });
 
   return (
-    <div className="flex flex-col h-[50vh] overflow-y-auto transition-all duration-300 bg-white border-l w-80 z-50">
+    // absolute to not interfere with the canvas
+    <div className="absolute right-0 top-0 h-[100vh] overflow-y-auto transition-all duration-300 bg-white border-l w-80 z-50">
       <div className="flex flex-row justify-between w-auto px-2 py-3 pt-2 text-white bg-red-500 border-b properties-section border-slate-200">
         <div className="flex flex-row items-center text-lg font-semibold">
           <ChartColumn size={25} color="#fff" className="mr-2" />

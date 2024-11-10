@@ -2,17 +2,83 @@ import { useEffect, useCallback, useRef } from "react";
 import ComponentRenderer from "./ComponentRenderer";
 import { useSelector, useDispatch } from "react-redux";
 import { setPosition, removeChild } from "../../Store/webElementSlice";
-import useSaveProject from "../../hooks/useSaveProject";
+import ApiDashboard from "../../scripts/API.Dashboard";
+import { useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const MainCanvas = ({ ScreenSize, reloadEvents, rightSidebarOpen }) => {
   const dispatch = useDispatch();
   const webElements = useSelector((state) => state.webElement.present);
   const webElementsRef = useRef(webElements);
   const project = useSelector((state) => state.project);
-  const { saveProject } = useSaveProject();
+  const apiDashboard = new ApiDashboard();
+
+  const tips = [
+    "Tip: Use Ctrl+S to save your changes.",
+    "Tip: You can drag and drop components to rearrange them.",
+    "Tip: Double click on a component to open its properties.",
+    "Tip: Place components inside other components to create a hierarchy.",
+    "Tip: Use the right sidebar to customize your components.",
+    "Tip: Write custom JavaScript code to add interactivity to your components.",
+    "Tip: Use the code editor to edit your CSS styles.",
+    "Tip: Preview your changes before publishing your project.",
+    "Tip: Publish your project to share it with others.",
+    "Tip: You can change your project's domain to a custom domain.",
+    "Tip: Collaborate with other users to work on the same project.",
+    "Tip: View the analytics of your project to see how many views it has.",
+    "Tip: Customize keywords and descriptions to make your project more discoverable.",
+    "Tip: Add media to your project to showcase it.",
+    "Tip: Use the version history to revert to a previous version of your project.",
+    "Tip: View SEO analysis to optimize your project for search engines.",
+  ];
+
+  useEffect(() => {
+    toast.success(tips[Math.floor(Math.random() * tips.length)],
+      {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+      }
+    );
+  }, []);
 
   // Event listener for Ctrl+S
-  const handleSaveCallback = useCallback(saveProject, [saveProject, project._id]);
+  const updateWebElements = () => {
+    // Create a copy of webElements with updated dimensions
+    const updatedElements = JSON.parse(JSON.stringify(webElementsRef.current));
+    
+    Object.keys(webElementsRef.current).forEach((key) => {
+      const element = document.getElementById("canvas-element " + key);
+      const { height, width } = element.getBoundingClientRect();
+      console.log(height, width);
+
+      updatedElements[key].styles = {
+        ...updatedElements[key].styles || {},
+        height,
+        width,
+      };
+    });
+  
+    return updatedElements;
+  };
+
+  const { projectID } = useParams();
+  const pid = projectID || project._id;
+
+  const handleSaveCallback = useCallback(async () => {
+    try {
+      const response = await apiDashboard.updateProjectComponents(pid, updateWebElements());
+      console.log('Components Saved:', response);
+      toast.success("Components Saved!");
+    } catch (error) {
+      console.error("Failed to save by Ctrl+S:", error);
+    }
+  }, [apiDashboard, pid]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -88,6 +154,7 @@ const MainCanvas = ({ ScreenSize, reloadEvents, rightSidebarOpen }) => {
         className="min-h-full bg-white rounded-lg shadow-lg"
         style={{ height: getHeight(), width: getWidth() }}
       >
+        <ToastContainer />
         <div
           id="canvas"
           className="relative flex items-center justify-center rounded-lg"

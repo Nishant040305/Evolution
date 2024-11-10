@@ -7,6 +7,7 @@ import CreateProjectForm from "../components/Dashboard/CreateProjectForm";
 import { useSelector } from "react-redux";
 import ApiDashboard from "../scripts/API.Dashboard";
 import User from "../scripts/API.User";
+import url from "../url.json";
 
 const ProjectDashboard = () => {
   const navigate = useNavigate();
@@ -95,8 +96,8 @@ const ProjectDashboard = () => {
     }
   };
 
-  const handleProjectClick = (projectId) => {
-    navigate(`main/${projectId}`);
+  const handleProjectClick = (projectID) => {
+    navigate(url.Main.replace(":projectID", projectID));
   };
 
   return (
