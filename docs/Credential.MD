@@ -10,7 +10,7 @@ This document provides an overview of the Credential Management API, including i
 - [Models](#models)
 
 ## Overview
-The Credential Management API facilitates user authentication, account verification, password recovery, and password changes. It provides endpoints for signing in, logging in, and verifying user accounts through OTP (One-Time Password).
+The Credential Management API facilitates user authentication, account verification, password recovery, and password changes. It provides endpoints for signing in, logging in, and verifying user accounts through OTP (One-Time Password), as well as social media login via Google and Github.
 
 ## API Endpoints
 
@@ -21,7 +21,7 @@ The Credential Management API facilitates user authentication, account verificat
 - **Middleware**: `UserVerifier`
 - **Response**:
     - **Status Code**: `200 OK`
-    - **Body**: 
+    - **Body**:
       ```json
       {
           "info": {
@@ -171,19 +171,74 @@ The Credential Management API facilitates user authentication, account verificat
       }
       ```
 
+### 7. Logout
+- **Route**: `/api/auth/logout`
+- **Method**: `POST`
+- **Description**: Logs out the user by invalidating their session or JWT token.
+- **Response**:
+    - **Status Code**: `200 OK`
+      - **Body**:
+      ```json
+      {
+          "message": "Logout successful"
+      }
+      ```
+
+### 8. Google OAuth Callback
+- **Route**: `/api/auth/google/callback`
+- **Method**: `GET`
+- **Description**: Handles the OAuth callback for Google login.
+- **Middleware**: `googleLogin`
+- **Response**:
+    - **Status Code**: `200 OK`
+      - **Body**:
+      ```json
+      {
+          "info": "Google OAuth successful"
+      }
+      ```
+
+### 9. Github OAuth Login
+- **Route**: `/api/auth/github`
+- **Method**: `GET`
+- **Description**: Redirects user to Github login page for OAuth authentication.
+
+### 10. Github OAuth Callback
+- **Route**: `/api/auth/github/callback`
+- **Method**: `GET`
+- **Description**: Handles the OAuth callback for Github login.
+- **Response**:
+    - **Status Code**: `200 OK`
+      - **Body**:
+      ```json
+      {
+          "info": "GitHub OAuth successful"
+      }
+      ```
+
 ## Controller Functions
+
 The controller functions are responsible for handling the business logic for each API endpoint. They include:
-- `Signin`: Handles user sign-in and account creation with email verification.
-- `VerifyUser`: Verifies the user's OTP and updates the user’s verification status.
-- `LogIn`: Authenticates users and issues JWT tokens for session management.
-- `PasswordRecovery`: Sends a password recovery OTP to the user's email.
-- `ConfirmPasswordChange`: Updates the user's password after OTP verification.
+
+- **Signin**: Handles user sign-in and account creation with email verification.
+- **VerifyUser**: Verifies the user's OTP and updates the user’s verification status.
+- **LogIn**: Authenticates users and issues JWT tokens for session management.
+- **PasswordRecovery**: Sends a password recovery OTP to the user's email.
+- **ConfirmPasswordChange**: Updates the user's password after OTP verification.
 
 ## Middleware
-- `UserVerifier`: This middleware checks whether the user is verified before accessing certain endpoints, ensuring only verified users can retrieve their info.
+
+- **UserVerifier**: This middleware checks whether the user is verified before accessing certain endpoints, ensuring only verified users can retrieve their info.
+- **googleLogin**: Handles the authentication of users via Google OAuth.
+- **GithubRedirect**: Redirects users to the GitHub login page for OAuth authentication.
+- **googleCallback**: Handles the OAuth callback after Google authentication.
+- **GithubCallback**: Handles the OAuth callback after GitHub authentication.
 
 ## Models
-- `User`: Represents the user entity in the database, including fields for display name, email, hashed password, and verification status.
-- `Token`: Represents tokens used for OTP verification and password recovery, linked to the user.
 
-This documentation provides a clear understanding of how to interact with the Credential Management API for authentication and account management tasks.
+- **User**: Represents the user entity in the database, including fields for display name, email, hashed password, and verification status.
+- **Token**: Represents tokens used for OTP verification and password recovery, linked to the user.
+
+---
+
+This documentation provides a clear understanding of how to interact with the Credential Management API for authentication and account management tasks, including OAuth login, OTP verification, and password recovery.
