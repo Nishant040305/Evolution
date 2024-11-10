@@ -48,9 +48,7 @@ const CombinedProjectModal = ({ project, onClose, onUpdate }) => {
     [...project.members]
   );
   const [roleAssignments, setRoleAssignments] = useState([
-    { email: "john.doe@example.com", role: "Admin" },
-    { email: "jane.smith@example.com", role: "Editor" },
-    { email: "samuel.green@example.com", role: "Viewer" },
+   [...project.members]
   ]);
   const [analyticsData, setAnalyticsData] = useState({
     views: project.analytics.views.length, // Total views as an example
@@ -134,11 +132,15 @@ const groupViewsByTime = (views, scale) => {
     setCollaborators(newCollaborators);
   };
 
-  const handleSave = () => {
-    API.updateProject(project._id, updatedProject);
+  const handleSave = async() => {
+    await API.updateProject(project._id, updatedProject);
     onUpdate(project._id, updatedProject);
+    for(let i=0;i<updatedProject.members.length;i++){
+      if(updatedProject.members[i].role!=roleAssignments[i].role){
+        await API.UpdateCollaboratorRole(project._id,updatedProject.members[i].user,roleAssignments[i].role)
+      }
     onClose();
-  };
+  };}
 
   const handleCancel = () => {
     onClose(); // Close the modal without saving
@@ -385,7 +387,7 @@ const groupViewsByTime = (views, scale) => {
   
 
   const renderRolesTab = () => {
-    const roleOptions = ["Admin", "Editor", "Viewer"];
+    const roleOptions = "Editor"
     return (
       <div>
         <h2 className="mb-4 text-lg font-semibold text-red-800">Roles</h2>
@@ -398,29 +400,19 @@ const groupViewsByTime = (views, scale) => {
               key={index}
               className="flex items-center justify-between p-2 bg-red-100 rounded-md"
             >
-              <span className="text-red-800">{assignment.email}</span>
-              <select
-                value={assignment.role}
+              <span className="text-red-800">{assignment.user}</span>
+              <div
+                value={"editor"}
                 onChange={(e) => handleRoleChange(index, e.target.value)}
                 className="p-1 text-red-800 bg-white border border-red-300 rounded-md"
               >
-                {roleOptions.map((role, idx) => (
-                  <option key={idx} value={role}>
-                    {role}
-                  </option>
-                ))}
-              </select>
+                
+              </div>
             </div>
           ))}
         </div>
         <button
           type="button"
-          onClick={() =>
-            setRoleAssignments([
-              ...roleAssignments,
-              { email: "", role: "Viewer" },
-            ])
-          }
           className="w-full py-2 mt-4 text-red-700 bg-red-100 rounded-md hover:bg-red-200"
         >
           + Add Collaborator Role

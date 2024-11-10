@@ -56,7 +56,7 @@ const ProjectSettingsModal = ({ project, onClose, onUpdate }) => {
   };
   
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-opacity-50 bg-black-200">
+    <div className="fixed inset-0 flex items-center justify-center bg-opacity-50 bg-black-200 z-2000">
       <div className="w-full max-w-lg p-6 rounded-lg shadow-lg bg-red-50">
         <h2 className="mb-4 text-lg font-semibold text-red-800">
           Project Settings
@@ -79,31 +79,7 @@ const ProjectSettingsModal = ({ project, onClose, onUpdate }) => {
           className="w-full p-2 mb-4 text-red-800 border border-red-300 rounded-md"
         />
 
-        <h3 className="mb-2 text-lg font-semibold text-red-800">
-          Manage Collaborators
-        </h3>
-
-        <input
-        type="email"
-        placeholder="Collaborator Email"
-        value={collaboratorEmail}
-        onChange={(e)=>handleCollaboratorEmailChange(e)}
-        className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-300"
-      />
-      {collaborator && (
-        <p className="text-sm text-green-500">Collaborator found: {collaborator.name}</p>
-      )}
-      {!collaborator && collaboratorEmail && (
-        <p className="text-sm text-red-500">No user found with this email</p>
-      )}
-
-        <button
-          type="button"
-          onClick={addCollaboratorField}
-          className="w-full py-2 mb-4 text-red-700 bg-red-100 rounded-md hover:bg-red-200"
-        >
-          + Add Collaborator
-        </button>
+        
 
         <div className="flex justify-end space-x-4">
           <button

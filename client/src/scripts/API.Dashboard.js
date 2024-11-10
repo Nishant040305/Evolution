@@ -143,7 +143,16 @@ class ApiDashboard {
             console.error(`Failed to delete collaborator from project ${projectId}:`, error);
             throw error;
         }
-    }           
+    }      
+    async UpdateCollaboratorRole(projectId, userId, role) {
+        try {
+            const response = await axios.put(`${this.baseURL}/api/project/${projectId}/member`,{ userid: userId, role });
+            return response.data;
+        } catch (error) {
+            console.error(`Failed to update collaborator role in project ${projectId}:`, error);
+            throw error;
+        }
+    }       
 }
 
 export default ApiDashboard;
