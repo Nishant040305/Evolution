@@ -27,7 +27,8 @@
     "react-router-dom": "^6.27.0",
     "react-toastify": "^10.0.6",
     "redux-persist": "^6.0.0",
-    "redux-undo": "^1.1.0"
+    "redux-undo": "^1.1.0",
+    "toastify": "^2.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
