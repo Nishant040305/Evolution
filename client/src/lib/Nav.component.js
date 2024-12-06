@@ -18,6 +18,7 @@ const Nav = (id, canvasEvents) => ({
         className: "canvas-component-dark no-scrollbar",
     },
     content: `Navigation ${id}`,
+    children: [],
 });
 
 export default Nav;
