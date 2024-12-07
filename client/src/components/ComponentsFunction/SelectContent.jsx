@@ -1,29 +1,46 @@
-const SelectContent = ({ handleAttributeChange, element }) =>(
-    <div>
+const SelectContent = ({ handleContentChange, element }) => (
+  <div>
     <label className="block mb-1 font-medium text-gray-600">
       Options:
     </label>
-    {(element.attributes.content || []).map((option, index) => (
+    {(element.content || []).map((option, index) => (
       <div key={index} className="flex items-center mb-2 space-x-2">
-        <input
-          type="text"
-          value={option.label}
-          onChange={(e) => {
-            const updatedOptions = [...element.attributes.content];
-            updatedOptions[index] = {
-              ...updatedOptions[index],
-              label: e.target.value,
-            };
-            handleAttributeChange("content", updatedOptions);
-          }}
-          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
+        <div className="flex-1">
+          <label className="block text-sm font-medium text-gray-600">Label:</label>
+          <input
+            type="text"
+            value={option.label}
+            onChange={(e) => {
+              const updatedOptions = [...element.content];
+              updatedOptions[index] = {
+                ...updatedOptions[index],
+                label: e.target.value,
+              };
+              handleContentChange("content", updatedOptions);
+            }}
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+        </div>
+        <div className="flex-1">
+          <label className="block text-sm font-medium text-gray-600">Value:</label>
+          <input
+            type="text"
+            value={option.value}
+            onChange={(e) => {
+              const updatedOptions = [...element.content];
+              updatedOptions[index] = {
+                ...updatedOptions[index],
+                value: e.target.value,
+              };
+              handleContentChange("content", updatedOptions);
+            }}
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+        </div>
         <button
           onClick={() => {
-            const updatedOptions = element.attributes.content.filter(
-              (_, i) => i !== index
-            );
-            handleAttributeChange("content", updatedOptions);
+            const updatedOptions = element.content.filter((_, i) => i !== index);
+            handleContentChange("content", updatedOptions);
           }}
           className="p-2 text-white bg-red-500 rounded hover:bg-red-600"
         >
@@ -33,8 +50,8 @@ const SelectContent = ({ handleAttributeChange, element }) =>(
     ))}
     <button
       onClick={() =>
-        handleAttributeChange("content", [
-          ...(element.attributes.content || []),
+        handleContentChange("content", [
+          ...(element.content || []),
           { label: "", value: "" },
         ])
       }
@@ -43,7 +60,6 @@ const SelectContent = ({ handleAttributeChange, element }) =>(
       Add Option
     </button>
   </div>
-
-)
+);
 
 export default SelectContent;

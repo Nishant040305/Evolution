@@ -1,5 +1,3 @@
-import React from "react";
-
 const Select = (id, options = [], canvasEvents) => {
     return {
         id: `${id}`,
@@ -35,16 +33,7 @@ const Select = (id, options = [], canvasEvents) => {
         attributes: {
             ...canvasEvents(id),
         },
-        content: options.map((option, index) =>
-            React.createElement(
-                'option',
-                {
-                    key: `SELECT ${id} OPTION ${index}`,
-                    value: `SELECT ${id} OPTION ${index}`
-                },
-                option
-            )
-        ),
+        content: options,
     };
 };
 

@@ -83,7 +83,7 @@ const LeftSidebar = ({
     Button: (hash) => Button(hash, canvasEvents),
     TextField: (hash) => TextArea(hash, canvasEvents),
     Dropdown: (hash) =>
-      Select(hash, ["Option 1", "Option 2", "Option 3"], canvasEvents),
+    Select(hash, [{ value: 'option1', label: 'Option 1' },{ value: 'option2', label: 'Option 2' }], canvasEvents),
     Label: (hash) => Label(hash, "New Label Text", canvasEvents),
     Input: (hash) => Input(hash, canvasEvents),
     Div: (hash) => Div(hash, canvasEvents),

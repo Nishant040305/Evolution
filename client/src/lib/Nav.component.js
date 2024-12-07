@@ -2,8 +2,8 @@ const Nav = (id, canvasEvents) => ({
     id: `${id}`,
     type: "nav",
     styles: {
-        backgroundColor: "#FFFFFF",
-        color: "#000000",
+        backgroundColor: "#000000",
+        color: "#FFFFFF",
         paddingTop: "10px",
         paddingLeft: "10px",paddingRight: "10px",paddingBottom: "10px",
         width:"auto",
@@ -29,13 +29,14 @@ const Nav = (id, canvasEvents) => ({
         display: "flex",
         gap: "15px",
         padding: "10px",
+        display: "flex",
     },
     position: { x: 0, y: 0 },
     HTMLAttributes: {
         onclick: "alert('Nav clicked!')",
     },
     attributes: {
-        ...canvasEvents(id),
+        ...canvasEvents(id, true),
         className: "canvas-component-dark no-scrollbar",
     },
     content: `Navigation ${id}`,

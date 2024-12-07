@@ -11,6 +11,7 @@ import SelectContent from "../ComponentsFunction/SelectContent";
 import HeadingContent from "../ComponentsFunction/HeadingContent";
 import ParagraphContent from "../ComponentsFunction/ParagraphContent";
 import ArticleContent from "../ComponentsFunction/ArticleContent";
+import SectionContent from "../ComponentsFunction/SectionContent";
 const ComponentEditorContent = ({ id , toast }) => {
   const webElements = useSelector((state) => state.webElement.present);
   const element = webElements[id];
@@ -51,7 +52,7 @@ const ComponentEditorContent = ({ id , toast }) => {
       {/* Layout Options */}
       {element.type === "div" && (<DivContent handleContentChange={handleContentChange} handleStyleChange={handleStyleChange} element={element} />)}
       {/* Select Options (Work in Progress) */}
-      {element.type === "select" && (<SelectContent></SelectContent>)}
+      {element.type === "select" && (<SelectContent handleContentChange={handleContentChange} element={element} />)}
       {/* Heading Content */}
       {element.type === "h1" && (<HeadingContent handleContentChange={handleContentChange} element={element} />)}
       {element.type === "h2" && (<HeadingContent handleContentChange={handleContentChange} element={element} />)}
@@ -62,7 +63,10 @@ const ComponentEditorContent = ({ id , toast }) => {
       {/* Paragraph Content */}
       {element.type === "p" && (<ParagraphContent handleContentChange={handleContentChange} element={element} />)}
       {/* Article Content */} 
-      {element.type === "article" && (<ArticleContent handleContentChange={handleContentChange} element={element} />)}    </div>
+      {element.type === "article" && (<ArticleContent handleContentChange={handleContentChange} element={element} />)} 
+      {/* Section Content */}
+      {element.type === "section" && (<SectionContent handleContentChange={handleContentChange} handleStyleChange={handleStyleChange} element={element} />)}
+      </div>
   )
 }
 export default ComponentEditorContent;

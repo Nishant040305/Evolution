@@ -50,6 +50,19 @@ const ComponentRenderer = ({ instance, recursionDepth = 0 }) => {
           />)
       )
     );
+    else if (instance.type === "select") {
+      // Select state
+      element = React.createElement(
+        instance.type,
+        attributes,
+        content && content.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))
+      );
+    }
+    
   else
     element = React.createElement(
       instance.type,
@@ -73,7 +86,13 @@ const ComponentType = PropTypes.shape({
   styles: PropTypes.object,
   attributes: PropTypes.object,
   HTMLAttributes: PropTypes.object,
-  content: PropTypes.string,
+  content: PropTypes.oneOfType([  // Allow either a string or an array
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+    })),
+  ]),
   children: PropTypes.arrayOf(PropTypes.string),
   parent: PropTypes.string,
 });
