@@ -342,7 +342,8 @@ const LeftSidebar = ({
                     </button>
                   </div>
 
-                  {showMedia && (
+                  {showMedia && 
+                    <>
                     <div className="space-y-3">
                       <div
                         onDragOver={handleDragOver}
@@ -393,18 +394,16 @@ const LeftSidebar = ({
                         </div>
                       )}
                     </div>
-                  )}
+                  
                   {totalProgress > 0 && totalProgress < 100 && (
                         <div className="mt-2 w-full bg-gray-200 rounded-full h-2.5">
                           <div
                             className="bg-red-500 h-2.5 rounded-full"
                             style={{ width: `${totalProgress}%` }}
                           />
-                        </div>
-                      )}
-                </div>
+                        </div>)
+                  }
                 <div className="grid grid-cols-3 gap-2">
-                  {console.log(imagesMedia)}
                   {imagesMedia.map((element, index) => (
                     <div
                       key={index}
@@ -436,7 +435,9 @@ const LeftSidebar = ({
                         </div>
                       ))}
                 </div>
-
+                </>
+                }
+                </div>
                 {/* Additional Sections */}
                 <div className="space-y-3">
                   <button

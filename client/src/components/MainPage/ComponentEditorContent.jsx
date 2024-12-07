@@ -66,6 +66,13 @@ const ComponentEditorContent = ({ id , toast }) => {
       {element.type === "article" && (<ArticleContent handleContentChange={handleContentChange} element={element} />)} 
       {/* Section Content */}
       {element.type === "section" && (<SectionContent handleContentChange={handleContentChange} handleStyleChange={handleStyleChange} element={element} />)}
+      {/* Nav Content */}
+      {element.type === "nav" && (<NavContent handleContentChange={handleContentChange} handleStyleChange={handleStyleChange} element={element} />)}
+      {/* Footer Content */}
+      {element.type === "footer" && (<FooterContent handleContentChange={handleContentChange} handleStyleChange={handleStyleChange} element={element} />)}
+      {/* Header Content */}
+      {element.type === "header" && (<HeaderContent handleContentChange={handleContentChange} handleStyleChange={handleStyleChange} element={element} />)}
+      
       </div>
   )
 }
