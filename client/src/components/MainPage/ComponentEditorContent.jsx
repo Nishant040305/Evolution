@@ -1,8 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setAttribute, setContent, setProperty } from "../../Store/webElementSlice";
-
-const ComponentEditorContent = ({ id }) => {
+import { setAttribute, setContent, setProperty, setHtmlAttributes } from "../../Store/webElementSlice";
+import ButtonContent from "../ComponentsFunction/ButtonContent";
+const ComponentEditorContent = ({ id , toast }) => {
   const webElements = useSelector((state) => state.webElement.present);
   const element = webElements[id];
   const dispatch = useDispatch();
@@ -18,7 +18,9 @@ const ComponentEditorContent = ({ id }) => {
   const updateGridStyles = (property, value) => {
     dispatch(setProperty({ id, property, value }));
   };
-
+  const handleHtmlAttributes = (property, value) => {
+    dispatch(setHtmlAttributes({ id, property, value }));
+  };
   return (
     <div className="p-4 space-y-4 bg-white border border-gray-300 rounded-lg shadow-sm appearance-editor">
       <h3 className="text-xl font-semibold text-gray-700">
@@ -59,7 +61,10 @@ const ComponentEditorContent = ({ id }) => {
           </label>
         </div>
       )}
-
+      {/* Button Content */}
+      {element.type === "button" && (
+        <ButtonContent handleContentChange={handleContentChange} handleHtmlAttributes={handleHtmlAttributes} element={element} toast={toast} />
+      )}
       {/* Label Content */}
       {element.type === "label" && (
         <div>
@@ -124,22 +129,7 @@ const ComponentEditorContent = ({ id }) => {
         </div>
       )}
 
-      {/* Button Text */}
-      {element.type === "button" && (
-        <div>
-          <label className="block mb-1 font-medium text-gray-600">
-            Button Text:
-            <input
-              type="text"
-              value={element.content || ""}
-              onChange={(e) => handleContentChange("content", e.target.value)}
-              className="w-full p-2 mt-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-              placeholder="Enter button text"
-            />
-          </label>
-        </div>
-      )}
-
+      
       {/* Layout Options */}
       {element.type === "div" && (
         <div>

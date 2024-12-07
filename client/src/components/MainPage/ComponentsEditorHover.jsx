@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ChevronDown, ChevronUp, Component } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { setProperty } from "../../Store/webElementSlice";
-
+/* Work Required */
 const ComponentEditorHover = ({ id }) => {
   const webElements = useSelector((state) => state.webElement.present);
   const element = webElements[id];
@@ -14,9 +14,6 @@ const ComponentEditorHover = ({ id }) => {
     dispatch(setProperty({ id: id, property: property, value: value }));
   };
 
-  const handleBorderWidthChange = (side, value) => {
-    handleAdvancedChange(`border${side}Width`, `${value}px`);
-  };
 
   const [hoverStyles, setHoverStyles] = useState(element.styles.hover || {});
 
@@ -31,8 +28,8 @@ const ComponentEditorHover = ({ id }) => {
 
   return (
     <div className="p-4 space-y-4 bg-white border border-gray-300 rounded-lg shadow-sm appearance-editor">
-      <h3 className="flex items-center text-lg font-semibold text-gray-800">
-        Hover Properties
+      <h3 className="flex items-center text-base font-semibold text-gray-800">
+        Hover Properties<small>(in work)</small>
         <button onClick={() => setOFF((prev) => !prev)} className="ml-auto">
           {on ? (
             <ChevronUp className="w-4 h-4 text-gray-600" />

@@ -9,7 +9,7 @@ import ComponentEditorContent from "./ComponentEditorContent";
 import { useSelector } from "react-redux";
 import ComponentEditorHover from "./ComponentsEditorHover";
 
-const RightSidebar = ({ closeSidebar, id }) => {
+const RightSidebar = ({ closeSidebar, id,toast }) => {
   const webElements = useSelector((state) => state.webElement.present);
   let idx = id;
   if (webElements[id] == null) {
@@ -86,7 +86,7 @@ const RightSidebar = ({ closeSidebar, id }) => {
             <ComponentEditorAppearance id={idx} />
             <ComponentEditorAdvanced id={idx} />
             <ComponentEditorHover id={idx} />
-            <ComponentEditorContent id={idx} />
+            <ComponentEditorContent id={idx} toast={toast} />
 
           </div>
         )}

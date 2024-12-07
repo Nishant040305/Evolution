@@ -17,7 +17,7 @@ import { setData } from "../Store/imageSlice";
 import CodeEditorJS from "../components/MainPage/CodeEditorJS";
 import CodeEditorCSS from "../components/MainPage/CodeEditorCSS";
 import { useCanvasEvents } from "../hooks/DragDrop";
-
+import { toast } from "react-toastify";
 const WebsiteBuilder = () => {
   const { projectID } = useParams();
   const navigate = useNavigate();
@@ -130,13 +130,13 @@ const WebsiteBuilder = () => {
           setId={set}
         />
         {statusCode == 0 ? (
-          <MainCanvas ScreenSize={ScreenSize} reloadEvents={reloadEvents} />
+          <MainCanvas ScreenSize={ScreenSize} reloadEvents={reloadEvents} toast={toast}  />
         ) : statusCode == 1 ? (
           <CodeEditorJS js={js} setJs={setJs} />
         ) : statusCode == 2 ? (
           <CodeEditorCSS css={css} setCss={setCss} />
         ) : (
-          <MainCanvas ScreenSize={ScreenSize} reloadEvents={reloadEvents} />
+          <MainCanvas ScreenSize={ScreenSize} reloadEvents={reloadEvents} toast={toast} />
         )}
         {rightSidebarOpen && (
           <RightSidebar
@@ -144,6 +144,7 @@ const WebsiteBuilder = () => {
               console.log("hey");
               setRightSidebarOpen(false);
             }}
+            toast={toast}
             id={id}
           />
         )}
