@@ -118,11 +118,31 @@ const webElementSlice= createSlice({
                 }
             }
         },
-        deleteElement:(state,action)=>{
-            const newS = {...state}
-            delete newS[action.payload]
-            return newS;
-        }
+        deleteElement:(state, action) => {
+            const newState = { ...state };
+            
+            // Recursive function to delete children
+            const deleteChildren = (elementId) => {
+              // Check if the element exists
+              if (newState[elementId]) {
+                // If the element has children, recursively delete each child
+                if (newState[elementId].children) {
+                  newState[elementId].children.forEach(childId => {
+                    deleteChildren(childId);
+                  });
+                }
+                
+                // Finally, delete the element itself
+                delete newState[elementId];
+              }
+            };
+            
+            // Start the deletion from the requested element
+            deleteChildren(action.payload);
+            
+            return newState;
+          }
+          
     }
 })
 export const {
