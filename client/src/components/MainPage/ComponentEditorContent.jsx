@@ -9,6 +9,8 @@ import InputContent from "../ComponentsFunction/InputContent";
 import DivContent from "../ComponentsFunction/DivContent";
 import SelectContent from "../ComponentsFunction/SelectContent";
 import HeadingContent from "../ComponentsFunction/HeadingContent";
+import ParagraphContent from "../ComponentsFunction/ParagraphContent";
+import ArticleContent from "../ComponentsFunction/ArticleContent";
 const ComponentEditorContent = ({ id , toast }) => {
   const webElements = useSelector((state) => state.webElement.present);
   const element = webElements[id];
@@ -57,7 +59,10 @@ const ComponentEditorContent = ({ id , toast }) => {
       {element.type === "h4" && (<HeadingContent handleContentChange={handleContentChange} element={element} />)}
       {element.type === "h5" && (<HeadingContent handleContentChange={handleContentChange} element={element} />)}  
       {element.type === "h6" && (<HeadingContent handleContentChange={handleContentChange} element={element} />)}
-    </div>
+      {/* Paragraph Content */}
+      {element.type === "p" && (<ParagraphContent handleContentChange={handleContentChange} element={element} />)}
+      {/* Article Content */} 
+      {element.type === "article" && (<ArticleContent handleContentChange={handleContentChange} element={element} />)}    </div>
   )
 }
 export default ComponentEditorContent;

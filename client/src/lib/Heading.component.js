@@ -1,15 +1,31 @@
 const Heading = (id, text, level, canvasEvents) => {
     const tag = `h${level}`; // Dynamically set the tag (h1, h2, etc.)
-    
     const headingStyles = {
-        color: "#000000",
         fontSize: `${24 - (level - 1) * 2}px`,  // Decrease font size with each level (h1 to h6)
-        fontWeight: "bold",
-        marginBottom: "10px",
+        backgroundColor: "#FFFFFF",
+        color: "#000000",
+        paddingTop: "10px",
+        paddingLeft: "10px",paddingRight: "10px",paddingBottom: "10px",
+        width:"auto",
+        height:"auto",
+        fontFamily:"calibri",
+        borderWidth: "0px",
+        borderColor: "#000000",
+        borderStyle: "solid",
+        fontWeight: "600",
+        cursor: "text",
         display: "inline-block",
-        cursor: "pointer",
-        transition: "color 0.3s ease",
-    };
+        borderTopLeftRadius:"0.5px",
+        borderTopRightRadius:"0.5px",
+        borderBottomLeftRadius:"0.5px",
+        borderBottomRightRadius:"0.5px",
+        textAlign: "left",
+        boxShadow: "0px 0px 0px 0px #FFFFFF",
+        transition: "all 0.3s ease",      // Smooth transition for all properties
+        outline: "none",                 // Removes default outline on focus
+        letterSpacing: "0px",            // Adds slight spacing between letters
+        transform: "rotate(0deg)",           // Default scale for hover effect
+};
 
     return {
         id: `${id}`,
