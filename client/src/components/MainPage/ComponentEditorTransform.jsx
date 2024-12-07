@@ -6,7 +6,12 @@ import {
   setProperty,
   setTransform,
 } from "../../Store/webElementSlice";
-
+const Map={
+  "TopL":"borderTopLeftRadius",
+  "TopR":"borderTopRightRadius",
+  "BotR":"borderBottomRightRadius", 
+  "BotL":"borderBottomLeftRadius"
+}
 const ComponentEditorTransform = ({ id }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const webElements = useSelector((state) => state.webElement.present);
@@ -184,11 +189,11 @@ const ComponentEditorTransform = ({ id }) => {
               <div key={corner} className="flex items-center">
                 <label className="w-32">{corner}:</label>
                 <input
-                  type="number"
-                  value={parseInt(element.styles[`border${corner}Radius`]) || 0}
+                  type="text"
+                  placeholder={(element.styles[Map[corner]])}
                   onChange={(e) =>
                     handleTransformChange(
-                      `border${corner}Radius`,
+                      `${Map[corner]}`,
                       `${e.target.value}px`
                     )
                   }

@@ -3,15 +3,15 @@ const Button = (id, canvasEvents) => {
         id: `${id}`,
         type: "button",
         styles: {
-            backgroundColor: "black",
-            color: "white",
+            backgroundColor: "#000000",
+            color: "#FFFFFF",
             paddingTop: "10px",
             paddingLeft: "10px",paddingRight: "10px",paddingBottom: "10px",
             width:"auto",
             height:"auto",
             fontFamily:"Arial Black",
             borderWidth: "1px",
-            borderColor: "white",
+            borderColor: "#000000",
             borderStyle: "solid",
             fontSize: "16px",
             fontWeight: "bold",
@@ -22,7 +22,7 @@ const Button = (id, canvasEvents) => {
             borderBottomLeftRadius:"5px",
             borderBottomRightRadius:"5px",
             textAlign: "center",
-            boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.3)",
+            boxShadow: "2px 2px 5px #000000",
             transition: "all 0.3s ease",      // Smooth transition for all properties
             outline: "none",                 // Removes default outline on focus
             letterSpacing: "1px",            // Adds slight spacing between letters

@@ -7,6 +7,7 @@ import ComponentEditorAppearance from "./ComponentEditorAppearance";
 import ComponentEditorAdvanced from "./ComponentEditorAdvanced";
 import ComponentEditorContent from "./ComponentEditorContent";
 import { useSelector } from "react-redux";
+import ComponentEditorHover from "./ComponentsEditorHover";
 
 const RightSidebar = ({ closeSidebar, id }) => {
   const webElements = useSelector((state) => state.webElement.present);
@@ -84,7 +85,9 @@ const RightSidebar = ({ closeSidebar, id }) => {
             <ComponentEditorTransform id={idx} />
             <ComponentEditorAppearance id={idx} />
             <ComponentEditorAdvanced id={idx} />
+            <ComponentEditorHover id={idx} />
             <ComponentEditorContent id={idx} />
+
           </div>
         )}
       </div>

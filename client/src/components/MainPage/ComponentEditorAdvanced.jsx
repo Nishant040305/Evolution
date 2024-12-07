@@ -165,17 +165,17 @@ const ComponentEditorAdvanced = ({ id }) => {
               />
             </label>
 
-            <label className="flex flex-col">
+            
+          </div>
+          <label className="flex flex-row justify-between items-center">
               <span className="font-medium text-gray-600">Color</span>
               <input
                 type="color"
                 value={shadowParams.color}
                 onChange={(e) => handleShadowChange("color", e.target.value)}
-                className="mt-1 border border-gray-300 rounded focus:outline-none"
+                className="mt-1 border border-gray-300 rounded focus:outline-none color-picker"
               />
             </label>
-          </div>
-
           {/* Letter Spacing */}
           <div className="mt-4">
             <label className="flex flex-col">
@@ -190,49 +190,6 @@ const ComponentEditorAdvanced = ({ id }) => {
                 placeholder="px"
               />
             </label>
-
-            {/* Hover Properties */}
-            <h4 className="mt-8 mb-4 font-semibold text-gray-700">
-              Hover Properties
-            </h4>
-            <div className="space-y-3">
-              <label className="flex flex-col">
-                <span className="font-medium text-gray-600">Hover Color:</span>
-                <input
-                  type="color"
-                  value={hoverStyles.color || "#000000"}
-                  onChange={(e) => handleHoverChange("color", e.target.value)}
-                  className="p-1 mt-1 border border-gray-300 rounded focus:outline-none"
-                />
-              </label>
-              <label className="flex flex-col">
-                <span className="font-medium text-gray-600">
-                  Hover Background Color:
-                </span>
-                <input
-                  type="color"
-                  value={hoverStyles.backgroundColor || "#ffffff"}
-                  onChange={(e) =>
-                    handleHoverChange("backgroundColor", e.target.value)
-                  }
-                  className="p-1 mt-1 border border-gray-300 rounded focus:outline-none"
-                />
-              </label>
-              <label className="flex flex-col">
-                <span className="font-medium text-gray-600">
-                  Hover Box Shadow:
-                </span>
-                <input
-                  type="text"
-                  placeholder="e.g., 5px 5px 10px #000000"
-                  value={hoverStyles.boxShadow || ""}
-                  onChange={(e) =>
-                    handleHoverChange("boxShadow", e.target.value)
-                  }
-                  className="p-1 mt-1 border border-gray-300 rounded focus:outline-none"
-                />
-              </label>
-            </div>
           </div>
         </>
       )}

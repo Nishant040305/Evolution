@@ -13,7 +13,7 @@ class User {
         if (response.status!==200) {
           throw new Error('Failed to fetch user projects');
         }
-        const projects = response.data;
+        const projects = response.data.reverse();
         return projects;
       } catch (error) {
         console.error('Error fetching user projects:', error);

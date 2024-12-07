@@ -2,13 +2,50 @@ import React, { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { setProperty } from "../../Store/webElementSlice";
-
+import '../../style/ComponentsClass.css';
+const fonts = [
+  "Arial",
+  "Helvetica",
+  "Times New Roman",
+  "Courier New",
+  "Georgia",
+  "Verdana",
+  "Trebuchet MS",
+  "Comic Sans MS",
+  "Lucida Console",
+  "Impact",
+  "Garamond",
+  "Palatino",
+  "Tahoma",
+  "Monaco",
+  "Futura",
+  "Baskerville",
+  "Gill Sans",
+  "Optima",
+  "Franklin Gothic",
+  "Candara",
+  "Calibri",
+  "Century Gothic",
+];    
+const fontWeight = [
+  { label: "Normal", value: "400" },
+  { label: "Bold", value: "700" },
+  { label: "Lighter", value: "300" },
+  { label: "Bolder", value: "900" },
+  { label: "Thin", value: "100" },
+  { label: "Extra Light", value: "200" },
+  { label: "Light", value: "300" },
+  { label: "Regular", value: "400" },
+  { label: "Medium", value: "500" },
+  { label: "Semi Bold", value: "600" },
+  { label: "Extra Bold", value: "800" },
+  { label: "Black", value: "900" },
+];
 const ComponentEditorAppearance = ({ id }) => {
   const [on, setOFF] = useState(false);
   const webElements = useSelector((state) => state.webElement.present);
   const element = webElements[id];
   const dispatch = useDispatch();
-
   const handleAppearanceChange = (property, value) => {
     dispatch(setProperty({ id: id, property: property, value: value }));
   };
@@ -36,18 +73,18 @@ const ComponentEditorAppearance = ({ id }) => {
       {on && (
         <>
           {/* Color */}
-          <label className="flex flex-col text-gray-700">
+          <label className="flex flex-row justify-between items-center text-gray-700">
             <span className="font-medium">Color:</span>
             <input
               type="color"
               value={element.styles.color || "#000000"}
               onChange={(e) => handleAppearanceChange("color", e.target.value)}
-              className="p-1 mt-1 border border-gray-300 rounded"
+              className="p-1 border border-gray-300 color-picker"
             />
           </label>
 
           {/* Background Color */}
-          <label className="flex flex-col text-gray-700">
+          <label className="flex flex-row justify-between items-center text-gray-700">
             <span className="font-medium">Background Color:</span>
             <input
               type="color"
@@ -55,7 +92,7 @@ const ComponentEditorAppearance = ({ id }) => {
               onChange={(e) =>
                 handleAppearanceChange("backgroundColor", e.target.value)
               }
-              className="p-1 mt-1 border border-gray-300 rounded"
+              className="p-1 border border-gray-300 color-picker"
             />
           </label>
 
@@ -83,30 +120,38 @@ const ComponentEditorAppearance = ({ id }) => {
               }
               className="p-1 mt-1 bg-white border border-gray-300 rounded"
             >
-              <option value="Arial">Arial</option>
-              <option value="Helvetica">Helvetica</option>
-              <option value="Times New Roman">Times New Roman</option>
-              <option value="Courier New">Courier New</option>
-              <option value="Georgia">Georgia</option>
+             {fonts.map((font) => (
+              <option
+                key={font}
+                value={font}
+                style={{ fontFamily: font }}
+              >
+                {font}
+              </option>
+            ))}
             </select>
           </label>
 
           {/* Font Weight */}
           <label className="flex flex-col text-gray-700">
-            <span className="font-medium">Font Weight:</span>
-            <select
-              value={element.styles.fontWeight || "normal"}
-              onChange={(e) =>
-                handleAppearanceChange("fontWeight", e.target.value)
-              }
-              className="p-1 mt-1 bg-white border border-gray-300 rounded"
-            >
-              <option value="normal">Normal</option>
-              <option value="bold">Bold</option>
-              <option value="lighter">Lighter</option>
-              <option value="bolder">Bolder</option>
-            </select>
-          </label>
+          <span className="font-medium">Font Weight:</span>
+          <select
+            value={element.styles.fontWeight || "normal"}
+            onChange={(e) => handleAppearanceChange("fontWeight", e.target.value)}
+            className="p-1 mt-1 bg-white border border-gray-300 rounded"
+          >
+    {fontWeight.map((fontWeight) => (
+            <option
+            key={fontWeight.value}
+            value={fontWeight.value}
+            style={{ fontWeight: fontWeight.value }}
+          >    
+        {fontWeight.label} ({fontWeight.value})
+      </option>
+    ))}
+          </select>
+        </label>
+
 
           {/* Text Align */}
           <label className="flex flex-col text-gray-700">
@@ -126,7 +171,7 @@ const ComponentEditorAppearance = ({ id }) => {
           </label>
 
           {/* Border Color */}
-          <label className="flex flex-col text-gray-700">
+          <label className="flex flex-row items-center justify-between text-gray-700">
             <span className="font-medium">Border Color:</span>
             <input
               type="color"
@@ -134,7 +179,7 @@ const ComponentEditorAppearance = ({ id }) => {
               onChange={(e) =>
                 handleAppearanceChange("borderColor", e.target.value)
               }
-              className="p-1 mt-1 border border-gray-300 rounded"
+              className="p-1  border border-gray-300 color-picker"
             />
           </label>
 
