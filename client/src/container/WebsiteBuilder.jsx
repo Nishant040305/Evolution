@@ -121,13 +121,10 @@ const WebsiteBuilder = () => {
       />
       <div className="flex flex-1">
         <LeftSidebar
-          sidebarOpen={leftSidebarOpen}
           toggleRight={setRightSidebarOpen}
-          toggleSidebar={() => setLeftSidebarOpen(!leftSidebarOpen)}
-          handleElementSelect={handleElementSelect}
           setStatusCode={setStatusCode}
-          id={id}
           setId={set}
+          toast={toast}
         />
         {statusCode == 0 ? (
           <MainCanvas ScreenSize={ScreenSize} reloadEvents={reloadEvents} toast={toast}  />

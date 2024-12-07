@@ -30,12 +30,12 @@ import ImageElement from "../../lib/img.component";
 import { setImagesMedia } from "../../Store/imageSlice";
 import { useParams } from "react-router-dom";
 import { useCanvasEvents } from "../../hooks/DragDrop";
+import { set } from "mongoose";
 
 const LeftSidebar = ({
-  sidebarOpen,
-  toggleSidebar,
   toggleRight,
   setStatusCode,
+  toast,
   setId,
 }) => {
   const BACKWEB = import.meta.env.VITE_REACT_APP_BACKWEB;
@@ -43,6 +43,10 @@ const LeftSidebar = ({
   const dispatch = useDispatch();
 
   // States
+  const [uploadProgress, setUploadProgress] = useState(0); // For network upload
+  const [totalProgress, setTotalProgress] = useState(0); // For total progress (upload + processing)
+  const [isUploading, setIsUploading] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [showComponents, setShowComponents] = useState(true);
   const [showElements, setShowElements] = useState(true);
   const [showMedia, setShowMedia] = useState(true);
@@ -135,7 +139,7 @@ const LeftSidebar = ({
       return;
     }
 
-    const maxSizeInBytes = 200 * 1024;
+    const maxSizeInBytes = 2000 * 1024;
     if (file.size > maxSizeInBytes) {
       alert("Image must be under 200KB.");
       return;
@@ -147,30 +151,59 @@ const LeftSidebar = ({
     };
     reader.readAsDataURL(file);
   };
-
+  const config = {
+    onUploadProgress: (progressEvent) => {
+      if (progressEvent.lengthComputable) {
+        const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+        setUploadProgress(percent); // Update network upload progress
+        setTotalProgress(percent);   // Set total progress initially equal to upload progress
+      }
+    }
+  };
+  
+  
   const handleEditSubmit = async () => {
     try {
-      if (!imageToUpload.file) return;
-
+      setIsUploading(true);
       const formData = new FormData();
       formData.append("file", imageToUpload.file);
-
+  
       const response = await axios.post(
         `${BACKWEB}${server.Project.MediaUpdate}${projectID}`,
-        formData
+        formData,
+        config // Attach the config to axios request for progress tracking
       );
-
+  
       if (response.status === 200) {
+        setIsProcessing(true);
+        const startTime = Date.now();
+  
+        // Simulate server-side processing (replace with your actual server processing logic)
+        const interval = setInterval(() => {
+          const elapsedTime = Date.now() - startTime;
+          const serverProgress = Math.min(((elapsedTime / 5000) * 100), 100); // Example: server takes 5 seconds to process
+          setTotalProgress(Math.max(uploadProgress, serverProgress)); // Update total progress (either upload or processing time)
+        }, 500);
+  
+        // Wait for server processing to finish
+        await new Promise((resolve) => setTimeout(resolve, 5000)); // Simulate server processing time (5 seconds)
+  
+        clearInterval(interval);
+        setTotalProgress(100); // Set progress to 100% when done
         dispatch(setImagesMedia(response.data.url));
-        setImageToUpload({ image: "", file: "" });
-        alert("Image uploaded successfully!");
+        setImageToUpload({ image: "", file: "" }); // Clear image
+        setTotalProgress(0); // Reset progress bar after successful upload
+        setIsProcessing(false);
+        setIsUploading(false);
+        toast.success("Image uploaded and processed successfully!");
       }
     } catch (error) {
       console.error(error);
       alert("Failed to upload image. Please try again.");
+      setIsUploading(false);
+      setIsProcessing(false);
     }
-  };
-
+  };  
   const handleDragOver = (e) => {
     e.preventDefault();
     setIsDraggingImage(true);
@@ -316,9 +349,7 @@ const LeftSidebar = ({
                         onDragLeave={handleDragLeave}
                         onDrop={handleDrop}
                         className={`border-2 border-dashed rounded-lg p-4 text-center transition-all ${
-                          isDraggingImage
-                            ? "border-red-500 bg-red-50"
-                            : "border-gray-300 hover:border-red-400"
+                          isDraggingImage ? "border-red-500 bg-red-50" : "border-gray-300 hover:border-red-400"
                         }`}
                       >
                         <input
@@ -336,57 +367,74 @@ const LeftSidebar = ({
                           <span className="text-sm">Click to Upload</span>
                         </button>
                       </div>
-
                       {imageToUpload.image && (
-                        <div className="flex items-center justify-between p-2 bg-white rounded-lg shadow-sm">
-                          <img
-                            src={imageToUpload.image}
-                            alt="Preview"
-                            className="object-cover w-16 h-16 rounded"
-                          />
+                        <div className="relative flex items-center flex-col p-2 rounded-lg shadow-sm">
+                          <div className="relative">
+                            <img
+                              src={imageToUpload.image}
+                              alt="Preview"
+                              className="object-cover w-20 h-20 rounded"
+                            />
+                            
+                          </div>
+                          {/* Cross Button */}
+                          <button
+                              onClick={() => setImageToUpload({ image: "", file: "" })} // Clears the image
+                              className="absolute top-0 right-0 rounded-full text-red-500 hover:bg-red-100 transition-all"
+                            >
+                              <span className="text-lg font-bold">&times;</span>
+                            </button>
                           <button
                             onClick={handleEditSubmit}
-                            className="px-3 py-1.5 bg-red-500 text-white rounded-md hover:bg-red-600 transition-all text-sm"
+                            className="px-3 py-1.5 mt-3 bg-blue-500 text-white rounded-md hover:bg-red-600 transition-all w-full text-sm"
                           >
                             Upload
                           </button>
                         </div>
                       )}
-
-                      <div className="grid grid-cols-3 gap-2">
-                        {imagesMedia.map((element, index) => (
-                          <div
-                            key={index}
-                            onClick={() => {
-                              setStatusCode(0);
-                              const id = counter + 1;
-                              const hash = id.toString();
-                              setCounter((prev) => prev + 1);
-                              dispatch(
-                                addElement({
-                                  hash: hash,
-                                  value: sidebarMedia.ImageElement(
-                                    hash,
-                                    element
-                                  ),
-                                })
-                              );
-                            }}
-                            className="relative cursor-pointer group"
-                          >
-                            <img
-                              src={element}
-                              alt={`Media ${index + 1}`}
-                              className="object-cover w-full h-20 transition-all rounded-lg shadow-sm hover:shadow-md"
-                            />
-                            <div className="absolute inset-0 flex items-center justify-center transition-all bg-opacity-0 rounded-lg group-hover:bg-opacity-20">
-                              <Plus className="w-6 h-6 text-white transition-all opacity-0 group-hover:opacity-100" />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
                     </div>
                   )}
+                  {totalProgress > 0 && totalProgress < 100 && (
+                        <div className="mt-2 w-full bg-gray-200 rounded-full h-2.5">
+                          <div
+                            className="bg-red-500 h-2.5 rounded-full"
+                            style={{ width: `${totalProgress}%` }}
+                          />
+                        </div>
+                      )}
+                </div>
+                <div className="grid grid-cols-3 gap-2">
+                  {console.log(imagesMedia)}
+                  {imagesMedia.map((element, index) => (
+                    <div
+                      key={index}
+                      onClick={() => {
+                      setStatusCode(0);
+                      const id = counter + 1;
+                      const hash = id.toString();
+                      setCounter((prev) => prev + 1);
+                      dispatch(
+                      addElement({
+                        hash: hash,
+                        value: sidebarMedia.ImageElement(
+                          hash,
+                            element
+                          ),
+                        })
+                      );
+                        }}
+                        className="relative cursor-pointer group"
+                      >
+                      <img
+                        src={element}
+                        alt={`Media ${index + 1}`}
+                        className="object-cover w-full h-20 transition-all rounded-lg shadow-sm hover:shadow-md"
+                        />
+                            <div className="absolute inset-0 flex items-center justify-center transition-all bg-opacity-0 rounded-lg group-hover:bg-opacity-20">
+                            <Plus className="w-6 h-6 text-white transition-all opacity-0 group-hover:opacity-100" />
+                          </div>
+                        </div>
+                      ))}
                 </div>
 
                 {/* Additional Sections */}
