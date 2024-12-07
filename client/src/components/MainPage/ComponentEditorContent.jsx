@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setAttribute, setContent, setProperty, setHtmlAttributes } from "../../Store/webElementSlice";
 import ButtonContent from "../ComponentsFunction/ButtonContent";
+import AnchorContent from "../ComponentsFunction/AnchorContent";
 const ComponentEditorContent = ({ id , toast }) => {
   const webElements = useSelector((state) => state.webElement.present);
   const element = webElements[id];
@@ -16,6 +17,9 @@ const ComponentEditorContent = ({ id , toast }) => {
   };
 
   const updateGridStyles = (property, value) => {
+    dispatch(setProperty({ id, property, value }));
+  };
+  const handleStyleChange = (property, value) => {
     dispatch(setProperty({ id, property, value }));
   };
   const handleHtmlAttributes = (property, value) => {
@@ -43,7 +47,10 @@ const ComponentEditorContent = ({ id , toast }) => {
           </label>
         </div>
       )}
-
+      {/* Anchor Content */}
+      {element.type === "a" && (
+        <AnchorContent handleContentChange={handleContentChange} handleStyleChange={handleStyleChange} handleAttributes={handleAttributeChange} element={element} />
+      )}
       {/* Input Placeholder */}
       {element.type === "input" && (
         <div>
