@@ -2,7 +2,7 @@ const Heading = (id, text, level, canvasEvents) => {
     const tag = `h${level}`; // Dynamically set the tag (h1, h2, etc.)
     
     const headingStyles = {
-        color: "black",
+        color: "#000000",
         fontSize: `${24 - (level - 1) * 2}px`,  // Decrease font size with each level (h1 to h6)
         fontWeight: "bold",
         marginBottom: "10px",

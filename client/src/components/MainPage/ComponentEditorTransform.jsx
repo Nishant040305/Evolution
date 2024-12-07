@@ -48,7 +48,13 @@ const ComponentEditorTransform = ({ id }) => {
   const handleMarginChange= (side, value) => {
     handleAppearanceChange(`margin${side}`, `${value}px`);
   };
-
+  const handlePositionChangeX = (value) => {
+    console.log(value);
+    dispatch(setPosition({ id, dx: parseFloat(value), dy: element.position.y }));
+  };
+  const handlePositionChangeY = (value) => {
+    dispatch(setPosition({ id, dx: element.position.x, dy: parseFloat(value) }));
+  };
   return (
     <div className="p-4 space-y-3 border border-gray-300 rounded-lg">
       <h3 className="flex items-center text-lg font-semibold">
@@ -83,15 +89,7 @@ const ComponentEditorTransform = ({ id }) => {
             <input
               type="number"
               value={element.position.x}
-              onChange={(e) =>
-                dispatch(
-                  setPosition({
-                    id,
-                    dy: 0,
-                    dx: parseInt(e.target.value) - element.position.x,
-                  })
-                )
-              }
+              onChange={(e) => handlePositionChangeX(e.target.value)}
               className="w-full p-1 ml-2 border border-gray-300 rounded"
             />
           </label>
@@ -102,15 +100,7 @@ const ComponentEditorTransform = ({ id }) => {
             <input
               type="number"
               value={element.position.y}
-              onChange={(e) =>
-                dispatch(
-                  setPosition({
-                    id,
-                    dx: 0,
-                    dy: parseInt(e.target.value) - element.position.y,
-                  })
-                )
-              }
+              onChange={(e) => handlePositionChangeY(e.target.value)}
               className="w-full p-1 ml-2 border border-gray-300 rounded"
             />
           </label>
