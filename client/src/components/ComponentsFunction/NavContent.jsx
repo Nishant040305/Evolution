@@ -1,5 +1,16 @@
-const DivContent = ({updateGridStyles,handleStyleChange , element }) => (
+const NavContent = ({updateGridStyles,handleStyleChange ,handleContentChange , element }) => (
     <div>
+
+          {/* Content */}
+          <label className="block mb-1 font-medium text-gray-600">Content:</label>
+          <textarea
+            value={element.content || ""}
+            onChange={(e) => handleContentChange("content", e.target.value)}
+            className="w-full p-2 mt-1 border border-gray-300 rounded"
+            placeholder="Enter content"
+          />
+        
+          {/* Display Type */}
           <label className="block mb-1 font-medium text-gray-600">
             Display Type:
             <select
@@ -100,4 +111,4 @@ const DivContent = ({updateGridStyles,handleStyleChange , element }) => (
         </div>
 );
 
-export default DivContent;
+export default NavContent;

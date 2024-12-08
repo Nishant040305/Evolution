@@ -36,7 +36,7 @@ const Footer = (id, canvasEvents) => ({
         ...canvasEvents(id,true),
         className: "canvas-component-dark",
     },
-    // content: `Footer ${id}`,
+    content: `Footer ${id}`,
     children: [],
 });
 

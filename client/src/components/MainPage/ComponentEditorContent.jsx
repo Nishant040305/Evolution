@@ -12,6 +12,10 @@ import HeadingContent from "../ComponentsFunction/HeadingContent";
 import ParagraphContent from "../ComponentsFunction/ParagraphContent";
 import ArticleContent from "../ComponentsFunction/ArticleContent";
 import SectionContent from "../ComponentsFunction/SectionContent";
+import NavContent from "../ComponentsFunction/NavContent";
+import FooterContent from "../ComponentsFunction/FooterContent";  
+import HeaderContent from "../ComponentsFunction/HeaderContent";
+import ImgContent from "../ComponentsFunction/ImageContent";
 const ComponentEditorContent = ({ id , toast }) => {
   const webElements = useSelector((state) => state.webElement.present);
   const element = webElements[id];
@@ -50,7 +54,7 @@ const ComponentEditorContent = ({ id , toast }) => {
       {/* Label Content */}
       {element.type === "label" && (<LabelContent handleContentChange={handleContentChange} element={element} />)}  
       {/* Layout Options */}
-      {element.type === "div" && (<DivContent handleContentChange={handleContentChange} handleStyleChange={handleStyleChange} element={element} />)}
+      {element.type === "div" && (<DivContent handleContentChange={handleContentChange} handleStyleChange={handleStyleChange} updateGridStyles={updateGridStyles} element={element} />)}
       {/* Select Options (Work in Progress) */}
       {element.type === "select" && (<SelectContent handleContentChange={handleContentChange} element={element} />)}
       {/* Heading Content */}
@@ -67,11 +71,13 @@ const ComponentEditorContent = ({ id , toast }) => {
       {/* Section Content */}
       {element.type === "section" && (<SectionContent handleContentChange={handleContentChange} handleStyleChange={handleStyleChange} element={element} />)}
       {/* Nav Content */}
-      {element.type === "nav" && (<NavContent handleContentChange={handleContentChange} handleStyleChange={handleStyleChange} element={element} />)}
+      {element.type === "nav" && (<NavContent handleContentChange={handleContentChange} handleStyleChange={handleStyleChange} updateGridStyles={updateGridStyles} element={element} />)}
       {/* Footer Content */}
-      {element.type === "footer" && (<FooterContent handleContentChange={handleContentChange} handleStyleChange={handleStyleChange} element={element} />)}
+      {element.type === "footer" && (<FooterContent handleContentChange={handleContentChange} updateGridStyles={updateGridStyles} handleStyleChange={handleStyleChange} element={element} />)}
       {/* Header Content */}
-      {element.type === "header" && (<HeaderContent handleContentChange={handleContentChange} handleStyleChange={handleStyleChange} element={element} />)}
+      {element.type === "header" && (<HeaderContent handleContentChange={handleContentChange} updateGridStyles={updateGridStyles} handleStyleChange={handleStyleChange} element={element} />)}
+      {/*Image Content */}
+      {element.type === "img" && (<ImgContent handleAttributeChange={handleAttributeChange} handleStyleChange={handleStyleChange} element={element} />)}
       
       </div>
   )
