@@ -3,6 +3,7 @@ import React from "react";
 import components from "../../lib";
 import server from "../../server.json";
 import axios from "axios";
+import { viewChange } from "../../Store/webElementSlice";
 const { Button, TextArea, Label, Input, Select, Div, Anchor, Article, Section, Nav, Footer, Header, H1, H2, H3, H4, H5, H6, Paragraph } = components;
 import {
   ChevronRight,
@@ -122,7 +123,10 @@ const LeftSidebar = ({
   const handleSidebarLeave = () => {
     setIsVisible(false); // Hide sidebar when mouse leaves
   };
-
+  const handleViewChange = (id,view) => {
+    console.log(id,view);
+    dispatch(viewChange({id:id,view:view}));
+  }
   useEffect(() => {
     window.addEventListener("mousemove", handleMouseMove);
 
@@ -466,7 +470,7 @@ const LeftSidebar = ({
               </>
             ) : (
               // Project Overview
-              <ProjectOverview webElements={webElements} setId={setId} toggleRight={toggleRight} setStatusCode={setStatusCode} handleDelete={handleDelete} />
+              <ProjectOverview webElements={webElements} setId={setId} toggleRight={toggleRight} setStatusCode={setStatusCode} handleDelete={handleDelete} handleViewChange={handleViewChange} />
             )}
           </div>
         </div>

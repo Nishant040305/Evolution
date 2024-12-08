@@ -35,7 +35,8 @@ const TextArea = (id, canvasEvents, placeholder="write something") => {
             onChange: (event) => {
                 console.log("Textarea content:", event.target.value); // Log changes
             },
-        }
+        },
+        view:true,
             };
 };
 

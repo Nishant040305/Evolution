@@ -41,6 +41,7 @@ const Nav = (id, canvasEvents) => ({
     },
     content: `Navigation ${id}`,
     children: [],
+    view:true,
 });
 
 export default Nav;

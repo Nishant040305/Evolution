@@ -35,6 +35,7 @@ const Input = (id, canvasEvents, placeholder = "Enter text...") => {
             placeholder,
             ...canvasEvents(id),
         },
+        view:true,
     };
 };
 

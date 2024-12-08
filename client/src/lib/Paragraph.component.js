@@ -34,6 +34,7 @@ const Paragraph = (id, canvasEvents, text = "Paragraph") => {
         attributes: {
             ...canvasEvents(id),
         },
+        view:true,
     };
 };
 

@@ -42,6 +42,7 @@ const Header = (id, canvasEvents) => ({
     },
     content: `Header ${id}`,
     children: [],
+    view:true,
 });
 
 export default Header;

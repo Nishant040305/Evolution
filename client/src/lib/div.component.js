@@ -37,6 +37,7 @@ const Div = (id, canvasEvents) => {
             ...canvasEvents(id, true),
         },
         children: [],
+        view:true,
     };
 };
 

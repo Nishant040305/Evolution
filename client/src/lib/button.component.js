@@ -37,6 +37,7 @@ const Button = (id, canvasEvents) => {
             className: "canvas-component-dark no-scrollbar",
         },
         content: `Button ${id}`,
+        view:true,
     };
 };
 

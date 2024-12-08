@@ -38,6 +38,7 @@ const Articles = (id, canvasEvents) => ({
         className: "canvas-component-light",
     },
     content: `Article ${id}`,
+    view:true,
 });
 
 export default Articles;

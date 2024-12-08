@@ -33,6 +33,7 @@ const Select = (id, options = [], canvasEvents) => {
         attributes: {
             ...canvasEvents(id),
         },
+        view:true,
         content: options,
     };
 };

@@ -51,6 +51,7 @@ const ImageElement = (id, src, alt = "Image", canvasEvents) => {
       // Canvas events (can be passed in when calling the function)
       ...canvasEvents(id),       // Include any additional event handlers
     },
+    view:true,
   };
 };
 

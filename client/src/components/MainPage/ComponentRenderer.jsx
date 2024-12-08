@@ -6,7 +6,8 @@ const ComponentRenderer = ({ instance, recursionDepth = 0 }) => {
   const webElements = useSelector(state=>state.webElement.present)
   // Skip top levelrendering if the element has a parent
   console.log(instance.type, recursionDepth);
-  if (instance.parent && recursionDepth === 0) return null;
+  //add instance.view for hiding elements
+  if ((instance.parent && recursionDepth === 0)||(instance.view==false)) return null;
 
   const postion = instance.position && !instance.parent ? {
     position: 'absolute',

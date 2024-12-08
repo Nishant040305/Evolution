@@ -41,6 +41,7 @@ const Section = (id, canvasEvents) => ({
     },
     // content: `Section ${id}`,
     children: [],
+    view:true,
 });
 
 export default Section;

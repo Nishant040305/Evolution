@@ -148,8 +148,16 @@ const webElementSlice= createSlice({
             deleteChildren(action.payload);
           
             // No need to return new state, just mutate the draft directly
-          }
-          
+          },
+        viewChange:(state,action)=>{
+            const viewChange = {...state,
+                [action.payload.id]:{
+                    ...state[action.payload.id],
+                    view:action.payload.view
+                }
+            }
+            return viewChange;
+        }
                     
     }
 })
@@ -164,6 +172,7 @@ export const {
     setAttribute,
     setContent,
     deleteElement,
-    setHtmlAttributes
+    setHtmlAttributes,
+    viewChange
 } = webElementSlice.actions;
 export default webElementSlice.reducer;

@@ -38,6 +38,7 @@ const Footer = (id, canvasEvents) => ({
     },
     content: `Footer ${id}`,
     children: [],
+    view:true,
 });
 
 export default Footer;

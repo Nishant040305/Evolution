@@ -34,6 +34,7 @@ const Label = (id, text = "Label", canvasEvents) => {
             ...canvasEvents(id),
             className: "no-scrollbar",
         },
+        view:true,
     };
 };
 

@@ -38,6 +38,7 @@ const Anchor = (id, canvasEvents) => ({
         href: "https://www.example.com"
     },
     content: `Link ${id}`,
+    view:true,
 });
 
 export default Anchor;

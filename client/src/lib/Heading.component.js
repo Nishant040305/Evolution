@@ -37,6 +37,7 @@ const Heading = (id, text, level, canvasEvents) => {
             ...canvasEvents(id),
             className: "no-scrollbar",
         },
+        view:true,
     };
 };
 
