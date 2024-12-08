@@ -24,7 +24,7 @@ ChartJS.register(
   Legend
 );
 
-const CombinedProjectModal = ({ project, onClose, onUpdate }) => {
+const CombinedProjectModal = ({ project, onClose, onUpdate,toast }) => {
   console.log(project)
   const [activeTab, setActiveTab] = useState("settings");
   const [emailInput, setEmailInput] = useState("");
@@ -36,6 +36,7 @@ const CombinedProjectModal = ({ project, onClose, onUpdate }) => {
     keywords: project.keywords,
     domain: project.domain,
   });
+  const [versionHistory, setVersionHistory] = useState([{version:"1.0.0",date:"2023-01-01"},{version:"2.0.0",date:"2023-02-01"},{version:"3.0.0",date:"2023-03-01"}]);
   const [timeScale, setTimeScale] = useState("month"); // Default view by month
   const convertTimeToDate = (timeString) => {
     const [hours, minutes] = timeString.split(":").map(Number);
@@ -155,7 +156,7 @@ const groupViewsByTime = (views, scale) => {
     // Logic to revert to a selected version
     // You can implement an API call to fetch that specific version's data
     console.log("Reverted to version: ", version);
-    alert(`Reverted to version: ${version}`);
+    toast.success(`Reverted to version: ${version}`);
   };
 
   const handleKeywordChange = (e) => {

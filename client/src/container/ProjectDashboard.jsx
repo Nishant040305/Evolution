@@ -8,6 +8,9 @@ import { useSelector } from "react-redux";
 import ApiDashboard from "../scripts/API.Dashboard";
 import User from "../scripts/API.User";
 import url from "../url.json";
+import {toast} from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProjectDashboard = () => {
   const navigate = useNavigate();
@@ -102,6 +105,7 @@ const ProjectDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <ToastContainer/>
       <TopBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <div className="px-4 py-8 mx-auto max-w-7xl">
         <div className="flex space-x-4 mb-6">
@@ -138,6 +142,7 @@ const ProjectDashboard = () => {
                 onDelete={handleDeleteProject}
                 onClick={handleProjectClick}
                 onUpdate={updateProject}
+                toast = {toast}
               />
             ))
           )}
@@ -145,7 +150,7 @@ const ProjectDashboard = () => {
       </div>
 
       <Modal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)}>
-        <CreateProjectForm onCreateProject={handleCreateProject} />
+        <CreateProjectForm onCreateProject={handleCreateProject}  />
       </Modal>
     </div>
   );

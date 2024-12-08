@@ -3,7 +3,7 @@ import { Folder, Trash2, Edit, Users, Settings } from "lucide-react";
 import ProjectSettingsModal from "./ProjectSettingsModal";
 import CombinedProjectModal from "./CombinedModal"; // Import the combined modal
 
-const ProjectCard = ({ project, onDelete, onClick, onUpdate }) => {
+const ProjectCard = ({ project, onDelete, onClick, onUpdate,toast }) => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isCombinedModalOpen, setIsCombinedModalOpen] = useState(false);
 
@@ -93,6 +93,7 @@ const ProjectCard = ({ project, onDelete, onClick, onUpdate }) => {
           project={project}
           onClose={closeCombinedModal}
           onUpdate={onUpdate}
+          toast={toast}
         />
       )}
     </div>
