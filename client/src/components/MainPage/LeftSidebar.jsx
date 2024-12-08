@@ -30,8 +30,7 @@ import ImageElement from "../../lib/img.component";
 import { setImagesMedia } from "../../Store/imageSlice";
 import { useParams } from "react-router-dom";
 import { useCanvasEvents } from "../../hooks/DragDrop";
-import { set } from "mongoose";
-
+import ProjectOverview from "./projectOverview";
 const LeftSidebar = ({
   toggleRight,
   setStatusCode,
@@ -76,7 +75,9 @@ const LeftSidebar = ({
     return val;
   };
   const [counter, setCounter] = useState(evalCounter(webElements));
-
+  const handleDelete = (id) => {
+    dispatch(deleteElement(id));
+  }
   const { canvasEvents } = useCanvasEvents(setId, toggleRight, webElements);
 
   useEffect(() => {
@@ -465,39 +466,7 @@ const LeftSidebar = ({
               </>
             ) : (
               // Project Overview
-              <div className="space-y-4">
-                <h2 className="text-lg font-semibold text-gray-700">
-                  Project Overview
-                </h2>
-                <div className="space-y-2">
-                  {Object.entries(webElements).map(([index, value]) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between p-3 transition-all bg-white border border-gray-100 rounded-lg shadow-sm hover:shadow-md"
-                    >
-                      <button
-                        onClick={() => {
-                          setId(value.id);
-                          toggleRight(true);
-                          setStatusCode(0);
-                        }}
-                        className="text-gray-700 hover:text-red-500"
-                      >
-                        {`${value.type} ${value.id}`}
-                      </button>
-                      <button
-                        onClick={() => {
-                          setId(0);
-                          dispatch(deleteElement(value.id));
-                        }}
-                        className="p-1 text-gray-400 transition-all rounded-full hover:text-red-500 hover:bg-red-50"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <ProjectOverview webElements={webElements} setId={setId} toggleRight={toggleRight} setStatusCode={setStatusCode} handleDelete={handleDelete} />
             )}
           </div>
         </div>

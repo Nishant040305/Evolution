@@ -118,31 +118,39 @@ const webElementSlice= createSlice({
                 }
             }
         },
-        deleteElement:(state, action) => {
-            const newState = { ...state };
-            
+        deleteElement: (state, action) => {
             // Recursive function to delete children
             const deleteChildren = (elementId) => {
               // Check if the element exists
-              if (newState[elementId]) {
+              if (state[elementId]) {
                 // If the element has children, recursively delete each child
-                if (newState[elementId].children) {
-                  newState[elementId].children.forEach(childId => {
-                    deleteChildren(childId);
+                if (state[elementId].children) {
+                  state[elementId].children.forEach(childId => {
+                    deleteChildren(childId); // Recursively delete child elements
                   });
                 }
-                
+          
+                // Check if the element has a parent
+                const parentId = state[elementId].parent;
+                if (parentId && state[parentId]) {
+                  // Remove the current element's ID from the parent's children array
+                  state[parentId].children = state[parentId].children.filter(
+                    (childId) => childId !== elementId
+                  );
+                }
+          
                 // Finally, delete the element itself
-                delete newState[elementId];
+                delete state[elementId];
               }
             };
-            
+          
             // Start the deletion from the requested element
             deleteChildren(action.payload);
-            
-            return newState;
+          
+            // No need to return new state, just mutate the draft directly
           }
           
+                    
     }
 })
 export const {
