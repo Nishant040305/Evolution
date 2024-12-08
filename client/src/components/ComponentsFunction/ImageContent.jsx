@@ -23,6 +23,13 @@ const ImgContent = ({ handleAttributeChange, handleStyleChange, element }) =>{
     // Update the transform property with the new scale value
     handleStyleChange("transform", newTransform);
   };
+  const handleObjectFitChange = (value) => {
+    handleStyleChange("objectFit", value);
+  };
+  
+  const handleObjectPositionChange = (value) => {
+    handleStyleChange("objectPosition", value);
+  };
   
   const handleHoverFilter = (grayscaleValue, brightnessValue) => {
     // Validate grayscale and brightness values
@@ -180,7 +187,55 @@ const ImgContent = ({ handleAttributeChange, handleStyleChange, element }) =>{
       </select>
     </label>
 
+ {/* Object Fit */}
+ <label className="block mb-1 font-medium text-gray-600">
+      Object Fit:
+      <select
+        value={element.styles.objectFit || "cover"}
+        onChange={(e) => handleObjectFitChange(e.target.value)}
+        className="w-full p-2 mt-1 border border-gray-300 rounded"
+      >
+        <option value="cover">Cover</option>
+        <option value="contain">Contain</option>
+        <option value="fill">Fill</option>
+        <option value="none">None</option>
+        <option value="scale-down">Scale Down</option>
+      </select>
+    </label>
 
+    {/* Object Position */}
+    <label className="block mb-1 font-medium text-gray-600">
+      Object Position:
+      <div className="flex  flex-col">
+        <select
+          value={element.styles.objectPosition || "center"}
+          onChange={(e) => handleObjectPositionChange(e.target.value)}
+          className=" p-2 mt-1 border border-gray-300 rounded"
+        >
+          <option value="center">Center</option>
+          <option value="top left">Top Left</option>
+          <option value="top center">Top Center</option>
+          <option value="top right">Top Right</option>
+          <option value="center left">Center Left</option>
+          <option value="center right">Center Right</option>
+          <option value="bottom left">Bottom Left</option>
+          <option value="bottom center">Bottom Center</option>
+          <option value="bottom right">Bottom Right</option>
+          <option value="custom">Custom (Enter)</option>
+        </select>
+
+        {/* Custom Input for Object Position */}
+        {element.styles.objectPosition === "custom" && (
+          <input
+            type="text"
+            value={element.styles.customObjectPosition || ""}
+            onChange={(e) => handleObjectPositionChange(e.target.value)}
+            className=" p-2 mt-1 border border-gray-300 rounded"
+            placeholder="e.g., work in progress 10% 50%"
+          />
+        )}
+      </div>
+    </label>
       {/* Aspect Ratio Selection */}
       <label className="block mb-1 font-medium text-gray-600">
         Aspect Ratio (Numerator / Denominator):
@@ -237,7 +292,7 @@ const ImgContent = ({ handleAttributeChange, handleStyleChange, element }) =>{
           readOnly
         />
       </label>
-
+    
       <label className="block mb-1 font-medium text-gray-600">
         Hover Effects (CSS Filter) (work in progress):
       </label>

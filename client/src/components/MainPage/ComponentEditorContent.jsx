@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { setAttribute, setContent, setProperty, setHtmlAttributes } from "../../Store/webElementSlice";
 import ButtonContent from "../ComponentsFunction/ButtonContent";
 import AnchorContent from "../ComponentsFunction/AnchorContent";
@@ -17,6 +18,7 @@ import FooterContent from "../ComponentsFunction/FooterContent";
 import HeaderContent from "../ComponentsFunction/HeaderContent";
 import ImgContent from "../ComponentsFunction/ImageContent";
 const ComponentEditorContent = ({ id , toast }) => {
+  const [on, setOFF] = useState(false);
   const webElements = useSelector((state) => state.webElement.present);
   const element = webElements[id];
   const dispatch = useDispatch();
@@ -40,9 +42,20 @@ const ComponentEditorContent = ({ id , toast }) => {
   };
   return (
     <div className="p-4 space-y-4 bg-white border border-gray-300 rounded-lg shadow-sm appearance-editor">
-      <h3 className="text-xl font-semibold text-gray-700">
+      <h3 className="flex items-center justify-between text-lg font-semibold text-gray-800">
         Content Properties
+        <button
+          onClick={() => setOFF((prev) => !prev)}
+          className="p-1 ml-2 text-gray-500 transition rounded hover:text-gray-700"
+        >
+          {on ? (
+            <ChevronUp className="w-4 h-4" />
+          ) : (
+            <ChevronDown className="w-4 h-4" />
+          )}
+        </button>
       </h3>
+      {on && <>
       {/* Textarea Content */}
       {element.type === "textarea" && (<TextAreaContent handleContentChange={handleContentChange} element={element} />)}
       {/* Anchor Content */}
@@ -78,7 +91,7 @@ const ComponentEditorContent = ({ id , toast }) => {
       {element.type === "header" && (<HeaderContent handleContentChange={handleContentChange} updateGridStyles={updateGridStyles} handleStyleChange={handleStyleChange} element={element} />)}
       {/*Image Content */}
       {element.type === "img" && (<ImgContent handleAttributeChange={handleAttributeChange} handleStyleChange={handleStyleChange} element={element} />)}
-      
+      </>}
       </div>
   )
 }
