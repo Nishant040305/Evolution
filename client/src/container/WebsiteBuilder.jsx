@@ -117,6 +117,7 @@ const WebsiteBuilder = () => {
         setScreenSize={setScreenSize}
         css={css}
         js={js}
+        toast = {toast}
         setStatusCode={setStatusCode}
       />
       <div className="flex flex-1">

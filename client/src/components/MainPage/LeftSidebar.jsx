@@ -140,13 +140,13 @@ const LeftSidebar = ({
 
     const validImageTypes = ["image/jpg", "image/jpeg", "image/png"];
     if (!validImageTypes.includes(file.type)) {
-      alert("Please upload a JPG or PNG image.");
+      toast.error("Please upload a JPG or PNG image.");
       return;
     }
 
     const maxSizeInBytes = 2000 * 1024;
     if (file.size > maxSizeInBytes) {
-      alert("Image must be under 200KB.");
+      toast.error("Image must be under 200KB.");
       return;
     }
 
@@ -204,7 +204,7 @@ const LeftSidebar = ({
       }
     } catch (error) {
       console.error(error);
-      alert("Failed to upload image. Please try again.");
+      toast.error("Failed to upload image. Please try again.");
       setIsUploading(false);
       setIsProcessing(false);
     }

@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import ApiDashboard from "../scripts/API.Dashboard";
 import useSaveProject from "../hooks/useSaveProject";
 
-const PublishPage = ( { css, js } ) => {
+const PublishPage = ( { css, js ,toast} ) => {
   const webElements = useSelector(state => state.webElement.present);
   const project = useSelector(state => state.project);
   const apiDashboard = new ApiDashboard();
@@ -57,7 +57,7 @@ const PublishPage = ( { css, js } ) => {
       URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Failed to download project:", error);
-      alert("Failed to download project. Have you published it yet?");
+      toast.error("Failed to download project. Have you published it yet?");
     }
   };
 
@@ -72,7 +72,7 @@ const PublishPage = ( { css, js } ) => {
       window.open(`${import.meta.env.VITE_REACT_APP_BACKWEB}/${res.data.domain}`, "_blank");
     } catch (error) {
       console.error("Failed to publish content:", error);
-      alert("Failed to publish content. Please try again.");
+      toast.error("Failed to publish content. Please try again.");
     }
   };
 

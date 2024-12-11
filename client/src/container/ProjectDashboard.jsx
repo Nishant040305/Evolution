@@ -106,7 +106,7 @@ const ProjectDashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <ToastContainer/>
-      <TopBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <TopBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} toast = {toast} />
       <div className="px-4 py-8 mx-auto max-w-7xl">
         <div className="flex space-x-4 mb-6">
           <button

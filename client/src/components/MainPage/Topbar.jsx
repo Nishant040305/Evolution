@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Undo,
   Redo,
@@ -12,8 +12,9 @@ import { useDispatch, useSelector } from "react-redux";
 import PublishPage from "../../hooks/PublishPage";
 import { useNavigate } from "react-router-dom";
 import url from "../../url.json";
+import ConfirmationModal from "./ConfirmationModal";  // Import the ConfirmationModal
 
-const TopBar = ({ setScreenSize, css, js, setStatusCode }) => {
+const TopBar = ({ setScreenSize, css, js, setStatusCode, toast }) => {
   const dispatch = useDispatch();
   const handleUndo = () => {
     dispatch(ActionCreators.undo());
@@ -21,34 +22,40 @@ const TopBar = ({ setScreenSize, css, js, setStatusCode }) => {
   const projectinfo = useSelector((state) => state.project);
   const navigate = useNavigate();
   const handleRedo = () => dispatch(ActionCreators.redo());
-  const { preview, download, publish } = PublishPage({ css, js });
+  const { preview, download, publish } = PublishPage({ css, js, toast });
+
+  // Modal States
+  const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
+  const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
+  const [isPublishModalOpen, setIsPublishModalOpen] = useState(false);
 
   const handlePreview = () => {
     setStatusCode(0);
-    preview();
+    setIsPreviewModalOpen(true); // Open preview confirmation modal
   };
 
   const handleDownload = () => {
     setStatusCode(0);
-    if (
-      window.confirm(
-        "Are you sure you want to download this project? All changes will be saved."
-      )
-    ) {
-      download();
-    }
+    setIsDownloadModalOpen(true); // Open download confirmation modal
   };
 
   const handlePublish = () => {
     setStatusCode(0);
-    if (
-      window.confirm(
-        "Are you sure you want to publish this project? All changes will be saved."
-      )
-    ) {
-      publish();
-    }
+    setIsPublishModalOpen(true); // Open publish confirmation modal
   };
+
+  const handleConfirmPreview = () => {
+    preview();
+  };
+
+  const handleConfirmDownload = () => {
+    download();
+  };
+
+  const handleConfirmPublish = () => {
+    publish();
+  };
+
   useEffect(() => {
     const handleKeyDown = (event) => {
       if ((event.ctrlKey || event.metaKey) && event.key === "z") {
@@ -79,17 +86,13 @@ const TopBar = ({ setScreenSize, css, js, setStatusCode }) => {
         <div className="flex space-x-2">
           <button
             className="p-2 rounded-lg hover:bg-rose-50"
-            onClick={() => {
-              handleUndo();
-            }}
+            onClick={handleUndo}
           >
             <Undo className="w-5 h-5 text-gray-600" />
           </button>
           <button
             className="p-2 rounded-lg hover:bg-rose-50"
-            onClick={() => {
-              handleRedo();
-            }}
+            onClick={handleRedo}
           >
             <Redo className="w-5 h-5 text-gray-600" />
           </button>
@@ -144,6 +147,29 @@ const TopBar = ({ setScreenSize, css, js, setStatusCode }) => {
           Publish
         </button>
       </div>
+
+      {/* Confirmation Modals */}
+      <ConfirmationModal
+        isOpen={isPreviewModalOpen}
+        onClose={() => setIsPreviewModalOpen(false)}
+        onConfirm={handleConfirmPreview}
+        title="Preview Project"
+        message="Are you sure you want to preview this project? All changes will be saved."
+      />
+      <ConfirmationModal
+        isOpen={isDownloadModalOpen}
+        onClose={() => setIsDownloadModalOpen(false)}
+        onConfirm={handleConfirmDownload}
+        title="Download Project"
+        message="Are you sure you want to download this project? All changes will be saved."
+      />
+      <ConfirmationModal
+        isOpen={isPublishModalOpen}
+        onClose={() => setIsPublishModalOpen(false)}
+        onConfirm={handleConfirmPublish}
+        title="Publish Project"
+        message="Are you sure you want to publish this project? All changes will be saved."
+      />
     </div>
   );
 };
