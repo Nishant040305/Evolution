@@ -118,15 +118,16 @@ class ApiDashboard {
             // const response = await axios.get(`${this.baseURL}${endpoint}`);
             console.log(`${this.baseURL}/user/${email}`);
             const response = await axios.get(`${this.baseURL}/api/user/${email}`)
-            return response.data;
+            if(response.status==200) return response.data;
+            else{
+                return null;
+            }
         } catch (error) {
             console.error(`Failed to find user by email ${email}:`, error);
             throw error;
         }
     }
     async inviteCollaborator(projectId, role, userId) {
-        // const endpoint = this.endpoints.InviteCollaborator.replace(':id', projectId);
-        // console.log(endpoint)
         try {
             const response = await axios.post(`${this.baseURL}/api/project/${projectId}/invite`, { role, userid:userId });
             return response.data;

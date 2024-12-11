@@ -120,7 +120,22 @@ const CreateProjectForm = ({ onCreateProject }) => {
         className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-300"
       />
       {collaborator && (
-        <p className="text-sm text-green-500">Collaborator found: {collaborator.name}</p>
+        <div className="p-4 bg-green-100 rounded-md shadow-md flex items-center space-x-4">
+          {console.log(collaborator)}
+          <img 
+            src={collaborator.avatar} 
+            alt={`${collaborator.displayname}'s Avatar`} 
+            className="w-12 h-12 rounded-full object-cover" 
+          />
+          <div>
+            <p className="text-sm font-medium text-green-700">
+              Name: {collaborator.displayname}
+            </p>
+            <p className="text-sm text-green-600">
+              Email: {collaborator.email}
+            </p>
+          </div>
+        </div>
       )}
       {!collaborator && collaboratorEmail && (
         <p className="text-sm text-red-500">No user found with this email</p>

@@ -69,21 +69,17 @@ const ChangeProfile = async (req,res)=>{
     }
 }       
 const FindUserEmail = async (req,res)=>{
-    console.log(req.params.email)
     try{
         const userId = req.params.email;
         const user = await User.findOne({email:userId});
-        console.log(userId)
-        console.log(userId)
         if(!user){
-            return res.status(200).json({})
+            return res.status(404).json(null)
         }
         return res.status(200).json({
             displayname:user.displayname,
             _id:user._id,
             avatar:user.avatar,
             email:user.email,
-
         })
     }catch(e){
         return res.status(500).json({message:"Internal Server Error"})
