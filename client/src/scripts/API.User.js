@@ -26,7 +26,7 @@ class User {
             let endpoint = `${this.baseURL}${server.User.GetAllSharedProjects}`
             endpoint = endpoint.replace(':id', this.id);
               const response = await axios.get(endpoint);
-              return response.data;
+              return response.data.reverse();
           } catch (error) {
               console.error("Failed to fetch projects:", error);
               throw error;

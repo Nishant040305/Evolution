@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ApiDashboard from "../../scripts/API.Dashboard";
+import { X } from "lucide-react";
 // import server from "../../server.json";
 import {
   Chart as ChartJS,
@@ -78,86 +79,95 @@ const CombinedProjectModal = ({ project, onClose, onUpdate,toast }) => {
     
   return (
     <div className="fixed inset-0 z-10 flex items-center justify-center bg-opacity-50 bg-black-200">
-      <div className="flex w-full max-w-4xl p-6 rounded-lg shadow-lg bg-red-50">
-        {/* Sidebar */}
-        <div className="w-1/4 pr-4 border-r border-gray-300">
-          <button
-            className={`w-full text-left p-3 rounded-md mb-2 ${
-              activeTab === "settings"
-                ? "bg-red-200 text-red-800"
-                : "hover:bg-red-100"
-            }`}
-            onClick={() => setActiveTab("settings")}
-          >
-            Project Settings
-          </button>
-          <button
-            className={`w-full text-left p-3 rounded-md mb-2 ${
-              activeTab === "analytics"
-                ? "bg-red-200 text-red-800"
-                : "hover:bg-red-100"
-            }`}
-            onClick={() => setActiveTab("analytics")}
-          >
-            Analytics
-          </button>
-          <button
-            className={`w-full text-left p-3 rounded-md mb-2 ${
-              activeTab === "collaborators"
-                ? "bg-red-200 text-red-800"
-                : "hover:bg-red-100"
-            }`}
-            onClick={() => setActiveTab("collaborators")}
-          >
-            Manage Collaborators
-          </button>
-          <button
-            className={`w-full text-left p-3 rounded-md mb-2 ${
-              activeTab === "roles"
-                ? "bg-red-200 text-red-800"
-                : "hover:bg-red-100"
-            }`}
-            onClick={() => setActiveTab("roles")}
-          >
-            Roles
-          </button>
-          <button
-            className={`w-full text-left p-3 rounded-md mb-2 ${
-              activeTab === "versionHistory"
-                ? "bg-red-200 text-red-800"
-                : "hover:bg-red-100"
-            }`}
-            onClick={() => setActiveTab("versionHistory")}
-          >
-            Version History
-          </button>
-        </div>
+  {/* Cancel Button at Top Right */}
 
-        {/* Content */}
-        <div className="flex-1 pl-4">
-          {activeTab === "settings" && <SettingsTab updatedProject={updatedProject} handleKeywordChange={handleKeywordChange}handleInputChange={handleInputChange}></SettingsTab>}
-          {activeTab === "analytics" && <AnalyticsTab project={project}></AnalyticsTab>}
-          {activeTab === "collaborators" && <ManageCollaboratorsTab project={project._id} toast={toast}></ManageCollaboratorsTab>}
-          {activeTab === "roles" && <RolesTab project={project._id} toast={toast}></RolesTab>}
-          {activeTab === "versionHistory" && <VersionHistoryTab versionHistory={versionHistory}handleRevertVersion={handleRevertVersion}></VersionHistoryTab>}
-
-          <div className="flex justify-end mt-6 space-x-4">
-            <button
-              onClick={handleCancel}
-              className="px-4 py-2 text-white bg-gray-500 rounded-md hover:bg-gray-600"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={handleSave}
-              className="px-4 py-2 text-white bg-red-600 rounded-md hover:bg-red-700"
-            >
-              Save
-            </button>
-          </div>
-        </div>
-      </div>
+  
+  {/* Modal Content */}
+  <div className="flex w-full max-w-4xl p-6 rounded-lg shadow-lg bg-red-50 relative">
+  <div className="bg-white rounded-lg">
+    <button
+      onClick={handleCancel}
+      className="absolute text-gray-500 right-4 top-4 z-10 hover:text-gray-950"
+                style={{ padding: "0.5rem", background: "transparent" }} 
+    >
+      <X className="w-5 h-5" />
+    </button>
+  </div>
+    {/* Sidebar */}
+    <div className="w-1/4 pr-4 border-r border-gray-300">
+      <button
+        className={`w-full text-left p-3 rounded-md mb-2 ${
+          activeTab === "settings"
+            ? "bg-red-200 text-red-800"
+            : "hover:bg-red-100"
+        }`}
+        onClick={() => setActiveTab("settings")}
+      >
+        Project Settings
+      </button>
+      <button
+        className={`w-full text-left p-3 rounded-md mb-2 ${
+          activeTab === "analytics"
+            ? "bg-red-200 text-red-800"
+            : "hover:bg-red-100"
+        }`}
+        onClick={() => setActiveTab("analytics")}
+      >
+        Analytics
+      </button>
+      <button
+        className={`w-full text-left p-3 rounded-md mb-2 ${
+          activeTab === "collaborators"
+            ? "bg-red-200 text-red-800"
+            : "hover:bg-red-100"
+        }`}
+        onClick={() => setActiveTab("collaborators")}
+      >
+        Manage Collaborators
+      </button>
+      <button
+        className={`w-full text-left p-3 rounded-md mb-2 ${
+          activeTab === "roles"
+            ? "bg-red-200 text-red-800"
+            : "hover:bg-red-100"
+        }`}
+        onClick={() => setActiveTab("roles")}
+      >
+        Roles
+      </button>
+      <button
+        className={`w-full text-left p-3 rounded-md mb-2 ${
+          activeTab === "versionHistory"
+            ? "bg-red-200 text-red-800"
+            : "hover:bg-red-100"
+        }`}
+        onClick={() => setActiveTab("versionHistory")}
+      >
+        Version History
+      </button>
     </div>
+
+    {/* Content */}
+    <div className="flex-1 pl-4">
+      {activeTab === "settings" && (
+        <SettingsTab
+          updatedProject={updatedProject}
+          handleKeywordChange={handleKeywordChange}
+          handleInputChange={handleInputChange}
+          handleSave={handleSave}
+          handleCancel={handleCancel}
+        ></SettingsTab>
+      )}
+      {activeTab === "analytics" && <AnalyticsTab project={project}></AnalyticsTab>}
+      {activeTab === "collaborators" && <ManageCollaboratorsTab project={project._id} toast={toast}></ManageCollaboratorsTab>}
+      {activeTab === "roles" && <RolesTab project={project._id} toast={toast}></RolesTab>}
+      {activeTab === "versionHistory" && (
+        <VersionHistoryTab versionHistory={versionHistory} handleRevertVersion={handleRevertVersion}></VersionHistoryTab>
+      )}
+    </div>
+  </div>
+</div>
+
   );
 };
 
