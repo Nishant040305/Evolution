@@ -1,4 +1,3 @@
-const passport = require('passport');
 const path = require('path');
 const User = require('../models/User');
 const axios = require('axios');
@@ -7,10 +6,12 @@ require('dotenv').config({ path: path.resolve(__dirname, '../../.env') })
 const jwtToken = require('jsonwebtoken');
 require('../config/passport'); // Import the passport configuration
 const googleCallback = (req, res) => {
-  passport.authenticate('google', (err, user) => {
-    if (err || !user) {
-      return res.status(400).json({ message: 'Google login failed' });
+  const user = req.user;
+    if (!user) {
+      console.error('Authentication Error:', err);
+      return res.redirect(process.env.CLIENT);
     }
+    console.log('Authenticated User:', user);
     const jwtData = jwtToken.sign(
       {
         displayname: user.displayname,
@@ -21,8 +22,8 @@ const googleCallback = (req, res) => {
       process.env.JWTSECREAT
     );
     res.cookie('uid', jwtData, { httpOnly: true, secure: true, sameSite: 'Strict' });
-    return res.status(200).json({ info: user, message: 'Google login successful' });
-  })(req, res);
+    return res.redirect(process.env.CLIENT);
+  
 };
 // Step 1: Redirect to GitHub for OAuth
 //github

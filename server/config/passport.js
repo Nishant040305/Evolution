@@ -9,12 +9,12 @@ const User = require('../models/User');
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: "/api/auth/google/callback",
+  callbackURL: process.env.GOOGLE_CALLBACKURL
 },
 async (accessToken, refreshToken, profile, done) => {
   try {
     let user = await User.findOne({ email: profile.emails[0].value });
-    if (!user) {
+    if (!user||!user?.verify) {
       user = await User.create({
         email: profile.emails[0].value,
         displayname: profile.displayName,
