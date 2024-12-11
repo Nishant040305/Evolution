@@ -8,7 +8,8 @@ const {
     getAllUserProjects,
     getAllSharedProjects,
     ChangeProfile,
-    FindUserEmail
+    FindUserEmail,
+    FindUserByID
 } = userController;
 
 // @route    GET /api/user/:id/project
@@ -27,4 +28,7 @@ router.put('/:id',UserVerifier,ChangeProfile);
 // @desc     Get user by email
 router.get('/:email',UserVerifier,FindUserEmail);
 
+// @route    GET /api/user/:_id
+// @desc     Get user by id
+router.get('/ID/:id',UserVerifier,FindUserByID);
 module.exports = router;

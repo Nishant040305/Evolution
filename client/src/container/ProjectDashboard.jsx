@@ -149,8 +149,8 @@ const ProjectDashboard = () => {
         </div>
       </div>
 
-      <Modal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)}>
-        <CreateProjectForm onCreateProject={handleCreateProject}  />
+      <Modal isOpen={isCreateModalOpen} onClose={setIsCreateModalOpen}>
+        <CreateProjectForm onCreateProject={handleCreateProject} toast={toast}  />
       </Modal>
     </div>
   );

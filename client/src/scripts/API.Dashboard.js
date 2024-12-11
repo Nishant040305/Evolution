@@ -127,6 +127,20 @@ class ApiDashboard {
             throw error;
         }
     }
+    async FindUserByID(ID) {
+        try {
+            // const response = await axios.get(`${this.baseURL}${endpoint}`);
+            console.log(`${this.baseURL}/user/${ID}`);
+            const response = await axios.get(`${this.baseURL}/api/user/ID/${ID}`)
+            if(response.status==200) return response.data;
+            else{
+                return null;
+            }
+        } catch (error) {
+            console.error(`Failed to find user by email ${ID}:`, error);
+            throw error;
+        }
+    }
     async inviteCollaborator(projectId, role, userId) {
         try {
             const response = await axios.post(`${this.baseURL}/api/project/${projectId}/invite`, { role, userid:userId });

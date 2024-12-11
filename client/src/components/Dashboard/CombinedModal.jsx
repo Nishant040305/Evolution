@@ -29,8 +29,6 @@ ChartJS.register(
 
 const CombinedProjectModal = ({ project, onClose, onUpdate,toast }) => {
   const [activeTab, setActiveTab] = useState("settings");
-  const [emailInput, setEmailInput] = useState("");
-  const [userSuggestions, setUserSuggestions] = useState([]);
   const [updatedProject, setUpdatedProject] = useState({
     name: project.name,
     description: project.description,
@@ -44,28 +42,11 @@ const CombinedProjectModal = ({ project, onClose, onUpdate,toast }) => {
   const [roleAssignments, setRoleAssignments] = useState([
    [...project.members]
   ]);
-  const handleRoleChange = (index, value) => {
-    const newRoleAssignments = [...roleAssignments];
-    newRoleAssignments[index].role = value;
-    setRoleAssignments(newRoleAssignments);
-  };
   const API = new ApiDashboard();
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUpdatedProject((prev) => ({ ...prev, [name]: value }));
   };
-
-  const handleCollaboratorChange = (index, value) => {
-    const newCollaborators = [...collaborators];
-    newCollaborators[index].email = value;
-    setCollaborators(newCollaborators);
-  };
-
-  const removeCollaborator = (index) => {
-    const newCollaborators = collaborators.filter((_, i) => i !== index);
-    setCollaborators(newCollaborators);
-  };
-
   const handleSave = async() => {
     await API.updateProject(project._id, updatedProject);
     onUpdate(project._id, updatedProject);
@@ -94,30 +75,7 @@ const CombinedProjectModal = ({ project, onClose, onUpdate,toast }) => {
       keywords: value.split(",").map((keyword) => keyword.trim()), // Split the string into an array of keywords
     }));
   };
- 
-
-  const handleEmailInputChange = (e) => {
-    const value = e.target.value;
-    setEmailInput(value);
-    fetchUserSuggestions(value);
-  };
-  
-  const handleSelectUser = (user) => {
-    // When a user clicks on a suggestion, autofill the email input
-    setEmailInput(user.email);
-    setUserSuggestions([]); // Clear suggestions after selection
-  };
-  
-  const handleRemoveCollaborator = async (collaboratorIndex) => {
-    const collaborator = collaborators[collaboratorIndex];
-    try {
-      await API.DeleteCollaborator(project._id, collaborator.user); // Call API to delete collaborator
-      removeCollaborator(collaboratorIndex); // Remove collaborator from state
-    } catch (error) {
-      console.error("Error deleting collaborator:", error);
-    }
-  };
-
+    
   return (
     <div className="fixed inset-0 z-10 flex items-center justify-center bg-opacity-50 bg-black-200">
       <div className="flex w-full max-w-4xl p-6 rounded-lg shadow-lg bg-red-50">
@@ -179,8 +137,8 @@ const CombinedProjectModal = ({ project, onClose, onUpdate,toast }) => {
         <div className="flex-1 pl-4">
           {activeTab === "settings" && <SettingsTab updatedProject={updatedProject} handleKeywordChange={handleKeywordChange}handleInputChange={handleInputChange}></SettingsTab>}
           {activeTab === "analytics" && <AnalyticsTab project={project}></AnalyticsTab>}
-          {activeTab === "collaborators" && <ManageCollaboratorsTab project={project} toast={toast} collaborators={collaborators}handleRemoveCollaborator={handleRemoveCollaborator}></ManageCollaboratorsTab>}
-          {activeTab === "roles" && <RolesTab roleAssignments={roleAssignments}handleRoleChange={handleRoleChange}></RolesTab>}
+          {activeTab === "collaborators" && <ManageCollaboratorsTab project={project._id} toast={toast}></ManageCollaboratorsTab>}
+          {activeTab === "roles" && <RolesTab project={project._id} toast={toast}></RolesTab>}
           {activeTab === "versionHistory" && <VersionHistoryTab versionHistory={versionHistory}handleRevertVersion={handleRevertVersion}></VersionHistoryTab>}
 
           <div className="flex justify-end mt-6 space-x-4">
