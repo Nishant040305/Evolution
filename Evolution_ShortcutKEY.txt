@@ -1,0 +1,77 @@
+
+### WebBuilder Page Shortcuts:
+
+#### General Actions:
+1. Ctrl + S: Save the current project.
+2. Ctrl + Z: Undo the last action.
+3. Ctrl + Y: Redo the last undone action.
+4. Ctrl + P: Publish the project.
+5. Ctrl + Shift + P: Preview the project.
+6. Ctrl + D: Download the project.
+7. Ctrl + E: Open the Elements tab.
+8. Ctrl + R: Open the Properties tab.
+9. Ctrl + T: Open the Component tab.
+10. Ctrl + Shift + C: Open the Project tab.
+11. Ctrl + Shift + S: Open the Settings panel.
+
+#### Navigation Shortcuts:
+1. Ctrl + B: Add a Button element.
+2. Ctrl + Shift + B: Add a TextArea element.
+3. Ctrl + L: Add a Label element.
+4. Ctrl + I: Add an Input field element.
+5. Ctrl + Shift + I: Add a Select dropdown element.
+6. Ctrl + M: Add a Div container.
+7. Ctrl + A: Add an Anchor link.
+8. Ctrl + Shift + A: Add an Article element.
+9. Ctrl + Q: Add a Section element.
+10. Ctrl + Shift + Q: Add a Nav element.
+11. Ctrl + F: Add a Footer element.
+12. Ctrl + H: Add a Header element.
+13. Ctrl + 1: Add an H1 element.
+14. Ctrl + 2: Add an H2 element.
+15. Ctrl + 3: Add an H3 element.
+16. Ctrl + 4: Add an H4 element.
+17. Ctrl + 5: Add an H5 element.
+18. Ctrl + 6: Add an H6 element.
+19. Ctrl + Shift + N: Add a Paragraph element.
+
+#### Tab Switching and Focus Shortcuts:
+1. Ctrl + 1: Switch to the WebBuilder workspace.
+2. Ctrl + 2: Switch to the Design View tab.
+3. Ctrl + 3: Switch to the Code View tab.
+4. Ctrl + Tab: Switch between open tabs.
+5. Ctrl + Shift + Left Arrow: Move to the Previous element.
+6. Ctrl + Shift + Right Arrow: Move to the Next element.
+7. Ctrl + F: Focus on the Search input.
+8. Esc: Deselect an element or close any active modal.
+
+### ProjectDashboard Shortcuts:
+
+#### General Actions:
+1. Ctrl + N: Create a new project.
+2. Ctrl + O: Open an existing project.
+3. Ctrl + Shift + N: Open the New Project dialog box.
+4. Ctrl + Shift + O: Open the Project Settings panel.
+5. Ctrl + Shift + P: Open your Profile page.
+6. Ctrl + Shift + M: Open the Notifications panel.
+7. Ctrl + Shift + L: Open the Project List.
+8. Ctrl + E: Export a project to a file.
+9. Ctrl + R: Refresh the project dashboard page.
+10. Ctrl + F: Open the search bar to find projects or notifications.
+
+#### File & Settings Actions:
+1. Ctrl + Shift + T: Open the Settings tab of the project.
+2. Ctrl + F5: Open a new text file for quick project notes.
+3. Ctrl + Shift + D: Delete the currently selected project.
+4. Ctrl + Shift + W: Close the current project and return to the project dashboard.
+
+#### Notifications:
+1. Ctrl + Shift + N: Open the notifications window.
+2. Ctrl + Shift + L: Mark all notifications as read.
+3. Ctrl + Shift + F: Search within notifications.
+4. Ctrl + Shift + M: Toggle Mute notifications.
+
+### Other Useful Shortcuts:
+- Ctrl + Shift + H: Show/Hide the Help guide or documentation.
+- Ctrl + F11: Toggle Full Screen mode.
+- Alt + F4: Close the currently opened modal or window.
