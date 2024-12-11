@@ -89,14 +89,14 @@ const ProjectDashboard = () => {
   };
 
   const handleDeleteProject = async (projectId) => {
-    if (window.confirm("Are you sure you want to delete this project?")) {
       try {
         await API.deleteProject(projectId);
+        toast.success("Project deleted successfully.");
         setProjects((prev) => prev.filter((p) => p._id !== projectId));
       } catch (err) {
         console.error("Error deleting project:", err);
       }
-    }
+    
   };
 
   const handleProjectClick = (projectID) => {
