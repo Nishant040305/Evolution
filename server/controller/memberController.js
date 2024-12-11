@@ -49,8 +49,8 @@ const updateMemberRole = async (req, res) => {
             return res.status(400).json({ message: 'User not invited' });
         }
         await Project.updateOne(
-            { _id: id },
-            { $set: { [`members.${member._id}.role`]: role } }
+            { _id: id, "members.user": userid }, // Match project and member by user ID
+            { $set: { "members.$.role": role } } // Update the role field for the matched member
         );
         res.status(200).json({ message: 'User role updated successfully' });
     } catch (error) {
