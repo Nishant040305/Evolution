@@ -1,6 +1,7 @@
 {
-  "Main": "/edit/:projectID",
-  "Login": "/login-page",
-  "Dashboard": "/",
+  "LandingPage": "/",
+  "Login": "/login",
+  "Dashboard": "/dashboard",
+  "WebsiteBuilder": "/builder/:projectID",
   "Settings": "/settings"
 }

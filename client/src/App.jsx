@@ -1,4 +1,3 @@
-// src/App.js
 import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,8 +6,8 @@ import LoginMain from "./container/LoginMain";
 import WebsiteBuilder from "./container/WebsiteBuilder";
 import ProjectDashboard from "./container/ProjectDashboard";
 import { verifyUser } from "./Store/userSlice";
-import ImageTest from "./test/ImageTest";
 import SettingsPage from "./components/Dashboard/SettingsPage";
+import LandingPage from "./pages/Landing_Page";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -16,16 +15,34 @@ const App = () => {
 
   useEffect(() => {
     dispatch(verifyUser());
-  }, [dispatch,isAuthenticated]);
+  }, [dispatch]);
 
   return (
     <Routes>
-      <Route path={url.Dashboard} element={isAuthenticated ? <ProjectDashboard /> : <LoginMain />} />
-      <Route path={url.Main} element={isAuthenticated ? <WebsiteBuilder /> : <LoginMain />} />
-      <Route path={url.Settings} element={isAuthenticated ? <SettingsPage /> : <LoginMain />} />
-      <Route path="*" element={isAuthenticated ? <ProjectDashboard /> : <LoginMain />} />
+      {/* Landing Page */}
+      <Route path={url.LandingPage} element={<LandingPage />} />
+
+      {/* Login Page */}
+      <Route path={url.Login} element={<LoginMain />} />
+
+      {/* Authenticated Routes */}
+      <Route
+        path={url.Dashboard}
+        element={isAuthenticated ? <ProjectDashboard /> : <LoginMain />}
+      />
+      <Route
+        path={url.WebsiteBuilder}
+        element={isAuthenticated ? <WebsiteBuilder /> : <LoginMain />}
+      />
+      <Route
+        path={url.Settings}
+        element={isAuthenticated ? <SettingsPage /> : <LoginMain />}
+      />
+
+      {/* Fallback Route */}
+      <Route path="*" element={<LandingPage />} />
     </Routes>
   );
-}
+};
 
 export default App;
