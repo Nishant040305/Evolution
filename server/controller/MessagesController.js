@@ -36,5 +36,26 @@ const GetMessages = async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch messages' });
     }
 };
+const DeleteMessage = async (req, res) => {
+    try {
+        const { chatId, messageId } = req.body; 
+        const user = await User.findById(req.user._id);
+        if (!user || !user.verify) {
+            return res.status(404).json({ error: 'No user found or user not verified' });
+        }
+        const message = await Message.findById(messageId);
+        if (!message) {
+            return res.status(404).json({ error: 'Message not found' });
+        }
+        if (message.sender_id.toString() !== user._id.toString()) {
+            return res.status(403).json({ error: 'You are not authorized to delete this message' });
+        }
+        await Message.deleteOne({ _id: messageId });
+        return res.status(200).json({ message: 'Message deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to delete message' });
+    }
+};
 
-module.exports = { GetMessages };
+module.exports = { GetMessages, DeleteMessage };

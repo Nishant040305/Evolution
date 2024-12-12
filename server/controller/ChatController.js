@@ -35,7 +35,7 @@ const getChatsData = async (req, res) => {
             // Build participants list
             const participants = await Promise.all(
                 chat.members.map(async (memberId) => {
-                    const member = await User.findById(memberId).select('displayName avatar');
+                    const member = await User.findById(memberId).select('displayname avatar');
                     return {
                         user_id: member._id,
                         username: member.displayname,
@@ -124,7 +124,7 @@ const createChat = async (req, res) => {
 
 const createGroupChat = async (req, res) => {
     try {
-        const { chatName, users, groupImage = 'default_group_image_url' } = req.body;
+        const { chatName, users, groupImage = 'https://res.cloudinary.com/dwj0nj7d6/image/upload/v1731223362/Evolution/sp9gkw5kn8sjxvhju7aq.png' } = req.body;
         const user = await User.findById(req.user._id);
 
         if (!user || !user.verify) {
