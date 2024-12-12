@@ -32,36 +32,29 @@ import { setImagesMedia } from "../../Store/imageSlice";
 import { useParams } from "react-router-dom";
 import { useCanvasEvents } from "../../hooks/DragDrop";
 import ProjectOverview from "./projectOverview";
+import ElementContainer from "./ElementContainer";
+import MediaSection from "./MediaContainer";
+import ProjectFileSideBar from "./projectFileSideBar";
 const LeftSidebar = ({
   toggleRight,
   setStatusCode,
   toast,
   setId,
 }) => {
-  const BACKWEB = import.meta.env.VITE_REACT_APP_BACKWEB;
   const { projectID } = useParams();
   const dispatch = useDispatch();
 
   // States
-  const [uploadProgress, setUploadProgress] = useState(0); // For network upload
-  const [totalProgress, setTotalProgress] = useState(0); // For total progress (upload + processing)
-  const [isUploading, setIsUploading] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [showComponents, setShowComponents] = useState(true);
+  const [currentTab, setCurrentTab] = useState("components"); // Track active section
   const [showElements, setShowElements] = useState(true);
-  const [showMedia, setShowMedia] = useState(true);
-  const [imageToUpload, setImageToUpload] = useState({ image: "", file: "" });
-  const [isDraggingImage, setIsDraggingImage] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   // Selectors
   const webElements = useSelector((state) => state.webElement.present);
   const imagesMedia = useSelector((state) => state.image);
-  const user = useSelector((state) => state.user.userInfo._id);
 
   // Refs
   const webElementsRef = useRef(webElements);
-  const fileInputRef = useRef(null);
 
   // Counter logic
   const evalCounter = (webElements) => {
@@ -134,123 +127,26 @@ const LeftSidebar = ({
       window.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const validImageTypes = ["image/jpg", "image/jpeg", "image/png"];
-    if (!validImageTypes.includes(file.type)) {
-      toast.error("Please upload a JPG or PNG image.");
-      return;
-    }
-
-    const maxSizeInBytes = 2000 * 1024;
-    if (file.size > maxSizeInBytes) {
-      toast.error("Image must be under 200KB.");
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImageToUpload({ file, image: reader.result });
-    };
-    reader.readAsDataURL(file);
-  };
-  const config = {
-    onUploadProgress: (progressEvent) => {
-      if (progressEvent.lengthComputable) {
-        const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-        setUploadProgress(percent); // Update network upload progress
-        setTotalProgress(percent);   // Set total progress initially equal to upload progress
-      }
-    }
-  };
-  
-  
-  const handleEditSubmit = async () => {
-    try {
-      setIsUploading(true);
-      const formData = new FormData();
-      formData.append("file", imageToUpload.file);
-  
-      const response = await axios.post(
-        `${BACKWEB}${server.Project.MediaUpdate}${projectID}`,
-        formData,
-        config // Attach the config to axios request for progress tracking
-      );
-  
-      if (response.status === 200) {
-        setIsProcessing(true);
-        const startTime = Date.now();
-  
-        // Simulate server-side processing (replace with your actual server processing logic)
-        const interval = setInterval(() => {
-          const elapsedTime = Date.now() - startTime;
-          const serverProgress = Math.min(((elapsedTime / 5000) * 100), 100); // Example: server takes 5 seconds to process
-          setTotalProgress(Math.max(uploadProgress, serverProgress)); // Update total progress (either upload or processing time)
-        }, 500);
-  
-        // Wait for server processing to finish
-        await new Promise((resolve) => setTimeout(resolve, 5000)); // Simulate server processing time (5 seconds)
-  
-        clearInterval(interval);
-        setTotalProgress(100); // Set progress to 100% when done
-        dispatch(setImagesMedia(response.data.url));
-        setImageToUpload({ image: "", file: "" }); // Clear image
-        setTotalProgress(0); // Reset progress bar after successful upload
-        setIsProcessing(false);
-        setIsUploading(false);
-        toast.success("Image uploaded and processed successfully!");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to upload image. Please try again.");
-      setIsUploading(false);
-      setIsProcessing(false);
-    }
-  };  
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    setIsDraggingImage(true);
-  };
-
-  const handleDragLeave = () => {
-    setIsDraggingImage(false);
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    setIsDraggingImage(false);
-    const file = e.dataTransfer.files[0];
-    if (file) {
-      const fakeEvent = { target: { files: [file] } };
-      handleImageChange(fakeEvent);
-    }
-  };
-
   return (
     <div
       className="relative h-full"
       onMouseEnter={() => setIsVisible(true)}
       onMouseLeave={handleSidebarLeave}
     >
-      {/* Sidebar logic */}
-      <div
-        className={`fixed top-0 left-0 bottom-0 w-64 bg-gray-100 border-r border-gray-300 transition-transform duration-300 transform ${
+     {/* Sidebar logic */}
+     <div
+        className={`fixed top-0 left-0 bottom-0  bg-gray-100 border-r border-gray-300 transition-transform duration-300 transform ${
           isVisible ? "translate-x-0" : "-translate-x-full"
         } z-10`}
       >
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full w-80">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b bg-red-50">
-            <div className="flex space-x-2">
+            <div className="flex">
               <button
-                onClick={() => {
-                  setShowComponents(true);
-                  setStatusCode(0);
-                }}
-                className={`px-3 py-1.5 rounded-md transition-all ${
-                  showComponents
+                onClick={() => setCurrentTab("components")}
+                className={`px-2 py-1.5 rounded-md transition-all mr-1 ${
+                  currentTab === "components"
                     ? "bg-red-500 text-white"
                     : "text-gray-600 hover:bg-red-100"
                 }`}
@@ -258,191 +154,37 @@ const LeftSidebar = ({
                 Components
               </button>
               <button
-                onClick={() => {
-                  setShowComponents(false);
-                  setStatusCode(0);
-                }}
-                className={`px-3 py-1.5 rounded-md transition-all ${
-                  !showComponents
+                onClick={() => setCurrentTab("project")}
+                className={`px-3 py-1.5 rounded-md transition-all mr-1 ${
+                  currentTab === "project"
                     ? "bg-red-500 text-white"
                     : "text-gray-600 hover:bg-red-100"
                 }`}
               >
-                Project
+                Project Overview
+              </button>
+              <button
+                onClick={() => setCurrentTab("files")}
+                className={`px-3 py-1.5 rounded-md transition-all ${
+                  currentTab === "files"
+                    ? "bg-red-500 text-white"
+                    : "text-gray-600 hover:bg-red-100"
+                }`}
+              >
+                Pages
               </button>
             </div>
-            {/* <button
-              onClick={toggleSidebar}
-              className="p-2 transition-all rounded-full hover:bg-red-100"
-            >
-              <ChevronLeft className="w-5 h-5 text-gray-600" />
-            </button> */}
           </div>
 
+
           {/* Content */}
-          <div className="flex-1 p-4 space-y-6 overflow-y-auto">
-            {showComponents ? (
+          <div className="flex-1 p-4 space-y-6  overflow-y-auto">
+            {currentTab === "components" ? (
               <>
                 {/* Elements Section */}
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <h3 className="flex items-center text-sm font-semibold text-gray-700">
-                      <Grid className="w-4 h-4 mr-2" />
-                      Elements
-                    </h3>
-                    <button
-                      onClick={() => setShowElements((prev) => !prev)}
-                      className="p-1 transition-all rounded-full hover:bg-red-100"
-                    >
-                      {showElements ? (
-                        <ChevronUp className="w-4 h-4 text-gray-600" />
-                      ) : (
-                        <ChevronDown className="w-4 h-4 text-gray-600" />
-                      )}
-                    </button>
-                  </div>
-
-                  {showElements && (
-                    <div className="grid grid-cols-2 gap-2">
-                      {Object.keys(sidebarElements).map((element) => (
-                        <button
-                          key={element}
-                          onClick={() => {
-                            setStatusCode(0);
-                            const id = counter + 1;
-                            const hash = id.toString();
-                            setCounter((prev) => prev + 1);
-                            dispatch(
-                              addElement({
-                                hash: hash,
-                                value: sidebarElements[element](hash),
-                              })
-                            );
-                          }}
-                          className="px-3 py-2 text-sm text-gray-700 transition-all bg-white border border-gray-100 rounded-lg shadow-sm hover:bg-red-50"
-                        >
-                          {element}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
+                <ElementContainer showElements={showElements} setShowElements={setShowElements} sidebarElements={sidebarElements} setStatusCode={setStatusCode} dispatch={dispatch} counter={counter} setCounter={setCounter} addElement={addElement}/>
                 {/* Media Section */}
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <h3 className="flex items-center text-sm font-semibold text-gray-700">
-                      <Image className="w-4 h-4 mr-2" />
-                      Media
-                    </h3>
-                    <button
-                      onClick={() => setShowMedia((prev) => !prev)}
-                      className="p-1 transition-all rounded-full hover:bg-red-100"
-                    >
-                      {showMedia ? (
-                        <ChevronUp className="w-4 h-4 text-gray-600" />
-                      ) : (
-                        <ChevronDown className="w-4 h-4 text-gray-600" />
-                      )}
-                    </button>
-                  </div>
-
-                  {showMedia && 
-                    <>
-                    <div className="space-y-3">
-                      <div
-                        onDragOver={handleDragOver}
-                        onDragLeave={handleDragLeave}
-                        onDrop={handleDrop}
-                        className={`border-2 border-dashed rounded-lg p-4 text-center transition-all ${
-                          isDraggingImage ? "border-red-500 bg-red-50" : "border-gray-300 hover:border-red-400"
-                        }`}
-                      >
-                        <input
-                          type="file"
-                          onChange={handleImageChange}
-                          className="hidden"
-                          ref={fileInputRef}
-                          accept="image/png,image/jpeg,image/jpg"
-                        />
-                        <button
-                          onClick={() => fileInputRef.current?.click()}
-                          className="flex flex-col items-center w-full space-y-2 text-gray-500 hover:text-red-500"
-                        >
-                          <Upload className="w-6 h-6" />
-                          <span className="text-sm">Click to Upload</span>
-                        </button>
-                      </div>
-                      {imageToUpload.image && (
-                        <div className="relative flex items-center flex-col p-2 rounded-lg shadow-sm">
-                          <div className="relative">
-                            <img
-                              src={imageToUpload.image}
-                              alt="Preview"
-                              className="object-cover w-20 h-20 rounded"
-                            />
-                            
-                          </div>
-                          {/* Cross Button */}
-                          <button
-                              onClick={() => setImageToUpload({ image: "", file: "" })} // Clears the image
-                              className="absolute top-0 right-0 rounded-full text-red-500 hover:bg-red-100 transition-all"
-                            >
-                              <span className="text-lg font-bold">&times;</span>
-                            </button>
-                          <button
-                            onClick={handleEditSubmit}
-                            className="px-3 py-1.5 mt-3 bg-blue-500 text-white rounded-md hover:bg-red-600 transition-all w-full text-sm"
-                          >
-                            Upload
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  
-                  {totalProgress > 0 && totalProgress < 100 && (
-                        <div className="mt-2 w-full bg-gray-200 rounded-full h-2.5">
-                          <div
-                            className="bg-red-500 h-2.5 rounded-full"
-                            style={{ width: `${totalProgress}%` }}
-                          />
-                        </div>)
-                  }
-                <div className="grid grid-cols-3 gap-2">
-                  {imagesMedia.map((element, index) => (
-                    <div
-                      key={index}
-                      onClick={() => {
-                      setStatusCode(0);
-                      const id = counter + 1;
-                      const hash = id.toString();
-                      setCounter((prev) => prev + 1);
-                      dispatch(
-                      addElement({
-                        hash: hash,
-                        value: sidebarMedia.ImageElement(
-                          hash,
-                            element
-                          ),
-                        })
-                      );
-                        }}
-                        className="relative cursor-pointer group"
-                      >
-                      <img
-                        src={element}
-                        alt={`Media ${index + 1}`}
-                        className="object-cover w-full h-20 transition-all rounded-lg shadow-sm hover:shadow-md"
-                        />
-                            <div className="absolute inset-0 flex items-center justify-center transition-all bg-opacity-0 rounded-lg group-hover:bg-opacity-20">
-                            <Plus className="w-6 h-6 text-white transition-all opacity-0 group-hover:opacity-100" />
-                          </div>
-                        </div>
-                      ))}
-                </div>
-                </>
-                }
-                </div>
+                <MediaSection sidebarMedia={sidebarMedia} projectID={projectID} setCounter={setCounter} counter={counter} toast={toast} imagesMedia={imagesMedia} />
                 {/* Additional Sections */}
                 <div className="space-y-3">
                   <button
@@ -468,10 +210,12 @@ const LeftSidebar = ({
                   </button>
                 </div>
               </>
-            ) : (
+            ) : currentTab === "project" ? (
               // Project Overview
               <ProjectOverview webElements={webElements} setId={setId} toggleRight={toggleRight} setStatusCode={setStatusCode} handleDelete={handleDelete} handleViewChange={handleViewChange} />
-            )}
+            ):  (
+              <ProjectFileSideBar   />
+            ) }
           </div>
         </div>
       </div>
