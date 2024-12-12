@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('../models/User');
 const Project = require('../models/Project');
-
+const {searchUsers} = require('../utils/searchUser');
 const getAllUserProjects = async (req, res) => {
     try {
         const userId = req.params.id;
@@ -102,10 +102,24 @@ const FindUserByID = async (req,res)=>{
         return res.status(500).json({message:"Internal Server Error"})
     }
 }
+const FindUserSearch =async(req,res)=> {
+    const query = req.params.query;
+    try {
+      if (!query) {
+        return res.status(400).json({ error: 'Query parameter is required.' });
+      }
+      const users = await searchUsers(query);
+      return res.status(200).json(users);
+    } catch (error) {
+        return res.status(500).json({ error: 'Error searching users.' });
+    }
+};
+
 module.exports = {
     getAllUserProjects,
     getAllSharedProjects,
     ChangeProfile,
     FindUserEmail,
-    FindUserByID
+    FindUserByID,
+    FindUserSearch
 };
