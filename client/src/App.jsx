@@ -9,15 +9,16 @@ import ProjectDashboard from "./container/ProjectDashboard";
 import { verifyUser } from "./Store/userSlice";
 import ImageTest from "./test/ImageTest";
 import SettingsPage from "./components/Dashboard/SettingsPage";
-
+import { useSocketConnect } from "./hooks/SocketConnect";
 const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(verifyUser());
+    
   }, [dispatch,isAuthenticated]);
-
+  useSocketConnect();
   return (
     <Routes>
       <Route path={url.Dashboard} element={isAuthenticated ? <ProjectDashboard /> : <LoginMain />} />

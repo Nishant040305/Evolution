@@ -11,7 +11,6 @@ const googleCallback = (req, res) => {
       console.error('Authentication Error:', err);
       return res.redirect(process.env.CLIENT);
     }
-    console.log('Authenticated User:', user);
     const jwtData = jwtToken.sign(
       {
         displayname: user.displayname,

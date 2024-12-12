@@ -4,6 +4,9 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const session = require("express-session");
+const http = require("http");
+const {Server} = require("socket.io");
+const socketHandlers = require("./events");
 // Load environment variables
 require("dotenv").config();
 
@@ -12,7 +15,13 @@ const db = require("./db/mongoose");
 
 // Create express app and add middlewares
 const app = express();
-
+const server = http.createServer(app);
+const io = new Server({
+  cors:{
+    orgin:process.env.CLIENT
+  }
+})
+socketHandlers(io);
 app.use(
   cors({
     origin: process.env.CLIENT || "http://localhost:5173", // Allow the frontend origin
@@ -53,6 +62,11 @@ app.use("/api/test/mail", require("./test/mailTest"));
 
 // Start server
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
+const SOCKET=process.env.SOCKET|| 8000;
+server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-});
+}); 
+io.listen(SOCKET);
+io.httpServer.on('listening', () => {
+  console.log(`SOCKET is running on port ${SOCKET}`); 
+  });
