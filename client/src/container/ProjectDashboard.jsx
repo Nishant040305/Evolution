@@ -113,13 +113,13 @@ const ProjectDashboard = () => {
             onClick={() => setIsSharedView(false)}
             className={`px-4 py-2 rounded ${!isSharedView ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-800'}`}
           >
-            Projects
+            My Projects
           </button>
           <button
             onClick={() => setIsSharedView(true)}
             className={`px-4 py-2 rounded ${isSharedView ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-800'}`}
           >
-            Shared Projects
+            Shared With Me
           </button>
         </div>
 
