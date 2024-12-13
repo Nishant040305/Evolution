@@ -8,6 +8,7 @@ import ProjectDashboard from "./container/ProjectDashboard";
 import { verifyUser } from "./Store/userSlice";
 import SettingsPage from "./components/Dashboard/SettingsPage";
 import LandingPage from "./pages/Landing_Page";
+import MainLayout from "./pages/Profile_Page";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -37,6 +38,12 @@ const App = () => {
       <Route
         path={url.Settings}
         element={isAuthenticated ? <SettingsPage /> : <LoginMain />}
+      />
+
+      {/* Profile Page Route */}
+      <Route
+        path={url.ProfilePage}
+        element={isAuthenticated ? <MainLayout /> : <LoginMain />} // Show MainLayout for /profilepage
       />
 
       {/* Fallback Route */}

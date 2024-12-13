@@ -3,5 +3,6 @@
   "Login": "/login",
   "Dashboard": "/dashboard",
   "WebsiteBuilder": "/builder/:projectID",
-  "Settings": "/settings"
+  "Settings": "/settings",
+  "ProfilePage": "/profilepage"
 }
