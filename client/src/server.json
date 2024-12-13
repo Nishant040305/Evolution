@@ -34,7 +34,13 @@
         "GetAllUsersProject":"/api/user/:id/project",
         "ChangeProfile":"/api/user/:id",
         "GetAllSharedProjects":"/api/user/:id/shared",
-        "FindUserEmail":"/api/user/:email"
+        "FindUserEmail":"/api/user/:email",
+        "FindUserByID":"/api/user/ID/:id",
+        "FindUserSearch":"/api/user/search/:query",
+        "GetFriends":"/api/user/friends/:id",
+        "createChat":"/api/chat/chats",
+        "createGroupChat":"/api/chat/chats/group",
+        "addUserToGroupChat":"/api/chat/chats/group/add"
     },
     "Image":{
         "ImageUpload":"/api/image/imageUpload"

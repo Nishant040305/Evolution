@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import LeftSocialSideBar from '../components/Navigation/leftSocialSideBar';
 import "../style/socialMain.css"
 import ChatLeftBar from '../components/SocialSection/ChatLeftBar';
+import FindUser from '../components/SocialSection/FindUser';
 import ChatRightMain from '../components/SocialSection/ChatRightMain';
 const SocialMain = () => {
+    const[state,setState] = useState("Messages");
     const fakeChatData={
         chat_id: "chat_id_5",
         chat_name: "Individual Chat with Bob",
@@ -27,8 +29,8 @@ const SocialMain = () => {
       }
   return (
     <div className="social-main flex flex-row">
-        <LeftSocialSideBar></LeftSocialSideBar>
-        <ChatLeftBar></ChatLeftBar>
+        <LeftSocialSideBar setNav={setState}></LeftSocialSideBar>
+        {state === "Messages" ? <ChatLeftBar></ChatLeftBar> : <FindUser></FindUser>}
         <ChatRightMain Chat={fakeChatData}></ChatRightMain>
     </div>
     );
