@@ -76,10 +76,24 @@ const PublishPage = ( { css, js ,toast} ) => {
     }
   };
 
+  const saveAllChanges = async () => {
+    saveProject();
+    const htmlContent = getHTMLContent();
+    const id = getProjectId();
+
+    try {
+      await apiDashboard.publishProject(id, htmlContent, css, js);
+    } catch (error) {
+      console.error("Failed to save content:", error);
+      toast.error("Failed to save content. Please try again.");
+    }
+  };
+
   return {
     preview,
     download,
-    publish
+    publish,
+    saveAllChanges,
   };
 };
 
