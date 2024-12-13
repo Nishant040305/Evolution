@@ -32,9 +32,10 @@ const useProjects = (userId, APIUser) => {
 
   useEffect(() => {
     const filterProjects = () => {
+      console.log(projects);
       const results = searchQuery
         ? projects.filter((project) =>
-            project.name.toLowerCase().includes(searchQuery.toLowerCase())
+            project?.name.toLowerCase().includes(searchQuery.toLowerCase())
           )
         : projects;
       setFilteredProjects(results);
