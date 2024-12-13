@@ -1,8 +1,8 @@
 const Message = require('../models/message');
 const GetMessages = async (req, res) => {
     try {
-        const { chatId, lastSeen, limit = 20 } = req.query;
-
+        const { chatId, lastSeen, limit = 20 } = req.body;
+        console.log("hello",req.body)
         if (!chatId) {
             return res.status(400).json({ error: 'Chat ID is required' });
         }
@@ -21,8 +21,8 @@ const GetMessages = async (req, res) => {
 
         // Fetch the total count of messages in the chat
         const totalMessages = await Message.countDocuments({ chat_id: chatId });
-
-        res.json({
+        console.log(totalMessages,messages);
+        return res.json({
             success: true,
             data: messages,
             meta: {

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { FaCheck, FaClipboard, FaTrash } from "react-icons/fa";
-
-const ChatMessageBlock = ({ message, currentUserId, onDelete }) => {
+import { useSelector } from "react-redux";
+const ChatMessageBlock = ({ message,  onDelete }) => {
+    const currentUserId = useSelector((state) => state.user.userInfo._id);
   const isSender = message.sender_id === currentUserId;
   const [isDropdownVisible, setDropdownVisible] = useState(false);
 
@@ -38,7 +39,7 @@ const ChatMessageBlock = ({ message, currentUserId, onDelete }) => {
       {/* Message Bubble */}
       <div
         className={`relative flex flex-col space-y-1 max-w-xs p-3 rounded-lg ${
-          isSender ? "bg-blue-500 text-white" : "bg-gray-200 text-black"
+          isSender ? "bg-green-100 text-black" : "bg-gray-200 text-black"
         }`}
       >
         {/* Dropdown for actions */}

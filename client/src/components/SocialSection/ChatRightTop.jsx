@@ -19,13 +19,13 @@ const ChatRightTop = ({ Chat }) => {
         <div className="relative w-12 h-12 rounded-full bg-gray-200">
         {isGroupChat ? (
             <img 
-            src={Chat.avatar} // Replace with your group chat image path
+            src={Chat.chat_avatar} // Replace with your group chat image path
             alt="Group"
             className="w-10 h-10 rounded-full object-cover" // Adjust image size and roundness
             />
         ) : (
             <img 
-            src={Chat.avatar} // Replace with your individual user image path
+            src={Chat.chat_avatar} // Replace with your individual user image path
             alt="User"
             className="w-10 h-10 rounded-full object-cover" // Adjust image size and roundness
             />
@@ -33,9 +33,10 @@ const ChatRightTop = ({ Chat }) => {
         </div>
 
         {/* Group/User Name and Participant Names */}
+        
         <div className="flex flex-col">
           <div className="text-lg font-semibold">{Chat.chat_name}</div>
-          {Chat.participants.length <= 3 && (
+          {Chat.participants.length <= 3 && isGroupChat && (
             <div className="text-sm text-gray-600">{participantNames}</div>
           )}
         </div>

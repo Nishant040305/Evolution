@@ -56,6 +56,7 @@ const getChatsData = async (req, res) => {
         });
 
         const chatData = await Promise.all(chatDataPromises);
+        console.log(chatData);
         return res.status(200).json({ success: true, data: chatData });
     } catch (error) {
         console.error(error);

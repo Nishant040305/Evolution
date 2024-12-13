@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { FaPaperPlane, FaSmile, FaPaperclip } from 'react-icons/fa';
 import EmojiPicker from 'emoji-picker-react'; // Install using `npm install emoji-picker-react`
-
+import { useSelector } from 'react-redux';
 const API = {
   sendMessage: (message) => {
     console.log("Message sent:", message);
   },
 };
 
-const ChatMessageInput = ({ Chat, senderId }) => {
+const ChatMessageInput = ({ Chat }) => {
   const [message, setMessage] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-
+  const senderId = useSelector((state) => state.user.userInfo._id);
   const handleSendMessage = () => {
     if (!message.trim()) return;
 

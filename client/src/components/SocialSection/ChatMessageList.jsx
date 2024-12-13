@@ -1,127 +1,49 @@
 import React, { useState, useEffect, useRef } from "react";
 import ChatMessageBlock from "./ChatMessageBlock";
 import ChatMessageInput from "./ChatMessageInput";
+import Chats from "../../scripts/API.Chats";
 
-// Dummy API for fetching messages
-const API = {
-  getMessages: async (chatId, page) => {
-    const dummyMessages = [
-      
-      {
-        _id: "7",
-        chat_id: chatId,
-        sender_id: "123",
-        sender: {
-          avatar: "https://via.placeholder.com/150",
-          displayname: "John",
-        },
-        content: "Hello!",
-        timestamp: new Date("2024-12-12T10:00:00Z").toISOString(),
-        readBy: ["456", "123"],
-      },{
-        _id: "6",
-        chat_id: chatId,
-        sender_id: "123",
-        sender: {
-          avatar: "https://via.placeholder.com/150",
-          displayname: "John",
-        },
-        content: "Hello!",
-        timestamp: new Date("2024-12-12T10:00:00Z").toISOString(),
-        readBy: ["456", "123"],
-      },{
-        _id: "5",
-        chat_id: chatId,
-        sender_id: "123",
-        sender: {
-          avatar: "https://via.placeholder.com/150",
-          displayname: "John",
-        },
-        content: "Hello!",
-        timestamp: new Date("2024-12-12T10:00:00Z").toISOString(),
-        readBy: ["456", "123"],
-      },
-      {
-        _id: "2",
-        chat_id: chatId,
-        sender_id: "456",
-        sender: {
-          avatar: "https://via.placeholder.com/150",
-          displayname: "Jane",
-        },
-        content: "Hi John!",
-        timestamp: new Date("2024-12-12T10:05:00Z").toISOString(),
-        readBy: ["123"],
-      },
-      {
-        _id: "3",
-        chat_id: chatId,
-        sender_id: "123",
-        sender: {
-          avatar: "https://via.placeholder.com/150",
-          displayname: "John",
-        },
-        content: "How are you?",
-        timestamp: new Date("2024-12-13T09:00:00Z").toISOString(),
-        readBy: [],
-      },
-    ];
-
-    // Simulate paginated API response
-    const startIndex = (page - 1) * 2; // Assuming 2 messages per page
-    const paginatedMessages = dummyMessages.slice(startIndex, startIndex + 2);
-
-    return new Promise((resolve) => {
-      setTimeout(() => resolve(paginatedMessages), 500); // Simulate delay
-    });
-  },
-};
-
-const ChatMessageList = ({ chatId, senderId }) => {
+const ChatMessageList = ({ chatId }) => {
   const [messages, setMessages] = useState([]);
-  const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const containerRef = useRef();
-  const isLoadingRef = useRef(false); // Track if a load is in progress to avoid multiple loads
+  const [lastSeen, setLastSeen] = useState(null); // Tracks the last fetched message timestamp
+  const containerRef = useRef(null);
+  const isLoadingRef = useRef(false); // Prevent simultaneous API calls
+  const API = new Chats();
+  // Fetch messages from the backend
+  const fetchMessages = async () => {
+    if (isLoadingRef.current || !hasMore) return;
+    isLoadingRef.current = true;
 
-  // Fetch messages on page change or when the chatId changes
-  useEffect(() => {
-    const fetchMessages = async () => {
-      const newMessages = await API.getMessages(chatId, page);
+    try {
+      const data = await API.getMessages(chatId, lastSeen); // Fetch messages using chatId and lastSeen
+      const newMessages = data?.data || [];
+      const meta = data?.meta || {};
 
-      if (newMessages.length === 0) {
-        setHasMore(false); // No more messages to load
-      } else {
-        setMessages((prev) => [...newMessages.reverse(), ...prev]); // Add new messages to the start
-        adjustScrollAfterNewMessages(newMessages.length);
-      }
-    };
-
-    fetchMessages();
-  }, [page, chatId]);
-
-  // Adjust scroll when new messages are loaded
-  const adjustScrollAfterNewMessages = (newMessagesCount) => {
-    const container = containerRef.current;
-    if (container && newMessagesCount > 0) {
-      const previousScrollHeight = container.scrollHeight;
-      setTimeout(() => {
-        container.scrollTop = container.scrollHeight - previousScrollHeight;
-      }, 0);
+      // Update state with new messages
+      setMessages((prev) => [...newMessages.reverse(), ...prev]); // Add new messages to the start
+      setHasMore(meta.hasMore);
+      setLastSeen(meta.lastSeen); // Update lastSeen with the timestamp of the last message fetched
+    } catch (error) {
+      console.error("Failed to fetch messages:", error);
+    } finally {
+      isLoadingRef.current = false;
     }
   };
+
+  // Fetch initial messages on chatId change
+  useEffect(() => {
+    setMessages([]); // Clear existing messages
+    setHasMore(true);
+    setLastSeen(null);
+    fetchMessages(); // Load the first batch of messages
+  }, [chatId]);
 
   // Handle scroll to load more messages when reaching the top
   const handleScroll = () => {
     const container = containerRef.current;
-    
-    // Check if the scroll is at the top and if messages are not being loaded already
     if (container.scrollTop === 0 && hasMore && !isLoadingRef.current) {
-      isLoadingRef.current = true; // Set loading state to true to prevent multiple calls
-      setTimeout(() => {
-        setPage((prevPage) => prevPage + 1); // Load next page of messages
-        isLoadingRef.current = false; // Reset loading state after timeout
-      }, 500); // Simulate delay of 500ms before loading the next batch of messages
+      fetchMessages(); // Load the next batch of messages
     }
   };
 
@@ -150,20 +72,20 @@ const ChatMessageList = ({ chatId, senderId }) => {
         style={{ height: "76.5vh" }}
       >
         {/* Placeholder for loading */}
-        {hasMore && messages.length === 0 && (
+        {isLoadingRef.current && (
           <div className="text-center text-gray-500 py-4">Loading messages...</div>
         )}
 
         {messages.map((message, index) => (
           <React.Fragment key={message._id}>
             {renderDateMarker(message, messages[index - 1])}
-            <ChatMessageBlock message={message} currentUserId={senderId} />
+            <ChatMessageBlock message={message} />
           </React.Fragment>
         ))}
       </div>
 
       {/* Message Input */}
-      <ChatMessageInput Chat={{ chat_id: chatId }} senderId={senderId} />
+      <ChatMessageInput chatId={chatId} />
     </div>
   );
 };

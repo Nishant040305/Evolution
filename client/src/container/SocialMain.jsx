@@ -1,39 +1,64 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LeftSocialSideBar from '../components/Navigation/leftSocialSideBar';
-import "../style/socialMain.css"
+import "../style/socialMain.css";
 import ChatLeftBar from '../components/SocialSection/ChatLeftBar';
 import FindUser from '../components/SocialSection/FindUser';
 import ChatRightMain from '../components/SocialSection/ChatRightMain';
+import User from '../scripts/API.User';
 const SocialMain = () => {
-    const[state,setState] = useState("Messages");
-    const fakeChatData={
-        chat_id: "chat_id_5",
-        chat_name: "Individual Chat with Bob",
-        chat_type: "individual", // Individual chat
-        last_message: "Got the report, thanks!",
-        avatar:"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-        last_message_time: "2024-12-13T10:30:00Z",
-        unread_messages:5,
-        participants: [
-          {
-            user_id: "user_id_1",
-            username: "John",
-            avatar: "path_to_avatar1.jpg"
-          },
-          {
-            user_id: "user_id_4",
-            username: "Bob",
-            avatar: "path_to_avatar4.jpg"
-          }
-        ]
+  const [state, setState] = useState("Messages");
+  const [chats, setChats] = useState([]);
+  const [presentChat, setPresentChat] = useState(null);
+  const [loading, setLoading] = useState(true); // To manage loading state
+  const API = new User();
+
+  useEffect(() => {
+    const fetchChats = async () => {
+      try {
+        const response = await API.getChatsData();
+        if (response.success) {
+          setChats(response.data);
+          console.log(response.data);
+        } else {
+          console.error("Error fetching chats:", response.error);
+        }
+      } catch (error) {
+        console.error("Error fetching chats:", error);
+      } finally {
+        setLoading(false); // Stop loading when the fetch completes
       }
+    };
+
+    fetchChats();
+  }, []);
+
+  const handleChatSelect = (chatId) => {
+    // Set the selected chat
+    const selectedChat = chats.find(chat => chat.chat_id === chatId);
+    setPresentChat(selectedChat);
+  };
+
   return (
     <div className="social-main flex flex-row">
-        <LeftSocialSideBar setNav={setState}></LeftSocialSideBar>
-        {state === "Messages" ? <ChatLeftBar></ChatLeftBar> : <FindUser></FindUser>}
-        <ChatRightMain Chat={fakeChatData}></ChatRightMain>
+      <LeftSocialSideBar setNav={setState} />
+      {state === "Messages" ? (
+        <ChatLeftBar chats={chats} setChats={setChats} handleChatSelect={handleChatSelect} />
+      ) : (
+        <FindUser />
+      )}
+      
+      {/* Display Chat Right Section */}
+      {presentChat ? (
+        <ChatRightMain Chat={presentChat} />
+      ) : (
+        loading ? (
+          <div className="loading-state">Loading chats...</div> // Display loading state while chats are loading
+        ) : (
+            <></>
+        )
+      )}
     </div>
-    );
-}
+  );
+};
 
 export default SocialMain;
