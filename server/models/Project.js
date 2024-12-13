@@ -93,22 +93,61 @@ const ProjectSchema = new Schema({
     type: String,
     default: ""
   },
-  media:{
+  files: {
+    type: Schema.Types.Mixed,
+    default: [
+      {
+        name: 'index.html',
+        content: '',
+        type: 'text/html',
+        timestamp: Date.now,
+        useDefault: 'components', // use components field
+      },
+      {
+        name: 'style.css',
+        content: '',
+        type: 'text/css',
+        timestamp: Date.now,
+        useDefault: 'javascriptContent', // use javascriptContent field
+      },
+      {
+        name: 'script.js',
+        content: '',
+        type: 'text/javascript',
+        timestamp: Date.now,
+        useDefault: 'cssContent', // use cssContent field
+      },
+      /*
+      {
+        name: 'myCoolFolder/myNotSoCoolFile.js',
+        content: 'console.log("Hello world!")',
+        type: 'text/javascript',
+        timestamp: Date.now,
+      }
+      */
+    ]
+  },
+  media: {
     type:[String],
     default:[]
+  },
+
+  // development version control
+  version: {
+    type: Number,
+    default: 0,
   },
   commitMessage: {
     type: String,
     default: "Initial commit"
   },
-
-  // development version control
   versions: [
     {
       version: Number,
       components: Schema.Types.Mixed,
       javascriptContent: String,
       cssContent: String,
+      files: Schema.Types.Mixed,
       timestamp: { type: Date, default: Date.now },
       commitMessage: String,
       member: {
@@ -122,12 +161,13 @@ const ProjectSchema = new Schema({
 
 // Pre-save hook to track changes and version control
 ProjectSchema.pre('save', function (next) {
-  if (this.isModified('commitMessage')) {
+  if (this.isModified('version')) {
     const newVersion = {
-      version: this.versions.length,
+      version: this.version,
       components: this.components,
       javascriptContent: this.javascriptContent,
       cssContent: this.cssContent,
+      files: this.files,
       commitMessage: this.commitMessage,
       member: this.user,
     };
