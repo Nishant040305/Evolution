@@ -1,3 +1,31 @@
 .left-social-sidebar{
     height:100vh;
 }
+.ChatLeftBar{
+    width:30vw;
+    min-width:300px;
+}
+.ChatSearchBar{
+    width:95%;
+}
+.leftSideChatBar{
+    max-height:76.5vh;
+}
+.leftSideChatBar::-webkit-scrollbar {
+    width: 8px; /* Set the width of the scrollbar */
+  }
+  
+  .leftSideChatBar::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Set the background of the scrollbar track */
+    border-radius: 10px; /* Optional: Adds rounded corners to the scrollbar track */
+  }
+  
+  .leftSideChatBar::-webkit-scrollbar-thumb {
+    background: #888; /* Set the color of the scrollbar thumb */
+    border-radius: 10px; /* Optional: Adds rounded corners to the scrollbar thumb */
+  }
+  
+  .leftSideChatBar::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Change color when hovered */
+  }
+  

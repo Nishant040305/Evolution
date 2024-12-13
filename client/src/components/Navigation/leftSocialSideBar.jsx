@@ -18,7 +18,7 @@ const LeftSocialSideBar = () => {
       {/* Sidebar Content */}
       <div className="left-social-sidebar-content flex flex-col items-center space-y-6">
         {items.slice(0, 5).map((item, index) => (
-          <HoverInfoWrapper key={index} info={item.label}>
+          <HoverInfoWrapper key={index} info={item.label} position="right">
             <div
             key={index}
             className="relative group hover:bg-gray-700 p-2 rounded cursor-pointer"
@@ -34,7 +34,7 @@ const LeftSocialSideBar = () => {
       {/* Sidebar Footer */}
       <div className="left-social-sidebar-footer flex flex-col items-center space-y-6 py-4">
         {items.slice(5).map((item, index) => (
-          <HoverInfoWrapper key={index} info={item.label}>
+          <HoverInfoWrapper key={index} info={item.label} position="right">
           <div
             key={index}
             className="relative group hover:bg-gray-700 p-2 rounded cursor-pointer"

@@ -1,11 +1,12 @@
 import React from "react";
 import "../../style/HoverInfoWrapper.css";
 
-const HoverInfoWrapper = ({ children, info }) => {
+const HoverInfoWrapper = ({ children, info, position }) => {
+    console.log(`hover-info-tooltip ${position}`);
   return (
-    <div className="hover-info-wrapper">
+    <div className="hover-info-wrapper relative">
       {children}
-      <span className="hover-info-tooltip">{info}</span>
+      <span className={`hover-info-tooltip ${position}`}>{info}</span>
     </div>
   );
 };
