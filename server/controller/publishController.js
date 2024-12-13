@@ -38,11 +38,11 @@ const publishProject = async (req, res) => {
         <meta name="description" content="${description}">
         ${keywords.map(keyword => `<meta name="keywords" content="${keyword}">`).join('')}
         <meta name="robots" content="index, follow">
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="../public/${id}/style.css">
     </head>
     <body>
         ${htmlContent}
-        <script src="script.js"></script>
+        <script src="../public/${id}/script.js"></script>
     </body>
     </html>`;
 

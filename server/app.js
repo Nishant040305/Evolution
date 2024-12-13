@@ -47,7 +47,7 @@ app.use((err, req, res, next) => {
 });
 
 // Static files
-app.use(express.static(path.join(__dirname, 'static')));
+app.use("/public", express.static(path.join(__dirname, 'public')));
 
 // Set up routes
 const domainRoutes = require("./routes/domain.routes");
