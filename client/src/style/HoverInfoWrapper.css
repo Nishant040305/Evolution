@@ -1,0 +1,26 @@
+.hover-info-wrapper {
+    position: relative; /* Ensures the tooltip is positioned relative to this container */
+    display: inline-block; /* Allows proper positioning of child elements */
+  }
+  
+  .hover-info-tooltip {
+    position: absolute;
+    left: 120%; /* Adjust tooltip position */
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #333; /* Tooltip background */
+    color: #fff; /* Tooltip text color */
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0; /* Initially hidden */
+    pointer-events: none; /* Avoids interfering with mouse events */
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  
+  .hover-info-wrapper:hover .hover-info-tooltip {
+    opacity: 1; /* Makes tooltip visible */
+    transform: translateY(-50%) translateX(10px); /* Slightly adjust position */
+  }
+  
