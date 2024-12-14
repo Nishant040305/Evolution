@@ -161,7 +161,9 @@ const ProjectSchema = new Schema({
 
 // Pre-save hook to track changes and version control
 ProjectSchema.pre('save', function (next) {
+  console.log("Save detected");
   if (this.isModified('version')) {
+    console.log("Version modified to ", this.version);
     const newVersion = {
       version: this.version,
       components: this.components,

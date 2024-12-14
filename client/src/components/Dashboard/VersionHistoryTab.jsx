@@ -10,13 +10,14 @@ import React from "react";
         {" "}
         {/* Added scrollable container */}
         <ul className="space-y-2">
-          {versionHistory.map((versionItem, index) => (
+          {versionHistory.slice(0).reverse().map((versionItem, index) => (
             <li
               key={index}
               className="flex justify-between p-2 bg-red-100 rounded-md"
             >
               <div>
-                <strong>{versionItem.version}</strong> - {versionItem.date}
+                <strong>{versionItem.version}</strong> - {new Date(versionItem.timestamp).toLocaleString()}
+                <span> - {versionItem.commitMessage}</span>
               </div>
               <button
                 onClick={() => handleRevertVersion(versionItem.version)}

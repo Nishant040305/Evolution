@@ -23,6 +23,56 @@ const getProjectById = async (req, res) => {
     }
 };
 
+const getProjectVersionHistory = async (req, res) => {
+    try {
+        const project = await Project.findById(req.params.id).populate('user', '_id displayname email');
+        if (!project) {
+            return res.status(404).json({ message: 'Project not found' });
+        }
+        return res.status(200).json(project.versions);
+    } catch (error) {
+        res.status(500).json({ message: 'Error retrieving project', error });
+    }
+};
+
+const revertProject = async (req, res) => {
+    try {
+        const project = await Project.findById(req.params.id);
+        if (!project) {
+            return res.status(404).json({ message: 'Project not found' });
+        }
+        const version = project.versions.find(v => v.version === parseInt(req.body.version));
+        if (!version) {
+            return res.status(404).json({ message: 'Version not found' });
+        }
+
+        const newVersion = {
+            components: version.components || {},
+            javascriptContent: version.javascriptContent,
+            cssContent: version.cssContent,
+            files: version.files,
+            timestamp: Date.now(),
+            commitMessage: `Reverted to version ${version.version}`,
+        };
+
+        console.log(newVersion);
+
+        const updatedProject = await Project.findByIdAndUpdate(
+            req.params.id,
+            { $set: newVersion },
+            { new: true }
+        );
+
+        updatedProject.version += 1;
+        await updatedProject.save();
+        return res.status(200).json(project);
+        
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error retrieving project', error });
+    }
+};
+
 const createProject = async (req, res) => {
     try {
         const user = await User.findById(req.body.user);
@@ -38,6 +88,10 @@ const createProject = async (req, res) => {
         const savedProject = await newProject.save();
         user.projects.push(savedProject._id);
         await user.save();
+
+        savedProject.version += 1;
+        await savedProject.save();
+
         return res.status(201).json(savedProject);
     } catch (error) {
         res.status(500).json({ message: 'Error creating project', error });
@@ -48,13 +102,16 @@ const updateComponents = async (req, res) => {
     try {
         const updatedProject = await Project.findByIdAndUpdate(
             req.params.id,
-            { $set: { components: req.body } },
+            { $set: { components: req.body, commitMessage: "Updated components" } },
             { new: true } // Return the updated document
         );
 
         if (!updatedProject) {
             return res.status(404).json({ message: 'Project not found' });
         }
+
+        updatedProject.version += 1;
+        await updatedProject.save();
         return res.status(200).json(updatedProject);
     } catch (error) {
         return res.status(500).json({ message: 'Error updating project', error });
@@ -65,13 +122,16 @@ const updateProject = async (req, res) => {
     try {
         const updatedProject = await Project.findByIdAndUpdate(
             req.params.id,
-            { $set: req.body },
+            { $set: { ...req.body, commitMessage: "Updated project" } },
             { new: true } // Return the updated document
         );
 
         if (!updatedProject) {
             return res.status(404).json({ message: 'Project not found' });
         }
+
+        updatedProject.version += 1;
+        await updatedProject.save();
         return res.status(200).json(updatedProject);
     } catch (error) {
         return res.status(500).json({ message: 'Error updating project', error });
@@ -121,6 +181,8 @@ const deleteProject = async (req, res) => {
 module.exports = {
     getAllProjects,
     getProjectById,
+    getProjectVersionHistory,
+    revertProject,
     createProject,
     updateProject,
     deleteProject,
