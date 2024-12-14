@@ -23,7 +23,7 @@ const App = () => {
   const user = useSelector((state) => state.user.userInfo);
   useEffect(() => {
     dispatch(verifyUser());
-  }, [dispatch]);
+  }, [dispatch,isAuthenticated]);
   useSocketConnect();
   
   useSocketRecieveMessage();

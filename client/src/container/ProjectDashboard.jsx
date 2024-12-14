@@ -42,7 +42,13 @@ const ProjectDashboard = () => {
       console.error("Error creating project:", err);
     }
   };
-
+  const onUpdateProject = async (projectId, updatedProject) => {
+    try {
+      setProjects((prev) => prev.map((p) => (p._id === projectId ? { ...p, ...updatedProject } : p)));
+    } catch (err) {
+      console.error("Error updating project:", err);
+    }
+  };
   const handleDeleteProject = async (projectId) => {
     try {
       await API.deleteProject(projectId);
@@ -86,7 +92,7 @@ const ProjectDashboard = () => {
           sharedFilteredProjects={sharedFilteredProjects}
           onCreate={() => setIsCreateModalOpen(true)}
           onDelete={handleDeleteProject}
-          onUpdate={setProjects}
+          onUpdate={onUpdateProject}
           onProjectClick={handleProjectClick}
           isLoading={isLoading}
           toast={toast}

@@ -51,12 +51,8 @@ const CombinedProjectModal = ({ project, onClose, onUpdate,toast }) => {
   const handleSave = async() => {
     await API.updateProject(project._id, updatedProject);
     onUpdate(project._id, updatedProject);
-    for(let i=0;i<updatedProject.members.length;i++){
-      if(updatedProject.members[i].role!=roleAssignments[i].role){
-        await API.UpdateCollaboratorRole(project._id,updatedProject.members[i].user,roleAssignments[i].role)
-      }
     onClose();
-  };}
+  ;}
 
   const handleCancel = () => {
     onClose(); // Close the modal without saving
