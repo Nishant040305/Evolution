@@ -20,14 +20,11 @@ const App = () => {
   useEffect(() => {
     dispatch(verifyUser());
   }, [dispatch]);
-
-    
-  }, [dispatch,isAuthenticated]);
   useSocketConnect();
   return (
     <Routes>
       {/* Landing Page */}
-      <Route path={url.LandingPage} element={<LandingPage />} />
+      <Route path={url.LandingPage} element={isAuthenticated?<ProjectDashboard />:<LandingPage />} />
 
       {/* Login Page */}
       <Route path={url.Login} element={<LoginMain />} />
@@ -53,7 +50,7 @@ const App = () => {
       />
 
       {/* Fallback Route */}
-      <Route path="*" element={<LandingPage />} />
+      <Route path="*" element={ <LoginMain />} />
       <Route path="/social" element={isAuthenticated ? <SocialMain/> : <LoginMain />} />
       <Route path="/chats" element={isAuthenticated ? <ChatTest /> : <LoginMain />}  />
     </Routes>
