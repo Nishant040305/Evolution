@@ -20,18 +20,61 @@ class User {
         throw error;
       }
     }
-        // Fetch all projects
-        async getAllSharedProjects() {
-          try {
-            let endpoint = `${this.baseURL}${server.User.GetAllSharedProjects}`
-            endpoint = endpoint.replace(':id', this.id);
-              const response = await axios.get(endpoint);
-              return response.data.reverse();
-          } catch (error) {
-              console.error("Failed to fetch projects:", error);
-              throw error;
+    // Fetch all projects
+    async getAllSharedProjects() {
+      try {
+        let endpoint = `${this.baseURL}${server.User.GetAllSharedProjects}`
+        endpoint = endpoint.replace(':id', this.id);
+        const response = await axios.get(endpoint);
+        return response.data.reverse();
+      } catch (error) {
+          console.error("Failed to fetch projects:", error);
+            throw error;
           }
       }
+    async FindUserSearch(query){
+        try{
+            let endpoint = `${this.baseURL}${server.User.FindUserSearch}`
+            endpoint = endpoint.replace(':query', query);
+            const response = await axios.get(endpoint);
+            return response.data;
+        }catch(error){
+            console.error("Failed to fetch projects:", error);
+            throw error;
+        }
+    }
+    async GetFriends(id){
+        try{
+            let endpoint = `${this.baseURL}${server.User.GetFriends}`
+            endpoint = endpoint.replace(':id', id);
+            const response = await axios.get(endpoint);
+            return response.data;
+        }catch(error){
+            console.error("Failed to fetch projects:", error);
+            throw error;
+        }
+    }async createChat(secondUserId){
+        try{
+            let endpoint = `${this.baseURL}${server.User.createChat}`
+            const response = await axios.post(endpoint,{secondUserId});
+            return response.data;
+        }catch(error){
+            console.error("Failed to fetch projects:", error);
+            throw error;
+        }
+    }async getChatsData(){
+        try{
+            let endpoint = `${this.baseURL}${server.User.getChatsData}`
+            console.log(endpoint)
+
+            const response = await axios.get(endpoint);
+            console.log(response.data);
+            return response.data;
+        }catch(error){
+            console.error("Failed to fetch projects:", error);
+            throw error;
+        }
+    }
   }
 
 export default User;

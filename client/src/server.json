@@ -36,9 +36,23 @@
         "GetAllUsersProject":"/api/user/:id/project",
         "ChangeProfile":"/api/user/:id",
         "GetAllSharedProjects":"/api/user/:id/shared",
-        "FindUserEmail":"/api/user/:email"
+        "FindUserEmail":"/api/user/:email",
+        "FindUserByID":"/api/user/ID/:id",
+        "FindUserSearch":"/api/user/search/:query",
+        "GetFriends":"/api/user/friends/:id",
+        "createChat":"/api/chat/chats",
+        "createGroupChat":"/api/chat/chats/group",
+        "addUserToGroupChat":"/api/chat/chats/group/add",
+        "getChatsData":"/api/chat/chats"
     },
     "Image":{
         "ImageUpload":"/api/image/imageUpload"
+    },
+    "Chat":{
+        "getChatsData":"/api/chat/chats",
+        "createChat":"/api/chat/chats",
+        "createGroupChat":"/api/chat/chats/group",
+        "addUserToGroupChat":"/api/chat/chats/group/add",
+        "getMessages":"/api/message/messages"
     }
 }

@@ -3,8 +3,9 @@ const UsersChat = require('../models/UsersChat');
 
 
 module.exports = (io,socket)=>{
-    socket.on('joinChat', async (userId) => {
+    socket.on('joinRoom', async (userId) => {
         try {
+            console.log(userId)
             // Check if the user exists in the database
             const user = await User.findById(userId);
             if (!user) {
@@ -25,7 +26,11 @@ module.exports = (io,socket)=>{
 
             // Join the socket to all chat rooms the user is part of
             const chatIds = userChats.chats.map((chat) => chat.chat_id.toString());
-            chatIds.forEach((chatId) => socket.join(chatId));
+            chatIds.forEach((chatId) => {
+                socket.join(chatId);
+                io.to(chatId).emit('joinRoom', { userId });
+            }
+            );
 
             // Additionally, join the user to their own room (for personal notifications)
             socket.join(userId);

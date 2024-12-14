@@ -29,3 +29,6 @@
     background: #555; /* Change color when hovered */
   }
   
+.ChatMessageList{
+    max-height:90%;
+}

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { FaArrowLeft, FaTimes,FaSearch } from "react-icons/fa";
 
-const ChatSearchBar = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+const ChatSearchBar = ({setSearchQuery,searchQuery}) => {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleSearchChange = (event) => {

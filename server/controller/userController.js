@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('../models/User');
 const Project = require('../models/Project');
+const UsersChat = require('../models/UsersChat');
 const {searchUsers} = require('../utils/searchUser');
 const getAllUserProjects = async (req, res) => {
     try {
@@ -114,6 +115,40 @@ const FindUserSearch =async(req,res)=> {
         return res.status(500).json({ error: 'Error searching users.' });
     }
 };
+const GetFriends = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        
+        // Find the user by their ID
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        
+        // Find all personal chats where the user is involved
+        const userChats = await UsersChat.findOne({ user_id: userId }).populate('chats.chat_id');
+        
+        if (!userChats || !userChats.chats) {
+            return res.status(404).json({ message: 'No chats found for the user' });
+        }
+        // Filter out the friends (users involved in personal chats)
+        const friends = userChats.chats
+            .filter(chat => chat.type === 'personal' && chat.isActive)
+            .map(chat => {
+                // The user we are chatting with will be in the chat but not the current user
+                const friend = chat.chat_id.members.find(friend => friend.toString() !== userId.toString());
+                return friend ? friend._id : null;
+            })
+            .filter(friendId => friendId !== null); // Remove any null values
+        
+        // Return the list of friends
+        return res.status(200).json({ friends });
+        
+    } catch (e) {
+        console.error(e);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+};
 
 module.exports = {
     getAllUserProjects,
@@ -121,5 +156,6 @@ module.exports = {
     ChangeProfile,
     FindUserEmail,
     FindUserByID,
-    FindUserSearch
+    FindUserSearch,
+    GetFriends
 };

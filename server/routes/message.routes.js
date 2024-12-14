@@ -6,7 +6,7 @@ const MessageController = require('../controller/MessagesController');
 // @route    GET api/messages
 // @desc     Get all messages
 // @access   Private
-router.get('/messages', UserVerifier, MessageController.GetMessages);
+router.post('/messages', UserVerifier, MessageController.GetMessages);
 
 // @route    POST api/messages
 // @desc     Delete a message

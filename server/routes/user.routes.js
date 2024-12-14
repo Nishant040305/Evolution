@@ -10,7 +10,8 @@ const {
     ChangeProfile,
     FindUserEmail,
     FindUserByID,
-    FindUserSearch
+    FindUserSearch,
+    GetFriends
 } = userController;
 
 // @route    GET /api/user/:id/project
@@ -37,4 +38,7 @@ router.get('/ID/:id',UserVerifier,FindUserByID);
 // @desc     Search users   
 router.get('/search/:query',FindUserSearch);
 
+// @route    GET /api/user/friends
+// @desc     Get friends of a user
+router.get('/friends/:id',UserVerifier,GetFriends);
 module.exports = router;

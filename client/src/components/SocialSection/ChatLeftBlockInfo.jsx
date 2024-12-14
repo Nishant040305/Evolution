@@ -1,9 +1,10 @@
 import React from 'react';
 import { FaUsers, FaUser } from 'react-icons/fa';
-
+import { useDispatch } from 'react-redux';
+import {setPresentChat} from '../../Store/Chat';
 const ChatLeftBlockInfo = ({ Chat }) => {
   const isGroupChat = Chat.chat_type === 'group'; // Check if it's a group chat
-
+  const dispatch = useDispatch();
   // Trim last message if it's too long
   const trimmedMessage = Chat.last_message.length > 50 
     ? `${Chat.last_message.substring(0, 50)}...` 
@@ -13,18 +14,20 @@ const ChatLeftBlockInfo = ({ Chat }) => {
   const unreadCount = Chat.unread_messages > 99 ? "99+" : Chat.unread_messages;
 
   return (
-    <div className="flex items-center justify-between w-full p-2 bg-white border-b border-gray-200 rounded-lg space-x-4">
+    <div className="flex items-center justify-between w-full p-2 bg-white border-b border-gray-200 rounded-lg space-x-4"
+      onClick={() => dispatch(setPresentChat(Chat.chat_id))}
+    >
       {/* Chat Type Icon (Leftmost) */}
       <div className="relative flex items-center justify-center w-10 h-10 rounded-full bg-gray-200">
         {isGroupChat ? (
             <img 
-            src={Chat.avatar} // Replace with your group chat image path
+            src={Chat.chat_avatar} // Replace with your group chat image path
             alt="Group"
             className="w-8 h-8 rounded-full object-cover" // Adjust image size and roundness
             />
         ) : (
             <img 
-            src={Chat.avatar} // Replace with your individual user image path
+            src={Chat.chat_avatar} // Replace with your individual user image path
             alt="User"
             className="w-8 h-8 rounded-full object-cover" // Adjust image size and roundness
             />
