@@ -58,11 +58,28 @@ const CombinedProjectModal = ({ project, onClose, onUpdate,toast }) => {
     onClose(); // Close the modal without saving
   };
 
-  const handleRevertVersion = (version) => {
-    // Logic to revert to a selected version
-    // You can implement an API call to fetch that specific version's data
-    console.log("Reverted to version: ", version);
-    toast.success(`Reverted to version: ${version}`);
+  async function fetchVersionHistory() {
+    try {
+      const response = await API.getProjectVersionHistory(project._id);
+      setVersionHistory(response);
+      console.log(response);
+    } catch (error) {
+      console.error("Failed to fetch version history:", error);
+    }
+  }
+
+  useEffect(() => {
+    fetchVersionHistory();
+  }, [project._id]);
+
+  const handleRevertVersion = async (version) => {
+    try {
+      await API.revertProjectVersion(project._id, version);
+      await fetchVersionHistory();
+      toast.success(`Reverted to version: ${version}`);
+    } catch (error) {
+      console.error("Failed to revert version:", error);
+    }
   };
 
   const handleKeywordChange = (e) => {

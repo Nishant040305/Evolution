@@ -44,7 +44,8 @@ const ProjectDashboard = () => {
   };
   const onUpdateProject = async (projectId, updatedProject) => {
     try {
-      setProjects((prev) => prev.map((p) => (p._id === projectId ? { ...p, ...updatedProject } : p)));
+      setProjects((prev) => prev.map((p) => (p?._id === projectId ? { ...p, ...updatedProject } : p)));
+      toast.success("Project updated successfully.");
     } catch (err) {
       console.error("Error updating project:", err);
     }
@@ -53,14 +54,14 @@ const ProjectDashboard = () => {
     try {
       await API.deleteProject(projectId);
       toast.success("Project deleted successfully.");
-      setProjects((prev) => prev.filter((p) => p._id !== projectId));
+      setProjects((prev) => prev.filter((p) => p?._id !== projectId));
     } catch (err) {
       console.error("Error deleting project:", err);
     }
   };
 
   const handleProjectClick = (projectID) => {
-    navigate(url.Main.replace(":projectID", projectID));
+    navigate(url.WebsiteBuilder.replace(":projectID", projectID));
   };
 
   return (

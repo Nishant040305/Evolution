@@ -14,6 +14,8 @@ const {
 const {
   getAllProjects,
   getProjectById,
+  getProjectVersionHistory,
+  revertProject,
   createProject,
   updateProject,
   deleteProject,
@@ -38,6 +40,24 @@ router.get(
   UserVerifier,
   authorize(permissions.viewProject),
   getProjectById
+);
+
+// @route    GET /api/project/:id/versionHistory
+// @desc     Get project version history by id
+router.get(
+  "/:id/versionHistory",
+  UserVerifier,
+  authorize(permissions.manageProject),
+  getProjectVersionHistory
+);
+
+// @route    POST /api/project/:id/versionHistory
+// @desc     Revert project version by id
+router.post(
+  "/:id/versionHistory",
+  UserVerifier,
+  authorize(permissions.manageProject),
+  revertProject
 );
 
 // @route    POST /api/project

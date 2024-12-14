@@ -35,6 +35,31 @@ class ApiDashboard {
         }
     }
 
+    // Fetch a project's version history by ID
+    async getProjectVersionHistory(id) {
+        const endpoint = this.endpoints.GetProjectVersionHistory.replace(':id', id);
+        try {
+            const response = await axios.get(`${this.baseURL}${endpoint}`);
+            console.log(response);
+            return response.data;
+        } catch (error) {
+            console.error(`Failed to fetch project version history with ID ${id}:`, error);
+            throw error;
+        }
+    }
+
+    // Revert a project's version history by ID
+    async revertProjectVersion(id, version) {
+        const endpoint = this.endpoints.RevertProject.replace(':id', id);
+        try {
+            const response = await axios.post(`${this.baseURL}${endpoint}`, { version });
+            return response.data;
+        } catch (error) {
+            console.error(`Failed to revert project version with ID ${id}:`, error);
+            throw error;
+        }
+    }
+
     // Create a new project
     async createProject(projectData) {
 

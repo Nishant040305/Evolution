@@ -23,6 +23,8 @@
         "CreatProject":"/api/project",
         "UpdateProject":"/api/project/:id",
         "UpdateProjectComponents":"/api/project/:id/components",
+        "GetProjectVersionHistory":"/api/project/:id/versionHistory",
+        "RevertProject":"/api/project/:id/versionHistory",
         "DeleteProject":"/api/project/:id",
         "PublishProject": "/api/project/:id/publish",
         "DownloadProject":"/api/project/:id/download",
