@@ -2,13 +2,13 @@ import React from 'react';
 import ChatLeftBlockTop from './ChatLeftBlockTop';
 import ChatLeftBlockInfo from './ChatLeftBlockInfo';
 import {useSelector} from 'react-redux';
+import { useState } from 'react';
 const ChatLeftBar = () => {
-    const chats = useSelector((state) => state.chat.chats);
-
+    const [chats,setChats] = useState(useSelector((state) => state.chat.chats));
   return (
     <div className="flex flex-col items-center justify-start ChatLeftBar">
       {/* Left Block Top: This section could be for the header or chat list title */}
-      <ChatLeftBlockTop />
+      <ChatLeftBlockTop setChats={setChats}/>
       
       {/* Left Block Info: This section lists all chats */}
       <div className="flex flex-col items-center justify-start w-full bg-white shadow-md rounded-lg space-y-4 overflow-y-scroll leftSideChatBar">
