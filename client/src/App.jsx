@@ -25,6 +25,7 @@ const App = () => {
     
   }, [dispatch,isAuthenticated]);
   useSocketConnect();
+  
   useSocketRecieveMessage();
   connectRooms();
   return (
