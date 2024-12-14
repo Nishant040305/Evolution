@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { FaCheck, FaClipboard, FaTrash } from "react-icons/fa";
 import { useSelector } from "react-redux";
-const ChatMessageBlock = ({ message,  onDelete }) => {
-    const currentUserId = useSelector((state) => state.user.userInfo._id);
+
+const ChatMessageBlock = ({ message, onDelete, index }) => {
+  const currentUserId = useSelector((state) => state.user.userInfo._id);
   const isSender = message.sender_id === currentUserId;
   const [isDropdownVisible, setDropdownVisible] = useState(false);
-  const chats= useSelector((state) => state.chat.chats);
+  const chats = useSelector((state) => state.chat.chats);
+
   const handleCopyMessage = () => {
     navigator.clipboard.writeText(message.content);
     alert("Message copied to clipboard!");
@@ -19,6 +21,17 @@ const ChatMessageBlock = ({ message,  onDelete }) => {
     setDropdownVisible(!isDropdownVisible);
   };
 
+  // Find the chat containing the current message
+  const chat = chats.find((chat) => chat.chat_id === message.chat_id);
+  
+  // Find the number of users whose unread_messages count is less than the index of the message
+  const unreadCount = chat
+    ? chat.participants.filter((participant) => {
+        const unreadMessages = chat.unread_messages[participant.user_id];
+        return unreadMessages !== undefined && unreadMessages < index;
+      }).length
+    : 0;
+
   return (
     <div
       className={`relative flex items-start ${
@@ -29,8 +42,14 @@ const ChatMessageBlock = ({ message,  onDelete }) => {
       {!isSender && (
         <div className="w-10 h-10 rounded-full overflow-hidden">
           <img
-            src={chats.find(chat => chat.chat_id === message.chat_id).participants.find(p => p.user_id.toString() === message.sender_id.toString()).avatar}
-            alt={`${chats.find(chat => chat.chat_id === message.chat_id).participants.find(p => p.user_id.toString() === message.sender_id.toString()).username}'s avatar`}
+            src={chat?.participants.find(
+              (p) => p.user_id.toString() === message.sender_id.toString()
+            )?.avatar}
+            alt={`${
+              chat?.participants.find(
+                (p) => p.user_id.toString() === message.sender_id.toString()
+              )?.username
+            }'s avatar`}
             className="w-full h-full object-cover"
           />
         </div>
@@ -75,7 +94,9 @@ const ChatMessageBlock = ({ message,  onDelete }) => {
         {/* Sender Name (Only for received messages) */}
         {!isSender && (
           <div className="text-xs font-semibold text-gray-600">
-            {chats.find(chat => chat.chat_id === message.chat_id).participants.find(p => p.user_id.toString() === message.sender_id.toString()).username}
+            {chat?.participants.find(
+              (p) => p.user_id.toString() === message.sender_id.toString()
+            )?.username}
           </div>
         )}
 
@@ -92,7 +113,7 @@ const ChatMessageBlock = ({ message,  onDelete }) => {
           </span>
           {isSender && (
             <span className="flex items-center space-x-1">
-              {message.readBy.length > 0 ? (
+              {unreadCount >= 1 ? (
                 <FaCheck className="text-green-500" title="Read" />
               ) : (
                 <FaCheck className="text-gray-400" title="Delivered" />

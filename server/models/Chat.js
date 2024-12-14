@@ -6,6 +6,11 @@ const ChatSchema = new mongoose.Schema({
     groupName: { type: String },
     groupAvatar: { type: String },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    unread_messages: {
+        type: Map,
+        of: Number, // Value is a number (count of unread messages)
+        default: {}
+      },
     createdAt: { type: Date, default: Date.now },
 });
 

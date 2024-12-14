@@ -120,7 +120,7 @@ const ChatMessageList = () => {
             <React.Fragment key={message._id}>
               {/* Render a date marker when the date changes */}
               {renderDateMarker(message, previousMessage)}
-              <ChatMessageBlock message={message} />
+              <ChatMessageBlock message={message} index={index} />
             </React.Fragment>
           );
         })}

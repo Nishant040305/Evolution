@@ -15,8 +15,8 @@ import ChatTest from "./test/chatTEst";
 import SocialMain from "./container/SocialMain";
 import { connectRooms } from "./event/connectRooms";
 import { useSocketRecieveMessage } from "./event/recieveMessage";
-import { socket } from "./scripts/socket";
-import { addMessageToChat } from "./Store/Chat";
+import { useSocketMarkAsRead } from "./event/markAsRead";
+import { useSocketUserReadReceipts } from "./event/recieveRecipient";
 const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.user);
@@ -25,9 +25,10 @@ const App = () => {
     dispatch(verifyUser());
   }, [dispatch,isAuthenticated]);
   useSocketConnect();
-  
-  useSocketRecieveMessage();
   connectRooms();
+  useSocketMarkAsRead();
+  useSocketRecieveMessage();
+  useSocketUserReadReceipts();
   return (
     <Routes>
       {/* Landing Page */}

@@ -12,32 +12,45 @@ module.exports = (io, socket) => {
                 socket.emit('error', { error: 'Chat not found' });
                 return;
             }
-
+        
+            // Create and save the new message
             const newMessage = new Message({
                 chat_id: chatId,
                 sender_id: senderId,
                 content,
                 type: type || 'text',
             });
+        
             await newMessage.save();
-            console.log(`Message sent in chat ${chatId}: ${content}`);
+        
+            // Update unread messages count for all members except the sender
+            const otherMembers = chat.members.filter(member => member.toString() !== senderId.toString());
+            const updateUnreadMessages = otherMembers.reduce((updateObj, memberId) => {
+                updateObj[`unread_messages.${memberId}`] = 1;
+                return updateObj;
+            }, {});
+        
+            await Chat.updateOne(
+                { _id: chatId },
+                { $inc: updateUnreadMessages } // Increment unread count for all other members
+            );
+        
+            // Emit the message to all clients in the chat room
             io.to(chatId).emit('receiveMessage', {
-                    _id: newMessage._id,
-                    chat_id: chatId,
-                    sender_id: senderId,
-                    content,
-                    type: newMessage.type,
-                    timestamp: newMessage.timestamp,
-                
+                _id: newMessage._id,
+                chat_id: chatId,
+                sender_id: senderId,
+                content,
+                type: newMessage.type,
+                timestamp: newMessage.timestamp,
             });
-
+        
             console.log(`Message sent in chat ${chatId}: ${content}`);
         } catch (error) {
             console.error('Error sending message:', error);
             socket.emit('error', { error: 'Failed to send message' });
         }
     });
-
     // Handle marking messages as read
     socket.on('markAsRead', async (data) => {
         const { chatId, userId } = data;
@@ -49,17 +62,15 @@ module.exports = (io, socket) => {
                 socket.emit('error', { error: 'Chat not found' });
                 return;
             }
-
-            // Update all unread messages for the user in this chat to 'read'
-            const result = await Message.updateMany(
-                { chat_id: chatId, read_by: { $ne: userId } },
-                { $addToSet: { read_by: userId } } // Add userId to the read_by array
-            );
+            const unreadCountKey = `unread_messages.${userId}`;
+            await Chat.updateOne(
+                { _id: chatId },
+                { $set: { [unreadCountKey]: 0 } } // Set unread count to 0 for the user
+            );    
 
             io.to(chatId).emit('readReceipts', {
                 chatId,
                 userId,
-                updatedCount: result.modifiedCount, // Number of messages marked as read
             });
 
             console.log(

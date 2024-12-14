@@ -10,7 +10,7 @@ export const connectRooms = () => {
 
   socket.connect();
   socket.emit("joinRoom", user._id);
-  
+  console.log("socket connected");
   // Handle socket Reconnection
   socket.on("connect", () => {
     socket.emit("joinRoom", user._id);
@@ -22,6 +22,7 @@ export const connectRooms = () => {
   return () => {
     socket.off("connect");
     socket.off("disconnect");
+    socket.off("joinRoom");
   };
 
 }, [socket,user,x]);

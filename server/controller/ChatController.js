@@ -52,6 +52,7 @@ const getChatsData = async (req, res) => {
                 last_message: lastMessage ? lastMessage.content : 'No messages yet',
                 last_message_time: lastMessage ? lastMessage.timestamp : null,
                 participants,
+                unread_messages: chat.unread_messages,
             };
         });
 
@@ -90,6 +91,7 @@ const createChat = async (req, res) => {
         const newChat = new Chat({
             type: 'individual',
             members: [user._id, secondUser._id],
+            unread_messages: {[user._id]:0,[secondUser._id]:0},
         });
         await newChat.save();
 
@@ -113,7 +115,9 @@ const createChat = async (req, res) => {
                 participants: [
                     { user_id: user._id, username: user.displayname },
                     { user_id: secondUser._id, username: secondUser.displayname },
+
                 ],
+                unread_messages: newChat.unread_messages,
             },
         });
     } catch (error) {
@@ -135,13 +139,22 @@ const createGroupChat = async (req, res) => {
             return res.status(400).json({ error: 'At least two users must be added to the group' });
         }
 
-        const newChat = new Chat({
-            type: 'group',
-            groupName: chatName,
-            groupAvatar: groupImage,
-            members: [user._id, ...users],
-            createdBy: user._id,
+        const unreadMessages = { [user._id]: 0 }; // Initialize unread_messages with the creator
+
+        // Add each user from the `users` array with a value of 0
+        users.forEach((id) => {
+        unreadMessages[id] = 0;
         });
+
+        const newChat = new Chat({
+        type: 'group',
+        groupName: chatName,
+        groupAvatar: groupImage,
+        members: [user._id, ...users],
+        unread_messages: unreadMessages, // Use the constructed unreadMessages object
+        createdBy: user._id,
+        });
+
         await newChat.save();
 
         const addUsersToChat = async (userId) => {
@@ -165,6 +178,7 @@ const createGroupChat = async (req, res) => {
                 chat_name: newChat.groupName,
                 chat_image: newChat.groupAvatar,
                 participants: [user._id, ...users],
+                unread_messages: newChat.unread_messages,
             },
         });
     } catch (error) {
@@ -191,6 +205,7 @@ const addUserToGroupChat = async (req, res) => {
         }
 
         groupChat.members.push(userId);
+        groupChat.unread_messages[userId] = 0;
         await groupChat.save();
 
         let userChat = await UsersChat.findOne({ user_id: userId });

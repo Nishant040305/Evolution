@@ -5,6 +5,7 @@ import { useEffect } from "react";
 export const useSocketRecieveMessage = () => {
   const dispatch = useDispatch();
   const x = useSelector((state) => state.user.isAuthenticated);
+  const user = useSelector((state) => state.user.userInfo);
   useEffect(() => {
     // Listen for the "receiveMessage" event from the server
     if(!x) return;
@@ -14,7 +15,8 @@ export const useSocketRecieveMessage = () => {
       // Dispatch the action to update the Redux store with the new message
       dispatch(addMessage({
         chatId: newMessage.chat_id, // Assuming this field exists in the message object
-        messages: newMessage // You can customize this part to append to existing messages
+        messages: newMessage, // You can customize this part to append to existing messages,
+        userId: user._id
       }));
 
       // Optionally log the message or perform other actions
@@ -25,5 +27,5 @@ export const useSocketRecieveMessage = () => {
     return () => {
       socket.off("receiveMessage");
     };
-  }, [dispatch,socket]);
+  }, [dispatch,socket,user]);
 };
