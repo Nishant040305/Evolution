@@ -10,6 +10,7 @@ const ChatLeftBlockTop = ({ setChats }) => {
   const [selectedButton, setSelectedButton] = useState('All'); // Track selected button
   const [searchQuery, setSearchQuery] = useState('');
   const filterChats = chats;
+  const user = useSelector((state) => state.user.userInfo._id);
 
   const togglePopup = () => setShowPopup(!showPopup);
 
@@ -26,7 +27,7 @@ const ChatLeftBlockTop = ({ setChats }) => {
       if (selectedButton === 'Group') {
         filtered = filtered.filter(chat => chat.chat_type === 'group');
       } else if (selectedButton === 'Unread') {
-        filtered = filtered.filter(chat => !chat.last_message || !chat.last_message.content);
+        filtered = filtered.filter(chat => chat.unread_messages[user] > 0);
       }
   
       // Filter based on searchQuery
