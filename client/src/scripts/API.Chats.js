@@ -44,8 +44,9 @@ class Chats {
             console.error("Failed to fetch projects:", error);
             throw error;
         }
-    }async getMessages(chatId,lastSeen=-1){
+    }async getMessages(chatId,lastSeen){
         try{
+            console.log(chatId,lastSeen)
             let endpoint = `${this.baseURL}${server.Chat.getMessages}`
             const response = await axios.post(endpoint,{chatId,lastSeen});
             return response.data;

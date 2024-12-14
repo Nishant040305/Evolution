@@ -12,15 +12,21 @@ import SettingsPage from "./components/Dashboard/SettingsPage";
 import { useSocketConnect } from "./hooks/SocketConnect";
 import ChatTest from "./test/chatTEst";
 import SocialMain from "./container/SocialMain";
+import { connectRooms } from "./event/connectRooms";
+import { useSocketRecieveMessage } from "./event/recieveMessage";
+import { socket } from "./scripts/socket";
+import { addMessageToChat } from "./Store/Chat";
 const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.user);
-
+  const user = useSelector((state) => state.user.userInfo);
   useEffect(() => {
     dispatch(verifyUser());
     
   }, [dispatch,isAuthenticated]);
   useSocketConnect();
+  useSocketRecieveMessage();
+  connectRooms();
   return (
     <Routes>
       <Route path={url.Dashboard} element={isAuthenticated ? <ProjectDashboard /> : <LoginMain />} />

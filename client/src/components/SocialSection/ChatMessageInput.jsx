@@ -2,59 +2,55 @@ import React, { useState } from 'react';
 import { FaPaperPlane, FaSmile, FaPaperclip } from 'react-icons/fa';
 import EmojiPicker from 'emoji-picker-react'; // Install using `npm install emoji-picker-react`
 import { useSelector } from 'react-redux';
-const API = {
-  sendMessage: (message) => {
-    console.log("Message sent:", message);
-  },
-};
-
-const ChatMessageInput = ({ Chat }) => {
+import { socket } from '../../scripts/socket'; // Assume you have a socket instance imported
+import { connectRooms } from '../../event/connectRooms';
+import { useSocketRecieveMessage } from '../../event/recieveMessage';
+// import { useSocketConnect } from '../../hooks/SocketConnect'; // Use the custom hook for socket connection
+const ChatMessageInput = () => {
+  const Chat = useSelector((state) => state.chat.presentChat);
   const [message, setMessage] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const senderId = useSelector((state) => state.user.userInfo._id);
-  const handleSendMessage = () => {
-    if (!message.trim()) return;
 
-    // Construct the message object
+  const handleSendMessage = () => {
+    if (!message.trim() ) return; // Don't send if message is empty or not connected to socket
+    console.log("HERE");
     const newMessage = {
-      chat_id: Chat.chat_id,
-      sender_id: senderId,
+      chatId: Chat,
+      senderId: senderId,
       content: message,
       type: 'text',
-      timestamp: new Date(),
-      readBy: [],
     };
 
-    // Call the dummy API to send the message
-    API.sendMessage(newMessage);
+    // Emit the message using socket
+    socket.emit('sendMessage', newMessage);
 
     // Clear the input field
     setMessage('');
     setShowEmojiPicker(false);
   };
 
-  const handleEmojiClick = (event, emojiObject) => {
+  const handleEmojiClick = (emojiObject) => {
     setMessage((prevMessage) => prevMessage + emojiObject.emoji);
   };
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
-      // Create a message for the uploaded file
       const newMessage = {
-        chat_id: Chat.chat_id,
-        sender_id: senderId,
-        content: file.name, // Could also send the file directly if the API supports it
+        chatId: Chat.chat_id,
+        senderId: senderId,
+        content: file.name, // Or send the actual file if API supports it
         type: 'file',
-        timestamp: new Date(),
-        readBy: [],
       };
 
-      // Call the dummy API to send the message
-      API.sendMessage(newMessage);
+      // Emit the file message using socket
+      socket.emit('sendMessage', newMessage);
+     
     }
   };
-
+  connectRooms();
+  useSocketRecieveMessage();
   return (
     <div className="flex items-center w-full p-4 bg-gray-100 rounded-lg">
       {/* Emoji Picker Toggle */}
@@ -86,6 +82,11 @@ const ChatMessageInput = ({ Chat }) => {
         type="text"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            handleSendMessage();
+          }
+        }}
         placeholder="Type a message..."
         className="flex-grow p-2 mx-2 text-gray-700 bg-white border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       />

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { FaUsers, FaUser, FaSearch, FaEllipsisV } from 'react-icons/fa';
-
-const ChatRightTop = ({ Chat }) => {
+import { useSelector } from 'react-redux';
+const ChatRightTop = () => {
   const [showPopup, setShowPopup] = useState(false);
-
+  const ChatId = useSelector((state) => state.chat.presentChat);
+  const Chat = useSelector((state) => state.chat.chats.find(chat => chat.chat_id === ChatId));
   const togglePopup = () => setShowPopup(!showPopup);
-
   // Determine if it's a group chat
   const isGroupChat = Chat.chat_type === 'group';
 

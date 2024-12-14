@@ -5,7 +5,7 @@ const ChatMessageBlock = ({ message,  onDelete }) => {
     const currentUserId = useSelector((state) => state.user.userInfo._id);
   const isSender = message.sender_id === currentUserId;
   const [isDropdownVisible, setDropdownVisible] = useState(false);
-
+  const chats= useSelector((state) => state.chat.chats);
   const handleCopyMessage = () => {
     navigator.clipboard.writeText(message.content);
     alert("Message copied to clipboard!");
@@ -29,8 +29,8 @@ const ChatMessageBlock = ({ message,  onDelete }) => {
       {!isSender && (
         <div className="w-10 h-10 rounded-full overflow-hidden">
           <img
-            src={message.sender.avatar}
-            alt={`${message.sender.displayname}'s avatar`}
+            src={chats.find(chat => chat.chat_id === message.chat_id).participants.find(p => p.user_id.toString() === message.sender_id.toString()).avatar}
+            alt={`${chats.find(chat => chat.chat_id === message.chat_id).participants.find(p => p.user_id.toString() === message.sender_id.toString()).username}'s avatar`}
             className="w-full h-full object-cover"
           />
         </div>
@@ -75,7 +75,7 @@ const ChatMessageBlock = ({ message,  onDelete }) => {
         {/* Sender Name (Only for received messages) */}
         {!isSender && (
           <div className="text-xs font-semibold text-gray-600">
-            {message.sender.displayname}
+            {chats.find(chat => chat.chat_id === message.chat_id).participants.find(p => p.user_id.toString() === message.sender_id.toString()).username}
           </div>
         )}
 

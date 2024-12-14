@@ -1,9 +1,10 @@
 import React from 'react';
 import { FaUsers, FaUser } from 'react-icons/fa';
-
-const ChatLeftBlockInfo = ({ Chat ,handleChatSelect }) => {
+import { useDispatch } from 'react-redux';
+import {setPresentChat} from '../../Store/Chat';
+const ChatLeftBlockInfo = ({ Chat }) => {
   const isGroupChat = Chat.chat_type === 'group'; // Check if it's a group chat
-
+  const dispatch = useDispatch();
   // Trim last message if it's too long
   const trimmedMessage = Chat.last_message.length > 50 
     ? `${Chat.last_message.substring(0, 50)}...` 
@@ -14,7 +15,7 @@ const ChatLeftBlockInfo = ({ Chat ,handleChatSelect }) => {
 
   return (
     <div className="flex items-center justify-between w-full p-2 bg-white border-b border-gray-200 rounded-lg space-x-4"
-      onClick={() => handleChatSelect(Chat.chat_id)}
+      onClick={() => dispatch(setPresentChat(Chat.chat_id))}
     >
       {/* Chat Type Icon (Leftmost) */}
       <div className="relative flex items-center justify-center w-10 h-10 rounded-full bg-gray-200">

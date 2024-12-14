@@ -20,16 +20,15 @@ module.exports = (io, socket) => {
                 type: type || 'text',
             });
             await newMessage.save();
-
+            console.log(`Message sent in chat ${chatId}: ${content}`);
             io.to(chatId).emit('receiveMessage', {
-                message: {
                     _id: newMessage._id,
                     chat_id: chatId,
                     sender_id: senderId,
                     content,
                     type: newMessage.type,
                     timestamp: newMessage.timestamp,
-                },
+                
             });
 
             console.log(`Message sent in chat ${chatId}: ${content}`);

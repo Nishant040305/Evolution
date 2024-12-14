@@ -1,9 +1,10 @@
 import React from 'react';
 import ChatLeftBlockTop from './ChatLeftBlockTop';
 import ChatLeftBlockInfo from './ChatLeftBlockInfo';
+import {useSelector} from 'react-redux';
+const ChatLeftBar = () => {
+    const chats = useSelector((state) => state.chat.chats);
 
-const ChatLeftBar = ({ chats, handleChatSelect }) => {
-    console.log(chats);
   return (
     <div className="flex flex-col items-center justify-start ChatLeftBar">
       {/* Left Block Top: This section could be for the header or chat list title */}
@@ -17,7 +18,6 @@ const ChatLeftBar = ({ chats, handleChatSelect }) => {
             <ChatLeftBlockInfo 
               key={chat.chat_id} 
               Chat={chat} 
-              handleChatSelect={handleChatSelect} // Pass the select handler for when a chat is clicked
             />
           ))
         ) : (

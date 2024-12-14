@@ -1,8 +1,9 @@
 const Message = require('../models/message');
+const User = require('../models/User');
 const GetMessages = async (req, res) => {
     try {
         const { chatId, lastSeen, limit = 20 } = req.body;
-        console.log("hello",req.body)
+
         if (!chatId) {
             return res.status(400).json({ error: 'Chat ID is required' });
         }
@@ -11,7 +12,7 @@ const GetMessages = async (req, res) => {
 
         // Apply timestamp filter for pagination
         if (lastSeen) {
-            query.timestamp = { $lt: new Date(lastSeen) };
+            query.timestamp = { $lt: new Date(lastSeen) }; // Include the exact lastSeen message
         }
 
         // Fetch messages with pagination
@@ -19,16 +20,17 @@ const GetMessages = async (req, res) => {
             .sort({ timestamp: -1 }) // Most recent messages first
             .limit(parseInt(limit));
 
-        // Fetch the total count of messages in the chat
         const totalMessages = await Message.countDocuments({ chat_id: chatId });
-        console.log(totalMessages,messages);
+        console.log(messages[messages.length - 1])
         return res.json({
             success: true,
             data: messages,
             meta: {
                 totalMessages,
                 hasMore: messages.length === parseInt(limit),
-                lastSeen: messages[messages.length - 1]?.timestamp || null,
+                lastSeen: messages.length
+                    ? messages[messages.length - 1].timestamp
+                    : null,
             },
         });
     } catch (error) {
