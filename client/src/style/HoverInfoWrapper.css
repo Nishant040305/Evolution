@@ -1,0 +1,50 @@
+.hover-info-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .hover-info-tooltip {
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 10;
+  }
+  
+  /* Show tooltip on hover */
+  .hover-info-wrapper:hover .hover-info-tooltip {
+    opacity: 1;
+    /* Adjust transform based on position */
+  }
+  
+  /* Tooltip positioning based on prop */
+  .hover-info-wrapper .top {
+    top: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .hover-info-wrapper .right {
+    top: 50%;
+    left: 100%;
+    transform: translateY(-50%) translateX(10px); /* Adjust tooltip to the right */
+  }
+  
+  .hover-info-wrapper .bottom {
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .hover-info-wrapper .left {
+    top: 50%;
+    left: -100%;
+    transform: translateY(-50%) translateX(-10px); /* Adjust tooltip to the left */
+  }
+  

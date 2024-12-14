@@ -11,6 +11,7 @@ import ImageTest from "./test/ImageTest";
 import SettingsPage from "./components/Dashboard/SettingsPage";
 import { useSocketConnect } from "./hooks/SocketConnect";
 import ChatTest from "./test/chatTEst";
+import SocialMain from "./container/SocialMain";
 const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.user);
@@ -26,6 +27,7 @@ const App = () => {
       <Route path={url.Main} element={isAuthenticated ? <WebsiteBuilder /> : <LoginMain />} />
       <Route path={url.Settings} element={isAuthenticated ? <SettingsPage /> : <LoginMain />} />
       <Route path="*" element={isAuthenticated ? <ProjectDashboard /> : <LoginMain />} />
+      <Route path="/social" element={isAuthenticated ? <SocialMain/> : <LoginMain />} />
       <Route path="/chats" element={isAuthenticated ? <ChatTest /> : <LoginMain />}  />
     </Routes>
   );
