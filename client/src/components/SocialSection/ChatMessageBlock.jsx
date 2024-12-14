@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { FaCheck, FaClipboard, FaTrash } from "react-icons/fa";
 import { useSelector } from "react-redux";
-
-const ChatMessageBlock = ({ message, onDelete, index }) => {
+import { SocketDeleteMessage } from "../../event/SocketEvent";
+const ChatMessageBlock = ({ message,  index }) => {
   const currentUserId = useSelector((state) => state.user.userInfo._id);
   const isSender = message.sender_id === currentUserId;
   const [isDropdownVisible, setDropdownVisible] = useState(false);
@@ -14,7 +14,7 @@ const ChatMessageBlock = ({ message, onDelete, index }) => {
   };
 
   const handleDeleteMessage = () => {
-    if (onDelete) onDelete(message._id); // Call the delete function if provided
+    SocketDeleteMessage(message.chat_id,message._id);
   };
 
   const toggleDropdown = () => {

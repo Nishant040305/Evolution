@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { socket } from '../../scripts/socket'; // Assume you have a socket instance imported
 import { connectRooms } from '../../event/connectRooms';
 import { useSocketRecieveMessage } from '../../event/recieveMessage';
+import { SocketSendMessage } from '../../event/SocketEvent';
 // import { useSocketConnect } from '../../hooks/SocketConnect'; // Use the custom hook for socket connection
 const ChatMessageInput = () => {
   const Chat = useSelector((state) => state.chat.presentChat);
@@ -23,7 +24,7 @@ const ChatMessageInput = () => {
     };
 
     // Emit the message using socket
-    socket.emit('sendMessage', newMessage);
+    SocketSendMessage(Chat,senderId,message,'text');
 
     // Clear the input field
     setMessage('');
@@ -45,7 +46,7 @@ const ChatMessageInput = () => {
       };
 
       // Emit the file message using socket
-      socket.emit('sendMessage', newMessage);
+      SocketSendMessage(Chat.chat_id,senderId,file.name,'file');
      
     }
   };

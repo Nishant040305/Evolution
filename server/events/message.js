@@ -81,7 +81,37 @@ module.exports = (io, socket) => {
             socket.emit('error', { error: 'Failed to mark messages as read' });
         }
     });
+    //handle delete message
+    socket.on('deleteMessage', async (data) => {
+        const { chatId, messageId } = data;
+        console.log("hello");
+        try {
+            // Check if the chat exists
+            const chat = await Chat.findById(chatId);
+            if (!chat) {
+                socket.emit('error', { error: 'Chat not found' });
+                return;
+            }
 
+            const message = await Message.findById(messageId);
+            if (!message) {
+                socket.emit('error', { error: 'Message not found' });
+                return;
+            }
+
+            await Message.deleteOne({ _id: messageId });
+            console.log(messageId,chatId)
+            io.to(chatId).emit('deleteMessage', {
+                chatId,
+                messageId,
+            });
+
+            console.log(`Message ${messageId} deleted from chat ${chatId}`);
+        } catch (error) {
+            console.error('Error deleting message:', error);
+            socket.emit('error', { error: 'Failed to delete message' });
+        }
+    });
     // Handle disconnect
     socket.on('disconnect', () => {
         console.log(`Socket disconnected: ${socket.id}`);

@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { socket } from "../scripts/socket";
-
+import { SocketMarkAsRead } from "../event/SocketEvent";
 const ChatSlice = createSlice({
   name: "chat",
   initialState: {
@@ -18,7 +17,7 @@ const ChatSlice = createSlice({
     setPresentChat: (state, action) => {
       const { chatId, userId } = action.payload;
       state.presentChat = chatId;
-      socket.emit('markAsRead', { chatId: chatId, userId: userId });
+      SocketMarkAsRead(chatId,userId);
       state.chats.find(chat => chat.chat_id === chatId).unread_messages[userId] = 0;
     },
 
@@ -54,8 +53,7 @@ const ChatSlice = createSlice({
               }
             }
             if(messages.chat_id === state.presentChat){
-              console.log("marking as read",messages.chat_id,userId,state.presentChat);
-              socket.emit('markAsRead', { chatId: messages.chat_id, userId: userId });
+              SocketMarkAsRead(messages.chat_id,userId);
               chat.unread_messages[userId] = 0;
             }
       const existingMessage = state.messages[chatId].find((m) => m._id === messages._id);
@@ -140,10 +138,10 @@ const ChatSlice = createSlice({
     deleteMessage: (state, action) => {
       const { chatId, messageId } = action.payload;
       const chat = state.chats.find((chat) => chat.chat_id === chatId);
-      if (chat) {
-        const index = chat.messages.findIndex((message) => message._id === messageId);
+      if (chat && state.messages[chatId]) {
+        const index = state.messages[chatId].findIndex((message) => message._id === messageId);
         if (index !== -1) {
-          chat.messages.splice(index, 1);
+          state.messages[chatId].splice(index, 1);
         }
       }
     },
@@ -160,7 +158,8 @@ export const {
   setPresentChat,
   setMeta,
   updateReadUser,
-  addMessage
+  addMessage,
+  deleteMessage
 } = ChatSlice.actions;
 
 export default ChatSlice.reducer;
