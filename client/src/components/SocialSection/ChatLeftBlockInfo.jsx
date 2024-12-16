@@ -2,7 +2,7 @@ import React from 'react';
 import { FaUsers, FaUser } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import {setPresentChat} from '../../Store/Chat';
-const ChatLeftBlockInfo = ({ Chat }) => {
+const ChatLeftBlockInfo = ({ Chat,messageOpen }) => {
   const isGroupChat = Chat.chat_type === 'group'; // Check if it's a group chat
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.userInfo._id);
@@ -16,7 +16,10 @@ const ChatLeftBlockInfo = ({ Chat }) => {
 
   return (
     <div className="flex items-center justify-between w-full p-2 bg-white border-b border-gray-200 rounded-lg space-x-4"
-      onClick={() => dispatch(setPresentChat({chatId: Chat.chat_id, userId: user}))}
+      onClick={() => {
+        messageOpen();
+        dispatch(setPresentChat({chatId: Chat.chat_id, userId: user}))
+      }}
     >
       {/* Chat Type Icon (Leftmost) */}
       <div className="relative flex items-center justify-center w-10 h-10 rounded-full bg-gray-200">

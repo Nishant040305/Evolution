@@ -12,7 +12,7 @@ const ChatMessageList = () => {
   const isLoadingRef = useRef(false);
   const API = new Chats();
   const chatId = useSelector((state) => state.chat.presentChat);
-
+  
   // Select chat data and messages from Redux
   const messages = useSelector((state) => state.chat.messages[chatId] || []);
   const chat = useSelector((state) =>
@@ -120,7 +120,7 @@ const ChatMessageList = () => {
             <React.Fragment key={message._id}>
               {/* Render a date marker when the date changes */}
               {renderDateMarker(message, previousMessage)}
-              <ChatMessageBlock message={message} index={index} />
+              <ChatMessageBlock message={message} index={messages.length-index} />
             </React.Fragment>
           );
         })}

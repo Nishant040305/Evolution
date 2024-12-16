@@ -1,17 +1,38 @@
 import React, { useState } from 'react';
 import { FaUsers, FaUser, FaSearch, FaEllipsisV } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
-const ChatRightTop = ({setShowGroupInfo}) => {
+import { useDispatch, useSelector } from 'react-redux';
+import { setPresentChat ,deleteChat} from '../../Store/Chat';
+import Chats from '../../scripts/API.Chats';
+import { SocketAcceptFriendRequest } from '../../event/SocketEvent';
+const ChatRightTop = ({setShowGroupInfo,toast}) => {
   const [showPopup, setShowPopup] = useState(false);
   const ChatId = useSelector((state) => state.chat.presentChat);
   const Chat = useSelector((state) => state.chat.chats.find(chat => chat.chat_id === ChatId));
   const togglePopup = () => setShowPopup(!showPopup);
   // Determine if it's a group chat
   const isGroupChat = Chat.chat_type === 'group';
-
+  const API = new Chats();
+  const present = useSelector((state) => state.chat.presentChat);
+  const userId = useSelector((state) => state.user.userInfo._id);
   // Trim participant names for display
   const participantNames = Chat.participants.slice(0, 3).map(p => p.username).join(', ');
-
+  const dispatch = useDispatch();
+  const ExitGroup = async () => {
+        try {
+          const response = await API.leaveGroupChat(present);
+          if (response.success) {
+              SocketAcceptFriendRequest(response.data);
+            dispatch(setPresentChat({chatId:null,userId:userId}));
+            dispatch(deleteChat(present));
+            toast.success("User Exit Group");
+          } else {
+            toast.error("Failed to remove user from group chat");
+          }
+        } catch (error) {
+          console.error("Error removing user from group chat:", error);
+          toast.error("Failed to remove user from group chat");
+        }
+      };
   return (
     <div className="flex justify-between items-center w-full p-4 bg-white shadow-md rounded-t-lg">
       {/* Left Section: Group/User Icon */}
@@ -57,7 +78,7 @@ const ChatRightTop = ({setShowGroupInfo}) => {
 
       {/* Popup Menu */}
       {showPopup && (
-        <div className="absolute top-16 right-10 bg-white shadow-md rounded-md p-4 w-48">
+        <div className="absolute top-16 right-10 bg-white shadow-md rounded-md p-4 w-48 z-50">
           {isGroupChat ? (
             <>
               <button className="w-full text-left p-2 text-sm hover:bg-gray-100" onClick={()=>{
@@ -65,16 +86,19 @@ const ChatRightTop = ({setShowGroupInfo}) => {
                 setShowPopup(false);
               }
                 }>Group Info</button>
-              <button className="w-full text-left p-2 text-sm hover:bg-gray-100">Exit Group</button>
+              <button className="w-full text-left p-2 text-sm hover:bg-gray-100" onClick={()=>ExitGroup()}>Exit Group</button>
             </>
           ) : (
             <>
-              <button className="w-full text-left p-2 text-sm hover:bg-gray-100">Contact Details</button>
-              <button className="w-full text-left p-2 text-sm hover:bg-gray-100">Block</button>
+              <button className="w-full text-left p-2 text-sm hover:bg-gray-100" onClick={()=>{
+                                setShowGroupInfo(true);
+                                setShowPopup(false);
+                
+              }}>Contact Details</button>
+              {/* <button className="w-full text-left p-2 text-sm hover:bg-gray-100">Block</button> */}
             </>
           )}
-          <button className="w-full text-left p-2 text-sm hover:bg-gray-100">Delete Chats</button>
-          <button className="w-full text-left p-2 text-sm hover:bg-gray-100">Close Chat</button>
+          <button className="w-full text-left p-2 text-sm hover:bg-gray-100" onClick={()=>dispatch(setPresentChat({chatId: null, userId: null}))}>Close Chat</button>
         </div>
       )}
     </div>

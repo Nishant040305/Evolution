@@ -16,6 +16,7 @@ const GroupInfo = ({
     const userId = useSelector((state) => state.user.userInfo._id);
     const API = new Chats();
     const dispatch = useDispatch();
+    const isGroup = group.chat_type==="group";
     console.log(group);
     const onLeaveGroup = async () => {
       try {
@@ -56,12 +57,12 @@ const GroupInfo = ({
       {/* Group Info */}
       <div className="p-4 space-y-4">
         {/* Created By */}
-        <div>
+        {isGroup && <div>
           <h3 className="text-sm font-medium text-gray-600">Created By</h3>
           <p className="text-lg font-semibold text-gray-800">
             {group.participants.find((member) => member.user_id === group.createdBy)?.username || "Unknown"}
             </p>
-        </div>
+        </div>}
 
         {/* Participants */}
         <div>
@@ -100,7 +101,7 @@ const GroupInfo = ({
       </div>
 
       {/* Actions */}
-        <div className="p-4  flex flex-col">
+      {isGroup&&<div className="p-4  flex flex-col">
         {/* Add Participant Button */}
         <button
             onClick={onAddParticipant}
@@ -118,7 +119,7 @@ const GroupInfo = ({
             <LogOut className="w-5 h-5" />
             Leave Group
         </button>
-        </div>
+        </div>}
 
     </div>
   );

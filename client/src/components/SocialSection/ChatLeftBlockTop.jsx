@@ -4,13 +4,17 @@ import ChatSearchBar from '../utility/ChatSearchBar';
 import HoverInfoWrapper from '../utility/toolTip';
 import { useSelector } from 'react-redux';
 import ChatLeftBlockInfo from './ChatLeftBlockInfo';
-const ChatLeftBlockTop = ({ setChats }) => {
+import { useDispatch } from "react-redux";
+import { logout } from "../../Store/userSlice";
+import AuthService from "../../scripts/API.Login";
+const ChatLeftBlockTop = ({ setChats ,newGroup}) => {
   const [showPopup, setShowPopup] = useState(false);
   const chats = useSelector((state) => state.chat.chats);
   const [selectedButton, setSelectedButton] = useState('All'); // Track selected button
   const [searchQuery, setSearchQuery] = useState('');
   const filterChats = chats;
   const user = useSelector((state) => state.user.userInfo._id);
+  const dispatch = useDispatch();
 
   const togglePopup = () => setShowPopup(!showPopup);
 
@@ -54,7 +58,11 @@ const ChatLeftBlockTop = ({ setChats }) => {
   
     filterAndSortChats(); // Run the filter and sort function
   }, [chats, selectedButton, searchQuery]);
-  
+  const Logout = async()=>{
+    const APT = new AuthService();
+    dispatch(logout());
+    await APT.logout();
+  }
   return (
     <div className="flex flex-col items-center justify-start w-full relative">
       {/* Top Title Section */}
@@ -66,7 +74,7 @@ const ChatLeftBlockTop = ({ setChats }) => {
         {/* Create Group Icon and 3 dots */}
         <div className="flex items-center space-x-4">
           <HoverInfoWrapper info="new group" position="bottom">
-            <button className=" text-gray-800 p-2 rounded-full">
+            <button className=" text-gray-800 p-2 rounded-full" onClick={()=>newGroup()}>
               <FaUserPlus size={20} />
             </button>
           </HoverInfoWrapper>
@@ -79,10 +87,10 @@ const ChatLeftBlockTop = ({ setChats }) => {
       {/* Popup for New Group and Logout */}
       {showPopup && (
         <div className="absolute top-16 right-10 bg-white shadow-md rounded-md p-3 w-48 z-50">
-          <button className="block w-full text-left text-sm p-2 hover:bg-gray-100">
+          <button className="block w-full text-left text-sm p-2 hover:bg-gray-100" onClick={()=>newGroup()}>
             New Group
           </button>
-          <button className="block w-full text-left text-sm p-2 hover:bg-gray-100">
+          <button className="block w-full text-left text-sm p-2 hover:bg-gray-100" onClick={()=>Logout()}>
             Logout
           </button>
         </div>

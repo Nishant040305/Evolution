@@ -8,7 +8,7 @@ const ChatRightMain = ({onAddParticipant,toast}) => {
         <>
         <div className="flex flex-col w-full">
             <div className='relative'>
-            <ChatRightTop setShowGroupInfo={setShowGroupInfo}></ChatRightTop>
+            <ChatRightTop setShowGroupInfo={setShowGroupInfo} toast={toast}></ChatRightTop>
             </div>
             <ChatMessageList ></ChatMessageList>
         </div>

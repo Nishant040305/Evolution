@@ -10,7 +10,7 @@ export const useSocketUserReadReceipts = () => {
     // Listen for the "receiveMessage" event from the server
     if(!x) return;
     socket.on("readReceipts", ({ chatId,userId  }) => {
-      dispatch(updateReadUser({ chatId, userId: user._id }));
+      dispatch(updateReadUser({ chatId, userId: userId }));
     });
     return () => {
       socket.off("readReceipts");

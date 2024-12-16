@@ -7,7 +7,7 @@ const ChatMessageBlock = ({ message,  index }) => {
   const isSender = message.sender_id === currentUserId;
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const chats = useSelector((state) => state.chat.chats);
-
+  console.log(chats.find(chat=>chat.chat_id===message.chat_id));
   const handleCopyMessage = () => {
     navigator.clipboard.writeText(message.content);
     alert("Message copied to clipboard!");
@@ -28,7 +28,7 @@ const ChatMessageBlock = ({ message,  index }) => {
   const unreadCount = chat
     ? chat.participants.filter((participant) => {
         const unreadMessages = chat.unread_messages[participant.user_id];
-        return unreadMessages !== undefined && unreadMessages < index;
+        return unreadMessages !== undefined && unreadMessages <index;
       }).length
     : 0;
 
