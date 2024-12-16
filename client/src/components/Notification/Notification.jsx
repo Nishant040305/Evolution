@@ -7,6 +7,8 @@ import { SocketAcceptFriendRequest } from '../../event/SocketEvent';
 import FriendRequestNotification from './FriendRequest';
 import User from '../../scripts/API.User';
 import Chats from '../../scripts/API.Chats';
+import { addChat } from '../../Store/Chat';
+import { connectRooms } from '../../event/connectRooms';
 const NotificationPage = () => {
   const dispatch = useDispatch();
   const notifications = useSelector((state) => state.notifications);
@@ -56,7 +58,7 @@ const NotificationPage = () => {
     dispatch(deleteNotification(notificationId));
   };
 
-  const handleAcceptFriendRequest = (notificationId) => {
+  const handleAcceptFriendRequest = async(notificationId) => {
     // Find the notification for the friend request
     const notification = notifications.find(
       (notification) => 
@@ -75,10 +77,13 @@ const NotificationPage = () => {
     dispatch(deleteNotification({ id: notificationId }));
   
     // Create a chat with the sender of the friend request
-    API.createChat(senderId);
-    APINotif.deleteNotification(notificationId);
+    const chat = await API.createChat(senderId);
+    dispatch(addChat(chat.data));
+    console.log(chat.data,"Delete Notification");
+    await APINotif.deleteNotification(notificationId);
     // Notify the server about the accepted request
-    SocketAcceptFriendRequest(senderId);
+    console.log(chat.data,"Chat Data");
+    SocketAcceptFriendRequest(chat.data);
   };
   
 
@@ -89,12 +94,12 @@ const NotificationPage = () => {
         notification.type === 'friendRequest' && 
         notification._id === notificationId
     );
-  
+    console.log("Notification",notification,notificationId);
     if (!notification) {
       console.error('Notification not found');
       return;
     }
-  
+    console.log("Notification",notificationId);
     // Delete the notification
     dispatch(deleteNotification({ id: notificationId }));
   

@@ -63,8 +63,8 @@ export const SocketMarkNotificationAsRead = (notificationId, userId) => {
  * Emit an event to accept a friend request.
  * @param {string} notificationId - The ID of the friend request notification to accept.
  */
-export const SocketAcceptFriendRequest = (notificationId) => {
-    socket.emit('acceptFriendRequest', { notificationId });
+export const SocketAcceptFriendRequest = (chat) => {
+    socket.emit('acceptFriendRequest', chat);
 };
 
 /**

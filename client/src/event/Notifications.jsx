@@ -6,35 +6,37 @@ import { addNotification, markAsRead, deleteNotification } from '../Store/Notifi
 export const useSocketNotifications = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
-  const notifications = useSelector((state) => state.notifications);
-
+  const user = useSelector((state) => state.user.userInfo);
+  console.log("is this working");
   useEffect(() => {
+    console.log("Notifications");
     if(!isAuthenticated) return;
     // Listen for 'newNotification' event and handle adding the new notification
-    const newNotificationSocket = socket.on('newNotification', (notification) => {
+    socket.on('newNotification', (notification) => {
       // Add the new notification to the state
+      console.log("New Notification",notification);
       dispatch(addNotification(notification));
     });
 
     // Listen for 'markNotificationAsRead' event and mark it as read in the state
-    const markAsReadSocket = socket.on('markNotificationAsRead', (notificationId) => {
+    socket.on('markNotificationAsRead', (notificationId) => {
       // Mark the notification as read
       dispatch(markAsRead({ id: notificationId }));
     });
 
     // Listen for 'deleteNotification' event and remove the notification from the state
-    const deleteNotificationSocket = socket.on('deleteNotification', (notificationId) => {
+    socket.on('deleteNotification', (notificationId) => {
       // Delete the notification from the state
       dispatch(deleteNotification({ id: notificationId }));
     });
 
     // Cleanup the socket listeners on component unmount
     return () => {
-      newNotificationSocket.off('newNotification');
-      markAsReadSocket.off('markNotificationAsRead');
-      deleteNotificationSocket.off('deleteNotification');
+      socket.off('newNotification');
+      socket.off('markNotificationAsRead'); 
+      socket.off('deleteNotification');
     };
-  }, [dispatch]);
+  }, [dispatch,socket,user,isAuthenticated]);
 
   // Optionally, return the current notifications for usage in the component
 };

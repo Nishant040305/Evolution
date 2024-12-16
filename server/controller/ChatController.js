@@ -71,10 +71,10 @@ const createChat = async (req, res) => {
         const secondUser = await User.findById(secondUserId);
 
         if (!user || !user.verify) {
-            return res.status(404).json({ error: 'User not verified or found' });
+            return res.status(404).json({ error: 'User not verified or found' ,data:null});
         }
         if (!secondUser || !secondUser.verify) {
-            return res.status(404).json({ error: 'Second user not verified or found' });
+            return res.status(404).json({ error: 'Second user not verified or found',data:null});
         }
 
         // Check if a chat already exists between the two users
@@ -84,7 +84,7 @@ const createChat = async (req, res) => {
         });
 
         if (existingChat) {
-            return res.status(200).json({ error: 'Chat already exists' });
+            return res.status(200).json({ error: 'Chat already exists',data:null });
         }
 
         // Create a new chat
@@ -92,6 +92,7 @@ const createChat = async (req, res) => {
             type: 'individual',
             members: [user._id, secondUser._id],
             unread_messages: {[user._id]:0,[secondUser._id]:0},
+
         });
         await newChat.save();
 
@@ -112,6 +113,11 @@ const createChat = async (req, res) => {
             success: true,
             data: {
                 chat_id: newChat._id,
+                chat_name: secondUser.displayname,
+                chat_avatar: secondUser.avatar,
+                chat_type: newChat.chat_type,
+                last_message: "No messages yet",
+                last_message_time: null,
                 participants: [
                     { user_id: user._id, username: user.displayname },
                     { user_id: secondUser._id, username: secondUser.displayname },

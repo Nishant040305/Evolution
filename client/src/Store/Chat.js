@@ -145,6 +145,14 @@ const ChatSlice = createSlice({
         }
       }
     },
+    addChat: (state, action) => {
+      if(action.payload){
+        const existingChat = state.chats.find(chat => chat.chat_id === action.payload.chat_id);
+        if(!existingChat){
+          state.chats.push(action.payload);
+        }
+      }
+    },
   },
 });
 
@@ -159,7 +167,8 @@ export const {
   setMeta,
   updateReadUser,
   addMessage,
-  deleteMessage
+  deleteMessage,
+  addChat
 } = ChatSlice.actions;
 
 export default ChatSlice.reducer;

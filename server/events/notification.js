@@ -13,6 +13,7 @@ module.exports = (io,socket) => {
                 await newNotification.save();
 
                 // Emit to the specific user (receiverId)
+                console.log(newNotification)
                 io.to(receiverId).emit('newNotification', newNotification);
                 console.log(`Friend request sent from ${senderId} to ${receiverId}`);
             } catch (error) {
@@ -55,21 +56,14 @@ module.exports = (io,socket) => {
                 socket.emit('error', 'Failed to delete notification');
             }
         });
-        socket.on('acceptFriendRequest', async ({ notificationId, receiverId }) => {
+        socket.on('acceptFriendRequest', async (chat) => {
             try {
-                const notification = await Notifications.findById(notificationId);
-                if (!notification) {
-                    socket.emit('error', 'Notification not found');
-                    return;
+                console.log(chat);
+                if(chat){
+                    for(let i=0;i<chat.participants.length;i++){
+                        io.to(chat.participants[i].user_id).emit('acceptFriendRequest', chat);
+                    }
                 }
-                notification.read = true;
-                await notification.save();
-                const friend = await Notifications.findOne({ type: 'friendRequest', receiverId });
-                friend.read = true;
-                await friend.save();
-                // Emit the updated notification to the specific user
-                io.to(receiverId).emit('notificationUpdated', notification);
-                console.log(`Notification ${notificationId} marked as read for ${receiverId}`);
             } catch (error) {
                 console.error('Error marking notification as read:', error);
                 socket.emit('error', 'Failed to mark notification as read');

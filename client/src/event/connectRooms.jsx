@@ -4,6 +4,7 @@ import { useEffect } from "react";
 export const connectRooms = () => {
   let x = useSelector((state) => state.user.isAuthenticated);
   let user = useSelector((state) => state.user.userInfo);
+  let chat = useSelector((state) => state.chat.chats);
   // Connect to the socket
   useEffect(() => {
     if(!x) return;
@@ -25,5 +26,5 @@ export const connectRooms = () => {
     socket.off("joinRoom");
   };
 
-}, [socket,user,x]);
+}, [socket,user,x,chat]);
 };

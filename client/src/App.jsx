@@ -20,6 +20,8 @@ import { useSocketUserReadReceipts } from "./event/recieveRecipient";
 import { useSocketDeleteMessage } from "./event/deleteMessage";
 import LoadNotifications from "./hooks/LoadNotifications";
 import { useSocketNotifications } from "./event/Notifications";
+import { useSocketAcceptFriendRequest } from "./event/AcceptRequest";
+import { socket } from "./scripts/socket";
 const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.user);
@@ -35,6 +37,12 @@ const App = () => {
   useSocketUserReadReceipts();
   useSocketDeleteMessage();
   useSocketNotifications();
+  useSocketAcceptFriendRequest();
+  useEffect(()=>{
+    socket.on("newNotification",(notification)=>{
+      console.log(notification);
+    });
+  },[socket]);
   return (
     <Routes>
       {/* Landing Page */}
