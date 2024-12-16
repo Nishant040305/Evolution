@@ -75,11 +75,11 @@ class Chats {
      * @returns {Promise<Object>} - Returns the updated group chat data.
      * @throws {Error} - Throws an error if the request fails.
      */
-    async addUserToGroupChat(chatId, userId) {
+    async addUserToGroupChat(chatId, userIds) {
         try {
             let endpoint = `${this.baseURL}${server.Chat.addUserToGroupChat}`;
-            const response = await axios.post(endpoint, { chatId, userId });
-            console.log(`User ${userId} added to group chat ${chatId}`);
+            const response = await axios.post(endpoint, { chatId, userIds });
+            console.log(`User ${userIds} added to group chat ${chatId}`);
             return response.data;
         } catch (error) {
             console.error("Failed to add user to group chat:", error);

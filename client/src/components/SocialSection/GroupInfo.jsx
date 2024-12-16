@@ -1,7 +1,6 @@
 import React from "react";
 import { X, UserPlus, LogOut } from "lucide-react";
 import { useSelector } from "react-redux";
-import ChatLeftBlockInfo from "./ChatLeftBlockInfo";
 
 const GroupInfo = ({
   onClose,

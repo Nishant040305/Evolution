@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ChatRightTop from './ChatRightTop';
 import ChatMessageList from './ChatMessageList';
 import GroupInfo from './GroupInfo';
-const ChatRightMain = () => {
+const ChatRightMain = ({onAddParticipant,onLeaveGroup}) => {
     const [showGroupInfo, setShowGroupInfo] = useState(false);
     return (
         <>
@@ -12,7 +12,7 @@ const ChatRightMain = () => {
             </div>
             <ChatMessageList ></ChatMessageList>
         </div>
-        {showGroupInfo && <GroupInfo onClose={() => setShowGroupInfo(false)}></GroupInfo>}
+        {showGroupInfo && <GroupInfo onClose={() => setShowGroupInfo(false)} onAddParticipant={onAddParticipant} onLeaveGroup={onLeaveGroup}></GroupInfo>}
         </>
     )
 }

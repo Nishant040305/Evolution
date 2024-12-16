@@ -137,7 +137,7 @@ const createChat = async (req, res) => {
 
 const createGroupChat = async (req, res) => {
     try {
-        const { chatName, users, groupImage  } = req.body;
+        const { chatName, users, groupImage } = req.body;
         const user = await User.findById(req.user._id);
         console.log("Group Chat" , users);
         if (!user || !user.verify) {
@@ -181,7 +181,7 @@ const createGroupChat = async (req, res) => {
             await addUsersToChat(userId);
         }
         const participants = await Promise.all(
-            chat.members.map(async (memberId) => {
+            newChat.members.map(async (memberId) => {
                 const member = await User.findById(memberId).select('displayname avatar');
                 return {
                     user_id: member._id,
@@ -210,46 +210,89 @@ const createGroupChat = async (req, res) => {
 };
 const addUserToGroupChat = async (req, res) => {
     try {
-        const { chatId, userId } = req.body;
-        const userToAdd = await User.findById(userId);
-
-        if (!userToAdd || !userToAdd.verify) {
-            return res.status(404).json({ error: 'User to add not verified or found' });
+        const { chatId, userIds } = req.body; // `userIds` is now an array
+        if (!Array.isArray(userIds) || userIds.length === 0) {
+            return res.status(400).json({ error: "Invalid or empty userIds array" });
         }
 
-        const groupChat = await Chat.findById(chatId);
-        if (!groupChat || groupChat.type !== 'group') {
-            return res.status(404).json({ error: 'Group chat not found or invalid chat type' });
+        const groupChat = await Chat.findById(chatId).populate("members", "username avatar"); // Populate member details
+        if (!groupChat || groupChat.type !== "group") {
+            return res.status(404).json({ error: "Group chat not found or invalid chat type" });
         }
 
-        if (groupChat.members.includes(userId)) {
-            return res.status(400).json({ error: 'User is already part of the group chat' });
+        const addedUsers = [];
+        const errors = [];
+
+        for (const userId of userIds) {
+            try {
+                const userToAdd = await User.findById(userId);
+
+                if (!userToAdd || !userToAdd.verify) {
+                    errors.push({ userId, message: "User not found or not verified" });
+                    continue;
+                }
+
+                if (groupChat.members.some(member => member._id.toString() === userId)) {
+                    errors.push({ userId, message: "User is already part of the group chat" });
+                    continue;
+                }
+
+                // Add user to group chat
+                groupChat.members.push(userToAdd);
+                groupChat.unread_messages[userId] = 0;
+
+                // Update user's chats
+                let userChat = await UsersChat.findOne({ user_id: userId });
+                if (!userChat) {
+                    userChat = new UsersChat({ user_id: userId, chats: [] });
+                }
+                userChat.chats.push({ chat_id: chatId, type: "group" });
+                await userChat.save();
+
+                addedUsers.push({
+                    user_id: userToAdd._id,
+                    username: userToAdd.username,
+                });
+            } catch (innerError) {
+                errors.push({ userId, message: "Failed to process user", error: innerError.message });
+            }
         }
 
-        groupChat.members.push(userId);
-        groupChat.unread_messages[userId] = 0;
         await groupChat.save();
 
-        let userChat = await UsersChat.findOne({ user_id: userId });
-        if (!userChat) {
-            userChat = new UsersChat({ user_id: userId, chats: [] });
-        }
-        userChat.chats.push({ chat_id: chatId, type: 'group' });
-        await userChat.save();
+        // Fetch the latest chat details to include in the response
+        const participants = groupChat.members.map(member => ({
+            user_id: member._id,
+            username: member.username,
+            avatar: member.avatar,
+        }));
+        const lastMessage = await Message.findOne({ chat_id: groupChat._id })
+        .sort({ timestamp: -1 })
+        .limit(1);
+
+        const chatDetails = {
+            chat_id: groupChat._id,
+            chat_name: groupChat.groupName,
+            chat_avatar: groupChat.groupAvatar,
+            chat_type: "group",
+            last_message: lastMessage ? lastMessage.content : "No messages yet",
+            last_message_time: lastMessage ? lastMessage.timestamp : null,
+            participants,
+            unread_messages: groupChat.unread_messages,
+            createdBy: groupChat.createdBy,
+        };
 
         return res.status(200).json({
             success: true,
-            message: `User ${userToAdd.displayname} added to the group successfully`,
-            data: {
-                chat_id: chatId,
-                user_id: userToAdd._id,
-                username: userToAdd.displayname,
-            },
+            message: `${addedUsers.length} user(s) added to the group successfully`,
+            data: chatDetails,
+            errors,
         });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ error: 'Failed to add user to group chat' });
+        return res.status(500).json({ error: "Failed to add users to group chat" });
     }
 };
+
 
 module.exports = { getChatsData,createChat,createGroupChat,addUserToGroupChat };

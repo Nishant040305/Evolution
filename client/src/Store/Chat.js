@@ -149,10 +149,15 @@ const ChatSlice = createSlice({
       if(action.payload){
         const existingChat = state.chats.find(chat => chat.chat_id === action.payload.chat_id);
         if(!existingChat){
+          // Add new chat if it doesn't exist
           state.chats.push(action.payload);
+        } else {
+          // Update the existing chat with new data
+          Object.assign(existingChat, action.payload); // Merge the updated chat data
         }
       }
     },
+    
   },
 });
 

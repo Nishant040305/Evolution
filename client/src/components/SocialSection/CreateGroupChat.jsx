@@ -42,6 +42,7 @@ const CreateGroupChat = ({toast}) => {
         }
         return;
     }
+    let image = null;
     const BACKWEB = import.meta.env.VITE_REACT_APP_BACKWEB;
     try {
       const formData = new FormData();
@@ -54,8 +55,7 @@ const CreateGroupChat = ({toast}) => {
       );
 
       if (response.status === 200 && response.data.url) {
-        console.log(response.data.url);
-        setGroupImage(response.data.url); // Save the group icon URL
+        image = response.data.url;
         setGroupIcon({ image: "", file: "" });
       }
     } catch (error) {
@@ -66,7 +66,7 @@ const CreateGroupChat = ({toast}) => {
   
 
     // TODO: Call your API or Redux action here
-    const chat = await API.createGroupChat(groupName,selectedUsers,groupImage);
+    const chat = await API.createGroupChat(groupName,selectedUsers,image);
     console.log(chat);
     if(chat.data){
         SocketAcceptFriendRequest(chat.data);
