@@ -78,7 +78,7 @@ const SocialMain = () => {
       <NotificationPage/>
       :
       state==="Messages"?presentChat ? (
-      <ChatRightMain onAddParticipant={handleAddParticipant} onLeaveGroup={handleLeaveGroup}/>
+      <ChatRightMain toast={toast} onAddParticipant={handleAddParticipant} onLeaveGroup={handleLeaveGroup}/>
     ) : (loading ? (<div className="loading-state">Loading chats...</div> // Display loading state while chats are loadin
       ) : (
             <></> 

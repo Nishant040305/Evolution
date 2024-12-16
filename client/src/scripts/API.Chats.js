@@ -202,6 +202,22 @@ class Chats {
             throw error;
         }
     }
+    /**
+     * Leave a group chat.
+     * @param {string} chatId - The ID of the group chat to leave.
+     * @returns {Promise<Object>} - Returns the updated chat data.
+     * @throws {Error} - Throws an error if the request fails.
+     */
+    async leaveGroupChat(chatId) {
+        try {
+            let endpoint = `${this.baseURL}${server.Chat.leaveGroupChat}`;
+            const response = await axios.post(endpoint, { chatId });
+            return response.data;
+        } catch (error) {
+            console.error("Failed to leave group chat:", error);
+            throw error;
+        }
+    }
 }
 
 export default Chats;

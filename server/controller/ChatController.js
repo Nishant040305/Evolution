@@ -2,8 +2,44 @@ const Chat = require('../models/Chat');
 const UsersChat = require('../models/UsersChat');
 const Message = require('../models/message');
 const User = require('../models/User');
-const { create } = require('../models/Notifications');
+const getChatDetails = async (chatId) => {
+    try {
+        // Step 1: Retrieve the chat document by its ID
+        const chat = await Chat.findById(chatId).populate('participants'); // Optionally populate participant details
+        if (!chat) {
+            return { error: "Chat not found" };
+        }
 
+        // Step 2: Get the last message (if any)
+        const lastMessage = chat.messages && chat.messages.length > 0 ? chat.messages[chat.messages.length - 1] : null;
+
+        // Step 3: Get participants information
+        const participants = chat.participants.map((user) => ({
+            user_id: user._id,
+            name: user.name,
+            avatar: user.avatar || '/default-avatar.png',
+        }));
+
+        // Step 4: Format the chat details to return
+        const chatDetails = {
+            chat_id: chat._id,
+            chat_name: chat.groupName,
+            chat_avatar: chat.groupAvatar || '/default-group-avatar.png',
+            chat_type: chat.chatType || "group", // Assuming 'group' as default
+            last_message: lastMessage ? lastMessage.content : "No messages yet",
+            last_message_time: lastMessage ? lastMessage.timestamp : null,
+            participants, // Participant details array
+            unread_messages: chat.unread_messages || 0, // Assuming unread_messages is a count of unread messages
+            createdBy: chat.createdBy,
+        };
+
+        // Step 5: Return the formatted data
+        return chatDetails;
+    } catch (error) {
+        console.error("Error fetching chat details:", error);
+        return { error: "An error occurred while fetching chat details" };
+    }
+};
 // Get chat data for the user
 const getChatsData = async (req, res) => {
     try {
@@ -209,6 +245,7 @@ const createGroupChat = async (req, res) => {
         return res.status(500).json({ error: 'Failed to create group chat' });
     }
 };
+
 const addUserToGroupChat = async (req, res) => {
     try {
         const { chatId, userIds } = req.body; // `userIds` is now an array
@@ -323,7 +360,13 @@ const LeaveGroup = async (req, res) => {
             { user_id: user._id },
             { $pull: { chats:{ chat_id: chatId } } }
         );
-        res.status(200).json({ message: 'User removed successfully' });
+        //get the whole chat data of the chat
+        const chatDetails = await getChatDetails(chatId);
+        res.status(200).json({
+             success: true,
+             data: chatDetails,
+             message: 'User removed successfully' 
+            });
     } catch (error) {
         return res.status(500).json({ message: 'Error removing user', error });
     }

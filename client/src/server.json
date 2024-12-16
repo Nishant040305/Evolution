@@ -53,7 +53,8 @@
         "createChat":"/api/chat/chats",
         "createGroupChat":"/api/chat/chats/group",
         "addUserToGroupChat":"/api/chat/chats/group/add",
-        "getMessages":"/api/message/messages"
+        "getMessages":"/api/message/messages",
+        "leaveGroupChat":"/api/chat/chats/group/leave"
     },"Notifications":{
         "getNotifications":"/api/notifications/getNotifications",
         "createNotification":"/api/notifications/createNotification",

@@ -1,16 +1,38 @@
 import React from "react";
 import { X, UserPlus, LogOut } from "lucide-react";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import { deleteChat } from "../../Store/Chat";
+import { SocketAcceptFriendRequest } from "../../event/SocketEvent";
+import Chats from "../../scripts/API.Chats";
+import {setPresentChat} from '../../Store/Chat';
 const GroupInfo = ({
   onClose,
-  onLeaveGroup,
   onAddParticipant,
+  toast
 }) => {
     const present = useSelector((state) => state.chat.presentChat);
     const chat = useSelector((state) => state.chat.chats);
     const group = chat.find(chat => chat.chat_id===present);
+    const userId = useSelector((state) => state.user.userInfo._id);
+    const API = new Chats();
+    const dispatch = useDispatch();
     console.log(group);
+    const onLeaveGroup = async () => {
+      try {
+        const response = await API.leaveGroupChat(present);
+        if (response.success) {
+            SocketAcceptFriendRequest(response.data);
+          dispatch(setPresentChat({chatId:null,userId:userId}));
+          dispatch(deleteChat(present));
+          toast.success("User Exit Group");
+        } else {
+          toast.error("Failed to remove user from group chat");
+        }
+      } catch (error) {
+        console.error("Error removing user from group chat:", error);
+        toast.error("Failed to remove user from group chat");
+      }
+    };
   return (
     <div className="w-full max-w-md bg-white shadow-lg rounded-md overflow-hidden">
       {/* Header */}

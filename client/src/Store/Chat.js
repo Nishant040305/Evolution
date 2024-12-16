@@ -17,8 +17,10 @@ const ChatSlice = createSlice({
     setPresentChat: (state, action) => {
       const { chatId, userId } = action.payload;
       state.presentChat = chatId;
-      SocketMarkAsRead(chatId,userId);
-      state.chats.find(chat => chat.chat_id === chatId).unread_messages[userId] = 0;
+      if(chatId){
+        SocketMarkAsRead(chatId,userId);
+        state.chats.find(chat => chat.chat_id === chatId).unread_messages[userId] = 0;
+      }
     },
 
     // Set the messages for a specific chat
@@ -100,6 +102,7 @@ const ChatSlice = createSlice({
     // Delete a chat by its ID
     deleteChat: (state, action) => {
       const chatId = action.payload;
+      console.log(action.payload);
       state.chats = state.chats.filter((chat) => chat.chat_id !== chatId);
       delete state.messages[chatId]; // Remove messages for the deleted chat
     },
