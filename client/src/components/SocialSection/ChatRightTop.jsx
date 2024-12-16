@@ -36,7 +36,7 @@ const ChatRightTop = () => {
         
         <div className="flex flex-col">
           <div className="text-lg font-semibold">{Chat.chat_name}</div>
-          {Chat.participants.length <= 3 && isGroupChat && (
+          {isGroupChat && (
             <div className="text-sm text-gray-600">{participantNames}</div>
           )}
         </div>

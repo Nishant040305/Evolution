@@ -134,9 +134,9 @@ const createChat = async (req, res) => {
 
 const createGroupChat = async (req, res) => {
     try {
-        const { chatName, users, groupImage = 'https://res.cloudinary.com/dwj0nj7d6/image/upload/v1731223362/Evolution/sp9gkw5kn8sjxvhju7aq.png' } = req.body;
+        const { chatName, users, groupImage  } = req.body;
         const user = await User.findById(req.user._id);
-
+        console.log("Group Chat" , users);
         if (!user || !user.verify) {
             return res.status(404).json({ error: 'User not verified or found' });
         }
@@ -151,6 +151,7 @@ const createGroupChat = async (req, res) => {
         users.forEach((id) => {
         unreadMessages[id] = 0;
         });
+        
 
         const newChat = new Chat({
         type: 'group',
@@ -176,14 +177,25 @@ const createGroupChat = async (req, res) => {
         for (const userId of users) {
             await addUsersToChat(userId);
         }
-
+        const participants = await Promise.all(
+            chat.members.map(async (memberId) => {
+                const member = await User.findById(memberId).select('displayname avatar');
+                return {
+                    user_id: member._id,
+                    username: member.displayname,
+                    avatar: member.avatar,
+                };
+            })
+        );
         return res.status(200).json({
             success: true,
             data: {
                 chat_id: newChat._id,
                 chat_name: newChat.groupName,
                 chat_image: newChat.groupAvatar,
-                participants: [user._id, ...users],
+                participants: participants,
+                last_message: 'No messages yet',
+                last_message_time: null,
                 unread_messages: newChat.unread_messages,
             },
         });

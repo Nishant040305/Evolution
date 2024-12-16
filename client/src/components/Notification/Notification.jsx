@@ -82,7 +82,6 @@ const NotificationPage = () => {
     console.log(chat.data,"Delete Notification");
     await APINotif.deleteNotification(notificationId);
     // Notify the server about the accepted request
-    console.log(chat.data,"Chat Data");
     SocketAcceptFriendRequest(chat.data);
   };
   

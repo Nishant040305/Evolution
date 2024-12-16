@@ -10,6 +10,7 @@ import { useSelector,useDispatch } from 'react-redux';
 import {toast,ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NotificationPage from '../components/Notification/Notification';
+import CreateGroupChat from '../components/SocialSection/createGroupChat';
 const SocialMain = () => {
   const [state, setState] = useState("Messages");
   const chats = useSelector((state) => state.chat.chats);
@@ -43,23 +44,22 @@ const SocialMain = () => {
       <LeftSocialSideBar setNav={setState} />
       {state === "Messages" ? (
         <ChatLeftBar/>
-      ) :
-      (<FindUser toast ={toast}/>)
-      }
+      ) :state==="Find Users"?  
+      (<FindUser toast ={toast}/>):
+      state==="Groups"?
+      <CreateGroupChat toast={toast}/>
+      :<ChatLeftBar/>}
+      
       
       {/* Display Chat Right Section */}
       {state==="Notifications"?
       <NotificationPage/>
       :
-      presentChat ? (
-        <ChatRightMain />
+      state==="Messages"?presentChat ? (<ChatRightMain />) : (loading ? (<div className="loading-state">Loading chats...</div> // Display loading state while chats are loadin
       ) : (
-        loading ? (
-          <div className="loading-state">Loading chats...</div> // Display loading state while chats are loading
-        ) : (
-            <></>
-        )
-      )}
+            <></> 
+        )):
+      <NotificationPage/>}
     </div>
   );
 };
