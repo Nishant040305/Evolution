@@ -33,6 +33,7 @@ const ChatMessageBlock = ({ message,  index }) => {
     : 0;
 
   return (
+
     <div
       className={`relative flex items-start ${
         isSender ? "justify-end" : "justify-start"
@@ -113,7 +114,7 @@ const ChatMessageBlock = ({ message,  index }) => {
           </span>
           {isSender && (
             <span className="flex items-center space-x-1">
-              {unreadCount >= 1 ? (
+              {unreadCount > 1 ? (
                 <FaCheck className="text-green-500" title="Read" />
               ) : (
                 <FaCheck className="text-gray-400" title="Delivered" />

@@ -5,7 +5,6 @@ const UsersChat = require('../models/UsersChat');
 module.exports = (io,socket)=>{
     socket.on('joinRoom', async (userId) => {
         try {
-            console.log(userId)
             // Check if the user exists in the database
             const user = await User.findById(userId);
             if (!user) {
@@ -16,7 +15,6 @@ module.exports = (io,socket)=>{
             // Fetch or create UsersChat for the user
             let userChats = await UsersChat.findOne({ user_id: userId });
             if (!userChats) {
-                console.log(`No chats found for user ${userId}. Creating a new UsersChat entry.`);
                 userChats = new UsersChat({
                     user_id: userId,
                     chats: [], // Initialize with an empty chat list
@@ -35,7 +33,6 @@ module.exports = (io,socket)=>{
             // Additionally, join the user to their own room (for personal notifications)
             socket.join(userId);
 
-            console.log(`Socket ${socket.id} joined chats: ${chatIds} and user room: ${userId}`);
         } catch (error) {
             console.error(`Error joining chats for user ${userId}:`, error);
         }

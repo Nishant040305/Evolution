@@ -32,3 +32,26 @@
 .ChatMessageList{
     max-height:90%;
 }
+/* Custom Scrollbar styles */
+.scrollbar_edit {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #8b8b8b #f1f1f1; /* Firefox */
+}
+
+.scrollbar_edit::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+.scrollbar_edit::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Background of the scrollbar track */
+}
+
+.scrollbar_edit::-webkit-scrollbar-thumb {
+  background-color: #dce8f6; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Rounded corners for the thumb */
+  border: 2px solid #f1f1f1; /* Border around the thumb */
+}
+
+.scrollbar_edit::-webkit-scrollbar-thumb:hover {
+  background-color: #444444; /* Color of the thumb when hovered */
+}

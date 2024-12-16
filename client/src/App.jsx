@@ -18,6 +18,8 @@ import { useSocketRecieveMessage } from "./event/recieveMessage";
 import { useSocketMarkAsRead } from "./event/markAsRead";
 import { useSocketUserReadReceipts } from "./event/recieveRecipient";
 import { useSocketDeleteMessage } from "./event/deleteMessage";
+import LoadNotifications from "./hooks/LoadNotifications";
+import { useSocketNotifications } from "./event/Notifications";
 const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.user);
@@ -27,10 +29,12 @@ const App = () => {
   }, [dispatch,isAuthenticated]);
   useSocketConnect();
   connectRooms();
+  LoadNotifications();
   useSocketMarkAsRead();
   useSocketRecieveMessage();
   useSocketUserReadReceipts();
   useSocketDeleteMessage();
+  useSocketNotifications();
   return (
     <Routes>
       {/* Landing Page */}

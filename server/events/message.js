@@ -73,9 +73,7 @@ module.exports = (io, socket) => {
                 userId,
             });
 
-            console.log(
-                `User ${userId} marked ${result.modifiedCount} messages as read in chat ${chatId}`
-            );
+          
         } catch (error) {
             console.error('Error marking messages as read:', error);
             socket.emit('error', { error: 'Failed to mark messages as read' });

@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import ChatSearchBar from '../utility/ChatSearchBar';
 import User from '../../scripts/API.User';
 import { useSelector } from 'react-redux';
+import { SocketSendFriendRequest } from '../../event/SocketEvent';
 
-const FindUser = () => {
+const FindUser = ({toast}) => {
     const [searchQuery, setSearchQuery] = useState("");
     const [userSuggestions, setUserSuggestions] = useState([]);
     const [friends, setFriends] = useState([]);
@@ -35,10 +36,9 @@ const FindUser = () => {
     }, [userId]);
 
     // Handle sending invite to the user
-    const handleInviteClick = (targetUserId) => {
-        API.createChat(targetUserId);
-        const newFriends = [...friends.friends, targetUserId];
-        setFriends({friends:newFriends});   
+    const handleInviteClick = async(targetUserId) => {
+        SocketSendFriendRequest(userId, targetUserId);
+        toast.success('Invite sent successfully');
     };
 
     // Check if a user is a friend

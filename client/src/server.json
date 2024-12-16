@@ -54,5 +54,10 @@
         "createGroupChat":"/api/chat/chats/group",
         "addUserToGroupChat":"/api/chat/chats/group/add",
         "getMessages":"/api/message/messages"
+    },"Notifications":{
+        "getNotifications":"/api/notifications/getNotifications",
+        "createNotification":"/api/notifications/createNotification",
+        "markAsRead":"/api/notifications/markAsRead",
+        "deleteNotification":"/api/notifications/deleteNotification"
     }
 }

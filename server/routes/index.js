@@ -12,4 +12,5 @@ router.use('/auth', credentialRoutes);;
 router.use('/image',ImageRoutes);
 router.use('/chat', require('./Chat.routes'));
 router.use('/message', require('./message.routes'));
+router.use('/notifications', require('./notifications.routes'));
 module.exports = router;

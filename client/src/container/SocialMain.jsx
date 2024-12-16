@@ -7,6 +7,9 @@ import ChatRightMain from '../components/SocialSection/ChatRightMain';
 import User from '../scripts/API.User';
 import { setChats,setPresentChat } from '../Store/Chat';
 import { useSelector,useDispatch } from 'react-redux';
+import {toast,ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import NotificationPage from '../components/Notification/Notification';
 const SocialMain = () => {
   const [state, setState] = useState("Messages");
   const chats = useSelector((state) => state.chat.chats);
@@ -36,15 +39,19 @@ const SocialMain = () => {
 
   return (
     <div className="social-main flex flex-row">
+    <ToastContainer />
       <LeftSocialSideBar setNav={setState} />
       {state === "Messages" ? (
         <ChatLeftBar/>
-      ) : (
-        <FindUser />
-      )}
+      ) :
+      (<FindUser toast ={toast}/>)
+      }
       
       {/* Display Chat Right Section */}
-      {presentChat ? (
+      {state==="Notifications"?
+      <NotificationPage/>
+      :
+      presentChat ? (
         <ChatRightMain />
       ) : (
         loading ? (
