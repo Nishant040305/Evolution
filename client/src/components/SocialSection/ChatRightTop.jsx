@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaUsers, FaUser, FaSearch, FaEllipsisV } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
-const ChatRightTop = () => {
+const ChatRightTop = ({setShowGroupInfo}) => {
   const [showPopup, setShowPopup] = useState(false);
   const ChatId = useSelector((state) => state.chat.presentChat);
   const Chat = useSelector((state) => state.chat.chats.find(chat => chat.chat_id === ChatId));
@@ -60,7 +60,11 @@ const ChatRightTop = () => {
         <div className="absolute top-16 right-10 bg-white shadow-md rounded-md p-4 w-48">
           {isGroupChat ? (
             <>
-              <button className="w-full text-left p-2 text-sm hover:bg-gray-100">Group Info</button>
+              <button className="w-full text-left p-2 text-sm hover:bg-gray-100" onClick={()=>{
+                setShowGroupInfo(true);
+                setShowPopup(false);
+              }
+                }>Group Info</button>
               <button className="w-full text-left p-2 text-sm hover:bg-gray-100">Exit Group</button>
             </>
           ) : (

@@ -55,7 +55,9 @@ const SocialMain = () => {
       {state==="Notifications"?
       <NotificationPage/>
       :
-      state==="Messages"?presentChat ? (<ChatRightMain />) : (loading ? (<div className="loading-state">Loading chats...</div> // Display loading state while chats are loadin
+      state==="Messages"?presentChat ? (
+      <ChatRightMain />
+    ) : (loading ? (<div className="loading-state">Loading chats...</div> // Display loading state while chats are loadin
       ) : (
             <></> 
         )):

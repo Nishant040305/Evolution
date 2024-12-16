@@ -2,6 +2,7 @@ const Chat = require('../models/Chat');
 const UsersChat = require('../models/UsersChat');
 const Message = require('../models/message');
 const User = require('../models/User');
+const { create } = require('../models/Notifications');
 
 // Get chat data for the user
 const getChatsData = async (req, res) => {
@@ -35,11 +36,12 @@ const getChatsData = async (req, res) => {
             // Build participants list
             const participants = await Promise.all(
                 chat.members.map(async (memberId) => {
-                    const member = await User.findById(memberId).select('displayname avatar');
+                    const member = await User.findById(memberId).select('displayname avatar email');
                     return {
                         user_id: member._id,
                         username: member.displayname,
                         avatar: member.avatar,
+                        email: member.email,
                     };
                 })
             );
@@ -53,6 +55,7 @@ const getChatsData = async (req, res) => {
                 last_message_time: lastMessage ? lastMessage.timestamp : null,
                 participants,
                 unread_messages: chat.unread_messages,
+                createdBy: chat.createdBy,
             };
         });
 
@@ -197,6 +200,7 @@ const createGroupChat = async (req, res) => {
                 last_message: 'No messages yet',
                 last_message_time: null,
                 unread_messages: newChat.unread_messages,
+                createdBy: user._id,
             },
         });
     } catch (error) {
