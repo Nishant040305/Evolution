@@ -23,4 +23,8 @@ router.post('/chats/group', UserVerifier, ChatController.createGroupChat);
 // @access   Private
 router.post('/chats/group/add', UserVerifier, ChatController.addUserToGroupChat);  
 
+// @route    POST api/chats/group/leave
+// @desc     Leave a group chat
+// @access   Private    
+router.post('/chats/group/leave', UserVerifier, ChatController.LeaveGroup);
 module.exports = router;

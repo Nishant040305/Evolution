@@ -195,7 +195,8 @@ const createGroupChat = async (req, res) => {
             data: {
                 chat_id: newChat._id,
                 chat_name: newChat.groupName,
-                chat_image: newChat.groupAvatar,
+                chat_type: newChat.type,
+                chat_avatar: newChat.groupAvatar,
                 participants: participants,
                 last_message: 'No messages yet',
                 last_message_time: null,
@@ -215,7 +216,7 @@ const addUserToGroupChat = async (req, res) => {
             return res.status(400).json({ error: "Invalid or empty userIds array" });
         }
 
-        const groupChat = await Chat.findById(chatId).populate("members", "username avatar"); // Populate member details
+        const groupChat = await Chat.findById(chatId).populate("members", "displayname avatar email"); // Populate member details
         if (!groupChat || groupChat.type !== "group") {
             return res.status(404).json({ error: "Group chat not found or invalid chat type" });
         }
@@ -251,7 +252,8 @@ const addUserToGroupChat = async (req, res) => {
 
                 addedUsers.push({
                     user_id: userToAdd._id,
-                    username: userToAdd.username,
+                    username: userToAdd.displayname,
+                    avatar: userToAdd.avatar,
                 });
             } catch (innerError) {
                 errors.push({ userId, message: "Failed to process user", error: innerError.message });
@@ -261,10 +263,12 @@ const addUserToGroupChat = async (req, res) => {
         await groupChat.save();
 
         // Fetch the latest chat details to include in the response
+        console.log(groupChat.members);
         const participants = groupChat.members.map(member => ({
             user_id: member._id,
-            username: member.username,
+            username: member.displayname,
             avatar: member.avatar,
+            email: member.email,
         }));
         const lastMessage = await Message.findOne({ chat_id: groupChat._id })
         .sort({ timestamp: -1 })
@@ -294,5 +298,34 @@ const addUserToGroupChat = async (req, res) => {
     }
 };
 
-
-module.exports = { getChatsData,createChat,createGroupChat,addUserToGroupChat };
+const LeaveGroup = async (req, res) => {
+    try {
+        const { chatId } = req.body;
+        const user = await User.findById(req.user._id);
+        if (!user || !user.verify) {
+            return res.status(404).json({ error: 'No user found or user not verified' });
+        }
+        const chat = await Chat.findById(chatId);
+        if (!chat) {
+            return res.status(404).json({ error: 'Chat not found' });
+        }
+        if (chat.type !== 'group') {
+            return res.status(400).json({ error: 'Chat is not a group chat' });
+        }
+        if (!chat.members.some(member => member.toString() === user._id.toString())) {
+            return res.status(400).json({ error: 'User is not a member of the group chat' });
+        }
+        await Chat.updateOne(
+            { _id: chatId },
+            { $pull: { members: { user: user._id } } }
+        );
+        await UsersChat.updateOne(
+            { user_id: user._id },
+            { $pull: { chats:{ chat_id: chatId } } }
+        );
+        res.status(200).json({ message: 'User removed successfully' });
+    } catch (error) {
+        return res.status(500).json({ message: 'Error removing user', error });
+    }
+};
+module.exports = { getChatsData,createChat,createGroupChat,addUserToGroupChat,LeaveGroup };
