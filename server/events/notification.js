@@ -4,6 +4,15 @@ module.exports = (io,socket) => {
         // Handle sending a friend request notification
         socket.on('sendFriendRequest', async ({ senderId, receiverId, title }) => {
             try {
+                //check if user is already friend or notfication already exists
+                
+                //check if notification already exists
+                const notification = await Notifications.findOne({ receiverId, type: 'friendRequest', message: { senderId } });
+                if (notification) {
+                    console.log("Notification already exists");
+                    return;
+                }
+                //check if user is already friend
                 const newNotification = new Notifications({
                     title,
                     type: 'friendRequest',
