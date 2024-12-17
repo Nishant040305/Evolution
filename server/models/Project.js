@@ -108,22 +108,19 @@ const ProjectSchema = new Schema({
     default: [
       {
         name: 'index.html',
-        content: '',
-        type: 'text/html',
+        components: false,
         timestamp: Date.now,
         useDefault: 'components', // use components field
       },
       {
         name: 'style.css',
-        content: '',
-        type: 'text/css',
+        cssContent: false,
         timestamp: Date.now,
         useDefault: 'javascriptContent', // use javascriptContent field
       },
       {
         name: 'script.js',
-        content: '',
-        type: 'text/javascript',
+        javascriptContent: false,
         timestamp: Date.now,
         useDefault: 'cssContent', // use cssContent field
       },

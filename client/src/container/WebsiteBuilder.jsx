@@ -30,6 +30,10 @@ const WebsiteBuilder = () => {
   const [css, setCss] = useState("/* Write your CSS code here... */");
   const [js, setJs] = useState("// Write your JS code here...");
   const [id, set] = useState(0);
+  const [file, setFile] = useState({
+    name: 'index.html',
+    useDefault: 'components',
+  });
   const [ScreenSize, setScreenSize] = useState("desktop");
   const webElementRef = useRef(webElement); // Create a ref for the last webElement
   const setId = (id) => {
@@ -111,6 +115,13 @@ const WebsiteBuilder = () => {
     }
   }, [projectID]);
 
+  useEffect(() => {
+    if (file.name.endsWith(".html")) setStatusCode(0);
+    else if (file.name.endsWith(".css")) setStatusCode(2);
+    else if (file.name.endsWith(".js")) setStatusCode(1);
+    else setStatusCode(3);
+  }, [file])
+
   return (
     <div className="flex flex-col h-screen">
       <TopBar
@@ -126,6 +137,8 @@ const WebsiteBuilder = () => {
           setStatusCode={setStatusCode}
           setId={set}
           toast={toast}
+          file={file}
+          setFile={setFile}
         />
         {statusCode == 0 ? (
           <MainCanvas ScreenSize={ScreenSize} reloadEvents={reloadEvents} toast={toast}  />

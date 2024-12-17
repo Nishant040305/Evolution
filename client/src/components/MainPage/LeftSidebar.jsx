@@ -31,15 +31,17 @@ import ImageElement from "../../lib/img.component";
 import { setImagesMedia } from "../../Store/imageSlice";
 import { useParams } from "react-router-dom";
 import { useCanvasEvents } from "../../hooks/DragDrop";
-import ProjectOverview from "./projectOverview";
+import ProjectOverview from "./ProjectOverview";
 import ElementContainer from "./ElementContainer";
 import MediaSection from "./MediaContainer";
-import ProjectFileSideBar from "./projectFileSideBar";
+import ProjectFileSideBar from "./ProjectFileSideBar";
 const LeftSidebar = ({
   toggleRight,
   setStatusCode,
   toast,
   setId,
+  file,
+  setFile,
 }) => {
   const { projectID } = useParams();
   const dispatch = useDispatch();
@@ -161,7 +163,7 @@ const LeftSidebar = ({
                     : "text-gray-600 hover:bg-red-100"
                 }`}
               >
-                Project Overview
+                Elements
               </button>
               <button
                 onClick={() => setCurrentTab("files")}
@@ -171,7 +173,7 @@ const LeftSidebar = ({
                     : "text-gray-600 hover:bg-red-100"
                 }`}
               >
-                Pages
+                Files
               </button>
             </div>
           </div>
@@ -214,7 +216,7 @@ const LeftSidebar = ({
               // Project Overview
               <ProjectOverview webElements={webElements} setId={setId} toggleRight={toggleRight} setStatusCode={setStatusCode} handleDelete={handleDelete} handleViewChange={handleViewChange} />
             ):  (
-              <ProjectFileSideBar   />
+              <ProjectFileSideBar file={file} setFile={setFile} />
             ) }
           </div>
         </div>
