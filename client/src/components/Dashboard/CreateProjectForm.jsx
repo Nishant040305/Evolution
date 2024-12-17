@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ApiDashboard from "../../scripts/API.Dashboard";
 import { useSelector } from "react-redux";
 import {FaUser, FaUserShield,FaUserEdit} from "react-icons/fa"
+import { SocketSendNotificationToUser } from "../../event/SocketEvent";
 const CreateProjectForm = ({ onCreateProject ,toast}) => {
   const user = useSelector((state) => state.user.userInfo._id);
   const [newProject, setNewProject] = useState({
@@ -39,7 +40,6 @@ const CreateProjectForm = ({ onCreateProject ,toast}) => {
         setPotentialCollaborator(userData);
       } catch (error) {
         setPotentialCollaborator(null);
-        console.error(error);
       }
     } else {
       setPotentialCollaborator(null);
@@ -86,11 +86,9 @@ const CreateProjectForm = ({ onCreateProject ,toast}) => {
       toast.success("Project created successfully!");
       // Invite each collaborator
       for (const collaborator of collaborators) {
-        await API.inviteCollaborator(
-          projectData._id,
-          collaborator.role,
-          collaborator._id
-        );
+        const response = await API.inviteCollaborator(projectData._id,collaborator.role,collaborator._id);
+        SocketSendNotificationToUser(response.Notification);
+
       }
       setMessage("Collaborators invited successfully.");
       onCreateProject(projectData);

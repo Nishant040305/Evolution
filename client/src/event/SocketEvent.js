@@ -74,3 +74,11 @@ export const SocketAcceptFriendRequest = (chat) => {
 export const SocketDeclineFriendRequest = (notificationId) => {
     socket.emit('declineFriendRequest', { notificationId });
 };  
+
+/**
+ * Emit an event to send Notification to a user.
+ * @param {string} NotificationId - The Notification to send.
+ */
+export const SocketSendNotificationToUser = (NotificationId) => {
+    socket.emit('sendNotification', NotificationId);
+};

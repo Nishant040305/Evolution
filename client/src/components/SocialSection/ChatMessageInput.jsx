@@ -15,7 +15,6 @@ const ChatMessageInput = () => {
 
   const handleSendMessage = () => {
     if (!message.trim() ) return; // Don't send if message is empty or not connected to socket
-    console.log("HERE");
     const newMessage = {
       chatId: Chat,
       senderId: senderId,

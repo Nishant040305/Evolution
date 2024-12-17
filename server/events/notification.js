@@ -78,6 +78,21 @@ module.exports = (io,socket) => {
                 socket.emit('error', 'Failed to mark notification as read');
             }
         });
+        socket.on('sendNotification', async (data) => { 
+            try {
+                const {receiverId,_id} = data;
+                const notification = await Notifications.findById(_id);
+                if (!notification) {
+                    socket.emit('error', { error: 'Notification not found' });
+                    return;
+                }
+                io.to(receiverId).emit('newNotification', notification);
+                console.log(`Notification sent to ${receiverId}`);
+            } catch (error) {
+                console.error('Error sending message:', error);
+                socket.emit('error', { error: 'Failed to send message' });
+            }
+        });
         // Handle disconnect
         socket.on('disconnect', () => {
             console.log('A user disconnected:', socket.id);

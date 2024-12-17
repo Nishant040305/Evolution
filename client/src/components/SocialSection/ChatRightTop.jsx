@@ -10,12 +10,12 @@ const ChatRightTop = ({setShowGroupInfo,toast}) => {
   const Chat = useSelector((state) => state.chat.chats.find(chat => chat.chat_id === ChatId));
   const togglePopup = () => setShowPopup(!showPopup);
   // Determine if it's a group chat
-  const isGroupChat = Chat.chat_type === 'group';
+  const isGroupChat = Chat?.chat_type === 'group';
   const API = new Chats();
   const present = useSelector((state) => state.chat.presentChat);
   const userId = useSelector((state) => state.user.userInfo._id);
   // Trim participant names for display
-  const participantNames = Chat.participants.slice(0, 3).map(p => p.username).join(', ');
+  const participantNames = Chat?.participants.slice(0, 3).map(p => p.username).join(', ');
   const dispatch = useDispatch();
   const ExitGroup = async () => {
         try {
@@ -40,13 +40,13 @@ const ChatRightTop = ({setShowGroupInfo,toast}) => {
         <div className="relative w-12 h-12 rounded-full bg-gray-200">
         {isGroupChat ? (
             <img 
-            src={Chat.chat_avatar} // Replace with your group chat image path
+            src={Chat?.chat_avatar} // Replace with your group chat image path
             alt="Group"
             className="w-10 h-10 rounded-full object-cover" // Adjust image size and roundness
             />
         ) : (
             <img 
-            src={Chat.chat_avatar} // Replace with your individual user image path
+            src={Chat?.chat_avatar} // Replace with your individual user image path
             alt="User"
             className="w-10 h-10 rounded-full object-cover" // Adjust image size and roundness
             />
@@ -56,7 +56,7 @@ const ChatRightTop = ({setShowGroupInfo,toast}) => {
         {/* Group/User Name and Participant Names */}
         
         <div className="flex flex-col">
-          <div className="text-lg font-semibold">{Chat.chat_name}</div>
+          <div className="text-lg font-semibold">{Chat?.chat_name}</div>
           {isGroupChat && (
             <div className="text-sm text-gray-600">{participantNames}</div>
           )}

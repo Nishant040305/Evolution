@@ -62,7 +62,6 @@ const CombinedProjectModal = ({ project, onClose, onUpdate,toast }) => {
     try {
       const response = await API.getProjectVersionHistory(project._id);
       setVersionHistory(response);
-      console.log(response);
     } catch (error) {
       console.error("Failed to fetch version history:", error);
     }

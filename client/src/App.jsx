@@ -38,11 +38,6 @@ const App = () => {
   useSocketDeleteMessage();
   useSocketNotifications();
   useSocketAcceptFriendRequest();
-  useEffect(()=>{
-    socket.on("newNotification",(notification)=>{
-      console.log(notification);
-    });
-  },[socket]);
   return (
     <Routes>
       {/* Landing Page */}
@@ -73,8 +68,7 @@ const App = () => {
 
       {/* Fallback Route */}
       <Route path="*" element={ <LoginMain />} />
-      <Route path="/social" element={isAuthenticated ? <SocialMain/> : <LoginMain />} />
-      <Route path="/chats" element={isAuthenticated ? <ChatTest /> : <LoginMain />}  />
+      <Route path={url.SocialMain} element={isAuthenticated ? <SocialMain/> : <LoginMain />} />
     </Routes>
   );
 };

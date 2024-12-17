@@ -5,7 +5,6 @@ import ApiDashboard from '../../scripts/API.Dashboard';
 
 const FriendRequestNotification = ({ notification, onAccept, onDecline }) => {
   const [user, setUser] = useState(null);
-  console.log("FriendRequestNotification", notification);
   useEffect(() => {
     // Fetch user details using the provided API
     const fetchUserData = async () => {
@@ -44,7 +43,7 @@ const FriendRequestNotification = ({ notification, onAccept, onDecline }) => {
 
         {/* User details */}
         <div className="flex flex-col">
-          <span className="text-base font-semibold text-gray-800">Connection Request</span>
+          <span className="text-base font-semibold text-gray-800">Friend Request</span>
           <span className="text-sm text-gray-600">
             {user ? (
               <>

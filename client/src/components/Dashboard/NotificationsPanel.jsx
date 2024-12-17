@@ -33,12 +33,10 @@ const NotificationsPanel = () => {
   }, []);
 
   const handleAccept = (id) => {
-    console.log(`Accepted invitation with id: ${id}`);
     markAsRead(id);
   };
 
   const handleDecline = (id) => {
-    console.log(`Declined invitation with id: ${id}`);
     markAsRead(id);
   };
 

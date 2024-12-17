@@ -27,7 +27,6 @@ class ApiDashboard {
         const endpoint = this.endpoints.GetProjectById.replace(':id', id);
         try {
             const response = await axios.get(`${this.baseURL}${endpoint}`);
-            console.log(response);
             return response.data;
         } catch (error) {
             console.error(`Failed to fetch project with ID ${id}:`, error);
@@ -40,7 +39,6 @@ class ApiDashboard {
         const endpoint = this.endpoints.GetProjectVersionHistory.replace(':id', id);
         try {
             const response = await axios.get(`${this.baseURL}${endpoint}`);
-            console.log(response);
             return response.data;
         } catch (error) {
             console.error(`Failed to fetch project version history with ID ${id}:`, error);
@@ -64,10 +62,7 @@ class ApiDashboard {
     async createProject(projectData) {
 
         try {
-            console.log(`${this.baseURL}${this.endpoints.CreatProject}`)
-            console.log(this.endpoints)
             const response = await axios.post(`${this.baseURL}${this.endpoints.CreatProject}`, projectData);
-            console.log(response)
             return response.data;
         } catch (error) {
             console.error("Failed to create project:", error);
@@ -137,11 +132,7 @@ class ApiDashboard {
         }
     }
     async FindUserByEmail(email) {
-        // const endpoint = this.endpoints.FindUserEmail.replace(':email', email);
-        // console.log(endpoint)
         try {
-            // const response = await axios.get(`${this.baseURL}${endpoint}`);
-            console.log(`${this.baseURL}/user/${email}`);
             const response = await axios.get(`${this.baseURL}/api/user/${email}`)
             if(response.status==200) return response.data;
             else{
@@ -172,6 +163,16 @@ class ApiDashboard {
             return response.data;
         } catch (error) {
             console.error(`Failed to invite collaborator to project ${projectId}:`, error);
+            throw error;
+        }
+    }
+    async acceptCollaboration(projectId, userId) {
+        try {
+            console.log(projectId,userId)
+            const response = await axios.post(`${this.baseURL}/api/project/${projectId}/collaboration`, { userid: userId });
+            return response.data;
+        } catch (error) {
+            console.error(`Failed to accept collaboration request for project ${projectId}:`, error);
             throw error;
         }
     }

@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../Store/userSlice";
 import AuthService from "../../scripts/API.Login";
 import { useNavigate } from "react-router-dom";
-
+import url from "../../url.json";
 const TopBar = ({ searchQuery, setSearchQuery }) => {
   const [showNotifications, setShowNotifications] = useState(false);
   const dispatch = useDispatch();
@@ -22,7 +22,11 @@ const TopBar = ({ searchQuery, setSearchQuery }) => {
   const handleNavigateToSettings = () => {
     navigate("/main/settings"); // Navigate to Settings Page
   };
-
+  const handleNavigateToSocial = () => {
+    console.log("control")
+    navigate("/social"); // Navigate to Social Page
+  };
+  console.log(url)
   return (
     <div className="relative text-red-900 shadow-md bg-gradient-to-r from-red-400 to-red-200">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -68,12 +72,13 @@ const TopBar = ({ searchQuery, setSearchQuery }) => {
             </button>
 
             {/* Profile */}
-            <button className="p-2 rounded-full hover:bg-red-300">
+            <button className="p-2 rounded-full hover:bg-red-300" onClick={handleNavigateToSocial}>
               {user ? (
                 <img
                   src={user}
                   alt="user"
                   className="w-8 h-8 text-red-600 rounded-circle"
+                  
                 />
               ) : (
                 <User className="w-5 h-5 text-red-600" />

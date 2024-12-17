@@ -74,7 +74,7 @@ const FindUserEmail = async (req,res)=>{
         const userId = req.params.email;
         const user = await User.findOne({email:userId});
         if(!user){
-            return res.status(404).json(null)
+            return res.status(200).json(null)
         }
         return res.status(200).json({
             displayname:user.displayname,

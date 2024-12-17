@@ -14,11 +14,8 @@ export const useSocketDeleteMessage = () => {
     
     const handleDeleteMessage = ({ chatId, messageId }) => {
       // Check if the chat and message exist
-      console.log(chatId,messageId)
       const currentChat = chat.find(c => c.chat_id === chatId);
       if (!currentChat) return;
-      console.log(message);
-      console.log(message[chatId]);
       const messageExists = message[chatId].some(msg => msg._id === messageId);
       if (messageExists) {
         dispatch(deleteMessage({ chatId, messageId }));

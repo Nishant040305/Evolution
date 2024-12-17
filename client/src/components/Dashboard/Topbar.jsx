@@ -59,7 +59,7 @@ const TopBar = ({ searchQuery, setSearchQuery }) => {
             </button>
 
             {/* Profile */}
-            <button className="p-2 rounded-full hover:bg-red-300">
+            <button className="p-2 rounded-full hover:bg-red-300" onClick={()=>navigate(url.SocialMain)}>
               {user ? (
                 <img
                   src={user}

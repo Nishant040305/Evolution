@@ -19,9 +19,7 @@ class Chats {
     async getChatsData() {
         try {
             let endpoint = `${this.baseURL}${server.Chat.getChatsData}`;
-            console.log("Fetching chats from:", endpoint);
             const response = await axios.get(endpoint);
-            console.log("Chats data retrieved:", response.data);
             return response.data;
         } catch (error) {
             console.error("Failed to retrieve chat data:", error);
@@ -40,7 +38,6 @@ class Chats {
             conole.log("Creating chat with:",secondUserId);
             let endpoint = `${this.baseURL}${server.Chat.createChat}`;
             const response = await axios.post(endpoint, { secondUserId });
-            console.log("Chat created with:", secondUserId, response.data);
             return response.data;
         } catch (error) {
             console.error("Failed to create chat:", error);
@@ -60,7 +57,6 @@ class Chats {
         try {
             let endpoint = `${this.baseURL}${server.Chat.createGroupChat}`;
             const response = await axios.post(endpoint, { chatName, users, groupImage });
-            console.log("Group chat created:", response.data);
             return response.data;
         } catch (error) {
             console.error("Failed to create group chat:", error);
@@ -78,8 +74,9 @@ class Chats {
     async addUserToGroupChat(chatId, userIds) {
         try {
             let endpoint = `${this.baseURL}${server.Chat.addUserToGroupChat}`;
+            
             const response = await axios.post(endpoint, { chatId, userIds });
-            console.log(`User ${userIds} added to group chat ${chatId}`);
+            console.log(response.data)
             return response.data;
         } catch (error) {
             console.error("Failed to add user to group chat:", error);
@@ -96,10 +93,8 @@ class Chats {
      */
     async getMessages(chatId, lastSeen) {
         try {
-            console.log("Fetching messages for chat:", chatId, "since:", lastSeen);
             let endpoint = `${this.baseURL}${server.Chat.getMessages}`;
             const response = await axios.post(endpoint, { chatId, lastSeen });
-            console.log("Messages retrieved:", response.data);
             return response.data;
         } catch (error) {
             console.error("Failed to fetch messages:", error);
@@ -118,7 +113,6 @@ class Chats {
         try {
             let endpoint = `${this.baseURL}${server.Chat.sendMessage}`;
             const response = await axios.post(endpoint, { chatId, message });
-            console.log("Message sent to chat:", chatId, response.data);
             return response.data;
         } catch (error) {
             console.error("Failed to send message:", error);
@@ -137,9 +131,7 @@ class Chats {
     async getNotifications() {
         try {
             let endpoint = `${this.baseURL}${server.Notifications.getNotifications}`;
-            console.log("Fetching notifications for user:");
             const response = await axios.get(endpoint);
-            console.log("Notifications retrieved for user:", response.data);
             return response.data;
         } catch (error) {
             console.error("Failed to retrieve notifications:", error);
@@ -157,7 +149,6 @@ class Chats {
         try {
             let endpoint = `${this.baseURL}${server.Notifications.markAsRead}`;
             const response = await axios.post(endpoint, { id: notificationId });
-            console.log("Notification marked as read:", response.data);
             return response.data;
         } catch (error) {
             console.error("Failed to mark notification as read:", error);
@@ -175,7 +166,6 @@ class Chats {
         try {
             let endpoint = `${this.baseURL}${server.Notifications.deleteNotification}`;
             const response = await axios.post(endpoint, { id: notificationId });
-            console.log("Notification deleted:", response.data);
             return response.data;
         } catch (error) {
             console.error("Failed to delete notification:", error);
@@ -195,7 +185,6 @@ class Chats {
         try {
             let endpoint = `${this.baseURL}${server.Notifications.sendFriendRequest}`;
             const response = await axios.post(endpoint, { message:senderId, receiverId, title,type:"friendRequest" });
-            console.log("Friend request sent:", response.data);
             return response.data;
         } catch (error) {
             console.error("Failed to send friend request:", error);

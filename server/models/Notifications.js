@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const notificationSchema = new mongoose.Schema({
     title: {
@@ -8,26 +8,10 @@ const notificationSchema = new mongoose.Schema({
     type: {
         type: String,
         required: true,
-        enum: ['information', 'friendRequest'], // Restrict to defined notification types
+        enum: ['information', 'friendRequest', 'collaborationRequest'], // Restrict to defined notification types
     },
     message: {
         type: mongoose.Schema.Types.Mixed,
-        required: true,
-        validate: {
-            validator: function (value) {
-                if (this.type === 'information') {
-                    return typeof value === 'string'; // Ensure message is a string
-                } else if (this.type === 'friendRequest') {
-                    return (
-                        typeof value === 'object' &&
-                        'senderId' in value &&
-                        typeof value.senderId === 'string'
-                    ); // Check for senderId
-                }
-                return false;
-            },
-            message: 'Invalid message format for the specified type',
-        },
     },
     receiverId: {
         type: String,
@@ -41,11 +25,11 @@ const notificationSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    createdAt:{
+    createdAt: {
         type: Date,
         default: Date.now,
-        expires: 60 * 60 * 24 * 7 // Expire after 7 days
-    }
+        expires: 60 * 60 * 24 * 7, // Expire after 7 days
+    },
 });
 
 module.exports = mongoose.model('Notifications', notificationSchema);

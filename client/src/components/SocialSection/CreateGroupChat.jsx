@@ -67,7 +67,6 @@ const CreateGroupChat = ({toast}) => {
 
     // TODO: Call your API or Redux action here
     const chat = await API.createGroupChat(groupName,selectedUsers,image);
-    console.log(chat);
     if(chat.data){
         SocketAcceptFriendRequest(chat.data);
         toast.success("Group chat created successfully");

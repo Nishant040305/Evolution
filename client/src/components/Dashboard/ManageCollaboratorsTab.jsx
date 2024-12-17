@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ApiDashboard from "../../scripts/API.Dashboard"; // Assuming the API methods are in this file
 import { FaUser, FaUserShield, FaUserEdit } from "react-icons/fa";
-
+import {FaHourglassHalf} from "react-icons/fa";
 const ManageCollaboratorsTab = ({ project, toast}) => {
   const [newCollaboratorEmail, setNewCollaboratorEmail] = useState("");
   const [newCollaboratorRole, setNewCollaboratorRole] = useState("editor");
@@ -105,7 +105,6 @@ const ManageCollaboratorsTab = ({ project, toast}) => {
             };
           })
         );
-        console.log("collab", collaboratorsWithDetails)
         setCollaborators(collaboratorsWithDetails); // Update state with detailed collaborators
       } catch (error) {
         console.error("Error fetching collaborators:", error);
@@ -255,16 +254,23 @@ const ManageCollaboratorsTab = ({ project, toast}) => {
               <div className="text-lg text-yellow-500 font-semibold">
                 {roleIcons[collaborator.role]}
               </div>
-
-              {/* Remove Collaborator Button */}
+              
+              
               <div>
-                <button
+                {collaborator.status=="pending"?
+                (
+                  <div className="flex items-center space-x-1 text-yellow-500">
+                      <FaHourglassHalf className="h-5 w-5" /> {/* Pending Icon */}
+                      <span>Pending</span>
+                  </div>
+                ):
+                (<button
                   type="button"
                   onClick={() => handleRemoveCollaborator(collaborator.user)}
                   className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-700 transition-colors duration-200"
                 >
                   Remove
-                </button>
+                </button>)}
               </div>
             </div>
           ))}

@@ -65,10 +65,8 @@ class User {
     }async getChatsData(){
         try{
             let endpoint = `${this.baseURL}${server.User.getChatsData}`
-            console.log(endpoint)
 
             const response = await axios.get(endpoint);
-            console.log(response.data);
             return response.data;
         }catch(error){
             console.error("Failed to fetch projects:", error);

@@ -7,7 +7,6 @@ const ChatMessageBlock = ({ message,  index }) => {
   const isSender = message.sender_id === currentUserId;
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const chats = useSelector((state) => state.chat.chats);
-  console.log(chats.find(chat=>chat.chat_id===message.chat_id));
   const handleCopyMessage = () => {
     navigator.clipboard.writeText(message.content);
     alert("Message copied to clipboard!");

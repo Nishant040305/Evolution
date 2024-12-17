@@ -27,7 +27,6 @@ const SocialMain = () => {
         const response = await API.getChatsData();
         if (response.success) {
           dispatch(setChats(response.data));
-          console.log(response.data);
         } else {
           console.error("Error fetching chats:", response.error);
         }

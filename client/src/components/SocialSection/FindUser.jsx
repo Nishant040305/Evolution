@@ -29,7 +29,6 @@ const FindUser = ({toast}) => {
         const fetchFriends = async () => {
             const userFriends = await API.GetFriends(userId);
             setFriends(userFriends);
-            console.log(userFriends);
         };
         
         fetchFriends();

@@ -17,7 +17,6 @@ const GroupInfo = ({
     const API = new Chats();
     const dispatch = useDispatch();
     const isGroup = group.chat_type==="group";
-    console.log(group);
     const onLeaveGroup = async () => {
       try {
         const response = await API.leaveGroupChat(present);

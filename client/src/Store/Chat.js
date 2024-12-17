@@ -33,7 +33,6 @@ const ChatSlice = createSlice({
     // Add a message to a specific chat
     addMessage: (state, action) => {
       const { chatId, messages ,userId} = action.payload;
-      console.log("Message", messages.content);
     
       // Ensure the chatId exists in the state.messages object
       if (!state.messages[chatId]) {
@@ -76,7 +75,6 @@ const ChatSlice = createSlice({
       if (!state.messages[chatId]) {
         state.messages[chatId] = [];
       }
-      console.log(messages);
       const reversedMessages = messages.reverse();
       state.messages[chatId] = {...state.messages[chatId],...reversedMessages};
     
@@ -85,7 +83,6 @@ const ChatSlice = createSlice({
     // set the meta data
     setMeta: (state, action) => {
         const { chatId, meta } = action.payload;
-        console.log(meta)
         // Find the index of the chat with the given chatId
         const chatIndex = state.chats.findIndex((chat) => chat.chat_id === chatId);
       
@@ -102,7 +99,6 @@ const ChatSlice = createSlice({
     // Delete a chat by its ID
     deleteChat: (state, action) => {
       const chatId = action.payload;
-      console.log(action.payload);
       state.chats = state.chats.filter((chat) => chat.chat_id !== chatId);
       delete state.messages[chatId]; // Remove messages for the deleted chat
     },

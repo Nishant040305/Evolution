@@ -7,14 +7,11 @@ export const useSocketNotifications = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const user = useSelector((state) => state.user.userInfo);
-  console.log("is this working");
   useEffect(() => {
-    console.log("Notifications");
     if(!isAuthenticated) return;
     // Listen for 'newNotification' event and handle adding the new notification
     socket.on('newNotification', (notification) => {
       // Add the new notification to the state
-      console.log("New Notification",notification);
       dispatch(addNotification(notification));
     });
 

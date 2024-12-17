@@ -24,12 +24,9 @@ const NotificationsSlice = createSlice({
      */
     deleteNotification: (state, action) => {
       const { id } = action.payload;
-      console.log("Action Payload ID:", id); // Log the action payload
       const newState = state.filter((notification) => {
-        console.log("Current Notification ID:", notification._id); // Log each ID during filtering
         return notification._id !== id; // Remove the matching notification
       });
-      console.log("New State:", newState); // Log the new state
       return newState; // Return the updated state
     },
 

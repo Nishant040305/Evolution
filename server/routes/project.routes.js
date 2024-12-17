@@ -23,7 +23,7 @@ const {
   updateImageProject,
 } = projectController;
 const { publishProject, openProject, downloadProject } = publishController;
-const { inviteMember, updateMemberRole, removeMember } = memberController;
+const { inviteMember, updateMemberRole, removeMember,acceptCollaboration } = memberController;
 
 // middlewares
 const { UserVerifier } = require("../middleware/credMiddleware");
@@ -73,6 +73,13 @@ router.post(
   inviteMember
 );
 
+// @route    POST /api/project/:id/collaboration/:userid
+// @desc     Accept collaboration request by id
+router.post(
+  "/:id/collaboration",
+  UserVerifier,
+  acceptCollaboration
+);
 // @route    PUT /api/project/:id/member/:userid
 // @desc     Update a user's role in a project
 router.put(

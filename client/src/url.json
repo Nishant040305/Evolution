@@ -4,5 +4,6 @@
   "Dashboard": "/dashboard",
   "WebsiteBuilder": "/builder/:projectID",
   "Settings": "/settings",
-  "ProfilePage": "/profilepage"
+  "ProfilePage": "/profilepage",
+  "SocialMain": "/social"
 }

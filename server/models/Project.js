@@ -51,6 +51,11 @@ const ProjectSchema = new Schema({
     ref: 'User',
     required: true,
   },
+  groupChatId:{
+    type:Schema.Types.ObjectId,
+    ref:'Chat',
+    default:null
+  },
   members: [
     {
       user: {
@@ -67,6 +72,11 @@ const ProjectSchema = new Schema({
         type: String,
         enum: ['admin', 'editor', 'viewer', 'default'], // 'owner' is not a role
         default: 'default',
+      },
+      status:{
+        type: String,
+        enum: ['active', 'pending', 'declined'],
+        default: 'pending',
       },
       // additional permissions
       permissions: {
@@ -156,7 +166,11 @@ const ProjectSchema = new Schema({
         required: true,
       }
     }
-  ]
+  ],
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 }, { timestamps: true });
 
 // Pre-save hook to track changes and version control

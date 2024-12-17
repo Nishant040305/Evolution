@@ -249,7 +249,9 @@ const createGroupChat = async (req, res) => {
 const addUserToGroupChat = async (req, res) => {
     try {
         const { chatId, userIds } = req.body; // `userIds` is now an array
+        console.log("hello");
         if (!Array.isArray(userIds) || userIds.length === 0) {
+            
             return res.status(400).json({ error: "Invalid or empty userIds array" });
         }
 

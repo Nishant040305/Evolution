@@ -1,7 +1,8 @@
 const User = require("../models/User");
 const Project = require('../models/Project');
+const Chat = require('../models/Chat');
 const { ImageUpload } = require('../utils/ImageUpload');
-
+const UsersChat = require('../models/UsersChat');
 const getAllProjects = async (req, res) => {
     try {
         const projects = await Project.find().populate('user', '_id displayname email');
@@ -79,12 +80,32 @@ const createProject = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
+        let unread_messages = {};
+        unread_messages[user._id] = 0;
+        const chat = new Chat({
+            groupName: req.body.name,
+            type: 'group',
+            members: [user._id],
+            groupAvatar:"https://res.cloudinary.com/dwj0nj7d6/image/upload/v1731223362/Evolution/sp9gkw5kn8sjxvhju7aq.png",
+            //admin: user._id
+            createdBy: user._id,
+
+            unread_messages:unread_messages,
+
+        })
+        await chat.save();
+        const setUsersChat = await UsersChat.findOneAndUpdate({user_id:user._id},
+            {$push:{chats:{chat_id:chat._id,type:"group",isActive:true,joinedAt:Date.now()}}},
+            {upsert:true}
+        );
         const newProject = new Project({
             name: req.body.name,
+            groupChatId:chat._id,
             description: req.body.description,
             user: req.body.user,
             components:{}
         });
+
         const savedProject = await newProject.save();
         user.projects.push(savedProject._id);
         await user.save();
