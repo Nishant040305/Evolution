@@ -5,20 +5,27 @@ const User = require('../models/User');
 const getChatDetails = async (chatId) => {
     try {
         // Step 1: Retrieve the chat document by its ID
-        const chat = await Chat.findById(chatId).populate('participants'); // Optionally populate participant details
+        const chat = await Chat.findById(chatId); // Optionally populate participant details
         if (!chat) {
             return { error: "Chat not found" };
         }
-
+        
         // Step 2: Get the last message (if any)
-        const lastMessage = chat.messages && chat.messages.length > 0 ? chat.messages[chat.messages.length - 1] : null;
-
+        const lastMessage = await Message.findOne({ chat_id: chat._id })
+                .sort({ timestamp: -1 })
+                .limit(1);
         // Step 3: Get participants information
-        const participants = chat.participants.map((user) => ({
-            user_id: user._id,
-            name: user.name,
-            avatar: user.avatar || '/default-avatar.png',
-        }));
+        const participants = await Promise.all(
+            chat.members.map(async (memberId) => {
+                const member = await User.findById(memberId).select('displayname avatar email');
+                return {
+                    user_id: member._id,
+                    username: member.displayname,
+                    avatar: member.avatar,
+                    email: member.email,
+                };
+            })
+        );
 
         // Step 4: Format the chat details to return
         const chatDetails = {
@@ -356,7 +363,7 @@ const LeaveGroup = async (req, res) => {
         }
         await Chat.updateOne(
             { _id: chatId },
-            { $pull: { members: { user: user._id } } }
+            { $pull: { members: user._id } }
         );
         await UsersChat.updateOne(
             { user_id: user._id },
@@ -364,6 +371,7 @@ const LeaveGroup = async (req, res) => {
         );
         //get the whole chat data of the chat
         const chatDetails = await getChatDetails(chatId);
+        console.log("Chat details",chatDetails);
         res.status(200).json({
              success: true,
              data: chatDetails,

@@ -25,9 +25,9 @@ const CollaborationRequestNotification = ({ notification, onAccept, onDecline })
 
   return (
     <div
-      className={`flex flex-col p-4 rounded-lg shadow-md transition-transform transform ${
+      className={`flex flex-col p-4 rounded-lg  shadow-md transition-transform transform ${
         notification.read ? 'bg-gray-100' : 'bg-white'
-      } hover:scale-[1.01]`}
+      } hover:scale-[1.001] `}
     >
       {/* Header Section */}
       <div className="flex items-center space-x-3">

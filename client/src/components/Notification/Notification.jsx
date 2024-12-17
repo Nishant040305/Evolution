@@ -190,7 +190,7 @@ const NotificationPage = () => {
       </div>
 
       {/* Notification List */}
-      <div className="mt-4 space-y-2 overflow-y-scroll scrollbar_edit" style={{ maxHeight: '73vh' }}>
+      <div className="mt-4 space-y-2 overflow-y-scroll overflow-x-hidden scrollbar_edit" style={{ maxHeight: '73vh' }}>
         {filteredNotifications.length > 0 ? (
           filteredNotifications.map((notification) => {
             switch (notification.type) {
