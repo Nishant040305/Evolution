@@ -17,6 +17,7 @@ import AnalyticsTab from "./AnalyticsTab";
 import RolesTab from "./RolesTab";
 import VersionHistoryTab from "./VersionHistoryTab";
 import ManageCollaboratorsTab from "./ManageCollaboratorsTab";
+import { SocketRefreshOrganizationChanges } from "../../event/SocketEvent";
 // Registering the chart elements
 ChartJS.register(
   CategoryScale,
@@ -51,6 +52,7 @@ const CombinedProjectModal = ({ project, onClose, onUpdate,toast }) => {
   const handleSave = async() => {
     await API.updateProject(project._id, updatedProject);
     onUpdate(project._id, updatedProject);
+    SocketRefreshOrganizationChanges(project._id)
     onClose();
   ;}
 
@@ -76,6 +78,7 @@ const CombinedProjectModal = ({ project, onClose, onUpdate,toast }) => {
       await API.revertProjectVersion(project._id, version);
       await fetchVersionHistory();
       toast.success(`Reverted to version: ${version}`);
+      SocketRefreshOrganizationChanges(project._id)
     } catch (error) {
       console.error("Failed to revert version:", error);
     }

@@ -72,6 +72,8 @@ const NotificationPage = () => {
       console.log(groupChatId)
       const chat = await APINotif.addUserToGroupChat(groupChatId,[userId,]);
       SocketAcceptFriendRequest(chat.data);
+      SocketRefreshOrganizationChanges(projectId);
+      
     } catch (error) {
       console.error('Error accepting collaboration request:', error);
     }

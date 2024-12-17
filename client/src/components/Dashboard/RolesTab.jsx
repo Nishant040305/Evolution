@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ApiDashboard from "../../scripts/API.Dashboard";
 import { FaUserCircle, FaCrown, FaPen, FaEye } from "react-icons/fa";
+import { SocketRefreshOrganizationChanges } from "../../event/SocketEvent";
 
 const RolesTab = ({ toast, project }) => {
   const roleOptions = [
@@ -22,7 +23,7 @@ const RolesTab = ({ toast, project }) => {
     try {
       const projectID = project;
       await API.UpdateCollaboratorRole(projectID, selectedCollaborator.user, selectedRole);
-
+      SocketRefreshOrganizationChanges(projectID)
       setCollaborators((prevCollaborators) =>
         prevCollaborators.map((collab) =>
           collab.user === selectedCollaborator.user ? { ...collab, role: selectedRole } : collab

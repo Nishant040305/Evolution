@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ApiDashboard from "../../scripts/API.Dashboard"; // Assuming the API methods are in this file
 import { FaUser, FaUserShield, FaUserEdit } from "react-icons/fa";
 import {FaHourglassHalf} from "react-icons/fa";
+import { SocketRefreshOrganizationChanges, SocketSendNotificationToUser } from "../../event/SocketEvent";
 const ManageCollaboratorsTab = ({ project, toast}) => {
   const [newCollaboratorEmail, setNewCollaboratorEmail] = useState("");
   const [newCollaboratorRole, setNewCollaboratorRole] = useState("editor");
@@ -58,12 +59,13 @@ const ManageCollaboratorsTab = ({ project, toast}) => {
 
       // Invite collaborator to the project
       const projectID = project;  // Assuming project has an _id
-      await API.inviteCollaborator(projectID, newCollaboratorRole, userDetails._id);
-
+      const response =await API.inviteCollaborator(projectID, newCollaboratorRole, userDetails._id);
+      SocketSendNotificationToUser(response.Notification);
+      SocketRefreshOrganizationChanges(projectID);
       // Add collaborator to the collaborators list
       setCollaborators(prevCollaborators => [
         ...prevCollaborators,
-        { user: userDetails._id, role: newCollaboratorRole, userData:userDetails }
+        { user: userDetails._id,status:"pending", role: newCollaboratorRole, userData:userDetails }
       ]);
       setNewCollaboratorEmail("");
       setUserDetails(null);  // Reset user details

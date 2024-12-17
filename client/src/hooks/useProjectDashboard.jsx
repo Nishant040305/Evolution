@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { socket } from "../scripts/socket";
 
 const useProjects = (userId, APIUser) => {
   const [projects, setProjects] = useState([]);
@@ -27,6 +28,9 @@ const useProjects = (userId, APIUser) => {
   };
 
   useEffect(() => {
+    socket.on('organizationChanges',(data)=>{
+      fetchProjects();
+    })
     fetchProjects();
   }, [userId]);
 

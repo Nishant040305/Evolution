@@ -82,3 +82,10 @@ export const SocketDeclineFriendRequest = (notificationId) => {
 export const SocketSendNotificationToUser = (NotificationId) => {
     socket.emit('sendNotification', NotificationId);
 };
+/**
+ * Emit an event to refresh the organization changes.
+ * @param {string} projectId - The ID of the project.
+ */
+export const SocketRefreshOrganizationChanges = (projectId) => {
+    socket.emit('organizationChanges',projectId);
+};

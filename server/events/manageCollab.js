@@ -1,4 +1,18 @@
+const Porject = require('../models/Project');
 module.exports = (io,socket) => {
+    //organization changes
+    socket.on('organizationChanges',async(data)=>{
+        try{
+            const project = await Porject.findById(data);
+            if(!project){
+                return;
+            }
+            io.to(project.groupChatId).emit('organizationChanges',project);
+        }catch(error){
+            console.log(error);
+        }
+    })
+
     //collaborator added
     socket.on('collaboratorAdded', async (data) => {
         try {
