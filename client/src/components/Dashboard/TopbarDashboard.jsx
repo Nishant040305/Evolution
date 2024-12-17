@@ -20,11 +20,10 @@ const TopBar = ({ searchQuery, setSearchQuery }) => {
   };
 
   const handleNavigateToSettings = () => {
-    navigate("/main/settings"); // Navigate to Settings Page
+    navigate(url.SettingsMain); // Navigate to Settings Page
   };
   const handleNavigateToSocial = () => {
-    console.log("control")
-    navigate("/social"); // Navigate to Social Page
+    navigate(url.SocialMain); // Navigate to Social Page
   };
   console.log(url)
   return (

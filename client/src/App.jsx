@@ -67,7 +67,7 @@ const App = () => {
       />
 
       {/* Fallback Route */}
-      <Route path="*" element={ <LoginMain />} />
+      <Route path="*" element={ isAuthenticated ?<ProjectDashboard />:<LoginMain />} />
       <Route path={url.SocialMain} element={isAuthenticated ? <SocialMain/> : <LoginMain />} />
     </Routes>
   );

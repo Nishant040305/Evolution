@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ApiDashboard from "../../scripts/API.Dashboard";
+import { SocketRefreshOrganizationChanges } from "../../event/SocketEvent";
 
 const ProjectSettingsModal = ({ project, onClose, onUpdate }) => {
   const [updatedProject, setUpdatedProject] = useState({
@@ -15,6 +16,7 @@ const ProjectSettingsModal = ({ project, onClose, onUpdate }) => {
     console.log({...project,...updatedProject})
     API.updateProject(project._id, updatedProject);
     onUpdate(project._id,updatedProject);
+    SocketRefreshOrganizationChanges(project._id);
     onClose();
   };
   return (

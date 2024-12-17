@@ -32,7 +32,7 @@ const useProjects = (userId, APIUser) => {
       fetchProjects();
     })
     fetchProjects();
-  }, [userId]);
+  }, [userId,socket]);
 
   useEffect(() => {
     const filterProjects = () => {
