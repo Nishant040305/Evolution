@@ -3,6 +3,7 @@ import React from "react";
 import components from "../../lib";
 import server from "../../server.json";
 import axios from "axios";
+import { FaToolbox,FaTools,FaProjectDiagram,FaFileAlt } from "react-icons/fa";
 import { viewChange } from "../../Store/webElementSlice";
 const { Button, TextArea, Label, Input, Select, Div, Anchor, Article, Section, Nav, Footer, Header, H1, H2, H3, H4, H5, H6, Paragraph } = components;
 import {
@@ -35,6 +36,7 @@ import ProjectOverview from "./ProjectOverview";
 import ElementContainer from "./ElementContainer";
 import MediaSection from "./MediaContainer";
 import ProjectFileSideBar from "./ProjectFileSideBar";
+import HoverInfoWrapper from "../utility/toolTip";
 const LeftSidebar = ({
   toggleRight,
   setStatusCode,
@@ -144,37 +146,46 @@ const LeftSidebar = ({
         <div className="flex flex-col h-full w-80">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b bg-red-50">
-            <div className="flex">
+            <div className="flex w-full justify-between">
+            <HoverInfoWrapper info="Components" position={"bottom"}>
               <button
                 onClick={() => setCurrentTab("components")}
-                className={`px-2 py-1.5 rounded-md transition-all mr-1 ${
+                className={`px-4 py-1.5 rounded-md transition-all mr-1 ${
                   currentTab === "components"
                     ? "bg-red-500 text-white"
                     : "text-gray-600 hover:bg-red-100"
                 }`}
               >
-                Components
+                  <FaTools className="w-4 h-4" />
               </button>
+              </HoverInfoWrapper>
+
+              <HoverInfoWrapper info="Project Overview" position={"bottom"}>
               <button
                 onClick={() => setCurrentTab("project")}
-                className={`px-3 py-1.5 rounded-md transition-all mr-1 ${
+                className={`px-4 py-1.5 rounded-md transition-all mr-1 ${
                   currentTab === "project"
                     ? "bg-red-500 text-white"
                     : "text-gray-600 hover:bg-red-100"
                 }`}
               >
-                Elements
+                  <FaProjectDiagram className="w-4 h-4" />
+                 
               </button>
+              </HoverInfoWrapper>
+              <HoverInfoWrapper info="Files" position={"bottom"}>
               <button
                 onClick={() => setCurrentTab("files")}
-                className={`px-3 py-1.5 rounded-md transition-all ${
+                className={`px-4 py-1.5 rounded-md transition-all ${
                   currentTab === "files"
                     ? "bg-red-500 text-white"
                     : "text-gray-600 hover:bg-red-100"
                 }`}
               >
-                Files
+                  <FaFileAlt className="w-4 h-4" />
               </button>
+              </HoverInfoWrapper>
+
             </div>
           </div>
 
