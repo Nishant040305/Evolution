@@ -31,7 +31,7 @@ const WebsiteBuilder = () => {
   const [js, setJs] = useState("// Write your JS code here...");
   const [id, set] = useState(0);
   const [file, setFile] = useState({
-    type: 'text/html',
+    name: 'index.html',
     useDefault: 'components',
   });
   const [ScreenSize, setScreenSize] = useState("desktop");
@@ -116,12 +116,10 @@ const WebsiteBuilder = () => {
   }, [projectID]);
 
   useEffect(() => {
-    const statusCodes = {
-      "text/html": 0,
-      "text/css": 2,
-      "text/javascript": 1,
-    };
-    setStatusCode(statusCodes[file.type]);
+    if (file.name.endsWith(".html")) setStatusCode(0);
+    else if (file.name.endsWith(".css")) setStatusCode(2);
+    else if (file.name.endsWith(".js")) setStatusCode(1);
+    else setStatusCode(3);
   }, [file])
 
   return (
