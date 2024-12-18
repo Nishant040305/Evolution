@@ -14,7 +14,7 @@ const ManageCollaboratorsTab = ({ project, toast}) => {
   const roleIcons = {
     "editor": <FaUserShield />,
     "viewer": <FaUser />,
-    "owner": <FaUserEdit />
+    "admin": <FaUserEdit />
   };
 
   // Fetch suggestions based on email input

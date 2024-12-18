@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { socket } from "../scripts/socket";
-
+import { useSelector } from "react-redux";
 const useProjects = (userId, APIUser) => {
   const [projects, setProjects] = useState([]);
   const [sharedProjects, setSharedProjects] = useState([]);
@@ -9,7 +8,7 @@ const useProjects = (userId, APIUser) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const organizationChanges = useSelector((state) => state.organization);
   const fetchProjects = async () => {
     try {
       setIsLoading(true);
@@ -28,11 +27,9 @@ const useProjects = (userId, APIUser) => {
   };
 
   useEffect(() => {
-    socket.on('organizationChanges',(data)=>{
-      fetchProjects();
-    })
     fetchProjects();
-  }, [userId,socket]);
+    console.log("organization Changes at Use",organizationChanges)
+  }, [userId,organizationChanges]);
 
   useEffect(() => {
     const filterProjects = () => {

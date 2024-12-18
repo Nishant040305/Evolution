@@ -36,11 +36,10 @@ const DeleteProjectModal = ({ isOpen, onClose, onConfirm, project }) => {
   );
 };
 
-const ProjectCard = ({ project, onDelete, onClick, onUpdate, toast }) => {
+const ProjectCard = ({ project, onDelete, onClick, onUpdate, toast,isShared }) => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isCombinedModalOpen, setIsCombinedModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-
   const handleEditClick = (e) => {
     e.stopPropagation();
     setIsSettingsOpen(true);
@@ -67,22 +66,21 @@ const ProjectCard = ({ project, onDelete, onClick, onUpdate, toast }) => {
   const closeDeleteModal = () => {
     setIsDeleteModalOpen(false); // Close the delete modal
   };
-
+  console.log(isShared)
   return (
     <div className="relative p-6 transition-shadow border border-red-200 rounded-lg h-72 hover:shadow-lg group">
-      <button
+      {isShared=="owner" && <button
         onClick={handleDeleteClick}
         className="absolute p-2 text-red-700 transition-opacity top-4 right-4 hover:text-red-600 group-hover:opacity-100"
       >
         <Trash2 className="w-5 h-5" />
-      </button>
-
-      <button
+      </button>}
+      {(isShared=="admin"||isShared=="owner") && <button
         onClick={handleEditClick}
         className="absolute p-2 text-red-700 transition-opacity top-4 right-12 hover:text-blue-600 group-hover:opacity-100"
       >
         <Edit className="w-5 h-5" />
-      </button>
+      </button>}
 
       <button
         onClick={handleCombinedModalClick}

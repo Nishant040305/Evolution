@@ -7,7 +7,9 @@ module.exports = (io,socket) => {
             if(!project){
                 return;
             }
-            io.to(project.groupChatId).emit('organizationChanges',project);
+            const id = project.groupChatId.toString();
+            console.log("Organization Changes",id);
+            io.to(id).emit('organizationChanges',project._id);
         }catch(error){
             console.log(error);
         }

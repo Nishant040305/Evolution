@@ -8,6 +8,7 @@ import userReducer from './Store/userSlice';
 import ImageSlice from './Store/imageSlice';
 import projectSlice from './Store/projectSlice';
 import ChatSlice from './Store/Chat';
+import organizationSlice from './Store/Organization';
 import NotificationSlice from './Store/Notifications';
 // Root reducer with undo functionality for specific slices
 const rootReducer = combineReducers({
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   project:projectSlice,
   chat:ChatSlice,
   notifications: NotificationSlice,
+  organization:organizationSlice,
 });
 const persistConfig = {
   key: 'root',

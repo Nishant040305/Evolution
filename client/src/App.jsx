@@ -22,6 +22,7 @@ import LoadNotifications from "./hooks/LoadNotifications";
 import { useSocketNotifications } from "./event/Notifications";
 import { useSocketAcceptFriendRequest } from "./event/AcceptRequest";
 import { socket } from "./scripts/socket";
+import { useSocketOrganizationChanges } from "./event/OrgChange";
 const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.user);
@@ -38,6 +39,7 @@ const App = () => {
   useSocketDeleteMessage();
   useSocketNotifications();
   useSocketAcceptFriendRequest();
+  useSocketOrganizationChanges();
   return (
     <Routes>
       {/* Landing Page */}

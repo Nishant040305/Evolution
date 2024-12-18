@@ -1,6 +1,6 @@
 import React from "react";
 import ProjectCard from "./ProjectCard";
-
+import { useSelector } from "react-redux";
 const ProjectList = ({
   isSharedView,
   filteredProjects,
@@ -11,7 +11,9 @@ const ProjectList = ({
   onProjectClick,
   isLoading,
   toast,
-}) => (
+}) => {
+  const userId = useSelector((state) => state.user.userInfo._id);
+  return(
   <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
     <button
       onClick={onCreate}
@@ -32,11 +34,12 @@ const ProjectList = ({
               onClick={onProjectClick}
               onUpdate={onUpdate}
               toast={toast}
+              isShared={isSharedView?project.members.find(member => member.user===userId).role:"owner"}
             />
           )
       )
     )}
   </div>
-);
+);}
 
 export default ProjectList;
