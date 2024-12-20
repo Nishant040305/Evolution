@@ -57,11 +57,11 @@ const ComponentEditorContent = ({ id , toast }) => {
       </h3>
       {on && <>
       {/* Textarea Content */}
-      {element.type === "textarea" && (<TextAreaContent handleContentChange={handleContentChange} element={element} />)}
+      {element.type === "textarea" && (<TextAreaContent handleContentChange={handleAttributeChange} element={element} />)}
       {/* Anchor Content */}
       {element.type === "a" && (<AnchorContent handleContentChange={handleContentChange} handleStyleChange={handleStyleChange} handleAttributes={handleAttributeChange} element={element} />)}
       {/* Input Placeholder */}
-      {element.type === "input" && (<InputContent handleContentChange={handleContentChange} element={element} />)}
+      {element.type === "input" && (<InputContent handleContentChange={handleAttributeChange} element={element} />)}
       {/* Button Content */}
       {element.type === "button" && (<ButtonContent handleContentChange={handleContentChange} handleHtmlAttributes={handleHtmlAttributes} element={element} toast={toast} />)}
       {/* Label Content */}
