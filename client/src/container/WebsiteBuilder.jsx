@@ -130,6 +130,7 @@ const WebsiteBuilder = () => {
         js={js}
         toast = {toast}
         setStatusCode={setStatusCode}
+        file={file}
       />
       <div className="flex flex-1">
         <LeftSidebar

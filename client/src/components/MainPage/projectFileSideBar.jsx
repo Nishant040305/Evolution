@@ -1,64 +1,108 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-import { FileText, FileCode, Palette, MoreHorizontal } from "lucide-react";
+import { FileText, FileCode, Palette, Trash, Copy } from "lucide-react";
 import ApiDashboard from "../../scripts/API.Dashboard";
 
-const ProjectFileSideBar = ({ file, setFile }) => {
+const ProjectFileSideBar = ({ file, setFile, toast }) => {
   const { projectID } = useParams();
   const API = new ApiDashboard();
 
   const [files, setFiles] = useState([]);
-  const [dropdownVisible, setDropdownVisible] = useState(null);
-  const dropdownRef = useRef(null);
 
-  useEffect(() => {
-    const fetchFiles = async () => {
+  const fetchFiles = async () => {
+    try {
       const projectComp = await API.getProjectById(projectID);
       const sortedFiles = projectComp.files.sort((a, b) =>
         a.name.localeCompare(b.name)
       );
       setFiles(sortedFiles);
-    };
-    fetchFiles();
-  }, [projectID]);
-
-  // Close dropdown on outside click
-  useEffect(() => {
-    const handleOutsideClick = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setDropdownVisible(null);
-      }
-    };
-    document.addEventListener("mousedown", handleOutsideClick);
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, []);
-
-  const handleOpen = (name) => {
-    if (!dropdownVisible) {
-      const selectedFile = files.find((f) => f.name === name);
-      setFile(selectedFile);
-      console.log("Opening file:", selectedFile.name);
+    } catch (error) {
+      toast.error("Failed to fetch project files.");
     }
   };
 
-  const handleAdd = () => {
-    console.log("Add a new file");
+  useEffect(() => {
+    fetchFiles();
+  }, [projectID]);
+
+  const handleOpen = (name) => {
+    const selectedFile = files.find((f) => f.name === name);
+    if (selectedFile) setFile(selectedFile);
   };
 
-  const handleDelete = (name) => {
+  const createFile = (name) => {
+    if (files.some((f) => f.name === name)) {
+      toast.error("File already exists!");
+      return null;
+    }
+
+    const newfile = { name };
+    if (name.endsWith(".html")) newfile.components = {};
+    else if (name.endsWith(".css")) newfile.cssContent = "";
+    else if (name.endsWith(".js")) newfile.javascriptContent = "";
+
+    return newfile;
+  };
+
+  const handleAdd = async () => {
+    const name = window.prompt("Enter the name of the new file:");
+    if (!name) return;
+
+    const newfile = createFile(name);
+    if (!newfile) return;
+
+    try {
+      await API.updateProject(projectID, {
+        files: [...files, newfile],
+      });
+      await fetchFiles();
+      setFile(newfile);
+    } catch (error) {
+      toast.error("Failed to add file.");
+    }
+  };
+
+  const handleDelete = async (name) => {
     console.log("Deleting file:", name);
-    setDropdownVisible(null);
+    const targetFile = files.find((f) => f.name === name);
+    if (!targetFile) return;
+
+    if (targetFile.useDefault) {
+      toast.error("Cannot delete default file!");
+      return;
+    }
+
+    try {
+      const updatedFiles = files.filter((f) => f.name !== name);
+      await API.updateProject(projectID, { files: updatedFiles });
+      await fetchFiles();
+      if (file?.name === name) setFile(files.find((f) => f.name === "index.html"));
+    } catch (error) {
+      toast.error("Failed to delete file.");
+    }
   };
 
-  const handleCopy = (name) => {
+  const handleCopy = async (name) => {
     console.log("Copying file:", name);
-    setDropdownVisible(null);
-  };
+    const newname = window.prompt("Enter the name of the copied file:");
+    if (!newname) return;
 
-  const toggleDropdown = (name) => {
-    setDropdownVisible(dropdownVisible === name ? null : name);
+    const targetFile = files.find((f) => f.name === name);
+    const newfile = createFile(newname);
+    if (!targetFile || !newfile) return;
+
+    newfile.components = targetFile.components;
+    newfile.cssContent = targetFile.cssContent;
+    newfile.javascriptContent = targetFile.javascriptContent;
+
+    try {
+      await API.updateProject(projectID, {
+        files: [...files, newfile],
+      });
+      await fetchFiles();
+    } catch (error) {
+      toast.error("Failed to copy file.");
+    }
   };
 
   const renderFileName = (name) => {
@@ -72,7 +116,6 @@ const ProjectFileSideBar = ({ file, setFile }) => {
   };
 
   const renderFileIcon = (name) => {
-    console.log(name);
     if (name.endsWith(".html")) return <FileText className="w-5 h-5 text-orange-500" />;
     if (name.endsWith(".css")) return <Palette className="w-5 h-5 text-blue-500" />;
     if (name.endsWith(".js")) return <FileCode className="w-5 h-5 text-yellow-500" />;
@@ -82,6 +125,12 @@ const ProjectFileSideBar = ({ file, setFile }) => {
   return (
     <div className="p-4">
       <h2 className="text-lg font-semibold text-gray-700 mb-4">Project Files</h2>
+      <button
+        onClick={handleAdd}
+        className="w-full mb-4 px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+      >
+        Create New File
+      </button>
       <ul className="space-y-2">
         {files.map((f) => (
           <li
@@ -98,51 +147,29 @@ const ProjectFileSideBar = ({ file, setFile }) => {
               <div>{renderFileName(f.name)}</div>
             </div>
 
-            {/* Dropdown Button */}
-            <div className="relative" ref={dropdownRef}>
+            <div className="flex items-center space-x-2">
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  toggleDropdown(f.name);
+                  handleCopy(f.name);
                 }}
-                className="p-2 text-gray-500 hover:text-blue-500"
+                className="p-2 text-blue-500 hover:text-blue-600"
               >
-                <MoreHorizontal className="w-5 h-5" />
+                <Copy className="w-5 h-5" />
               </button>
-
-              {dropdownVisible === f.name && (
-                <div className="absolute right-0 mt-2 bg-white border rounded-md shadow-md z-10">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDelete(f.name);
-                    }}
-                    className="block px-4 py-2 text-red-500 hover:bg-gray-100"
-                  >
-                    Delete
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleCopy(f.name);
-                    }}
-                    className="block px-4 py-2 text-blue-500 hover:bg-gray-100"
-                  >
-                    Copy&nbsp;&nbsp;
-                  </button>
-                </div>
-              )}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDelete(f.name);
+                }}
+                className="p-2 text-red-500 hover:text-red-600"
+              >
+                <Trash className="w-5 h-5" />
+              </button>
             </div>
           </li>
         ))}
       </ul>
-
-      <button
-        onClick={handleAdd}
-        className="w-full mt-4 px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
-      >
-        Create New File
-      </button>
     </div>
   );
 };

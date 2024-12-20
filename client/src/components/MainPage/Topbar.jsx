@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import url from "../../url.json";
 import ConfirmationModal from "./ConfirmationModal";  // Import the ConfirmationModal
 
-const TopBar = ({ setScreenSize, css, js, setStatusCode, toast }) => {
+const TopBar = ({ setScreenSize, css, js, setStatusCode, toast, file }) => {
   const dispatch = useDispatch();
   const handleUndo = () => {
     dispatch(ActionCreators.undo());
@@ -99,7 +99,7 @@ const TopBar = ({ setScreenSize, css, js, setStatusCode, toast }) => {
         </div>
       </div>
       <div className="flex items-center mb-2 space-x-4 text-lg font-semibold text-rose-800">
-        {projectinfo.name}
+        {projectinfo.name + " - " + file.name}
       </div>
       <div className="flex items-center space-x-4">
         <button
