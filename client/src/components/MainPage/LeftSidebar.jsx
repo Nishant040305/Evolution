@@ -227,7 +227,7 @@ const LeftSidebar = ({
               // Project Overview
               <ProjectOverview webElements={webElements} setId={setId} toggleRight={toggleRight} setStatusCode={setStatusCode} handleDelete={handleDelete} handleViewChange={handleViewChange} />
             ):  (
-              <ProjectFileSideBar file={file} setFile={setFile} />
+              <ProjectFileSideBar file={file} setFile={setFile} toast={toast} />
             ) }
           </div>
         </div>
