@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import ApiDashboard from "../scripts/API.Dashboard";
 import useSaveProject from "../hooks/useSaveProject";
 
-const PublishPage = ( { css, js ,toast} ) => {
+const PublishPage = ( { toast} ) => {
   const webElements = useSelector(state => state.webElement.present);
   const project = useSelector(state => state.project);
   const apiDashboard = new ApiDashboard();
@@ -67,7 +67,7 @@ const PublishPage = ( { css, js ,toast} ) => {
     const id = getProjectId();
 
     try {
-      const res = await apiDashboard.publishProject(id, htmlContent, css, js);
+      const res = await apiDashboard.publishProject(id, htmlContent);
       console.log(res);
       window.open(`${import.meta.env.VITE_REACT_APP_BACKWEB}/${res.data.domain}`, "_blank");
     } catch (error) {
@@ -82,7 +82,7 @@ const PublishPage = ( { css, js ,toast} ) => {
     const id = getProjectId();
 
     try {
-      await apiDashboard.publishProject(id, htmlContent, css, js);
+      await apiDashboard.publishProject(id, htmlContent);
     } catch (error) {
       console.error("Failed to save content:", error);
       toast.error("Failed to save content. Please try again.");

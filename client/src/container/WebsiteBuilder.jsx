@@ -117,8 +117,14 @@ const WebsiteBuilder = () => {
 
   useEffect(() => {
     if (file.name.endsWith(".html")) setStatusCode(0);
-    else if (file.name.endsWith(".css")) setStatusCode(2);
-    else if (file.name.endsWith(".js")) setStatusCode(1);
+    else if (file.name.endsWith(".css")) {
+      setStatusCode(2);
+      setCss(file.content);
+    }
+    else if (file.name.endsWith(".js")) {
+      setStatusCode(1);
+      setJs(file.content);
+    }
     else setStatusCode(3);
   }, [file])
 

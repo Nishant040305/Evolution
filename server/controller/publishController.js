@@ -8,7 +8,7 @@ const lighthouse = require('../utils/lighthouse.js');
 require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
 
 const publishProject = async (req, res) => {
-    const { id, htmlContent, style_css, script_js } = req.body;
+    const { id, htmlContent } = req.body;
 
     const project = await Project.findById(id);
     const { name, description, keywords } = project;
@@ -19,8 +19,6 @@ const publishProject = async (req, res) => {
 
     const projectDir = path.join(__dirname, `../public/${id}`);
     const htmlPath = path.join(projectDir, 'index.html');
-    const cssPath = path.join(projectDir, 'style.css');
-    const jsPath = path.join(projectDir, 'script.js');
 
     // Create the directory if it doesn't exist
     if (!fs.existsSync(projectDir)) {
@@ -28,6 +26,7 @@ const publishProject = async (req, res) => {
     }
 
     // Full HTML content with head and body structure
+    // TODO: Take files to import from project
     const index_html = 
     `<!DOCTYPE html>
     <html lang="en">
@@ -52,23 +51,7 @@ const publishProject = async (req, res) => {
             return res.status(500).json({ error: 'Error saving HTML file.' });
         }
 
-        // Write CSS file if provided
-        if (style_css) {
-            fs.writeFile(cssPath, style_css, (err) => {
-                if (err) {
-                    return res.status(500).json({ error: 'Error saving CSS file.' });
-                }
-            });
-        }
-
-        // Write JS file if provided
-        if (script_js) {
-            fs.writeFile(jsPath, script_js, (err) => {
-                if (err) {
-                    return res.status(500).json({ error: 'Error saving JS file.' });
-                }
-            });
-        }
+        // TODO: Write all files in project.files
 
         // Increment the project version and save it
         project.publishVersion += 1;

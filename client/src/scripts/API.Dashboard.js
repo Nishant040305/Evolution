@@ -107,10 +107,10 @@ class ApiDashboard {
     }
 
     // Publish a project by ID
-    async publishProject(id, htmlContent, style_css, script_js) {
+    async publishProject(id, htmlContent) {
         const endpoint = this.endpoints.PublishProject.replace(':id', id);
         try {
-            const response = await axios.post(`${this.baseURL}${endpoint}`, { id, htmlContent, style_css, script_js });
+            const response = await axios.post(`${this.baseURL}${endpoint}`, { id, htmlContent });
             return response.data;
         } catch (error) {
             console.error(`Failed to publish project with ID ${id}:`, error);

@@ -110,25 +110,22 @@ const ProjectSchema = new Schema({
         name: 'index.html',
         components: false,
         timestamp: Date.now,
-        useDefault: 'components', // use components field
+        useDefault: true,
       },
       {
         name: 'style.css',
-        cssContent: false,
+        content: false,
         timestamp: Date.now,
-        useDefault: 'javascriptContent', // use javascriptContent field
       },
       {
         name: 'script.js',
-        javascriptContent: false,
+        content: false,
         timestamp: Date.now,
-        useDefault: 'cssContent', // use cssContent field
       },
       /*
       {
         name: 'myCoolFolder/myNotSoCoolFile.js',
         content: 'console.log("Hello world!")',
-        type: 'text/javascript',
         timestamp: Date.now,
       }
       */
