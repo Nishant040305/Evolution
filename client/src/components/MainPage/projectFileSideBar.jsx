@@ -39,8 +39,7 @@ const ProjectFileSideBar = ({ file, setFile, toast }) => {
 
     const newfile = { name };
     if (name.endsWith(".html")) newfile.components = {};
-    else if (name.endsWith(".css")) newfile.cssContent = "";
-    else if (name.endsWith(".js")) newfile.javascriptContent = "";
+    else newfile.content = "";
 
     return newfile;
   };

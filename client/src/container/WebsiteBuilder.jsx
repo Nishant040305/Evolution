@@ -89,6 +89,16 @@ const WebsiteBuilder = () => {
     });
   };
 
+  const getDefaultComponents = async () => {
+    try {
+      const projectComp = await API.getProjectById(projectID);
+      return projectComp?.components;
+    } catch (error) {
+      console.log(error);
+    }
+    return null;
+  };
+
   const fetchProject = async () => {
     try {
       const projectComp = await API.getProjectById(projectID);
@@ -116,11 +126,31 @@ const WebsiteBuilder = () => {
   }, [projectID]);
 
   useEffect(() => {
+    // load file editor
     if (file.name.endsWith(".html")) setStatusCode(0);
     else if (file.name.endsWith(".css")) setStatusCode(2);
     else if (file.name.endsWith(".js")) setStatusCode(1);
     else setStatusCode(3);
-    setText(file.content);
+
+    // load file
+    if (file.useDefault) {
+      getDefaultComponents().then((components) => {
+        dispatch(setElement(components));
+        console.log("Loaded default");
+      });
+    }
+    else if (file.name.endsWith(".html")) {
+      dispatch(setElement(file.components));
+      console.log("Loaded HTML");
+      console.log(webElement);
+    }
+    else {
+      setText(file.content);
+      console.log("Loaded text");
+    }
+
+    // close right sidebar
+    setRightSidebarOpen(false);
   }, [file])
 
   return (
