@@ -3,7 +3,7 @@ import serverConfig from '../server.json';
 
 class ApiDashboard {
     constructor(baseURL) {
-        this.baseURL = import.meta.env.VITE_REACT_APP_BACKWEB;
+        this.baseURL = baseURL || import.meta.env.VITE_REACT_APP_BACKWEB;
         this.endpoints = serverConfig.Project;
         // Create an axios instance with the base URL
         this.api = axios.create({
@@ -14,7 +14,7 @@ class ApiDashboard {
     // Fetch all projects
     async getAllProjects() {
         try {
-            const response = await axios.get(`${this.baseURL}${this.endpoints.GetAllProject}`);
+            const response = await this.api.get(this.endpoints.GetAllProject);
             return response.data;
         } catch (error) {
             console.error("Failed to fetch projects:", error);
@@ -26,7 +26,7 @@ class ApiDashboard {
     async getProjectById(id) {
         const endpoint = this.endpoints.GetProjectById.replace(':id', id);
         try {
-            const response = await axios.get(`${this.baseURL}${endpoint}`);
+            const response = await this.api.get(endpoint);
             return response.data;
         } catch (error) {
             console.error(`Failed to fetch project with ID ${id}:`, error);
@@ -38,7 +38,7 @@ class ApiDashboard {
     async getProjectVersionHistory(id) {
         const endpoint = this.endpoints.GetProjectVersionHistory.replace(':id', id);
         try {
-            const response = await axios.get(`${this.baseURL}${endpoint}`);
+            const response = await this.api.get(endpoint);
             return response.data;
         } catch (error) {
             console.error(`Failed to fetch project version history with ID ${id}:`, error);
@@ -50,7 +50,7 @@ class ApiDashboard {
     async revertProjectVersion(id, version) {
         const endpoint = this.endpoints.RevertProject.replace(':id', id);
         try {
-            const response = await axios.post(`${this.baseURL}${endpoint}`, { version });
+            const response = await this.api.post(endpoint, { version });
             return response.data;
         } catch (error) {
             console.error(`Failed to revert project version with ID ${id}:`, error);
@@ -60,9 +60,8 @@ class ApiDashboard {
 
     // Create a new project
     async createProject(projectData) {
-
         try {
-            const response = await axios.post(`${this.baseURL}${this.endpoints.CreatProject}`, projectData);
+            const response = await this.api.post(this.endpoints.CreatProject, projectData);
             return response.data;
         } catch (error) {
             console.error("Failed to create project:", error);
@@ -78,6 +77,42 @@ class ApiDashboard {
             return response.data;
         } catch (error) {
             console.error(`Failed to update project components with ID ${id}:`, error);
+            throw error;
+        }
+    }
+
+    // Create a new project's file by ID
+    async createProjectFile(id, file) {
+        const endpoint = this.endpoints.ProjectFile.replace(':id', id);
+        try {
+            const response = await this.api.post(endpoint, file);
+            return response.data;
+        } catch (error) {
+            console.error(`Failed to create project file with ID ${id}:`, error);
+            throw error;
+        }
+    }
+
+    // Delete a project's file by ID and file name
+    async deleteProjectFile(id, name) {
+        const endpoint = this.endpoints.ProjectFile.replace(':id', id);
+        try {
+            const response = await this.api.delete(endpoint, { data: { name } });
+            return response.data;
+        } catch (error) {
+            console.error(`Failed to delete project file with ID ${id} and file name ${name}:`, error);
+            throw error;
+        }
+    }
+
+    // Update a project's file by ID and file name
+    async updateProjectFile(id, name, data) {
+        const endpoint = this.endpoints.ProjectFile.replace(':id', id);
+        try {
+            const response = await this.api.put(endpoint, { name, data });
+            return response.data;
+        } catch (error) {
+            console.error(`Failed to update project file with ID ${id} and file name ${name}:`, error);
             throw error;
         }
     }
@@ -110,7 +145,7 @@ class ApiDashboard {
     async publishProject(id, htmlContent) {
         const endpoint = this.endpoints.PublishProject.replace(':id', id);
         try {
-            const response = await axios.post(`${this.baseURL}${endpoint}`, { id, htmlContent });
+            const response = await this.api.post(endpoint, { id, htmlContent });
             return response.data;
         } catch (error) {
             console.error(`Failed to publish project with ID ${id}:`, error);
@@ -122,7 +157,7 @@ class ApiDashboard {
     async downloadProject(id) {
         const endpoint = this.endpoints.DownloadProject.replace(':id', id);
         try {
-            const response = await axios.get(`${this.baseURL}${endpoint}`, {
+            const response = await this.api.get(endpoint, {
                 responseType: 'blob' // Set response type to 'blob' to handle binary data
             });
             return response.data;
@@ -131,6 +166,8 @@ class ApiDashboard {
             throw error;
         }
     }
+
+    // TODO: add these to server.json
     async FindUserByEmail(email) {
         try {
             const response = await axios.get(`${this.baseURL}/api/user/${email}`)
