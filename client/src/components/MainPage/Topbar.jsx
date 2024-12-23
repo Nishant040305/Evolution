@@ -7,6 +7,8 @@ import {
   Smartphone,
   Settings,
 } from "lucide-react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faDownload, faUpload } from '@fortawesome/free-solid-svg-icons';
 import { ActionCreators } from "redux-undo";
 import { useDispatch, useSelector } from "react-redux";
 import PublishPage from "../../hooks/PublishPage";
@@ -132,19 +134,19 @@ const TopBar = ({ setScreenSize, setStatusCode, toast, file }) => {
           className="px-3 py-1.5 bg-rose-100 hover:bg-rose-200 rounded-lg text-rose-800"
           onClick={handlePreview}
         >
-          Preview
+          <FontAwesomeIcon icon={faEye} />
         </button>
         <button
           className="px-3 py-1.5 bg-rose-100 hover:bg-rose-200 rounded-lg text-rose-800"
           onClick={handleDownload}
         >
-          Download
+          <FontAwesomeIcon icon={faDownload} />
         </button>
         <button
           className="px-3 py-1.5 bg-rose-800 text-white rounded-lg hover:bg-rose-900"
           onClick={handlePublish}
         >
-          Publish
+          <FontAwesomeIcon icon={faUpload} />
         </button>
       </div>
 
