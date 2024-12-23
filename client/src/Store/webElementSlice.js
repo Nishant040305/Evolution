@@ -5,7 +5,7 @@ const webElementSlice= createSlice({
     initialState:{},
     reducers:{
         setElement:(state,action)=>{
-            return action.payload;
+            return action.payload || {};
         },
         setPosition:(state,action)=>{
             if (!state[action.payload.id].position || state[action.payload.id].parent)
@@ -85,6 +85,7 @@ const webElementSlice= createSlice({
             return newEl
         },
         setAttribute:(state,action)=>{
+            if (!state[action.payload.id]) return state;
             return{
                 ...state,
                 [action.payload.id]:{
