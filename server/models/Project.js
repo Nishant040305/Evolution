@@ -95,14 +95,14 @@ const ProjectSchema = new Schema({
     type: Schema.Types.Mixed,
     default: {}
   },
-  javascriptContent: {
-    type: String,
-    default: ""
-  },
-  cssContent: {
-    type: String,
-    default: ""
-  },
+  // javascriptContent: {
+  //   type: String,
+  //   default: ""
+  // },
+  // cssContent: {
+  //   type: String,
+  //   default: ""
+  // },
   files: {
     type: Schema.Types.Mixed,
     default: [
@@ -114,12 +114,12 @@ const ProjectSchema = new Schema({
       },
       {
         name: 'style.css',
-        content: false,
+        content: "",
         timestamp: Date.now,
       },
       {
         name: 'script.js',
-        content: false,
+        content: "",
         timestamp: Date.now,
       },
       /*

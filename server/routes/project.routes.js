@@ -8,7 +8,8 @@ const upload = multer({ storage });
 const { 
     projectController, 
     publishController, 
-    memberController 
+    memberController,
+    fileController,
 } = require("../controller");
 
 const {
@@ -24,6 +25,7 @@ const {
 } = projectController;
 const { publishProject, openProject, downloadProject } = publishController;
 const { inviteMember, updateMemberRole, removeMember,acceptCollaboration } = memberController;
+const { createFile, deleteFile, updateFile } = fileController;
 
 // middlewares
 const { UserVerifier } = require("../middleware/credMiddleware");
@@ -105,6 +107,33 @@ router.put(
   UserVerifier,
   authorize(permissions.manageProject),
   updateProject
+);
+
+// @route    POST /api/project/:id/file
+// @desc     Create a new project's file by id
+router.post(
+  "/:id/file",
+  UserVerifier,
+  authorize(permissions.editProject),
+  createFile
+);
+
+// @route    DELETE /api/project/:id/file
+// @desc     Delete a project's file by id
+router.delete(
+  "/:id/file",
+  UserVerifier,
+  authorize(permissions.editProject),
+  deleteFile
+);
+
+// @route    PUT /api/project/:id/file
+// @desc     Update a project's file by id
+router.put(
+  "/:id/file",
+  UserVerifier,
+  authorize(permissions.editProject),
+  updateFile
 );
 
 // @route    PUT /api/project/:id/components

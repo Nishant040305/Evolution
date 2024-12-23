@@ -27,12 +27,12 @@ const WebsiteBuilder = () => {
   const [leftSidebarOpen, setLeftSidebarOpen] = useState(true);
   const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
   const [statusCode, setStatusCode] = useState(0);
-  const [css, setCss] = useState("/* Write your CSS code here... */");
-  const [js, setJs] = useState("// Write your JS code here...");
+  const [text, setText] = useState("");
   const [id, set] = useState(0);
   const [file, setFile] = useState({
-    name: 'index.html',
-    useDefault: 'components',
+    name: "index.html",
+    components: false,
+    useDefault: true,
   });
   const [ScreenSize, setScreenSize] = useState("desktop");
   const webElementRef = useRef(webElement); // Create a ref for the last webElement
@@ -97,8 +97,8 @@ const WebsiteBuilder = () => {
         dispatch(setElement(projectComp.components));
         dispatch(setData(projectComp.media));
         dispatch(setProject(projectComp));
-        setCss(projectComp.cssContent || "/* Write your CSS code here... */");
-        setJs(projectComp.javascriptContent || "// Write your JS code here...");
+        setFile(projectComp.files.find((f) => f.name === "index.html"));
+        console.log(file);
 
         console.log(webElement);
         reloadEvents();
@@ -117,23 +117,16 @@ const WebsiteBuilder = () => {
 
   useEffect(() => {
     if (file.name.endsWith(".html")) setStatusCode(0);
-    else if (file.name.endsWith(".css")) {
-      setStatusCode(2);
-      setCss(file.content);
-    }
-    else if (file.name.endsWith(".js")) {
-      setStatusCode(1);
-      setJs(file.content);
-    }
+    else if (file.name.endsWith(".css")) setStatusCode(2);
+    else if (file.name.endsWith(".js")) setStatusCode(1);
     else setStatusCode(3);
+    setText(file.content);
   }, [file])
 
   return (
     <div className="flex flex-col h-screen">
       <TopBar
         setScreenSize={setScreenSize}
-        css={css}
-        js={js}
         toast = {toast}
         setStatusCode={setStatusCode}
         file={file}
@@ -150,9 +143,9 @@ const WebsiteBuilder = () => {
         {statusCode == 0 ? (
           <MainCanvas ScreenSize={ScreenSize} reloadEvents={reloadEvents} toast={toast}  />
         ) : statusCode == 1 ? (
-          <CodeEditorJS js={js} setJs={setJs} />
+          <CodeEditorJS js={text} setJs={setText} file={file} />
         ) : statusCode == 2 ? (
-          <CodeEditorCSS css={css} setCss={setCss} />
+          <CodeEditorCSS css={text} setCss={setText} file={file} />
         ) : (
           <MainCanvas ScreenSize={ScreenSize} reloadEvents={reloadEvents} toast={toast} />
         )}

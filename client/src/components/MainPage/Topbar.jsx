@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import url from "../../url.json";
 import ConfirmationModal from "./ConfirmationModal";  // Import the ConfirmationModal
 
-const TopBar = ({ setScreenSize, css, js, setStatusCode, toast, file }) => {
+const TopBar = ({ setScreenSize, setStatusCode, toast, file }) => {
   const dispatch = useDispatch();
   const handleUndo = () => {
     dispatch(ActionCreators.undo());
@@ -22,7 +22,7 @@ const TopBar = ({ setScreenSize, css, js, setStatusCode, toast, file }) => {
   const projectinfo = useSelector((state) => state.project);
   const navigate = useNavigate();
   const handleRedo = () => dispatch(ActionCreators.redo());
-  const { preview, download, publish } = PublishPage({ css, js, toast });
+  const { preview, download, publish } = PublishPage({ toast });
 
   // Modal States
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);

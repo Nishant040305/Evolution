@@ -6,21 +6,21 @@ import { Save } from 'lucide-react';
 import { useSelector } from "react-redux";
 import ApiDashboard from "../../scripts/API.Dashboard";
 
-const CodeEditorJS = ({ js, setJs }) => {
+const CodeEditorJS = ({ js, setJs, file }) => {
   const apiDashboard = new ApiDashboard();
   const project = useSelector(state => state.project);
   const [changesSaved, setChangesSaved] = useState(false);
 
   const handleSave = useCallback(async () => {
     try {
-      const response = await apiDashboard.updateProject(project._id, { javascriptContent: js });
+      const response = await apiDashboard.updateProjectFile(project._id, file.name, { content: js });
       console.log('Saved successfully:', response);
       setChangesSaved(true);
       setTimeout(() => setChangesSaved(false), 2000);
     } catch (error) {
       console.error("Failed to save JS:", error);
     }
-  }, [apiDashboard, js, project._id]);
+  }, [apiDashboard, js, file.name, project._id]);
 
   // Event listener for Ctrl+S
   useEffect(() => {

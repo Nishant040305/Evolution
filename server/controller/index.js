@@ -4,6 +4,7 @@ const publishController = require('./publishController');
 const memberController = require('./memberController');
 const credController = require('./credController');
 const imageController = require('./imageController');
+const fileController = require('./fileController');
 
 module.exports = {
   projectController,
@@ -12,4 +13,5 @@ module.exports = {
   imageController,
   userController,
   publishController,
+  fileController,
 };

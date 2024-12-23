@@ -6,21 +6,21 @@ import { Save } from 'lucide-react';
 import { useSelector } from "react-redux";
 import ApiDashboard from "../../scripts/API.Dashboard";
 
-const CodeEditorCSS = ({ css, setCss }) => {
+const CodeEditorCSS = ({ css, setCss, file }) => {
   const apiDashboard = new ApiDashboard();
   const project = useSelector(state => state.project);
   const [changesSaved, setChangesSaved] = useState(false);
 
   const handleSave = useCallback(async () => {
     try {
-      const response = await apiDashboard.updateProject(project._id, { cssContent: css });
+      const response = await apiDashboard.updateProjectFile(project._id, file.name, { content: css });
       console.log('CSS Saved:', response);
       setChangesSaved(true);
       setTimeout(() => setChangesSaved(false), 2000);
     } catch (error) {
       console.error("Failed to save CSS:", error);
     }
-  }, [apiDashboard, css, project._id]);
+  }, [apiDashboard, css, file.name, project._id]);
 
   // Event listener for Ctrl+S
   useEffect(() => {

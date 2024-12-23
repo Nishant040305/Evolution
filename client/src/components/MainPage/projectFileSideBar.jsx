@@ -25,7 +25,8 @@ const ProjectFileSideBar = ({ file, setFile, toast }) => {
     fetchFiles();
   }, [projectID]);
 
-  const handleOpen = (name) => {
+  const handleOpen = async (name) => {
+    await fetchFiles();
     const selectedFile = files.find((f) => f.name === name);
     if (selectedFile) setFile(selectedFile);
   };
@@ -52,13 +53,13 @@ const ProjectFileSideBar = ({ file, setFile, toast }) => {
     if (!newfile) return;
 
     try {
-      await API.updateProject(projectID, {
-        files: [...files, newfile],
-      });
+      await API.createProjectFile(projectID, newfile);
       await fetchFiles();
-      setFile(newfile);
+      if (files.some(f => f.name === name)) setFile(newfile);
+      else throw new Error("Failed to add file.");
     } catch (error) {
-      toast.error("Failed to add file.");
+      console.error("Failed to add file:", error);
+      toast.error("Failed to create file.");
     }
   };
 
@@ -73,8 +74,7 @@ const ProjectFileSideBar = ({ file, setFile, toast }) => {
     }
 
     try {
-      const updatedFiles = files.filter((f) => f.name !== name);
-      await API.updateProject(projectID, { files: updatedFiles });
+      await API.deleteProjectFile(projectID, name);
       await fetchFiles();
       if (file?.name === name) setFile(files.find((f) => f.name === "index.html"));
     } catch (error) {
@@ -92,13 +92,11 @@ const ProjectFileSideBar = ({ file, setFile, toast }) => {
     if (!targetFile || !newfile) return;
 
     newfile.components = targetFile.components;
-    newfile.cssContent = targetFile.cssContent;
-    newfile.javascriptContent = targetFile.javascriptContent;
+    newfile.content = targetFile.content;
+    if (targetFile.useDefault) toast.error("Components failed to copy.");
 
     try {
-      await API.updateProject(projectID, {
-        files: [...files, newfile],
-      });
+      await API.createProjectFile(projectID, newfile);
       await fetchFiles();
     } catch (error) {
       toast.error("Failed to copy file.");
