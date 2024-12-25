@@ -1,6 +1,16 @@
 const { Schema, model } = require('mongoose');
 const User = require('./User');
 
+const fileSchema = new Schema({
+  name: { type: String, required: true },
+  timestamp: { type: Date, default: Date.now },
+  content: { type: String, default: "" },
+  components: { type: Schema.Types.Mixed, default: undefined }, // false if file is index.html
+  styles: { type: [String], default: [] },
+  scripts: { type: [String], default: [] },
+  useDefault: { type: Boolean, default: undefined }, // true if file is index.html
+});
+
 const ProjectSchema = new Schema({
   name: {
     type: String,
@@ -95,40 +105,30 @@ const ProjectSchema = new Schema({
     type: Schema.Types.Mixed,
     default: {}
   },
-  // javascriptContent: {
-  //   type: String,
-  //   default: ""
-  // },
-  // cssContent: {
-  //   type: String,
-  //   default: ""
-  // },
   files: {
-    type: Schema.Types.Mixed,
-    default: [
+    type: [fileSchema],
+    default: () => [
       {
         name: 'index.html',
         components: false,
-        timestamp: Date.now,
+        styles: ["style.css"],
+        scripts: ["script.js"],
         useDefault: true,
       },
       {
         name: 'style.css',
-        content: "",
-        timestamp: Date.now,
+        content: "/* Add your custom CSS here */",
       },
       {
         name: 'script.js',
-        content: "",
-        timestamp: Date.now,
+        content: "/* Write custom JavaScript here */",
       },
-      /*
       {
-        name: 'myCoolFolder/myNotSoCoolFile.js',
-        content: 'console.log("Hello world!")',
-        timestamp: Date.now,
+        name: 'homepage.html',
+        components: {},
+        styles: ["style.css"],
+        scripts: ["script.js"],
       }
-      */
     ]
   },
   media: {
