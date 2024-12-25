@@ -32,6 +32,11 @@ const ProjectFileSideBar = ({ file, setFile, toast }) => {
   };
 
   const createFile = (name) => {
+    if (name === "report.html") {
+      toast.error("File name reserved.");
+      return null;
+    }
+
     if (files.some((f) => f.name === name)) {
       toast.error("File already exists!");
       return null;
