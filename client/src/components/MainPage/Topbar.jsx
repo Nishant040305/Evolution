@@ -15,6 +15,7 @@ import PublishPage from "../../hooks/PublishPage";
 import { useNavigate } from "react-router-dom";
 import url from "../../url.json";
 import ConfirmationModal from "./ConfirmationModal";  // Import the ConfirmationModal
+import HoverInfoWrapper from "../utility/toolTip";
 
 const TopBar = ({ setScreenSize, setStatusCode, toast, file }) => {
   const dispatch = useDispatch();
@@ -130,48 +131,60 @@ const TopBar = ({ setScreenSize, setStatusCode, toast, file }) => {
             <Smartphone className="w-4 h-4" />
           </button>
         </div>
+
+        <HoverInfoWrapper info="Preview" position="bottom">
         <button
           className="px-3 py-1.5 bg-rose-100 hover:bg-rose-200 rounded-lg text-rose-800"
-          onClick={handlePreview}
+          onClick={handleConfirmPreview}
         >
           <FontAwesomeIcon icon={faEye} />
         </button>
+        </HoverInfoWrapper>
+
+        <HoverInfoWrapper info="Download" position="bottom">
         <button
           className="px-3 py-1.5 bg-rose-100 hover:bg-rose-200 rounded-lg text-rose-800"
-          onClick={handleDownload}
+          onClick={handleConfirmDownload}
         >
           <FontAwesomeIcon icon={faDownload} />
         </button>
+        </HoverInfoWrapper>
+
+        <HoverInfoWrapper info="Publish" position="bottom">
         <button
           className="px-3 py-1.5 bg-rose-800 text-white rounded-lg hover:bg-rose-900"
-          onClick={handlePublish}
+          onClick={handleConfirmPublish}
         >
           <FontAwesomeIcon icon={faUpload} />
         </button>
+        </HoverInfoWrapper>
+
+        {/* TODO: Refactor, move Download to Files and add redirect to site without publishing, add project settings etc. */}
+
       </div>
 
-      {/* Confirmation Modals */}
+      {/* Confirmation Modals
       <ConfirmationModal
         isOpen={isPreviewModalOpen}
         onClose={() => setIsPreviewModalOpen(false)}
         onConfirm={handleConfirmPreview}
         title="Preview Project"
-        message="Are you sure you want to preview this project? All changes will be saved."
+        message="Are you sure you want to preview this project? Save changes before previewing."
       />
       <ConfirmationModal
         isOpen={isDownloadModalOpen}
         onClose={() => setIsDownloadModalOpen(false)}
         onConfirm={handleConfirmDownload}
         title="Download Project"
-        message="Are you sure you want to download this project? All changes will be saved."
+        message="Are you sure you want to download this project? Save changes before downloading."
       />
       <ConfirmationModal
         isOpen={isPublishModalOpen}
         onClose={() => setIsPublishModalOpen(false)}
         onConfirm={handleConfirmPublish}
         title="Publish Project"
-        message="Are you sure you want to publish this project? All changes will be saved."
-      />
+        message="Are you sure you want to publish this project? Save changes before publishing."
+      /> */}
     </div>
   );
 };

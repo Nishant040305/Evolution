@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux";
 import ApiDashboard from "../scripts/API.Dashboard";
-import useSaveProject from "../hooks/useSaveProject";
 
 const PublishPage = ( { toast} ) => {
   const webElements = useSelector(state => state.webElement.present);
@@ -8,8 +7,6 @@ const PublishPage = ( { toast} ) => {
   const apiDashboard = new ApiDashboard();
 
   const getProjectId = () => project._id;
-
-  const { saveProject } = useSaveProject();
 
   const getHTMLContent = () => {
     let htmlContent = document.getElementById("canvas").innerHTML;
@@ -40,7 +37,6 @@ const PublishPage = ( { toast} ) => {
   };
 
   const download = async () => {
-    saveProject();
     try {
       const response = await apiDashboard.downloadProject(getProjectId());
       console.log("Downloaded project:", response);
@@ -62,7 +58,6 @@ const PublishPage = ( { toast} ) => {
   };
 
   const publish = async () => {
-    saveProject();
     const htmlContent = getHTMLContent();
     const id = getProjectId();
 
@@ -76,24 +71,10 @@ const PublishPage = ( { toast} ) => {
     }
   };
 
-  const saveAllChanges = async () => {
-    saveProject();
-    const htmlContent = getHTMLContent();
-    const id = getProjectId();
-
-    try {
-      await apiDashboard.publishProject(id, htmlContent);
-    } catch (error) {
-      console.error("Failed to save content:", error);
-      toast.error("Failed to save content. Please try again.");
-    }
-  };
-
   return {
     preview,
     download,
     publish,
-    saveAllChanges,
   };
 };
 

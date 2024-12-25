@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Timer, Save } from "lucide-react";
 import { useParams } from "react-router-dom";
-import useSaveProject from "../../hooks/useSaveProject";
 import { useSelector } from "react-redux";
+
 const BottomBar = () => {
-  const { userId, projectID } = useParams();
+  const { projectID } = useParams();
   const project = useSelector((state) => state.user.userInfo.projects);
   const webElements = useSelector((state) => state.webElement.present);
 
   const [isVisible, setIsVisible] = useState(false);
 
   const handleSave = () => {
-    if (webElements && project.includes(projectID)) {
-      API.updateProjectComponents(projectID, webElements);
-    }
+    console.log("Not implemented");
   };
 
   // Function to handle mouse movement

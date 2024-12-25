@@ -7,28 +7,8 @@ const Project = require('../models/Project');
 const lighthouse = require('../utils/lighthouse.js');
 require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
 
-const publishProject = async (req, res) => {
-    const { id, htmlContent } = req.body;
-
-    const project = await Project.findById(id);
-    const { name, description, keywords } = project;
-    
-    if (!id || !htmlContent) {
-        return res.status(400).json({ error: 'ID and HTML content are required.' });
-    }
-
-    const projectDir = path.join(__dirname, `../public/${id}`);
-    const htmlPath = path.join(projectDir, 'index.html');
-
-    // Create the directory if it doesn't exist
-    if (!fs.existsSync(projectDir)) {
-        fs.mkdirSync(projectDir, { recursive: true });
-    }
-
-    // Full HTML content with head and body structure
-    // TODO: Take files to import from project
-    const index_html = 
-    `<!DOCTYPE html>
+const getHTML = (name, description, keywords, htmlContent, styles, scripts) => {
+    return `<!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -37,28 +17,68 @@ const publishProject = async (req, res) => {
         <meta name="description" content="${description}">
         ${keywords.map(keyword => `<meta name="keywords" content="${keyword}">`).join('')}
         <meta name="robots" content="index, follow">
-        <link rel="stylesheet" href="../public/${id}/style.css">
+        ${styles.map(style => `<link rel="stylesheet" href="${style}">`).join('')}
     </head>
     <body>
         ${htmlContent}
-        <script src="../public/${id}/script.js"></script>
+        ${scripts.map(script => `<script src="${script}"></script>`).join('')}
     </body>
     </html>`;
+}
 
-    // Write HTML file
-    fs.writeFile(htmlPath, index_html, async (err) => {
-        if (err) {
-            return res.status(500).json({ error: 'Error saving HTML file.' });
+const saveFile = (projectDir, file, content) => {
+    return new Promise((resolve, reject) => {
+        const filePath = path.join(projectDir, file.name);
+        const dirPath = path.dirname(filePath);
+
+        // Ensure the directory exists
+        fs.mkdir(dirPath, { recursive: true }, (err) => {
+            if (err) {
+                console.error("Error creating directories:", err);
+                return reject(err);
+            }
+
+            // Write the file
+            fs.writeFile(filePath, content, (err) => {
+                if (err) {
+                    console.error("Error saving file:", err);
+                    return reject(err);
+                } else {
+                    console.log("File saved successfully");
+                    resolve();
+                }
+            });
+        });
+    });
+};
+
+const publishProject = async (req, res) => {
+    const { id, htmlContent } = req.body;
+    if (!id || !htmlContent) return res.status(400).json({ error: 'ID and HTML content are required.' });
+
+    const project = await Project.findById(id);
+    const { name, description, keywords } = project;
+    const projectDir = path.join(__dirname, `../public/${id}`);
+    const index_html = getHTML(name, description, keywords, htmlContent, [], []);
+
+    try {
+        // Save all files
+        for (const file of project.files) {
+            let content = file.content;
+            if (!content) {
+                content = file.useDefault ? index_html : ""; // TODO: Get all files from project
+            }
+            await saveFile(projectDir, file, content); // Await the saveFile operation
         }
-
-        // TODO: Write all files in project.files
 
         // Increment the project version and save it
         project.publishVersion += 1;
         await project.save();
-
         res.status(200).json({ message: 'Files saved successfully.', data: project });
-    });
+    } catch (err) {
+        console.error("Error saving files:", err);
+        res.status(500).json({ error: 'Error saving files.' });
+    }
 };
 
 const openProject = async (req, res) => {

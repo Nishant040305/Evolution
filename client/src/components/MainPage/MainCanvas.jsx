@@ -2,65 +2,29 @@ import { useEffect, useCallback, useRef } from "react";
 import ComponentRenderer from "./ComponentRenderer";
 import { useSelector, useDispatch } from "react-redux";
 import { setPosition, removeChild } from "../../Store/webElementSlice";
-import ApiDashboard from "../../scripts/API.Dashboard";
 import { useParams } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {tips} from "../../constants/Tips";
-const MainCanvas = ({ ScreenSize, reloadEvents, rightSidebarOpen,toast }) => {
+import useSaveComponents from "../../hooks/useSaveComponents";
+import useTips from "../../hooks/useTips";
+
+const MainCanvas = ({ ScreenSize, reloadEvents, rightSidebarOpen, toast }) => {
   const dispatch = useDispatch();
   const webElements = useSelector((state) => state.webElement.present);
   const webElementsRef = useRef(webElements);
   const project = useSelector((state) => state.project);
-  const apiDashboard = new ApiDashboard();
 
   useEffect(() => {
-    toast.success(tips[Math.floor(Math.random() * tips.length)],
-      {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "dark",
-      }
-    );
-  }, []);
+    webElementsRef.current = webElements;
+  }, [webElements]);
+
+  // Tips
+  useTips(toast);
 
   // Event listener for Ctrl+S
-  const updateWebElements = () => {
-    // Create a copy of webElements with updated dimensions
-    const updatedElements = JSON.parse(JSON.stringify(webElementsRef.current));
-    
-    Object.keys(webElementsRef.current).forEach((key) => {
-      const element = document.getElementById("canvas-element " + key);
-      const { height, width } = element.getBoundingClientRect();
-      console.log(height, width);
-
-      updatedElements[key].styles = {
-        ...updatedElements[key].styles || {},
-        height,
-        width,
-      };
-    });
-  
-    return updatedElements;
-  };
-
   const { projectID } = useParams();
   const pid = projectID || project._id;
-
-  const handleSaveCallback = useCallback(async () => {
-    try {
-      const response = await apiDashboard.updateProjectComponents(pid, updateWebElements());
-      console.log('Components Saved:', response);
-      toast.success("Components Saved!");
-    } catch (error) {
-      console.error("Failed to save by Ctrl+S:", error);
-    }
-  }, [apiDashboard, pid]);
-
+  const { handleSaveCallback } = useSaveComponents(pid, toast, webElementsRef);
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.ctrlKey && event.key === 's') {
@@ -75,10 +39,6 @@ const MainCanvas = ({ ScreenSize, reloadEvents, rightSidebarOpen,toast }) => {
       document.removeEventListener('keydown', handleKeyDown); // Cleanup on unmount
     };
   }, []);
-
-  useEffect(() => {
-    webElementsRef.current = webElements;
-  }, [webElements]);
 
   const handleDragOver = (event) => {
     event.preventDefault(); // Allow elements to be dropped by preventing default behavior
