@@ -414,6 +414,7 @@ const editGroupChatName = async (req, res) => {
 const editGroupChatIcon = async (req, res) => {
     try {
         const { chatId, groupImage } = req.body;
+        console.log("hello",chatId,groupImage);
         const user = await User.findById(req.user._id);
         if (!user || !user.verify) {
             return res.status(404).json({ error: 'User not found or not verified' });

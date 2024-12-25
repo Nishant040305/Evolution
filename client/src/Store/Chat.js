@@ -156,6 +156,18 @@ const ChatSlice = createSlice({
         }
       }
     },
+    updateNameChat: (state, action) => {
+      const { chatId, name } = action.payload;
+      state.chats = state.chats.map((chat) =>
+        chat.chat_id === chatId ? { ...chat, chat_name: name } : chat
+      );
+    },
+    updateIconChat: (state, action) => {
+      const { chatId, icon } = action.payload;
+      state.chats = state.chats.map((chat) =>
+        chat.chat_id === chatId ? { ...chat, chat_avatar: icon } : chat
+      );
+    },
     
   },
 });
@@ -172,7 +184,9 @@ export const {
   updateReadUser,
   addMessage,
   deleteMessage,
-  addChat
+  addChat,
+  updateNameChat,
+  updateIconChat
 } = ChatSlice.actions;
 
 export default ChatSlice.reducer;

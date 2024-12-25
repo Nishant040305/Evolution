@@ -55,7 +55,9 @@
         "createGroupChat":"/api/chat/chats/group",
         "addUserToGroupChat":"/api/chat/chats/group/add",
         "getMessages":"/api/message/messages",
-        "leaveGroupChat":"/api/chat/chats/group/leave"
+        "leaveGroupChat":"/api/chat/chats/group/leave",
+        "editGroupChatIcon":"/api/chat/chats/group/editIcon",
+        "editGroupChatName":"/api/chat/chats/group/editName"
     },"Notifications":{
         "getNotifications":"/api/notifications/getNotifications",
         "createNotification":"/api/notifications/createNotification",

@@ -89,3 +89,20 @@ export const SocketSendNotificationToUser = (NotificationId) => {
 export const SocketRefreshOrganizationChanges = (projectId) => {
     socket.emit('organizationChanges',projectId);
 };
+/**
+ * Emit an event to refresh the group chats Name.
+ * @param {string} chatId - The ID of the chat.
+ * @param {string} name - The name of the chat.
+ */
+ export const SocketRefreshGroupChatName = (chatId, name) => {
+    socket.emit('groupChatName',chatId);
+};
+
+/**
+ * Emit an event to refresh the group chats Icon.
+ * @param {string} chatId - The ID of the chat.
+ * @param {string} icon - The icon of the chat.
+ */
+ export const SocketRefreshGroupChatIcon = (chatId, icon) => {
+    socket.emit('groupChatIcon',chatId);
+};

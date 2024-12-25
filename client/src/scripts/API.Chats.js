@@ -207,6 +207,42 @@ class Chats {
             throw error;
         }
     }
+    /**
+     * Edit the name of a group chat.
+     * @param {string} chatId - The ID of the group chat to edit.
+     * @param {string} groupName - The new name for the group chat.
+     * @returns {Promise<Object>} - Returns the updated group chat data.
+     * @throws {Error} - Throws an error if the request fails.
+     */
+    async editGroupChatName(chatId, groupName) {
+        try {
+            let endpoint = `${this.baseURL}${server.Chat.editGroupChatName}`;
+            const response = await axios.post(endpoint, { chatId, groupName });
+            return response.data;
+        } catch (error) {
+            console.error("Failed to edit group chat name:", error);
+            throw error;
+        }
+    }
+    /**
+     * Edit the icon of a group chat.
+     * @param {string} chatId - The ID of the group chat to edit.
+     * @param {string} groupImage - The new icon for the group chat.
+     * @returns {Promise<Object>} - Returns the updated group chat data.
+     * @throws {Error} - Throws an error if the request fails.
+     */
+    async editGroupChatIcon(chatId, groupImage) {
+        try {
+            console.log(groupImage);
+            let endpoint = `${this.baseURL}${server.Chat.editGroupChatIcon}`;
+            const response = await axios.post(endpoint, { chatId, groupImage });
+            return response.data;
+        } catch (error) {
+            console.error("Failed to edit group chat icon:", error);
+            throw error;
+        }
+    }   
+     
 }
 
 export default Chats;

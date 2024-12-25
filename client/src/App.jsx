@@ -21,8 +21,9 @@ import { useSocketDeleteMessage } from "./event/deleteMessage";
 import LoadNotifications from "./hooks/LoadNotifications";
 import { useSocketNotifications } from "./event/Notifications";
 import { useSocketAcceptFriendRequest } from "./event/AcceptRequest";
-import { socket } from "./scripts/socket";
 import { useSocketOrganizationChanges } from "./event/OrgChange";
+import {useSocketGroupChatName} from "./event/ChatGroupName";
+import {useSocketGroupChatIcon} from "./event/ChatGroupIcon";
 import CheckFile from "./test/CheckFile";
 const App = () => {
   const dispatch = useDispatch();
@@ -41,6 +42,8 @@ const App = () => {
   useSocketNotifications();
   useSocketAcceptFriendRequest();
   useSocketOrganizationChanges();
+  useSocketGroupChatName();
+  useSocketGroupChatIcon();
   return (
     <Routes>
       {/* Landing Page */}
