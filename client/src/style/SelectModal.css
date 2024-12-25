@@ -1,0 +1,105 @@
+.custom-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.custom-modal {
+    background: white; /* Modal background color */
+    border-radius: 12px;
+    width: 600px;
+    max-width: 90%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Light shadow */
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.custom-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0; /* Light gray border */
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.custom-modal-body {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.custom-modal-footer {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+    border-top: 1px solid #e0e0e0; /* Light gray border */
+    margin-top: 15px;
+}
+
+.option-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* background-color: #f7f7f7; Light gray background */
+    /* padding: 12px 15px; */
+    /* border-bottom: 1px solid #b4b4b4; Light gray border */
+    width: 100%;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333; /* Dark text for contrast */
+    transition: background-color 0.3s, transform 0.2s ease;
+    cursor: pointer;
+}
+
+.option-btn:hover {
+    background-color: #e0e0e0; /* Light gray hover effect */
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.option-btn.selected {
+    background-color: #e7e7e7; /* Selected state with darker gray */
+    color: #333;
+    border-color: #e7e7e7; /* Gray border on selection */
+}
+
+.option-btn span {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.option-btn:focus {
+    outline: none;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #333; /* Dark text for close button */
+}
+
+.select-btn {
+    background-color: #5c6bc0; /* Light blue selection button */
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.select-btn:hover {
+    background-color: #3f51b5; /* Darker blue for hover */
+}
+
+.close-btn:hover {
+    color: #f44336; /* Red hover effect for close button */
+}

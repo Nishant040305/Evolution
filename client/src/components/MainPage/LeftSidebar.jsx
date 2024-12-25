@@ -7,29 +7,15 @@ import { FaToolbox,FaTools,FaProjectDiagram,FaFileAlt } from "react-icons/fa";
 import { viewChange } from "../../Store/webElementSlice";
 const { Button, TextArea, Label, Input, Select, Div, Anchor, Article, Section, Nav, Footer, Header, H1, H2, H3, H4, H5, H6, Paragraph } = components;
 import {
-  ChevronRight,
-  ChevronLeft,
-  ChevronDown,
-  ChevronUp,
-  Grid,
-  Image,
   Code,
   Palette,
-  X,
-  Upload,
-  Plus,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addElement,
-  setElement,
-  setPosition,
-  addChild,
-  removeChild,
   deleteElement,
 } from "../../Store/webElementSlice";
 import ImageElement from "../../lib/img.component";
-import { setImagesMedia } from "../../Store/imageSlice";
 import { useParams } from "react-router-dom";
 import { useCanvasEvents } from "../../hooks/DragDrop";
 import ProjectOverview from "./ProjectOverview";
@@ -37,6 +23,7 @@ import ElementContainer from "./ElementContainer";
 import MediaSection from "./MediaContainer";
 import ProjectFileSideBar from "./ProjectFileSideBar";
 import HoverInfoWrapper from "../utility/toolTip";
+import ApiDashboard from "../../scripts/API.Dashboard";
 const LeftSidebar = ({
   toggleRight,
   setStatusCode,
@@ -44,6 +31,8 @@ const LeftSidebar = ({
   setId,
   file,
   setFile,
+  handleModal,
+  handleData,
 }) => {
   const { projectID } = useParams();
   const dispatch = useDispatch();
@@ -59,7 +48,7 @@ const LeftSidebar = ({
 
   // Refs
   const webElementsRef = useRef(webElements);
-
+  const API = new ApiDashboard();
   // Counter logic
   const evalCounter = (webElements) => {
     let val = 0;
@@ -81,7 +70,36 @@ const LeftSidebar = ({
   useEffect(() => {
     webElementsRef.current = webElements;
   }, [webElements]);
-
+  const fetchFiles = async () => {
+    try {
+      const projectComp = await API.getProjectById(projectID);
+      const sortedFiles = projectComp.files.sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
+      return sortedFiles;
+    } catch (error) {
+      toast.error("Failed to fetch project files.");
+    }
+  };
+  const handleJavaScript = async() => {
+    let data = await fetchFiles();
+    console.log(data);
+    if(data!==null){
+      data=data.filter((f) => f.name.endsWith(".js"));
+    }
+    handleModal(true);
+    handleData(data);
+  }
+  const handleCSS = async() => {
+    let data = await fetchFiles();
+    console.log(data);
+    if(data!==null){
+      data=data.filter((f) => f.name.endsWith(".css"));
+    }
+    handleModal(true);
+    handleData(data); 
+    }
+  
   const sidebarElements = {
     Button: (hash) => Button(hash, canvasEvents),
     TextField: (hash) => TextArea(hash, canvasEvents),
@@ -201,10 +219,7 @@ const LeftSidebar = ({
                 {/* Additional Sections */}
                 <div className="space-y-3">
                   <button
-                    onClick={() => {
-                      setStatusCode(1);
-                      toggleRight(false);
-                    }}
+                    onClick={() => handleJavaScript()}
                     className="flex items-center w-full px-4 py-2 space-x-2 text-gray-700 transition-all rounded-lg hover:bg-red-50"
                   >
                     <Code className="w-4 h-4" />
@@ -212,10 +227,7 @@ const LeftSidebar = ({
                   </button>
 
                   <button
-                    onClick={() => {
-                      setStatusCode(2);
-                      toggleRight(false);
-                    }}
+                    onClick={() => handleCSS()}
                     className="flex items-center w-full px-4 py-2 space-x-2 text-gray-700 transition-all rounded-lg hover:bg-red-50"
                   >
                     <Palette className="w-4 h-4" />

@@ -23,6 +23,7 @@ import { useSocketNotifications } from "./event/Notifications";
 import { useSocketAcceptFriendRequest } from "./event/AcceptRequest";
 import { socket } from "./scripts/socket";
 import { useSocketOrganizationChanges } from "./event/OrgChange";
+import CheckFile from "./test/CheckFile";
 const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.user);
@@ -71,6 +72,7 @@ const App = () => {
       {/* Fallback Route */}
       <Route path="*" element={ isAuthenticated ?<ProjectDashboard />:<LoginMain />} />
       <Route path={url.SocialMain} element={isAuthenticated ? <SocialMain/> : <LoginMain />} />
+      <Route path="/test" element = {<CheckFile></CheckFile>} />
     </Routes>
   );
 };

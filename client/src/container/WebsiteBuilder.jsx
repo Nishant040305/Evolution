@@ -18,9 +18,12 @@ import CodeEditorJS from "../components/MainPage/CodeEditorJS";
 import CodeEditorCSS from "../components/MainPage/CodeEditorCSS";
 import { useCanvasEvents } from "../hooks/DragDrop";
 import { toast } from "react-toastify";
+import SelectModal from "../components/utility/SelectModal";
+import { faSleigh } from "@fortawesome/free-solid-svg-icons";
 const WebsiteBuilder = () => {
   const { projectID } = useParams();
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
   const webElement = useSelector((state) => state.webElement.present);
   const [reloaded, setReloaded] = useState(false);
   const dispatch = useDispatch();
@@ -29,29 +32,14 @@ const WebsiteBuilder = () => {
   const [statusCode, setStatusCode] = useState(0);
   const [text, setText] = useState("");
   const [id, set] = useState(0);
+  const [selectedFileFromModal, setSelectedFileFromModal] = useState(null);
   const [file, setFile] = useState({
     name: "index.html",
     components: false,
     useDefault: true,
   });
   const [ScreenSize, setScreenSize] = useState("desktop");
-  const webElementRef = useRef(webElement); // Create a ref for the last webElement
-  const setId = (id) => {
-    //middleWare for setId
-    console.log("hey", id);
-    let x = parseInt(id);
-    if (webElement[x] == null) {
-      console.log(webElement);
-      console.log(x, "not availabe");
-      setRightSidebarOpen(false);
-      set(0);
-    } else {
-      console.log(id);
-      setRightSidebarOpen(true);
-      set(id);
-    }
-  };
-
+  const [handleData, setHandleData] = useState(null);
   const { canvasEvents } = useCanvasEvents(
     set,
     setRightSidebarOpen,
@@ -169,7 +157,10 @@ const WebsiteBuilder = () => {
           toast={toast}
           file={file}
           setFile={setFile}
+          handleModal={setShowModal}
+          handleData={setHandleData}
         />
+        {showModal&&<SelectModal handleClose={()=>setShowModal(false)} handleSelect={setFile} options={handleData} selectOption={"single"} />}
         {statusCode == 0 ? (
           <MainCanvas ScreenSize={ScreenSize} reloadEvents={reloadEvents} toast={toast}  />
         ) : statusCode == 1 ? (
