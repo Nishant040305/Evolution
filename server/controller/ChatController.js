@@ -381,4 +381,63 @@ const LeaveGroup = async (req, res) => {
         return res.status(500).json({ message: 'Error removing user', error });
     }
 };
-module.exports = { getChatsData,createChat,createGroupChat,addUserToGroupChat,LeaveGroup };
+// To Edit the Group Icon and Name
+const editGroupChatName = async (req, res) => {
+    try {
+        const { chatId, groupName } = req.body;
+        const user = await User.findById(req.user._id);
+        if (!user || !user.verify) {
+            return res.status(404).json({ error: 'User not found or not verified' });
+        }
+        const chat = await Chat.findById(chatId);
+        if (!chat) {
+            return res.status(404).json({ error: 'Chat not found' });
+        }
+        if (chat.type !== 'group') {
+            return res.status(400).json({ error: 'Chat is not a group chat' });
+        }
+        if (!chat.members.some(member => member.toString() === user._id.toString())) {
+            return res.status(400).json({ error: 'User is not a member of the group chat' });
+        }
+        await Chat.updateOne(
+            { _id: chatId },
+            { $set: { groupName } }
+        );
+        res.status(200).json({
+            success: true,
+            message: 'Group chat details updated successfully',
+        });
+    } catch (error) {
+        return res.status(500).json({ message: 'Error updating group chat details', error });
+    }
+};
+const editGroupChatIcon = async (req, res) => {
+    try {
+        const { chatId, groupImage } = req.body;
+        const user = await User.findById(req.user._id);
+        if (!user || !user.verify) {
+            return res.status(404).json({ error: 'User not found or not verified' });
+        }
+        const chat = await Chat.findById(chatId);
+        if (!chat) {
+            return res.status(404).json({ error: 'Chat not found' });
+        }
+        if (chat.type !== 'group') {
+            return res.status(400).json({ error: 'Chat is not a group chat' });
+        }
+        if (!chat.members.some(member => member.toString() === user._id.toString())) {
+            return res.status(400).json({ error: 'User is not a member of the group chat' });
+        }
+        await Chat.updateOne(
+            { _id: chatId },
+            { $set: { groupAvatar: groupImage } }
+        );
+        res.status(200).json({
+            success: true,
+            message: 'Group chat icon updated successfully',
+        });
+    } catch (error) {
+        return res.status(500).json({ message: 'Error updating group chat icon', error });
+    }
+};
+module.exports = { getChatsData,createChat,createGroupChat,addUserToGroupChat,LeaveGroup,editGroupChatName,editGroupChatIcon };
