@@ -135,15 +135,15 @@ const GroupInfo = ({ onClose, onAddParticipant, toast }) => {
               src={newGroupIcon?.image || group.chat_avatar}
               alt={`${group.chat_name} Icon`}
               className="w-12 h-12 rounded-full object-cover cursor-pointer"
-              onClick={() => setIsEditingIcon(true)}
+              onClick={() => setIsEditingIcon(isGroup)}
             />
-            <Edit
+            {isGroup && <Edit
               className="absolute bottom-0 right-0 w-4 h-4 bg-white rounded-full p-1 text-gray-500 cursor-pointer"
-              onClick={() => setIsEditingIcon(true)}
-            />
+              onClick={() => setIsEditingIcon(isGroup)}
+            />}
           </div>
           {/* Group Name */}
-          {isEditingName ? (
+          {isGroup&&isEditingName ? (
             <input
               type="text"
               value={newGroupName}

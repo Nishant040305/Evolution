@@ -1,52 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React  from "react";
 import { FaBell } from "react-icons/fa"; // Assuming you're using react-icons
-
+import FriendRequest from './FriendRequest';
+import CollabrationRequest from './CollaborationRequest';
+import { useSelector } from 'react-redux';
+const Information = ({ notification }) => {
+  return(
+    <div>
+      <p>Information</p>
+    </div>
+  )
+}
 const NotificationsPanel = () => {
-  const [notificationList, setNotificationList] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const notificationList = useSelector((state) => state.notifications);
+  const loading = false;
 
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      setLoading(true);
-      setTimeout(() => {
-        const dummyData = [
-          {
-            id: 1,
-            title: "Collaboration Invitation",
-            message: "You have been invited to collaborate on Project X.",
-            read: false,
-            isInvitation: true,
-          },
-          {
-            id: 2,
-            title: "New Comment",
-            message: "You have a new comment on your post.",
-            read: false,
-          },
-        ];
-        setNotificationList(dummyData);
-        setLoading(false);
-      }, 1000);
-    };
-
-    fetchNotifications();
-  }, []);
-
-  const handleAccept = (id) => {
-    markAsRead(id);
-  };
-
-  const handleDecline = (id) => {
-    markAsRead(id);
-  };
-
-  const markAsRead = (id) => {
-    setNotificationList((prev) =>
-      prev.map((notification) =>
-        notification.id === id ? { ...notification, read: true } : notification
-      )
-    );
-  };
 
   return (
     <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-md">
@@ -57,36 +24,34 @@ const NotificationsPanel = () => {
       {loading ? (
         <p className="text-gray-500">Loading notifications...</p>
       ) : notificationList.length > 0 ? (
-        <ul className="space-y-4">
-          {notificationList.map((notification) => (
-            <li
-              key={notification.id}
-              className={`p-4 rounded-md ${
-                notification.read
-                  ? "bg-gray-100 text-gray-500"
-                  : "bg-red-50 text-gray-700"
-              }`}
-            >
-              <p className="font-medium">{notification.title}</p>
-              <p className="text-sm">{notification.message}</p>
-              {notification.isInvitation && (
-                <div className="flex mt-2 space-x-2">
-                  <button
-                    onClick={() => handleAccept(notification.id)}
-                    className="px-2 py-1 text-white bg-green-500 rounded-md hover:bg-green-600"
-                  >
-                    Accept
-                  </button>
-                  <button
-                    onClick={() => handleDecline(notification.id)}
-                    className="px-2 py-1 text-white bg-red-500 rounded-md hover:bg-red-600"
-                  >
-                    Decline
-                  </button>
-                </div>
-              )}
-            </li>
-          ))}
+        <ul className="space-y-4 w-full">
+          {notificationList.map((notification) => {
+            switch (notification.type) {
+              case 'information':
+                return (
+                  <Information
+                    key={notification._id}
+                    notification={notification}
+                  />
+                );
+              case 'friendRequest':
+                return (
+                  <FriendRequest
+                    key={notification._id}
+                    notification={notification}
+                  />
+                );
+              case 'collaborationRequest':
+                return (
+                  <CollabrationRequest
+                    key={notification._id}
+                    notification={notification}
+                  />
+                );
+              default:
+                return null;
+            }
+      })}
         </ul>
       ) : (
         <p className="text-gray-500">No new notifications</p>

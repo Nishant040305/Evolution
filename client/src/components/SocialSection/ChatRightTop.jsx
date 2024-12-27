@@ -36,7 +36,7 @@ const ChatRightTop = ({setShowGroupInfo,toast}) => {
   return (
     <div className="flex justify-between items-center w-full p-4 bg-white shadow-md rounded-t-lg">
       {/* Left Section: Group/User Icon */}
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center space-x-2" onClick={()=>setShowGroupInfo(true)}>
         <div className="relative w-12 h-12 rounded-full bg-gray-200">
         {isGroupChat ? (
             <img 
