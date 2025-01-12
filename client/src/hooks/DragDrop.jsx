@@ -1,10 +1,6 @@
-import { useState, useRef ,useEffect} from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  addChild,
-  removeChild,
-  addElement
-} from "../Store/webElementSlice";
+import { useRef ,useEffect} from "react";
+import { useDispatch } from "react-redux";
+import { addChild, removeChild } from "../Store/webElementSlice";
 
 export const useCanvasEvents = (setId, toggleRight, webElements) => {
   const dispatch = useDispatch();
@@ -21,7 +17,6 @@ export const useCanvasEvents = (setId, toggleRight, webElements) => {
   };
 
   const onDragStart = (event, elementId) => {
-    handleClick(elementId);
     event.stopPropagation();
     console.log("Dragging.... ", elementId);
     const rect = event.currentTarget.getBoundingClientRect();
