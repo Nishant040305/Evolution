@@ -1,9 +1,9 @@
-import { useState, useCallback } from 'react';
-import ApiDashboard from "../scripts/API.Dashboard";
+import { useState, useCallback, useMemo } from "react";
 import { useSelector } from "react-redux";
+import ApiDashboard from "../scripts/API.Dashboard";
 
 const useSaveFile = (text, file) => {
-  const apiDashboard = new ApiDashboard();
+  const apiDashboard = useMemo(() => new ApiDashboard(), []);
   const project = useSelector(state => state.project);
   const [changesSaved, setChangesSaved] = useState(false);
 
