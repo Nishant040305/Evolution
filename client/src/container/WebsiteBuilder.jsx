@@ -44,7 +44,7 @@ const WebsiteBuilder = () => {
     return null;
   };
 
-  const reloadEvents = useReloadEvents(webElement, canvasEvents);
+  const { reloadEvents } = useReloadEvents(webElement, canvasEvents);
 
   // Fetch project data
   useProjectData(setFile, projectID, reloadEvents);
@@ -73,13 +73,14 @@ const WebsiteBuilder = () => {
         />
         {showModal&&<SelectModal handleClose={()=>setShowModal(false)} handleSelect={setFile} options={handleData} selectOption={"single"} />}
         {statusCode == 0 ? (
-          <MainCanvas ScreenSize={ScreenSize} reloadEvents={reloadEvents} toast={toast}  />
+          <MainCanvas ScreenSize={ScreenSize} reloadEvents={reloadEvents} rightSidebarOpen={rightSidebarOpen} toast={toast}  />
         ) : statusCode == 1 ? (
           <CodeEditorJS js={text} setJs={setText} file={file} />
         ) : statusCode == 2 ? (
           <CodeEditorCSS css={text} setCss={setText} file={file} />
         ) : (
-          <MainCanvas ScreenSize={ScreenSize} reloadEvents={reloadEvents} toast={toast} />
+          // Default case, to be modified later
+          <MainCanvas ScreenSize={ScreenSize} reloadEvents={reloadEvents} rightSidebarOpen={rightSidebarOpen} toast={toast} />
         )}
         {rightSidebarOpen && (
           <RightSidebar

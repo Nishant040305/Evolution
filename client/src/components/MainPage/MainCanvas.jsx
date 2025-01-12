@@ -1,18 +1,19 @@
-import { useEffect, useCallback, useRef } from "react";
-import ComponentRenderer from "./ComponentRenderer";
+import { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setPosition, removeChild } from "../../Store/webElementSlice";
-import { useParams } from "react-router-dom";
+
+import ComponentRenderer from "./ComponentRenderer";
+
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import useSaveComponents from "../../hooks/useSaveComponents";
+
+import { useSaveComponents } from "../../hooks/useSaveComponents";
 import useTips from "../../hooks/useTips";
 
 const MainCanvas = ({ ScreenSize, reloadEvents, rightSidebarOpen, toast }) => {
   const dispatch = useDispatch();
   const webElements = useSelector((state) => state.webElement.present);
   const webElementsRef = useRef(webElements);
-  const project = useSelector((state) => state.project);
 
   useEffect(() => {
     webElementsRef.current = webElements;
@@ -22,24 +23,9 @@ const MainCanvas = ({ ScreenSize, reloadEvents, rightSidebarOpen, toast }) => {
   useTips(toast);
 
   // Event listener for Ctrl+S
-  const { projectID } = useParams();
-  const pid = projectID || project._id;
-  const { handleSaveCallback } = useSaveComponents(pid, toast, webElementsRef);
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.ctrlKey && event.key === 's') {
-        event.preventDefault();
-        console.log('Ctrl+S pressed');
-        handleSaveCallback();
-      }
-    };
+  useSaveComponents(toast, webElementsRef);
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown); // Cleanup on unmount
-    };
-  }, []);
-
+  // Drag and drop
   const handleDragOver = (event) => {
     event.preventDefault(); // Allow elements to be dropped by preventing default behavior
   };
