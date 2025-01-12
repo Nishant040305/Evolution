@@ -1,6 +1,6 @@
 import { useRef ,useEffect} from "react";
 import { useDispatch } from "react-redux";
-import { addChild, removeChild } from "../Store/webElementSlice";
+import { addChild, removeChild, setPosition } from "../Store/webElementSlice";
 
 export const useCanvasEvents = (setId, toggleRight, webElements) => {
   const dispatch = useDispatch();
@@ -96,3 +96,45 @@ export const useCanvasEvents = (setId, toggleRight, webElements) => {
 
   return { canvasEvents };
 };
+
+export const useDragDrop = (webElementsRef, reloadEvents) => {
+  const dispatch = useDispatch();
+
+  const handleDragOver = (event) => {
+    event.preventDefault(); // Allow elements to be dropped by preventing default behavior
+  };
+
+  const handleDrop = (event) => {
+    event.preventDefault();
+
+    try {
+      const data = JSON.parse(event.dataTransfer.getData("text/plain"));
+      const { id: draggedElementId, offsetX, offsetY } = data;
+      const element = webElementsRef.current[draggedElementId];
+
+      console.log("Dropped on canvas ", draggedElementId);
+
+      if (element) {
+        // Calculate drop position relative to the canvas
+        const canvasRect = event.currentTarget.getBoundingClientRect();
+        const dx = event.clientX - canvasRect.left - offsetX;
+        const dy = event.clientY - canvasRect.top - offsetY;
+
+        // Remove child from its parent
+        if (element.parent) {
+          dispatch(
+            removeChild({ id: element.parent, child: draggedElementId })
+          );
+        }
+        // Set new position if element has no parent (placed on canvas)
+        dispatch(setPosition({ id: draggedElementId, dx, dy }));
+      }
+    } catch (error) {
+      console.log("Error dropping element:", error);
+      console.log("Reloading events...");
+      reloadEvents();
+    }
+  };
+
+  return { handleDragOver, handleDrop };
+}

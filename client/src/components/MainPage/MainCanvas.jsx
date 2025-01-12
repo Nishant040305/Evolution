@@ -1,17 +1,16 @@
 import { useEffect, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { setPosition, removeChild } from "../../Store/webElementSlice";
+import { useSelector } from "react-redux";
 
 import ComponentRenderer from "./ComponentRenderer";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import { useDragDrop } from "../../hooks/DragDrop";
 import { useSaveComponents } from "../../hooks/useSaveComponents";
 import useTips from "../../hooks/useTips";
 
 const MainCanvas = ({ ScreenSize, reloadEvents, rightSidebarOpen, toast }) => {
-  const dispatch = useDispatch();
   const webElements = useSelector((state) => state.webElement.present);
   const webElementsRef = useRef(webElements);
 
@@ -26,42 +25,9 @@ const MainCanvas = ({ ScreenSize, reloadEvents, rightSidebarOpen, toast }) => {
   useSaveComponents(toast, webElementsRef);
 
   // Drag and drop
-  const handleDragOver = (event) => {
-    event.preventDefault(); // Allow elements to be dropped by preventing default behavior
-  };
+  const { handleDragOver, handleDrop } = useDragDrop(webElementsRef, reloadEvents);
 
-  const handleDrop = (event) => {
-    event.preventDefault();
-
-    try {
-      const data = JSON.parse(event.dataTransfer.getData("text/plain"));
-      const { id: draggedElementId, offsetX, offsetY } = data;
-      const element = webElementsRef.current[draggedElementId];
-
-      console.log("Dropped on canvas ", draggedElementId);
-
-      if (element) {
-        // Calculate drop position relative to the canvas
-        const canvasRect = event.currentTarget.getBoundingClientRect();
-        const dx = event.clientX - canvasRect.left - offsetX;
-        const dy = event.clientY - canvasRect.top - offsetY;
-
-        // Remove child from its parent
-        if (element.parent) {
-          dispatch(
-            removeChild({ id: element.parent, child: draggedElementId })
-          );
-        }
-        // Set new position if element has no parent (placed on canvas)
-        dispatch(setPosition({ id: draggedElementId, dx, dy }));
-      }
-    } catch (error) {
-      console.log("Error dropping element:", error);
-      console.log("Reloading events...");
-      reloadEvents();
-    }
-  };
-
+  // Get canvas dimensions
   const getHeight = () => {
     if (ScreenSize === "desktop") return "calc(90vh - 64px)";
     if (ScreenSize === "mobile") return "calc(90vh - 48px)";
