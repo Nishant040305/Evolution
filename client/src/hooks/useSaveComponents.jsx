@@ -1,8 +1,10 @@
-import { useState, useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
+import { useParams } from 'react-router-dom';
 import ApiDashboard from "../scripts/API.Dashboard";
 
-const useSaveComponents = (pid, toast, webElementsRef) => {
-  const apiDashboard = new ApiDashboard();
+export const useSaveComponents = (toast, webElementsRef) => {
+  const API = new ApiDashboard();
+  const { projectID } = useParams();
 
   const updateWebElements = () => {
     // Create a copy of webElements with updated dimensions
@@ -25,15 +27,26 @@ const useSaveComponents = (pid, toast, webElementsRef) => {
 
   const handleSaveCallback = useCallback(async () => {
     try {
-      const response = await apiDashboard.updateProjectComponents(pid, updateWebElements());
+      const response = await API.updateProjectComponents(projectID, updateWebElements());
       console.log('Components Saved:', response);
       toast.success("Components Saved!");
     } catch (error) {
       console.error("Failed to save by Ctrl+S:", error);
     }
-  }, [apiDashboard, pid]);
+  }, [projectID]);
 
-  return { handleSaveCallback };
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.key === 's') {
+        event.preventDefault();
+        console.log('Ctrl+S pressed');
+        handleSaveCallback();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown); // Cleanup on unmount
+    };
+  }, []);
 }
-
-export default useSaveComponents;
