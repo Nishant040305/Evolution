@@ -2,7 +2,7 @@ import { useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import ApiDashboard from "../scripts/API.Dashboard";
 
-export const useSaveComponents = (toast, webElementsRef) => {
+export const useSaveComponents = (toast, webElementsRef, file) => {
   const API = new ApiDashboard();
   const { projectID } = useParams();
 
@@ -27,13 +27,19 @@ export const useSaveComponents = (toast, webElementsRef) => {
 
   const handleSaveCallback = useCallback(async () => {
     try {
-      const response = await API.updateProjectComponents(projectID, updateWebElements());
-      console.log('Components Saved:', response);
+      console.log(file);
+      if (file.useDefault) {
+        const response = await API.updateProjectComponents(projectID, updateWebElements());
+        console.log('Components Saved:', response);
+      } else {
+        const response = await API.updateProjectFile(projectID, file.name, { components: updateWebElements() });
+        console.log('File Components Saved:', response);
+      }
       toast.success("Components Saved!");
     } catch (error) {
       console.error("Failed to save by Ctrl+S:", error);
     }
-  }, [projectID]);
+  }, [projectID, file]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -48,5 +54,5 @@ export const useSaveComponents = (toast, webElementsRef) => {
     return () => {
       document.removeEventListener('keydown', handleKeyDown); // Cleanup on unmount
     };
-  }, []);
+  }, [handleSaveCallback]);
 }

@@ -73,7 +73,7 @@ const WebsiteBuilder = () => {
         />
         {showModal&&<SelectModal handleClose={()=>setShowModal(false)} handleSelect={setFile} options={handleData} selectOption={"single"} />}
         {statusCode == 0 ? (
-          <MainCanvas ScreenSize={ScreenSize} reloadEvents={reloadEvents} rightSidebarOpen={rightSidebarOpen} toast={toast}  />
+          <MainCanvas file={file} ScreenSize={ScreenSize} reloadEvents={reloadEvents} rightSidebarOpen={rightSidebarOpen} toast={toast}  />
         ) : statusCode == 1 ? (
           <CodeEditorJS js={text} setJs={setText} file={file} />
         ) : statusCode == 2 ? (

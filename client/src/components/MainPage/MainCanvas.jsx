@@ -10,7 +10,7 @@ import { useDragDrop } from "../../hooks/DragDrop";
 import { useSaveComponents } from "../../hooks/useSaveComponents";
 import useTips from "../../hooks/useTips";
 
-const MainCanvas = ({ ScreenSize, reloadEvents, rightSidebarOpen, toast }) => {
+const MainCanvas = ({ ScreenSize, reloadEvents, rightSidebarOpen, toast, file }) => {
   const webElements = useSelector((state) => state.webElement.present);
   const webElementsRef = useRef(webElements);
 
@@ -22,7 +22,7 @@ const MainCanvas = ({ ScreenSize, reloadEvents, rightSidebarOpen, toast }) => {
   useTips(toast);
 
   // Event listener for Ctrl+S
-  useSaveComponents(toast, webElementsRef);
+  useSaveComponents(toast, webElementsRef, file);
 
   // Drag and drop
   const { handleDragOver, handleDrop } = useDragDrop(webElementsRef, reloadEvents);
