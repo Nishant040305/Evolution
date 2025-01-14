@@ -1,0 +1,4 @@
+node_modules/
+
+# Ignore files in the public directory
+server/public/
