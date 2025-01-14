@@ -58,11 +58,10 @@ const PublishPage = ( { toast} ) => {
   };
 
   const publish = async () => {
-    const htmlContent = getHTMLContent();
     const id = getProjectId();
 
     try {
-      const res = await apiDashboard.publishProject(id, htmlContent);
+      const res = await apiDashboard.publishProject(id);
       console.log(res);
       window.open(`${import.meta.env.VITE_REACT_APP_BACKWEB}/public/${res.data.domain}`, "_blank");
     } catch (error) {

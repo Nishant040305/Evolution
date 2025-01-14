@@ -142,10 +142,10 @@ class ApiDashboard {
     }
 
     // Publish a project by ID
-    async publishProject(id, htmlContent) {
+    async publishProject(id) {
         const endpoint = this.endpoints.PublishProject.replace(':id', id);
         try {
-            const response = await this.api.post(endpoint, { id, htmlContent });
+            const response = await this.api.post(endpoint, { id });
             return response.data;
         } catch (error) {
             console.error(`Failed to publish project with ID ${id}:`, error);
