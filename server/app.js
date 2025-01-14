@@ -46,12 +46,13 @@ app.use((err, req, res, next) => {
   res.status(500).send("Internal Server error");
 });
 
-// Static files
-app.use("/public", express.static(path.join(__dirname, 'public')));
-
-// Set up routes
+// Set up routes and serve static files
 const domainRoutes = require("./routes/domain.routes");
 app.use("/", domainRoutes);
+
+const domainMiddleware = require("./middleware/domainMiddleware");
+app.use("/public", domainMiddleware, express.static(path.join(__dirname, "public")));
+console.log("Serving static files from ", path.join(__dirname, "public"));
 
 const routes = require("./routes");
 app.use("/api", routes);

@@ -64,7 +64,7 @@ const PublishPage = ( { toast} ) => {
     try {
       const res = await apiDashboard.publishProject(id, htmlContent);
       console.log(res);
-      window.open(`${import.meta.env.VITE_REACT_APP_BACKWEB}/${res.data.domain}`, "_blank");
+      window.open(`${import.meta.env.VITE_REACT_APP_BACKWEB}/public/${res.data.domain}`, "_blank");
     } catch (error) {
       console.error("Failed to publish content:", error);
       toast.error("Failed to publish content. Please try again.");
