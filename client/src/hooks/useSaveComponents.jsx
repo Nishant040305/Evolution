@@ -1,10 +1,12 @@
 import { useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import ApiDashboard from "../scripts/API.Dashboard";
+import PublishPage from './PublishPage';
 
 export const useSaveComponents = (toast, webElementsRef, file) => {
   const API = new ApiDashboard();
   const { projectID } = useParams();
+  const { getHTMLContent } = PublishPage( { toast } );
 
   const updateWebElements = () => {
     // Create a copy of webElements with updated dimensions
@@ -28,13 +30,16 @@ export const useSaveComponents = (toast, webElementsRef, file) => {
   const handleSaveCallback = useCallback(async () => {
     try {
       console.log(file);
+      const htmlContent = getHTMLContent();
+
       if (file.useDefault) {
-        const response = await API.updateProjectComponents(projectID, updateWebElements());
+        const response = await API.updateProjectComponents(projectID, updateWebElements(), { content: htmlContent });
         console.log('Components Saved:', response);
       } else {
-        const response = await API.updateProjectFile(projectID, file.name, { components: updateWebElements() });
+        const response = await API.updateProjectFile(projectID, file.name, { components: updateWebElements(), content: htmlContent });
         console.log('File Components Saved:', response);
       }
+
       toast.success("Components Saved!");
     } catch (error) {
       console.error("Failed to save by Ctrl+S:", error);

@@ -3,6 +3,7 @@ const Project = require('../models/Project');
 const Chat = require('../models/Chat');
 const { ImageUpload } = require('../utils/ImageUpload');
 const UsersChat = require('../models/UsersChat');
+
 const getAllProjects = async (req, res) => {
     try {
         const projects = await Project.find().populate('user', '_id displayname email');
@@ -123,13 +124,18 @@ const updateComponents = async (req, res) => {
     try {
         const updatedProject = await Project.findByIdAndUpdate(
             req.params.id,
-            { $set: { components: req.body, commitMessage: "Updated components" } },
+            { $set: { components: req.body.components, commitMessage: "Updated components" } },
             { new: true } // Return the updated document
         );
 
         if (!updatedProject) {
             return res.status(404).json({ message: 'Project not found' });
         }
+
+        // update content of index.html
+        const { content } = req.body.data;
+        updatedProject.files = updatedProject.files.map(f => f.name === "index.html" ? { ...f, content } : f);
+        console.log(updatedProject.files);
 
         updatedProject.version += 1;
         await updatedProject.save();

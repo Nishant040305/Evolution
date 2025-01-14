@@ -70,10 +70,10 @@ class ApiDashboard {
     }
 
     // Update a project's components by ID
-    async updateProjectComponents(id, components) {
+    async updateProjectComponents(id, components, data) {
         const endpoint = this.endpoints.UpdateProjectComponents.replace(':id', id);
         try {
-            const response = await this.api.put(endpoint, components);
+            const response = await this.api.put(endpoint, { components, data });
             return response.data;
         } catch (error) {
             console.error(`Failed to update project components with ID ${id}:`, error);

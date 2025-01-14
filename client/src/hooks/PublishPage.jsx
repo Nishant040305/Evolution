@@ -72,6 +72,7 @@ const PublishPage = ( { toast} ) => {
   };
 
   return {
+    getHTMLContent,
     preview,
     download,
     publish,

@@ -53,20 +53,19 @@ const saveFile = (projectDir, file, content) => {
 };
 
 const publishProject = async (req, res) => {
-    const { id, htmlContent } = req.body;
-    if (!id || !htmlContent) return res.status(400).json({ error: 'ID and HTML content are required.' });
+    const { id } = req.body;
+    if (!id) return res.status(400).json({ error: 'ID is required.' });
 
     const project = await Project.findById(id);
     const { name, description, keywords } = project;
     const projectDir = path.join(__dirname, `../public/${id}`);
-    const index_html = getHTML(name, description, keywords, htmlContent, [], []);
 
     try {
         // Save all files
         for (const file of project.files) {
             let content = file.content;
-            if (!content) {
-                content = file.useDefault ? index_html : ""; // TODO: Get all files from project
+            if (file.name.endsWith(".html")) {
+                content = getHTML(name, description, keywords, file.content, file.styles, file.scripts);
             }
             await saveFile(projectDir, file, content); // Await the saveFile operation
         }
