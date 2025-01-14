@@ -217,7 +217,7 @@ const LeftSidebar = ({
                 {/* Media Section */}
                 <MediaSection sidebarMedia={sidebarMedia} projectID={projectID} setCounter={setCounter} counter={counter} toast={toast} imagesMedia={imagesMedia} />
                 {/* Additional Sections */}
-                <div className="space-y-3">
+                {file.name.endsWith(".html") && (<div className="space-y-3">
                   <button
                     onClick={() => handleJavaScript()}
                     className="flex items-center w-full px-4 py-2 space-x-2 text-gray-700 transition-all rounded-lg hover:bg-red-50"
@@ -233,7 +233,7 @@ const LeftSidebar = ({
                     <Palette className="w-4 h-4" />
                     <span>Include: CSS Files</span>
                   </button>
-                </div>
+                </div>)}
               </>
             ) : currentTab === "project" ? (
               // Project Overview
