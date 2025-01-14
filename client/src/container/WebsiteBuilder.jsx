@@ -44,6 +44,17 @@ const WebsiteBuilder = () => {
     return null;
   };
 
+  const setIncludes = (options) => {
+    if (file.name.endsWith(".html")) {
+      if (options.length === 0) return;
+      if (options[0].endsWith(".js")) {
+        API.updateProjectFile(projectID, file.name, { scripts: options });
+      } else if (options[0].endsWith(".css")) {
+        API.updateProjectFile(projectID, file.name, { styles: options });
+      }
+    }
+  }
+
   const { reloadEvents } = useReloadEvents(webElement, canvasEvents);
 
   // Fetch project data
@@ -71,7 +82,7 @@ const WebsiteBuilder = () => {
           handleModal={setShowModal}
           handleData={setHandleData}
         />
-        {showModal&&<SelectModal handleClose={()=>setShowModal(false)} handleSelect={setFile} options={handleData} selectOption={"single"} />}
+        {showModal&&<SelectModal handleClose={()=>setShowModal(false)} handleSelect={setIncludes} options={handleData} selectOption={"multiple"} />}
         {statusCode == 0 ? (
           <MainCanvas file={file} ScreenSize={ScreenSize} reloadEvents={reloadEvents} rightSidebarOpen={rightSidebarOpen} toast={toast}  />
         ) : statusCode == 1 ? (

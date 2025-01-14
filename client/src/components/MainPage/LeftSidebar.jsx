@@ -223,7 +223,7 @@ const LeftSidebar = ({
                     className="flex items-center w-full px-4 py-2 space-x-2 text-gray-700 transition-all rounded-lg hover:bg-red-50"
                   >
                     <Code className="w-4 h-4" />
-                    <span>Custom JavaScript</span>
+                    <span>Include: JavaScript Files</span>
                   </button>
 
                   <button
@@ -231,7 +231,7 @@ const LeftSidebar = ({
                     className="flex items-center w-full px-4 py-2 space-x-2 text-gray-700 transition-all rounded-lg hover:bg-red-50"
                   >
                     <Palette className="w-4 h-4" />
-                    <span>Style CSS3</span>
+                    <span>Include: CSS Files</span>
                   </button>
                 </div>
               </>
