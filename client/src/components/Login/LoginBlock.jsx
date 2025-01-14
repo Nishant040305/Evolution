@@ -1,54 +1,54 @@
-import React, { useState } from "react";
-import "../../style/loginBlock.css";
-import Signup from "./signup";
-import Login from "./login";
-import OTPVerification from "./OTPverification";
-import ForgetPassword from "./forgetPassword";
-import ConfirmPassword from "./ConfirmPassword";
+import React, { useState } from 'react';
+import '../../style/loginBlock.css';
+import Signup from './signup';
+import Login from './login';
+import OTPVerification from './OTPverification';
+import ForgetPassword from './forgetPassword';
+import ConfirmPassword from './ConfirmPassword';
 
 const LoginBlock = ({ setRegister }) => {
   const [signupLog, setSL] = useState(0); // 0: Login, 1: Signup, 2: OTP Verification, 3: Forget Password, 4: OTP for Password Reset, 5: Confirm Password
-  const [userInfo, setUserInfo] = useState({ EMAIL: "", PASSWORD: "" });
-  const [OTP, setOTP] = useState({ AUTHENTICATION: "", OTP: "" });
+  const [userInfo, setUserInfo] = useState({ EMAIL: '', PASSWORD: '' });
+  const [OTP, setOTP] = useState({ AUTHENTICATION: '', OTP: '' });
   const [PASS, setPASS] = useState({
-    AUTHENTICATION: "",
-    PASSWORD: "",
-    CPASSWORD: "",
+    AUTHENTICATION: '',
+    PASSWORD: '',
+    CPASSWORD: '',
   });
-  const [FOREMAIL, setEMAIL] = useState("");
+  const [FOREMAIL, setEMAIL] = useState('');
 
   const getHeading = () => {
     switch (signupLog) {
       case 1:
-        return "Sign In";
+        return 'Sign In';
       case 2:
-        return "OTP Verification";
+        return 'OTP Verification';
       case 3:
-        return "Password Recovery";
+        return 'Password Recovery';
       case 4:
-        return "OTP Verification";
+        return 'OTP Verification';
       case 5:
-        return "Confirm New Password";
+        return 'Confirm New Password';
       default:
-        return "Log In";
+        return 'Log In';
     }
   };
 
   const getSubheading = () => {
     switch (signupLog) {
       case 0:
-        return "Enter your email and password to log in.";
+        return 'Enter your email and password to log in.';
       case 1:
-        return "Fill in your details to create a new account.";
+        return 'Fill in your details to create a new account.';
       case 2:
       case 4:
-        return "Enter the 6-digit OTP sent to your email.";
+        return 'Enter the 6-digit OTP sent to your email.';
       case 3:
-        return "Enter your email to receive password reset instructions.";
+        return 'Enter your email to receive password reset instructions.';
       case 5:
-        return "Set your new password.";
+        return 'Set your new password.';
       default:
-        return "";
+        return '';
     }
   };
 
@@ -130,8 +130,8 @@ const LoginBlock = ({ setRegister }) => {
           className="google-signin-button"
           onClick={() => {
             window.open(
-              "http://localhost:4000/api/auth/google/callback",
-              "_self"
+              'http://localhost:4000/api/auth/google/callback',
+              '_self'
             );
           }}
         >
@@ -144,7 +144,7 @@ const LoginBlock = ({ setRegister }) => {
         <button
           className="github-signin-button"
           onClick={() => {
-            window.open("http://localhost:4000/api/auth/github", "_self");
+            window.open('http://localhost:4000/api/auth/github', '_self');
           }}
         >
           <img

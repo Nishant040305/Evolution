@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const tokenSchema = new Schema({
@@ -22,14 +22,14 @@ const tokenSchema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-  }
+  },
 });
 
 const expiresAt = {
-  "PasswordChange": 60 * 60,
-  "PasswordChangeOTP": 60 * 10,
-  "EmailVerification": 60 * 5
-}
+  PasswordChange: 60 * 60,
+  PasswordChangeOTP: 60 * 10,
+  EmailVerification: 60 * 5,
+};
 
 tokenSchema.pre('save', function (next) {
   this.createdAt = new Date();
@@ -37,4 +37,4 @@ tokenSchema.pre('save', function (next) {
   next();
 });
 
-module.exports = mongoose.model("Token", tokenSchema);
+module.exports = mongoose.model('Token', tokenSchema);

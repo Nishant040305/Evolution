@@ -36,11 +36,11 @@
 
 /* canvas component light */
 .canvas-component-light:hover {
-  box-shadow: 0 0 8px #007BFF !important;
+  box-shadow: 0 0 8px #007bff !important;
 }
 
 .canvas-component-light:active {
-  box-shadow: 0 0 8px #007BFF !important;
+  box-shadow: 0 0 8px #007bff !important;
 }
 
 @tailwind utilities;

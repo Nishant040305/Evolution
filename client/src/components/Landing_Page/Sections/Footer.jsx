@@ -1,28 +1,28 @@
-import { Github, Twitter, Facebook, Instagram } from "lucide-react";
+import { Github, Twitter, Facebook, Instagram } from 'lucide-react';
 
 const socialLinks = [
-  { icon: Github, href: "/github", id: "github" },
-  { icon: Twitter, href: "/twitter", id: "twitter" },
-  { icon: Facebook, href: "/facebook", id: "facebook" },
-  { icon: Instagram, href: "/instagram", id: "instagram" },
+  { icon: Github, href: '/github', id: 'github' },
+  { icon: Twitter, href: '/twitter', id: 'twitter' },
+  { icon: Facebook, href: '/facebook', id: 'facebook' },
+  { icon: Instagram, href: '/instagram', id: 'instagram' },
 ];
 
 const footerLinks = [
   {
-    title: "Product",
-    links: ["Features", "Templates", "Pricing", "Enterprise", "Changelog"],
+    title: 'Product',
+    links: ['Features', 'Templates', 'Pricing', 'Enterprise', 'Changelog'],
   },
   {
-    title: "Resources",
-    links: ["Documentation", "Tutorials", "Blog", "Support Center", "API"],
+    title: 'Resources',
+    links: ['Documentation', 'Tutorials', 'Blog', 'Support Center', 'API'],
   },
   {
-    title: "Company",
-    links: ["About", "Careers", "Press Kit", "Contact", "Partners"],
+    title: 'Company',
+    links: ['About', 'Careers', 'Press Kit', 'Contact', 'Partners'],
   },
   {
-    title: "Legal",
-    links: ["Privacy", "Terms", "Security", "Status", "Cookies"],
+    title: 'Legal',
+    links: ['Privacy', 'Terms', 'Security', 'Status', 'Cookies'],
   },
 ];
 
@@ -90,4 +90,3 @@ export default function Footer() {
     </footer>
   );
 }
-  

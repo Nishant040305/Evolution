@@ -1,26 +1,26 @@
-import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { motion } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
 
 const steps = [
   {
-    title: "Design with Drag-and-Drop",
+    title: 'Design with Drag-and-Drop',
     description:
-      "Simply drag elements onto your canvas and arrange them exactly how you want.",
+      'Simply drag elements onto your canvas and arrange them exactly how you want.',
     image:
-      "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?auto=format&fit=crop&q=80&w=1200",
+      'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?auto=format&fit=crop&q=80&w=1200',
   },
   {
-    title: "Customize Styles",
+    title: 'Customize Styles',
     description:
-      "Personalize every aspect of your design with our intuitive style controls.",
+      'Personalize every aspect of your design with our intuitive style controls.',
     image:
-      "https://images.unsplash.com/photo-1542744094-3a31f272c490?auto=format&fit=crop&q=80&w=1200",
+      'https://images.unsplash.com/photo-1542744094-3a31f272c490?auto=format&fit=crop&q=80&w=1200',
   },
   {
-    title: "Publish in One Click",
-    description: "Go live instantly with our one-click publishing system.",
+    title: 'Publish in One Click',
+    description: 'Go live instantly with our one-click publishing system.',
     image:
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200",
+      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200',
   },
 ];
 
@@ -52,7 +52,7 @@ export function HowItWorks() {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
               className={`flex flex-col ${
-                index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
+                index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
               } items-center gap-8 md:gap-16`}
             >
               <div className="flex-1 text-center md:text-left">

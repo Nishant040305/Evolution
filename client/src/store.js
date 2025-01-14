@@ -14,11 +14,11 @@ import NotificationSlice from './Store/Notifications';
 const rootReducer = combineReducers({
   webElement: undoable(webElementsSlice),
   user: userReducer,
-  image:ImageSlice,
-  project:projectSlice,
-  chat:ChatSlice,
+  image: ImageSlice,
+  project: projectSlice,
+  chat: ChatSlice,
   notifications: NotificationSlice,
-  organization:organizationSlice,
+  organization: organizationSlice,
 });
 const persistConfig = {
   key: 'root',
@@ -39,4 +39,3 @@ export const store = configureStore({
 export const persistor = persistStore(store);
 // Clear storage for development
 persistor.purge(); // This will clear the persisted state
-  

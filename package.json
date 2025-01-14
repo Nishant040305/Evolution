@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "concurrently \"npm run dev --prefix ./client\" \"nodemon\"",
     "release": "standard-version",
-    "format": "prettier --write \"**/*.{html,css,js,jsx,json,md}\""
+    "format": "prettier --write \"**/*.{html,css,js,jsx,json,md,MD}\""
   },
   "repository": {
     "type": "git",

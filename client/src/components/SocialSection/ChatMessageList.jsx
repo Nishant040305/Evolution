@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import ChatMessageBlock from "./ChatMessageBlock";
-import ChatMessageInput from "./ChatMessageInput";
-import Chats from "../../scripts/API.Chats";
-import { addMessageToChat, setMessages, setMeta } from "../../Store/Chat";
-import { set } from "mongoose";
+import React, { useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import ChatMessageBlock from './ChatMessageBlock';
+import ChatMessageInput from './ChatMessageInput';
+import Chats from '../../scripts/API.Chats';
+import { addMessageToChat, setMessages, setMeta } from '../../Store/Chat';
+import { set } from 'mongoose';
 
 const ChatMessageList = () => {
   const dispatch = useDispatch();
@@ -12,7 +12,7 @@ const ChatMessageList = () => {
   const isLoadingRef = useRef(false);
   const API = new Chats();
   const chatId = useSelector((state) => state.chat.presentChat);
-  
+
   // Select chat data and messages from Redux
   const messages = useSelector((state) => state.chat.messages[chatId] || []);
   const chat = useSelector((state) =>
@@ -20,7 +20,7 @@ const ChatMessageList = () => {
   );
 
   const hasMore = chat?.meta === undefined ? true : chat.meta.hasMore;
-  const lastSeen = chat?.meta===undefined? null:chat.meta.lastSeen; // Get lastSeen for the current chat
+  const lastSeen = chat?.meta === undefined ? null : chat.meta.lastSeen; // Get lastSeen for the current chat
 
   // Fetch messages from the backend
   const fetchMessages = async (isInitialLoad = false) => {
@@ -37,8 +37,10 @@ const ChatMessageList = () => {
 
       dispatch(setMeta({ chatId, meta }));
       dispatch(
-        setMessages({ chatId, messages: [ ...newMessages.reverse(),...messages] })
-
+        setMessages({
+          chatId,
+          messages: [...newMessages.reverse(), ...messages],
+        })
       );
 
       if (!isInitialLoad) {
@@ -53,7 +55,7 @@ const ChatMessageList = () => {
         }, 0);
       }
     } catch (error) {
-      console.error("Failed to fetch messages:", error);
+      console.error('Failed to fetch messages:', error);
     } finally {
       isLoadingRef.current = false;
     }
@@ -75,7 +77,7 @@ const ChatMessageList = () => {
   // Helper function to format date (Year-Month-Day)
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
-    return date.toISOString().split("T")[0]; // Return the date part (YYYY-MM-DD)
+    return date.toISOString().split('T')[0]; // Return the date part (YYYY-MM-DD)
   };
 
   // Render a date marker between different message days
@@ -99,7 +101,6 @@ const ChatMessageList = () => {
     }
   }, [messages]); // Trigger this effect whenever messages change
 
-
   return (
     <div className="flex flex-col w-full ChatMessageList bg-gray-100">
       {/* Messages List */}
@@ -107,11 +108,13 @@ const ChatMessageList = () => {
         ref={containerRef}
         onScroll={handleScroll}
         className="flex-grow overflow-y-auto p-4 space-y-4"
-        style={{ height: "76.5vh" }}
+        style={{ height: '76.5vh' }}
       >
         {/* Placeholder for loading */}
         {isLoadingRef.current && (
-          <div className="text-center text-gray-500 py-4">Loading messages...</div>
+          <div className="text-center text-gray-500 py-4">
+            Loading messages...
+          </div>
         )}
 
         {messages.map((message, index) => {
@@ -120,7 +123,10 @@ const ChatMessageList = () => {
             <React.Fragment key={message._id}>
               {/* Render a date marker when the date changes */}
               {renderDateMarker(message, previousMessage)}
-              <ChatMessageBlock message={message} index={messages.length-index} />
+              <ChatMessageBlock
+                message={message}
+                index={messages.length - index}
+              />
             </React.Fragment>
           );
         })}

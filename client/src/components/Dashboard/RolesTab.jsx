@@ -1,18 +1,30 @@
-import React, { useState, useEffect } from "react";
-import ApiDashboard from "../../scripts/API.Dashboard";
-import { FaUserCircle, FaCrown, FaPen, FaEye } from "react-icons/fa";
-import { SocketRefreshOrganizationChanges } from "../../event/SocketEvent";
+import React, { useState, useEffect } from 'react';
+import ApiDashboard from '../../scripts/API.Dashboard';
+import { FaUserCircle, FaCrown, FaPen, FaEye } from 'react-icons/fa';
+import { SocketRefreshOrganizationChanges } from '../../event/SocketEvent';
 
 const RolesTab = ({ toast, project }) => {
   const roleOptions = [
-    { label: "Admin", value: "admin", icon: <FaCrown className="text-yellow-500" /> },
-    { label: "Editor", value: "editor", icon: <FaPen className="text-blue-500" /> },
-    { label: "Viewer", value: "viewer", icon: <FaEye className="text-green-500" /> },
+    {
+      label: 'Admin',
+      value: 'admin',
+      icon: <FaCrown className="text-yellow-500" />,
+    },
+    {
+      label: 'Editor',
+      value: 'editor',
+      icon: <FaPen className="text-blue-500" />,
+    },
+    {
+      label: 'Viewer',
+      value: 'viewer',
+      icon: <FaEye className="text-green-500" />,
+    },
   ];
 
   const [collaborators, setCollaborators] = useState([]);
   const [selectedCollaborator, setSelectedCollaborator] = useState(null);
-  const [selectedRole, setSelectedRole] = useState("");
+  const [selectedRole, setSelectedRole] = useState('');
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const API = new ApiDashboard();
 
@@ -22,22 +34,28 @@ const RolesTab = ({ toast, project }) => {
 
     try {
       const projectID = project;
-      await API.UpdateCollaboratorRole(projectID, selectedCollaborator.user, selectedRole);
-      SocketRefreshOrganizationChanges(projectID)
+      await API.UpdateCollaboratorRole(
+        projectID,
+        selectedCollaborator.user,
+        selectedRole
+      );
+      SocketRefreshOrganizationChanges(projectID);
       setCollaborators((prevCollaborators) =>
         prevCollaborators.map((collab) =>
-          collab.user === selectedCollaborator.user ? { ...collab, role: selectedRole } : collab
+          collab.user === selectedCollaborator.user
+            ? { ...collab, role: selectedRole }
+            : collab
         )
       );
 
-      toast.success("Role updated successfully!");
+      toast.success('Role updated successfully!');
     } catch (error) {
-      console.error("Error updating role:", error);
-      toast.error("Failed to update role. Please try again.");
+      console.error('Error updating role:', error);
+      toast.error('Failed to update role. Please try again.');
     } finally {
       setShowConfirmationModal(false);
       setSelectedCollaborator(null);
-      setSelectedRole("");
+      setSelectedRole('');
     }
   };
 
@@ -68,7 +86,7 @@ const RolesTab = ({ toast, project }) => {
         );
         setCollaborators(collaboratorsWithDetails);
       } catch (error) {
-        console.error("Error fetching collaborators:", error);
+        console.error('Error fetching collaborators:', error);
       }
     };
 
@@ -78,11 +96,15 @@ const RolesTab = ({ toast, project }) => {
   return (
     <div>
       <h2 className="mb-4 text-lg font-semibold text-red-800">Roles</h2>
-      <p className="mb-4 text-gray-700">Manage the roles and permissions for each collaborator.</p>
+      <p className="mb-4 text-gray-700">
+        Manage the roles and permissions for each collaborator.
+      </p>
 
       <div className="space-y-4">
         {collaborators.map((collaborator, index) => {
-          const currentRole = roleOptions.find((role) => role.value === collaborator.role);
+          const currentRole = roleOptions.find(
+            (role) => role.value === collaborator.role
+          );
 
           return (
             <div
@@ -92,15 +114,17 @@ const RolesTab = ({ toast, project }) => {
               {/* Collaborator details */}
               <div className="flex items-center space-x-3">
                 <img
-                  src={collaborator.userData?.avatar || "/default-avatar.png"}
-                  alt={collaborator.userData?.displayname || "User Avatar"}
+                  src={collaborator.userData?.avatar || '/default-avatar.png'}
+                  alt={collaborator.userData?.displayname || 'User Avatar'}
                   className="w-10 h-10 rounded-full object-cover"
                 />
                 <div>
                   <p className="font-semibold text-red-800">
                     {collaborator.userData?.displayname || collaborator.user}
                   </p>
-                  <p className="text-sm text-gray-600">{collaborator.userData?.email || ""}</p>
+                  <p className="text-sm text-gray-600">
+                    {collaborator.userData?.email || ''}
+                  </p>
                 </div>
               </div>
 
@@ -133,11 +157,16 @@ const RolesTab = ({ toast, project }) => {
       {showConfirmationModal && selectedCollaborator && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-20">
           <div className="bg-white rounded-lg shadow-lg p-6 w-80">
-            <h3 className="text-xl font-semibold mb-4 text-red-800">Confirm Role Change</h3>
+            <h3 className="text-xl font-semibold mb-4 text-red-800">
+              Confirm Role Change
+            </h3>
             <p className="mb-4 text-gray-700">
-              Are you sure you want to change{" "}
-              <span className="font-semibold">{selectedCollaborator.userData?.displayname}</span>'s
-              role to <span className="font-semibold capitalize">{selectedRole}</span>?
+              Are you sure you want to change{' '}
+              <span className="font-semibold">
+                {selectedCollaborator.userData?.displayname}
+              </span>
+              's role to{' '}
+              <span className="font-semibold capitalize">{selectedRole}</span>?
             </p>
             <div className="flex justify-end space-x-3">
               <button

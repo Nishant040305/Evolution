@@ -31,6 +31,6 @@ export default {
   H3,
   H4,
   H5,
-  H6, 
-  Paragraph
+  H6,
+  Paragraph,
 };

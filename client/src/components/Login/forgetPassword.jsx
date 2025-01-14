@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import AuthService from "../../scripts/API.Login";
+import React, { useState } from 'react';
+import AuthService from '../../scripts/API.Login';
 const ForgetPassword = (props) => {
   const handleChange = (e) => {
     props.setValue(e.target.value);
   };
   const API = new AuthService();
-  const [msg, setMsg] = useState("");
+  const [msg, setMsg] = useState('');
   return (
     <div className="bottom">
       <div className={`container flex flex-col text-left px-16`}>

@@ -1,5 +1,5 @@
-import { useDispatch } from "react-redux";
-import { setAttribute } from "../Store/webElementSlice";
+import { useDispatch } from 'react-redux';
+import { setAttribute } from '../Store/webElementSlice';
 
 export const useReloadEvents = (webElement, canvasEvents) => {
   const dispatch = useDispatch();

@@ -45,13 +45,17 @@ const NotificationsSlice = createSlice({
      */
     setNotifications: (state, action) => {
       return action.payload;
-    },  
-  
+    },
   },
 });
 
 // Exporting actions for use in components or other parts of the app
-export const { markAsRead, deleteNotification, addNotification,setNotifications } = NotificationsSlice.actions;
+export const {
+  markAsRead,
+  deleteNotification,
+  addNotification,
+  setNotifications,
+} = NotificationsSlice.actions;
 
 // Exporting the reducer to be included in the store
 export default NotificationsSlice.reducer;

@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { Timer, Save } from "lucide-react";
-import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useState, useEffect } from 'react';
+import { Timer, Save } from 'lucide-react';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const BottomBar = () => {
   const { projectID } = useParams();
@@ -11,7 +11,7 @@ const BottomBar = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   const handleSave = () => {
-    console.log("Not implemented");
+    console.log('Not implemented');
   };
 
   // Function to handle mouse movement
@@ -26,17 +26,17 @@ const BottomBar = () => {
   };
 
   useEffect(() => {
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove);
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
 
   return (
     <div
       className={`fixed bottom-0 left-0 right-0 transition-transform duration-300 ${
-        isVisible ? "translate-y-0" : "translate-y-full"
+        isVisible ? 'translate-y-0' : 'translate-y-full'
       } bg-gray-100 border-t border-gray-300 h-14`}
     >
       {/* Left side with Canvas details */}

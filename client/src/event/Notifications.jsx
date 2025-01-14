@@ -1,14 +1,18 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { socket } from '../scripts/socket';
-import { addNotification, markAsRead, deleteNotification } from '../Store/Notifications';
+import {
+  addNotification,
+  markAsRead,
+  deleteNotification,
+} from '../Store/Notifications';
 
 export const useSocketNotifications = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const user = useSelector((state) => state.user.userInfo);
   useEffect(() => {
-    if(!isAuthenticated) return;
+    if (!isAuthenticated) return;
     // Listen for 'newNotification' event and handle adding the new notification
     socket.on('newNotification', (notification) => {
       // Add the new notification to the state
@@ -30,10 +34,10 @@ export const useSocketNotifications = () => {
     // Cleanup the socket listeners on component unmount
     return () => {
       socket.off('newNotification');
-      socket.off('markNotificationAsRead'); 
+      socket.off('markNotificationAsRead');
       socket.off('deleteNotification');
     };
-  }, [dispatch,socket,user,isAuthenticated]);
+  }, [dispatch, socket, user, isAuthenticated]);
 
   // Optionally, return the current notifications for usage in the component
 };

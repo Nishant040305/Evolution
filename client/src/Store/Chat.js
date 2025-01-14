@@ -1,12 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { SocketMarkAsRead } from "../event/SocketEvent";
+import { createSlice } from '@reduxjs/toolkit';
+import { SocketMarkAsRead } from '../event/SocketEvent';
 const ChatSlice = createSlice({
-  name: "chat",
+  name: 'chat',
   initialState: {
     chats: [], // List of chats
     messages: {}, // Object where keys are chat IDs and values are message arrays
-    presentChat:null,
-
+    presentChat: null,
   },
   reducers: {
     // Set the list of chats
@@ -17,9 +16,11 @@ const ChatSlice = createSlice({
     setPresentChat: (state, action) => {
       const { chatId, userId } = action.payload;
       state.presentChat = chatId;
-      if(chatId){
-        SocketMarkAsRead(chatId,userId);
-        state.chats.find(chat => chat.chat_id === chatId).unread_messages[userId] = 0;
+      if (chatId) {
+        SocketMarkAsRead(chatId, userId);
+        state.chats.find((chat) => chat.chat_id === chatId).unread_messages[
+          userId
+        ] = 0;
       }
     },
 
@@ -27,37 +28,38 @@ const ChatSlice = createSlice({
     setMessages: (state, action) => {
       const { chatId, messages } = action.payload;
       state.messages[chatId] = messages;
-    
     },
 
     // Add a message to a specific chat
     addMessage: (state, action) => {
-      const { chatId, messages ,userId} = action.payload;
-    
+      const { chatId, messages, userId } = action.payload;
+
       // Ensure the chatId exists in the state.messages object
       if (!state.messages[chatId]) {
         state.messages[chatId] = [];
       }
       // Update unread messages for all users in the chat
-      const chat = state.chats.find(chat => chat.chat_id === chatId);
+      const chat = state.chats.find((chat) => chat.chat_id === chatId);
       chat.last_message = messages.content;
       chat.last_message_time = messages.timestamp;
       if (chat) {
         for (const userId in chat.unread_messages) {
           if (userId === messages.sender_id) {
-                  // Set the sender's unread count to 0
-              chat.unread_messages[userId] = 0;
-            } else {
-                  // Increment unread count for all other users
-                  chat.unread_messages[userId] += 1;
-                }
-              }
-            }
-            if(messages.chat_id === state.presentChat){
-              SocketMarkAsRead(messages.chat_id,userId);
-              chat.unread_messages[userId] = 0;
-            }
-      const existingMessage = state.messages[chatId].find((m) => m._id === messages._id);
+            // Set the sender's unread count to 0
+            chat.unread_messages[userId] = 0;
+          } else {
+            // Increment unread count for all other users
+            chat.unread_messages[userId] += 1;
+          }
+        }
+      }
+      if (messages.chat_id === state.presentChat) {
+        SocketMarkAsRead(messages.chat_id, userId);
+        chat.unread_messages[userId] = 0;
+      }
+      const existingMessage = state.messages[chatId].find(
+        (m) => m._id === messages._id
+      );
       if (!existingMessage) {
         state.messages[chatId].push({
           chat_id: chatId,
@@ -68,7 +70,7 @@ const ChatSlice = createSlice({
           _id: messages._id,
         });
       }
-    },    
+    },
     addMessageToChat: (state, action) => {
       const { chatId, messages } = action.payload;
       // Ensure the chatId exists in the state.messages object
@@ -76,26 +78,30 @@ const ChatSlice = createSlice({
         state.messages[chatId] = [];
       }
       const reversedMessages = messages.reverse();
-      state.messages[chatId] = {...state.messages[chatId],...reversedMessages};
-    
+      state.messages[chatId] = {
+        ...state.messages[chatId],
+        ...reversedMessages,
+      };
     },
-      
+
     // set the meta data
     setMeta: (state, action) => {
-        const { chatId, meta } = action.payload;
-        // Find the index of the chat with the given chatId
-        const chatIndex = state.chats.findIndex((chat) => chat.chat_id === chatId);
-      
-        if (chatIndex !== -1) {
-          // Chat exists; update its meta property
-          state.chats[chatIndex] = {
-            ...state.chats[chatIndex],
-            meta, // Add or update the meta property
-          };
-        } else {
-          console.error(`Chat with ID ${chatId} not found`);
-        }
-      },      
+      const { chatId, meta } = action.payload;
+      // Find the index of the chat with the given chatId
+      const chatIndex = state.chats.findIndex(
+        (chat) => chat.chat_id === chatId
+      );
+
+      if (chatIndex !== -1) {
+        // Chat exists; update its meta property
+        state.chats[chatIndex] = {
+          ...state.chats[chatIndex],
+          meta, // Add or update the meta property
+        };
+      } else {
+        console.error(`Chat with ID ${chatId} not found`);
+      }
+    },
     // Delete a chat by its ID
     deleteChat: (state, action) => {
       const chatId = action.payload;
@@ -108,10 +114,15 @@ const ChatSlice = createSlice({
       const { chatId, userId } = action.payload;
       if (state.chats.find((chat) => chat.chat_id === chatId)) {
         // Find the index of the chat with the given chatId
-        const chatIndex = state.chats.findIndex((chat) => chat.chat_id === chatId);
+        const chatIndex = state.chats.findIndex(
+          (chat) => chat.chat_id === chatId
+        );
         state.chats[chatIndex] = {
           ...state.chats[chatIndex],
-          unread_messages: { ...state.chats[chatIndex].unread_messages, [userId]: 0 },
+          unread_messages: {
+            ...state.chats[chatIndex].unread_messages,
+            [userId]: 0,
+          },
         };
       }
     },
@@ -120,10 +131,15 @@ const ChatSlice = createSlice({
       const { chatId, userId } = action.payload;
       if (state.chats.find((chat) => chat.chat_id === chatId)) {
         // Find the index of the chat with the given chatId
-        const chatIndex = state.chats.findIndex((chat) => chat.chat_id === chatId);
+        const chatIndex = state.chats.findIndex(
+          (chat) => chat.chat_id === chatId
+        );
         state.chats[chatIndex] = {
           ...state.chats[chatIndex],
-          unread_messages: { ...state.chats[chatIndex].unread_messages, [userId]: 0 },
+          unread_messages: {
+            ...state.chats[chatIndex].unread_messages,
+            [userId]: 0,
+          },
         };
       }
     },
@@ -138,16 +154,20 @@ const ChatSlice = createSlice({
       const { chatId, messageId } = action.payload;
       const chat = state.chats.find((chat) => chat.chat_id === chatId);
       if (chat && state.messages[chatId]) {
-        const index = state.messages[chatId].findIndex((message) => message._id === messageId);
+        const index = state.messages[chatId].findIndex(
+          (message) => message._id === messageId
+        );
         if (index !== -1) {
           state.messages[chatId].splice(index, 1);
         }
       }
     },
     addChat: (state, action) => {
-      if(action.payload){
-        const existingChat = state.chats.find(chat => chat.chat_id === action.payload.chat_id);
-        if(!existingChat){
+      if (action.payload) {
+        const existingChat = state.chats.find(
+          (chat) => chat.chat_id === action.payload.chat_id
+        );
+        if (!existingChat) {
           // Add new chat if it doesn't exist
           state.chats.push(action.payload);
         } else {
@@ -168,7 +188,6 @@ const ChatSlice = createSlice({
         chat.chat_id === chatId ? { ...chat, chat_avatar: icon } : chat
       );
     },
-    
   },
 });
 
@@ -186,7 +205,7 @@ export const {
   deleteMessage,
   addChat,
   updateNameChat,
-  updateIconChat
+  updateIconChat,
 } = ChatSlice.actions;
 
 export default ChatSlice.reducer;

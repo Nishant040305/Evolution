@@ -5,13 +5,13 @@ const { userController } = require('../controller');
 const { UserVerifier } = require('../middleware/credMiddleware');
 
 const {
-    getAllUserProjects,
-    getAllSharedProjects,
-    ChangeProfile,
-    FindUserEmail,
-    FindUserByID,
-    FindUserSearch,
-    GetFriends
+  getAllUserProjects,
+  getAllSharedProjects,
+  ChangeProfile,
+  FindUserEmail,
+  FindUserByID,
+  FindUserSearch,
+  GetFriends,
 } = userController;
 
 // @route    GET /api/user/:id/project
@@ -24,21 +24,21 @@ router.get('/:id/shared', UserVerifier, getAllSharedProjects);
 
 // @route    GET /api/user/:email
 // @desc     Get user by email
-router.put('/:id',UserVerifier,ChangeProfile);
+router.put('/:id', UserVerifier, ChangeProfile);
 
-// @route    GET /api/user/:email 
+// @route    GET /api/user/:email
 // @desc     Get user by email
-router.get('/:email',UserVerifier,FindUserEmail);
+router.get('/:email', UserVerifier, FindUserEmail);
 
 // @route    GET /api/user/:_id
 // @desc     Get user by id
-router.get('/ID/:id',UserVerifier,FindUserByID);
+router.get('/ID/:id', UserVerifier, FindUserByID);
 
 // @route    GET /api/user/search
-// @desc     Search users   
-router.get('/search/:query',FindUserSearch);
+// @desc     Search users
+router.get('/search/:query', FindUserSearch);
 
 // @route    GET /api/user/friends
 // @desc     Get friends of a user
-router.get('/friends/:id',UserVerifier,GetFriends);
+router.get('/friends/:id', UserVerifier, GetFriends);
 module.exports = router;

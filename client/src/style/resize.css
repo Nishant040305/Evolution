@@ -1,56 +1,55 @@
 .resize-handle {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background-color: #333;
-    z-index: 1;
-  }
-  
-  /* Side handles */
-  .resize-handle.top {
-    top: -5px;
-    left: 50%;
-    transform: translateX(-50%);
-    cursor: ns-resize;
-  }
-  .resize-handle.right {
-    right: -5px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: ew-resize;
-  }
-  .resize-handle.bottom {
-    bottom: -5px;
-    left: 50%;
-    transform: translateX(-50%);
-    cursor: ns-resize;
-  }
-  .resize-handle.left {
-    left: -5px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: ew-resize;
-  }
-  
-  /* Corner handles */
-  .resize-handle.top-left {
-    top: -5px;
-    left: -5px;
-    cursor: nwse-resize;
-  }
-  .resize-handle.top-right {
-    top: -5px;
-    right: -5px;
-    cursor: nesw-resize;
-  }
-  .resize-handle.bottom-left {
-    bottom: -5px;
-    left: -5px;
-    cursor: nesw-resize;
-  }
-  .resize-handle.bottom-right {
-    bottom: -5px;
-    right: -5px;
-    cursor: nwse-resize;
-  }
-  
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #333;
+  z-index: 1;
+}
+
+/* Side handles */
+.resize-handle.top {
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: ns-resize;
+}
+.resize-handle.right {
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: ew-resize;
+}
+.resize-handle.bottom {
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: ns-resize;
+}
+.resize-handle.left {
+  left: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: ew-resize;
+}
+
+/* Corner handles */
+.resize-handle.top-left {
+  top: -5px;
+  left: -5px;
+  cursor: nwse-resize;
+}
+.resize-handle.top-right {
+  top: -5px;
+  right: -5px;
+  cursor: nesw-resize;
+}
+.resize-handle.bottom-left {
+  bottom: -5px;
+  left: -5px;
+  cursor: nesw-resize;
+}
+.resize-handle.bottom-right {
+  bottom: -5px;
+  right: -5px;
+  cursor: nwse-resize;
+}

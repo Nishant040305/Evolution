@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Users, MapPin, Link as LinkIcon, Building, Clock } from "lucide-react";
+import React, { useState, useEffect } from 'react';
+import { Users, MapPin, Link as LinkIcon, Building, Clock } from 'lucide-react';
 
 const ProfileSection = () => {
   const [profileData, setProfileData] = useState(null);
@@ -11,22 +11,22 @@ const ProfileSection = () => {
     try {
       // Simulating an API call with dummy data for now
       const fetchedProfileData = {
-        name: "John Doe",
-        title: "Full Stack Developer",
-        bio: "Building awesome things with code. Open source enthusiast and continuous learner.",
-        company: "@techcorp",
-        location: "San Francisco",
-        website: "https://johndoe.dev",
-        joinDate: "December 2020",
+        name: 'John Doe',
+        title: 'Full Stack Developer',
+        bio: 'Building awesome things with code. Open source enthusiast and continuous learner.',
+        company: '@techcorp',
+        location: 'San Francisco',
+        website: 'https://johndoe.dev',
+        joinDate: 'December 2020',
         followers: 2100,
         following: 89,
         avatarUrl:
-          "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+          'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
       };
       setProfileData(fetchedProfileData);
       setLoading(false);
     } catch (err) {
-      setError("Error fetching profile data. Please try again later.");
+      setError('Error fetching profile data. Please try again later.');
       setLoading(false);
     }
   };
@@ -97,11 +97,11 @@ const ProfileSection = () => {
             <span>
               <strong className="text-[#c9d1d9]">
                 {profileData.followers}
-              </strong>{" "}
-              followers ·{" "}
+              </strong>{' '}
+              followers ·{' '}
               <strong className="text-[#c9d1d9]">
                 {profileData.following}
-              </strong>{" "}
+              </strong>{' '}
               following
             </span>
           </div>

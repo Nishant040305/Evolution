@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Star } from "lucide-react";
+import React, { useState, useEffect } from 'react';
+import { Star } from 'lucide-react';
 
 const Project = ({ projectId }) => {
   const [projectData, setProjectData] = useState(null);
@@ -11,15 +11,15 @@ const Project = ({ projectId }) => {
     try {
       // Simulate an API call with dummy data for now
       const fetchedProjectData = {
-        title: "Project A",
-        description: "This is a description of Project A",
-        url: "#",
+        title: 'Project A',
+        description: 'This is a description of Project A',
+        url: '#',
         stars: 42,
       };
       setProjectData(fetchedProjectData);
       setLoading(false);
     } catch (err) {
-      setError("Error fetching project data. Please try again later.");
+      setError('Error fetching project data. Please try again later.');
       setLoading(false);
     }
   };

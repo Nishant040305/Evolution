@@ -1,544 +1,578 @@
-.loginBlock{
-    background-color: rgb(22, 22, 22);
-    border-radius: 10px;
-    width:200px;
-    height:200px;
-    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.309);
-    
+.loginBlock {
+  background-color: rgb(22, 22, 22);
+  border-radius: 10px;
+  width: 200px;
+  height: 200px;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.309);
 }
-.heading{
-    font-size: 56px;
-    text-align: left;
-    margin:20px;
-    font-family: cursive;
+.heading {
+  font-size: 56px;
+  text-align: left;
+  margin: 20px;
+  font-family: cursive;
 }
-.input-detail{
-    width:90%;
-    height:5rem;
-    font-size:30px;
-    padding:5px;
+.input-detail {
+  width: 90%;
+  height: 5rem;
+  font-size: 30px;
+  padding: 5px;
 }
-.bottom{
-    display:flex;
-    flex-direction: column;
-    margin-top:2rem;
-    margin-bottom:5rem;
-
+.bottom {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+  margin-bottom: 5rem;
 }
-.subheading{
-    font-size:30px;
-    margin:20px;
+.subheading {
+  font-size: 30px;
+  margin: 20px;
 }
-.head-info{
-    font-size:25px;
-    padding-top: 1.23rem;
+.head-info {
+  font-size: 25px;
+  padding-top: 1.23rem;
 }
-.input-detail{
-    color:rgb(0, 0, 0);
-    font-size:30px;
+.input-detail {
+  color: rgb(0, 0, 0);
+  font-size: 30px;
 }
 .enterdetail {
-    margin-left:auto;
-    margin-right:15%;
-    background: linear-gradient(90deg, rgb(66, 162, 246), rgb(58, 236, 186));
-    color: white;
-    border: none;
-    font-weight: 500;
-    font-size: 30px;
-    padding: 10px;
-    width: 150px;
-    
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.4s ease;
+  margin-left: auto;
+  margin-right: 15%;
+  background: linear-gradient(90deg, rgb(66, 162, 246), rgb(58, 236, 186));
+  color: white;
+  border: none;
+  font-weight: 500;
+  font-size: 30px;
+  padding: 10px;
+  width: 150px;
+
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.4s ease;
 }
 
 .enterdetail:hover {
-    background: linear-gradient(270deg, rgb(66, 162, 246), rgb(58, 236, 186));
-    color:white;
+  background: linear-gradient(270deg, rgb(66, 162, 246), rgb(58, 236, 186));
+  color: white;
 }
-.orsection{
-    color:white;
-    align-items: center;
-    font-size: 25px;
+.orsection {
+  color: white;
+  align-items: center;
+  font-size: 25px;
 }
-.line{
-    width:45%;
+.line {
+  width: 45%;
 }
-.special-login{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top:2rem;
+.special-login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
 }
 .google-signin-button {
-    display: flex;
-    align-items: center;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 4px 4px;
-    cursor: pointer;
-    font-size: 30px;
-    font-weight: 500;
-    color: #555;
-    transition: background-color 0.3s;
-    width: 100%;
-    height: fit-content;
-    max-width: 400px;
-    justify-content: center;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 4px 4px;
+  cursor: pointer;
+  font-size: 30px;
+  font-weight: 500;
+  color: #555;
+  transition: background-color 0.3s;
+  width: 100%;
+  height: fit-content;
+  max-width: 400px;
+  justify-content: center;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .google-signin-button img {
-    width: 80px;
-    height: 80px;
-    margin-right: 8px;
+  width: 80px;
+  height: 80px;
+  margin-right: 8px;
 }
 
 .google-signin-button span {
-    font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif;
 }
 
 .google-signin-button:hover {
-    background-color: #f7f7f7;
+  background-color: #f7f7f7;
 }
 .github-signin-button {
-    display: flex;
-    align-items: center;
-    background-color: #333;
-    border: 1px solid #333;
-    border-radius: 4px;
-    padding: 0px 0px;
-    cursor: pointer;
-    font-size: 30px;
-    font-weight: 500;
-    color: #fff;
-    height:fit-content;
-    transition: background-color 0.3s;
-    width: 100%;
-    max-width: 400px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-    margin:15px;
+  display: flex;
+  align-items: center;
+  background-color: #333;
+  border: 1px solid #333;
+  border-radius: 4px;
+  padding: 0px 0px;
+  cursor: pointer;
+  font-size: 30px;
+  font-weight: 500;
+  color: #fff;
+  height: fit-content;
+  transition: background-color 0.3s;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 15px;
 }
 
 .github-signin-button img {
-    width: 80px;
-    height: 80px;
-    margin-right: 8px;
+  width: 80px;
+  height: 80px;
+  margin-right: 8px;
 }
 
 .github-signin-button span {
-    font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif;
 }
 
 .github-signin-button:hover {
-    background-color: #444;
+  background-color: #444;
 }
-.login-changeinfo{
-    margin-bottom: 3rem;
-    font-size:24px;
+.login-changeinfo {
+  margin-bottom: 3rem;
+  font-size: 24px;
 }
-.loged{
-    display:flex;
-    flex-direction: row;
-    width:100%;
-    justify-content: center;
-    align-content: space-between;
+.loged {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+  align-content: space-between;
 }
-.timer{
-    font-size: 25px;
-    margin-top:10px;
-    margin-bottom: 10px;
+.timer {
+  font-size: 25px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
-@media screen and (min-width: 320px) and (max-width: 425px){
-    .loginBlock{
-        width:320px;
-        height:598px;
-    }
-    .heading{
-        font-size: 30px;
-    }.subheading{
-        font-size: 14px;
-        margin-left:20px;
-    }
-    .special-login{
-        margin-top:3px;
-    
-    }
-    .bottom{
-        margin-top:0px;
-        padding-top:0px;
-        padding-left:0px;
-        margin-bottom:1rem;
-    }
-    .head-info{
-        font-size: 14px;
-        padding-top: 10px;
-    }
-    .input-detail{
-        height:2rem;
-        margin-left:0px;
-        padding-left:0;
-        font-size: 14px;
-    }.bottom .px-16{
-        padding:10px;
-    }
-    .enterdetail{
-        margin-top:20px;
-        width:80px;
-        font-size: 20px;
-        height:40px;
-        padding-top:0px;
-        padding-bottom: 0px;
-    }.heading{
-        font-size: 26px;
-    }.timer{
-        font-size: 17px;
-
-    }.login-changeinfo{
-        font-size:14px;
-        padding-left:20px;
-    }.orsection{
-        font-size:18px;
-    }.google-signin-button{
-        font-size:18px;
-        width:80%;
-        
-    }.google-signin-button img{
-        width:40px;
-        height:40px;
-    }.github-signin-button{
-        font-size:18px;
-        width:80%;
-        
-    }.github-signin-button img{
-        width:40px;
-        height:40px;
-    }
+@media screen and (min-width: 320px) and (max-width: 425px) {
+  .loginBlock {
+    width: 320px;
+    height: 598px;
+  }
+  .heading {
+    font-size: 30px;
+  }
+  .subheading {
+    font-size: 14px;
+    margin-left: 20px;
+  }
+  .special-login {
+    margin-top: 3px;
+  }
+  .bottom {
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-left: 0px;
+    margin-bottom: 1rem;
+  }
+  .head-info {
+    font-size: 14px;
+    padding-top: 10px;
+  }
+  .input-detail {
+    height: 2rem;
+    margin-left: 0px;
+    padding-left: 0;
+    font-size: 14px;
+  }
+  .bottom .px-16 {
+    padding: 10px;
+  }
+  .enterdetail {
+    margin-top: 20px;
+    width: 80px;
+    font-size: 20px;
+    height: 40px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+  .heading {
+    font-size: 26px;
+  }
+  .timer {
+    font-size: 17px;
+  }
+  .login-changeinfo {
+    font-size: 14px;
+    padding-left: 20px;
+  }
+  .orsection {
+    font-size: 18px;
+  }
+  .google-signin-button {
+    font-size: 18px;
+    width: 80%;
+  }
+  .google-signin-button img {
+    width: 40px;
+    height: 40px;
+  }
+  .github-signin-button {
+    font-size: 18px;
+    width: 80%;
+  }
+  .github-signin-button img {
+    width: 40px;
+    height: 40px;
+  }
 }
-@media screen and (min-width:425px) and (max-width: 768px){
-    .loginBlock{
-        width:320px;
-        height:598px;
-    }
-    .heading{
-        font-size: 30px;
-    }.subheading{
-        font-size: 14px;
-        margin-left:20px;
-    }
-    .special-login{
-        margin-top:3px;
-    
-    }
-    .bottom{
-        margin-top:0px;
-        padding-top:0px;
-        padding-left:0px;
-        margin-bottom:1rem;
-    }
-    .head-info{
-        font-size: 14px;
-        padding-top: 10px;
-    }
-    .input-detail{
-        height:2rem;
-        margin-left:0px;
-        padding-left:0;
-        font-size: 14px;
-    }.bottom .px-16{
-        padding:10px;
-    }
-    .enterdetail{
-        margin-top:20px;
-        width:80px;
-        font-size: 20px;
-        height:40px;
-        padding-top:0px;
-        padding-bottom: 0px;
-    }.heading{
-        font-size: 26px;
-    }.timer{
-        font-size: 17px;
-
-    }.login-changeinfo{
-        font-size:14px;
-        padding-left:20px;
-    }.orsection{
-        font-size:18px;
-    }.google-signin-button{
-        font-size:18px;
-        width:80%;
-        
-    }.google-signin-button img{
-        width:40px;
-        height:40px;
-    }.github-signin-button{
-        font-size:18px;
-        width:80%;
-        
-    }.github-signin-button img{
-        width:40px;
-        height:40px;
-    }
+@media screen and (min-width: 425px) and (max-width: 768px) {
+  .loginBlock {
+    width: 320px;
+    height: 598px;
+  }
+  .heading {
+    font-size: 30px;
+  }
+  .subheading {
+    font-size: 14px;
+    margin-left: 20px;
+  }
+  .special-login {
+    margin-top: 3px;
+  }
+  .bottom {
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-left: 0px;
+    margin-bottom: 1rem;
+  }
+  .head-info {
+    font-size: 14px;
+    padding-top: 10px;
+  }
+  .input-detail {
+    height: 2rem;
+    margin-left: 0px;
+    padding-left: 0;
+    font-size: 14px;
+  }
+  .bottom .px-16 {
+    padding: 10px;
+  }
+  .enterdetail {
+    margin-top: 20px;
+    width: 80px;
+    font-size: 20px;
+    height: 40px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+  .heading {
+    font-size: 26px;
+  }
+  .timer {
+    font-size: 17px;
+  }
+  .login-changeinfo {
+    font-size: 14px;
+    padding-left: 20px;
+  }
+  .orsection {
+    font-size: 18px;
+  }
+  .google-signin-button {
+    font-size: 18px;
+    width: 80%;
+  }
+  .google-signin-button img {
+    width: 40px;
+    height: 40px;
+  }
+  .github-signin-button {
+    font-size: 18px;
+    width: 80%;
+  }
+  .github-signin-button img {
+    width: 40px;
+    height: 40px;
+  }
 }
-@media screen and (min-width:768px) and (max-width: 1024px){
-    .loginBlock{
-        width:398px;
-        height:668px;
-    }
-    .heading{
-        font-size: 30px;
-    }.subheading{
-        font-size: 14px;
-        margin-left:20px;
-    }
-    .special-login{
-        margin-top:3px;
-    
-    }
-    .bottom{
-        margin-top:0px;
-        padding-top:0px;
-        padding-left:0px;
-        margin-bottom:1rem;
-    }
-    .head-info{
-        font-size: 14px;
-        padding-top: 10px;
-    }
-    .input-detail{
-        height:2rem;
-        margin-left:0px;
-        padding-left:0;
-        font-size: 14px;
-    }.bottom .px-16{
-        padding:10px;
-    }
-    .enterdetail{
-        margin-top:20px;
-        width:80px;
-        font-size: 20px;
-        height:40px;
-        padding-top:0px;
-        padding-bottom: 0px;
-    }.heading{
-        font-size: 26px;
-    }.timer{
-        font-size: 17px;
-
-    }.login-changeinfo{
-        font-size:14px;
-        padding-left:20px;
-    }.orsection{
-        font-size:18px;
-    }.google-signin-button{
-        font-size:18px;
-        width:80%;
-        
-    }.google-signin-button img{
-        width:40px;
-        height:40px;
-    }.github-signin-button{
-        font-size:18px;
-        width:80%;
-        
-    }.github-signin-button img{
-        width:40px;
-        height:40px;
-    }
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .loginBlock {
+    width: 398px;
+    height: 668px;
+  }
+  .heading {
+    font-size: 30px;
+  }
+  .subheading {
+    font-size: 14px;
+    margin-left: 20px;
+  }
+  .special-login {
+    margin-top: 3px;
+  }
+  .bottom {
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-left: 0px;
+    margin-bottom: 1rem;
+  }
+  .head-info {
+    font-size: 14px;
+    padding-top: 10px;
+  }
+  .input-detail {
+    height: 2rem;
+    margin-left: 0px;
+    padding-left: 0;
+    font-size: 14px;
+  }
+  .bottom .px-16 {
+    padding: 10px;
+  }
+  .enterdetail {
+    margin-top: 20px;
+    width: 80px;
+    font-size: 20px;
+    height: 40px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+  .heading {
+    font-size: 26px;
+  }
+  .timer {
+    font-size: 17px;
+  }
+  .login-changeinfo {
+    font-size: 14px;
+    padding-left: 20px;
+  }
+  .orsection {
+    font-size: 18px;
+  }
+  .google-signin-button {
+    font-size: 18px;
+    width: 80%;
+  }
+  .google-signin-button img {
+    width: 40px;
+    height: 40px;
+  }
+  .github-signin-button {
+    font-size: 18px;
+    width: 80%;
+  }
+  .github-signin-button img {
+    width: 40px;
+    height: 40px;
+  }
 }
-@media screen and (min-width:1024px) and (max-width: 1440px){
-    .loginBlock{
-        width:503px;
-        height:857px;
-    }
-    .heading{
-        font-size: 40px;
-    }.subheading{
-        font-size: 14px;
-        margin-left:20px;
-    }
-    .special-login{
-        margin-top:3px;
-    
-    }
-    .bottom{
-        margin-top:0px;
-        padding-top:0px;
-        padding-left:0px;
-        margin-bottom:1rem;
-    }
-    .head-info{
-        font-size: 14px;
-        padding-top: 10px;
-    }
-    .input-detail{
-        height:2rem;
-        margin-left:0px;
-        padding-left:0;
-        font-size: 14px;
-    }.bottom .px-16{
-        padding:10px;
-    }
-    .enterdetail{
-        margin-top:20px;
-        width:80px;
-        font-size: 20px;
-        height:40px;
-        padding-top:0px;
-        padding-bottom: 0px;
-    }.heading{
-        font-size: 26px;
-    }.timer{
-        font-size: 17px;
-
-    }.login-changeinfo{
-        font-size:14px;
-        padding-left:20px;
-    }.orsection{
-        font-size:18px;
-    }.google-signin-button{
-        font-size:18px;
-        width:80%;
-        
-    }.google-signin-button img{
-        width:40px;
-        height:40px;
-    }.github-signin-button{
-        font-size:18px;
-        width:80%;
-        
-    }.github-signin-button img{
-        width:40px;
-        height:40px;
-    }
+@media screen and (min-width: 1024px) and (max-width: 1440px) {
+  .loginBlock {
+    width: 503px;
+    height: 857px;
+  }
+  .heading {
+    font-size: 40px;
+  }
+  .subheading {
+    font-size: 14px;
+    margin-left: 20px;
+  }
+  .special-login {
+    margin-top: 3px;
+  }
+  .bottom {
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-left: 0px;
+    margin-bottom: 1rem;
+  }
+  .head-info {
+    font-size: 14px;
+    padding-top: 10px;
+  }
+  .input-detail {
+    height: 2rem;
+    margin-left: 0px;
+    padding-left: 0;
+    font-size: 14px;
+  }
+  .bottom .px-16 {
+    padding: 10px;
+  }
+  .enterdetail {
+    margin-top: 20px;
+    width: 80px;
+    font-size: 20px;
+    height: 40px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+  .heading {
+    font-size: 26px;
+  }
+  .timer {
+    font-size: 17px;
+  }
+  .login-changeinfo {
+    font-size: 14px;
+    padding-left: 20px;
+  }
+  .orsection {
+    font-size: 18px;
+  }
+  .google-signin-button {
+    font-size: 18px;
+    width: 80%;
+  }
+  .google-signin-button img {
+    width: 40px;
+    height: 40px;
+  }
+  .github-signin-button {
+    font-size: 18px;
+    width: 80%;
+  }
+  .github-signin-button img {
+    width: 40px;
+    height: 40px;
+  }
 }
-@media screen and (min-width:1440px){
-    .loginBlock{
-        width:400px;
-        height:600px;
-    }.subheading{
-        font-size: 14px;
-        margin-left:20px;
-    }
-    .special-login{
-        margin-top:3px;
-    
-    }
-    .bottom{
-        margin-top:0px;
-        padding-top:0px;
-        padding-left:0px;
-        margin-bottom:1rem;
-    }
-    .head-info{
-        font-size: 14px;
-        padding-top: 10px;
-    }
-    .input-detail{
-        height:2rem;
-        margin-left:0px;
-        padding-left:0;
-        font-size: 14px;
-    }.bottom .px-16{
-        padding:10px;
-    }
-    .enterdetail{
-        margin-top:20px;
-        width:80px;
-        font-size: 20px;
-        height:40px;
-        padding-top:0px;
-        padding-bottom: 0px;
-    }.heading{
-        font-size: 26px;
-    }.timer{
-        font-size: 17px;
-
-    }.login-changeinfo{
-        font-size:14px;
-        padding-left:20px;
-    }.orsection{
-        font-size:18px;
-    }.google-signin-button{
-        font-size:18px;
-        width:80%;
-        
-    }.google-signin-button img{
-        width:40px;
-        height:40px;
-    }.github-signin-button{
-        font-size:18px;
-        width:80%;
-        
-    }.github-signin-button img{
-        width:40px;
-        height:40px;
-    }
+@media screen and (min-width: 1440px) {
+  .loginBlock {
+    width: 400px;
+    height: 600px;
+  }
+  .subheading {
+    font-size: 14px;
+    margin-left: 20px;
+  }
+  .special-login {
+    margin-top: 3px;
+  }
+  .bottom {
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-left: 0px;
+    margin-bottom: 1rem;
+  }
+  .head-info {
+    font-size: 14px;
+    padding-top: 10px;
+  }
+  .input-detail {
+    height: 2rem;
+    margin-left: 0px;
+    padding-left: 0;
+    font-size: 14px;
+  }
+  .bottom .px-16 {
+    padding: 10px;
+  }
+  .enterdetail {
+    margin-top: 20px;
+    width: 80px;
+    font-size: 20px;
+    height: 40px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+  .heading {
+    font-size: 26px;
+  }
+  .timer {
+    font-size: 17px;
+  }
+  .login-changeinfo {
+    font-size: 14px;
+    padding-left: 20px;
+  }
+  .orsection {
+    font-size: 18px;
+  }
+  .google-signin-button {
+    font-size: 18px;
+    width: 80%;
+  }
+  .google-signin-button img {
+    width: 40px;
+    height: 40px;
+  }
+  .github-signin-button {
+    font-size: 18px;
+    width: 80%;
+  }
+  .github-signin-button img {
+    width: 40px;
+    height: 40px;
+  }
 }
-@media screen and (max-width:320px){
-    .loginBlock{
-        width:298px;
-        height:598px;
-    }.subheading{
-        font-size: 14px;
-        margin-left:20px;
-    }
-    .special-login{
-        margin-top:3px;
-    
-    }
-    .bottom{
-        margin-top:0px;
-        padding-top:0px;
-        padding-left:0px;
-        margin-bottom:1rem;
-    }
-    .head-info{
-        font-size: 14px;
-        padding-top: 10px;
-    }
-    .input-detail{
-        height:2rem;
-        margin-left:0px;
-        padding-left:0;
-        font-size: 14px;
-    }.bottom .px-16{
-        padding:10px;
-    }
-    .enterdetail{
-        margin-top:20px;
-        width:80px;
-        font-size: 20px;
-        height:40px;
-        padding-top:0px;
-        padding-bottom: 0px;
-    }.heading{
-        font-size: 26px;
-    }.timer{
-        font-size: 17px;
-
-    }.login-changeinfo{
-        font-size:14px;
-        padding-left:20px;
-    }.orsection{
-        font-size:18px;
-    }.google-signin-button{
-        font-size:18px;
-        width:80%;
-        
-    }.google-signin-button img{
-        width:40px;
-        height:40px;
-    }.github-signin-button{
-        font-size:18px;
-        width:80%;
-        
-    }.github-signin-button img{
-        width:40px;
-        height:40px;
-    }
+@media screen and (max-width: 320px) {
+  .loginBlock {
+    width: 298px;
+    height: 598px;
+  }
+  .subheading {
+    font-size: 14px;
+    margin-left: 20px;
+  }
+  .special-login {
+    margin-top: 3px;
+  }
+  .bottom {
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-left: 0px;
+    margin-bottom: 1rem;
+  }
+  .head-info {
+    font-size: 14px;
+    padding-top: 10px;
+  }
+  .input-detail {
+    height: 2rem;
+    margin-left: 0px;
+    padding-left: 0;
+    font-size: 14px;
+  }
+  .bottom .px-16 {
+    padding: 10px;
+  }
+  .enterdetail {
+    margin-top: 20px;
+    width: 80px;
+    font-size: 20px;
+    height: 40px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+  .heading {
+    font-size: 26px;
+  }
+  .timer {
+    font-size: 17px;
+  }
+  .login-changeinfo {
+    font-size: 14px;
+    padding-left: 20px;
+  }
+  .orsection {
+    font-size: 18px;
+  }
+  .google-signin-button {
+    font-size: 18px;
+    width: 80%;
+  }
+  .google-signin-button img {
+    width: 40px;
+    height: 40px;
+  }
+  .github-signin-button {
+    font-size: 18px;
+    width: 80%;
+  }
+  .github-signin-button img {
+    width: 40px;
+    height: 40px;
+  }
 }

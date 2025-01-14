@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {socket} from '../scripts/socket';
+import { socket } from '../scripts/socket';
 import { markChatAsRead } from '../Store/Chat';
 export const useSocketMarkAsRead = () => {
   const dispatch = useDispatch();
@@ -10,15 +10,20 @@ export const useSocketMarkAsRead = () => {
   const message = useSelector((state) => state.chat.message);
   const chat = useSelector((state) => state.chat.chats);
   useEffect(() => {
-    if(!isAuthenticated) return;
+    if (!isAuthenticated) return;
     const userId = user._id;
-    if (chat.length > 0 && presentChat && chat.find(chat => chat.chat_id === presentChat).unread_messages[userId] > 0) {
+    if (
+      chat.length > 0 &&
+      presentChat &&
+      chat.find((chat) => chat.chat_id === presentChat).unread_messages[
+        userId
+      ] > 0
+    ) {
       socket.emit('markAsRead', { presentChat, userId });
       dispatch(markChatAsRead({ presentChat, userId }));
     }
     return () => {
       socket.off('markAsRead');
     };
-  },[presentChat, user,message]);
-  
+  }, [presentChat, user, message]);
 };

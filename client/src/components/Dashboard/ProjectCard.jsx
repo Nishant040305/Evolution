@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Folder, Trash2, Edit, Users, Settings } from "lucide-react";
-import ProjectSettingsModal from "./ProjectSettingsModal";
-import CombinedProjectModal from "./CombinedModal"; // Import the combined modal
+import React, { useState } from 'react';
+import { Folder, Trash2, Edit, Users, Settings } from 'lucide-react';
+import ProjectSettingsModal from './ProjectSettingsModal';
+import CombinedProjectModal from './CombinedModal'; // Import the combined modal
 
 // Delete Confirmation Modal
 const DeleteProjectModal = ({ isOpen, onClose, onConfirm, project }) => {
@@ -12,7 +12,8 @@ const DeleteProjectModal = ({ isOpen, onClose, onConfirm, project }) => {
       <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
         <h3 className="text-xl font-semibold text-red-600">Are you sure?</h3>
         <p className="text-red-500 mt-4">
-          Do you really want to delete the project <strong>{project.name}</strong>? This action cannot be undone.
+          Do you really want to delete the project{' '}
+          <strong>{project.name}</strong>? This action cannot be undone.
         </p>
         <div className="mt-6 flex justify-between">
           <button
@@ -36,7 +37,14 @@ const DeleteProjectModal = ({ isOpen, onClose, onConfirm, project }) => {
   );
 };
 
-const ProjectCard = ({ project, onDelete, onClick, onUpdate, toast,isShared }) => {
+const ProjectCard = ({
+  project,
+  onDelete,
+  onClick,
+  onUpdate,
+  toast,
+  isShared,
+}) => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isCombinedModalOpen, setIsCombinedModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -66,21 +74,25 @@ const ProjectCard = ({ project, onDelete, onClick, onUpdate, toast,isShared }) =
   const closeDeleteModal = () => {
     setIsDeleteModalOpen(false); // Close the delete modal
   };
-  console.log(isShared)
+  console.log(isShared);
   return (
     <div className="relative p-6 transition-shadow border border-red-200 rounded-lg h-72 hover:shadow-lg group">
-      {isShared=="owner" && <button
-        onClick={handleDeleteClick}
-        className="absolute p-2 text-red-700 transition-opacity top-4 right-4 hover:text-red-600 group-hover:opacity-100"
-      >
-        <Trash2 className="w-5 h-5" />
-      </button>}
-      {(isShared=="admin"||isShared=="owner") && <button
-        onClick={handleEditClick}
-        className="absolute p-2 text-red-700 transition-opacity top-4 right-12 hover:text-blue-600 group-hover:opacity-100"
-      >
-        <Edit className="w-5 h-5" />
-      </button>}
+      {isShared == 'owner' && (
+        <button
+          onClick={handleDeleteClick}
+          className="absolute p-2 text-red-700 transition-opacity top-4 right-4 hover:text-red-600 group-hover:opacity-100"
+        >
+          <Trash2 className="w-5 h-5" />
+        </button>
+      )}
+      {(isShared == 'admin' || isShared == 'owner') && (
+        <button
+          onClick={handleEditClick}
+          className="absolute p-2 text-red-700 transition-opacity top-4 right-12 hover:text-blue-600 group-hover:opacity-100"
+        >
+          <Edit className="w-5 h-5" />
+        </button>
+      )}
 
       <button
         onClick={handleCombinedModalClick}
@@ -93,7 +105,9 @@ const ProjectCard = ({ project, onDelete, onClick, onUpdate, toast,isShared }) =
         <div className="flex items-center justify-center w-12 h-12 mb-4 bg-red-100 rounded-full">
           <Folder className="w-6 h-6 text-red-600" />
         </div>
-        <h3 className="mb-2 text-xl font-semibold text-red-800">{project.name}</h3>
+        <h3 className="mb-2 text-xl font-semibold text-red-800">
+          {project.name}
+        </h3>
         <p className="mb-4 text-red-600 line-clamp-2">{project.description}</p>
         <p className="text-sm text-red-400">
           Created: {new Date(project.createdAt).toLocaleDateString()}

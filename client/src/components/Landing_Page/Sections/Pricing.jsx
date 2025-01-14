@@ -1,44 +1,44 @@
 // Pricing.tsx
-import React from "react";
-import { motion } from "framer-motion";
-import { Check } from "lucide-react";
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Check } from 'lucide-react';
 
 const plans = [
   {
-    name: "Starter",
-    price: "Free",
-    description: "Perfect for personal projects",
+    name: 'Starter',
+    price: 'Free',
+    description: 'Perfect for personal projects',
     features: [
-      "1 Website",
-      "Basic Templates",
-      "Community Support",
-      "Basic Analytics",
+      '1 Website',
+      'Basic Templates',
+      'Community Support',
+      'Basic Analytics',
     ],
   },
   {
-    name: "Pro",
-    price: "$29",
-    description: "Best for professionals",
+    name: 'Pro',
+    price: '$29',
+    description: 'Best for professionals',
     features: [
-      "Unlimited Websites",
-      "Premium Templates",
-      "Priority Support",
-      "Advanced Analytics",
-      "Custom Domain",
-      "Remove Evolution Branding",
+      'Unlimited Websites',
+      'Premium Templates',
+      'Priority Support',
+      'Advanced Analytics',
+      'Custom Domain',
+      'Remove Evolution Branding',
     ],
     popular: true,
   },
   {
-    name: "Enterprise",
-    price: "Custom",
-    description: "For large organizations",
+    name: 'Enterprise',
+    price: 'Custom',
+    description: 'For large organizations',
     features: [
-      "Everything in Pro",
-      "Custom Templates",
-      "Dedicated Support",
-      "Team Collaboration",
-      "API Access",
+      'Everything in Pro',
+      'Custom Templates',
+      'Dedicated Support',
+      'Team Collaboration',
+      'API Access',
     ],
   },
 ];
@@ -53,7 +53,7 @@ export function Pricing() {
           <motion.div
             key={index}
             className={`border rounded-lg p-6 w-80 ${
-              plan.popular ? "border-blue-500" : "border-gray-300"
+              plan.popular ? 'border-blue-500' : 'border-gray-300'
             }`}
             whileHover={{ scale: 1.05 }}
           >

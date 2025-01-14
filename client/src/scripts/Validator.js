@@ -1,6 +1,4 @@
-export const EmailVerifier=()=>{
-    //EmailVerifier
-}
-export const PasswordVerifer=()=>{
-    
-}
+export const EmailVerifier = () => {
+  //EmailVerifier
+};
+export const PasswordVerifer = () => {};

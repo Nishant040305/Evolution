@@ -1,36 +1,36 @@
-.left-social-sidebar{
-    height:100vh;
+.left-social-sidebar {
+  height: 100vh;
 }
-.ChatLeftBar{
-    width:30vw;
-    min-width:300px;
+.ChatLeftBar {
+  width: 30vw;
+  min-width: 300px;
 }
-.ChatSearchBar{
-    width:95%;
+.ChatSearchBar {
+  width: 95%;
 }
-.leftSideChatBar{
-    max-height:76.5vh;
+.leftSideChatBar {
+  max-height: 76.5vh;
 }
 .leftSideChatBar::-webkit-scrollbar {
-    width: 8px; /* Set the width of the scrollbar */
-  }
-  
-  .leftSideChatBar::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Set the background of the scrollbar track */
-    border-radius: 10px; /* Optional: Adds rounded corners to the scrollbar track */
-  }
-  
-  .leftSideChatBar::-webkit-scrollbar-thumb {
-    background: #888; /* Set the color of the scrollbar thumb */
-    border-radius: 10px; /* Optional: Adds rounded corners to the scrollbar thumb */
-  }
-  
-  .leftSideChatBar::-webkit-scrollbar-thumb:hover {
-    background: #555; /* Change color when hovered */
-  }
-  
-.ChatMessageList{
-    max-height:90%;
+  width: 8px; /* Set the width of the scrollbar */
+}
+
+.leftSideChatBar::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Set the background of the scrollbar track */
+  border-radius: 10px; /* Optional: Adds rounded corners to the scrollbar track */
+}
+
+.leftSideChatBar::-webkit-scrollbar-thumb {
+  background: #888; /* Set the color of the scrollbar thumb */
+  border-radius: 10px; /* Optional: Adds rounded corners to the scrollbar thumb */
+}
+
+.leftSideChatBar::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Change color when hovered */
+}
+
+.ChatMessageList {
+  max-height: 90%;
 }
 /* Custom Scrollbar styles */
 .scrollbar_edit {
@@ -56,7 +56,7 @@
   background-color: #444444; /* Color of the thumb when hovered */
 }
 
-.NoSrollbar{
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none;  /* IE 10+ */
+.NoSrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
 }

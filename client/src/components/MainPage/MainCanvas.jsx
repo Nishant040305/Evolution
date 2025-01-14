@@ -1,16 +1,22 @@
-import { useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 
-import ComponentRenderer from "./ComponentRenderer";
+import ComponentRenderer from './ComponentRenderer';
 
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-import { useDragDrop } from "../../hooks/DragDrop";
-import { useSaveComponents } from "../../hooks/useSaveComponents";
-import useTips from "../../hooks/useTips";
+import { useDragDrop } from '../../hooks/DragDrop';
+import { useSaveComponents } from '../../hooks/useSaveComponents';
+import useTips from '../../hooks/useTips';
 
-const MainCanvas = ({ ScreenSize, reloadEvents, rightSidebarOpen, toast, file }) => {
+const MainCanvas = ({
+  ScreenSize,
+  reloadEvents,
+  rightSidebarOpen,
+  toast,
+  file,
+}) => {
   const webElements = useSelector((state) => state.webElement.present);
   const webElementsRef = useRef(webElements);
 
@@ -25,20 +31,23 @@ const MainCanvas = ({ ScreenSize, reloadEvents, rightSidebarOpen, toast, file })
   useSaveComponents(toast, webElementsRef, file);
 
   // Drag and drop
-  const { handleDragOver, handleDrop } = useDragDrop(webElementsRef, reloadEvents);
+  const { handleDragOver, handleDrop } = useDragDrop(
+    webElementsRef,
+    reloadEvents
+  );
 
   // Get canvas dimensions
   const getHeight = () => {
-    if (ScreenSize === "desktop") return "calc(90vh - 64px)";
-    if (ScreenSize === "mobile") return "calc(90vh - 48px)";
-    return "calc(90vh - 64px)"; // Default for tablet or other sizes
+    if (ScreenSize === 'desktop') return 'calc(90vh - 64px)';
+    if (ScreenSize === 'mobile') return 'calc(90vh - 48px)';
+    return 'calc(90vh - 64px)'; // Default for tablet or other sizes
   };
 
   const getWidth = () => {
-    if (ScreenSize === "desktop") return "calc(100vw - 64px)";
-    if (ScreenSize === "mobile") return "calc(30vw - 48px)";
-    if (rightSidebarOpen) return "calc(80vw - 320px)";
-    return "calc(60vw - 64px)"; // Default for tablet or other sizes
+    if (ScreenSize === 'desktop') return 'calc(100vw - 64px)';
+    if (ScreenSize === 'mobile') return 'calc(30vw - 48px)';
+    if (rightSidebarOpen) return 'calc(80vw - 320px)';
+    return 'calc(60vw - 64px)'; // Default for tablet or other sizes
   };
 
   return (

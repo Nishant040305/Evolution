@@ -10,7 +10,9 @@ const FriendRequestNotification = ({ notification, onAccept, onDecline }) => {
     const fetchUserData = async () => {
       try {
         const apiDashboard = new ApiDashboard();
-        const userData = await apiDashboard.FindUserByID(notification.message.senderId); // `message` is senderId
+        const userData = await apiDashboard.FindUserByID(
+          notification.message.senderId
+        ); // `message` is senderId
         setUser(userData);
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -43,18 +45,23 @@ const FriendRequestNotification = ({ notification, onAccept, onDecline }) => {
 
         {/* User details */}
         <div className="flex flex-col">
-          <span className="text-base font-semibold text-gray-800">Friend Request</span>
+          <span className="text-base font-semibold text-gray-800">
+            Friend Request
+          </span>
           <span className="text-sm text-gray-600">
             {user ? (
               <>
-                Request from <span className="font-medium">{user.displayname}</span>
+                Request from{' '}
+                <span className="font-medium">{user.displayname}</span>
               </>
             ) : (
               'Loading user details...'
             )}
           </span>
           <span className="text-xs text-gray-500">
-            {formatDistanceToNow(new Date(notification.timestamp), { addSuffix: true })}
+            {formatDistanceToNow(new Date(notification.timestamp), {
+              addSuffix: true,
+            })}
           </span>
         </div>
       </div>
@@ -76,7 +83,6 @@ const FriendRequestNotification = ({ notification, onAccept, onDecline }) => {
           <span>Decline</span>
         </button>
       </div>
-
     </div>
   );
 };

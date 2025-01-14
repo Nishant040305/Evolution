@@ -1,7 +1,14 @@
-import { useState } from "react";
-import { X, Eye, EyeOff } from "lucide-react"; // Import eye icons
+import { useState } from 'react';
+import { X, Eye, EyeOff } from 'lucide-react'; // Import eye icons
 
-const ProjectOverview = ({ webElements, setId, toggleRight, setStatusCode, handleDelete, handleViewChange }) => {
+const ProjectOverview = ({
+  webElements,
+  setId,
+  toggleRight,
+  setStatusCode,
+  handleDelete,
+  handleViewChange,
+}) => {
   const [expandedElements, setExpandedElements] = useState({}); // Track which elements are expanded
 
   // Toggle function for expanding/collapsing children
@@ -17,9 +24,7 @@ const ProjectOverview = ({ webElements, setId, toggleRight, setStatusCode, handl
     const hasChildren = element?.children && element?.children.length > 0; // Check if the element has children
     return (
       <div key={element.id} className="space-y-1 bg-white">
-        <div
-          className="flex items-center justify-between p-1 transition-all bg-white rounded-lg"
-        >
+        <div className="flex items-center justify-between p-1 transition-all bg-white rounded-lg">
           <div className="flex items-center">
             {/* Arrow icon for expanding/collapsing */}
             {hasChildren && (
@@ -27,7 +32,9 @@ const ProjectOverview = ({ webElements, setId, toggleRight, setStatusCode, handl
                 onClick={() => toggleExpand(element.id)}
                 className="mr-1 text-gray-600 hover:text-gray-800"
               >
-                <span className={`transform ${expandedElements[element.id] ? "rotate-90" : ""}`}>
+                <span
+                  className={`transform ${expandedElements[element.id] ? 'rotate-90' : ''}`}
+                >
                   &#8594;
                 </span>
               </button>

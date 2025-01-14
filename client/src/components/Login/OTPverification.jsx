@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import AuthService from "../../scripts/API.Login";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import AuthService from '../../scripts/API.Login';
 const OTPVerification = (props) => {
   const [timer, setTimer] = useState(300); // 5 minutes in seconds
-  const [msg, setMsg] = useState("");
+  const [msg, setMsg] = useState('');
   const [isResendVisible, setIsResendVisible] = useState(false);
   const navigate = useNavigate();
   const handleChange = (e) => {
@@ -26,7 +26,7 @@ const OTPVerification = (props) => {
   const formatTime = () => {
     const minutes = Math.floor(timer / 60);
     const seconds = timer % 60;
-    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
   const API = new AuthService();
   return (

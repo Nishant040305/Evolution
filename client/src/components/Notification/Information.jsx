@@ -13,7 +13,9 @@ const InformationNotification = ({ notification, onDelete }) => {
     >
       {/* Left section with title, message, and timestamp */}
       <div className="flex-1">
-        <div className="text-sm font-medium text-gray-800">{notification.title}</div>
+        <div className="text-sm font-medium text-gray-800">
+          {notification.title}
+        </div>
         <div className="text-xs text-gray-500 mt-1">{notification.message}</div>
         <div className="text-xs text-gray-400 mt-1">{formattedTime}</div>
       </div>

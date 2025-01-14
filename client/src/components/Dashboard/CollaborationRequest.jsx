@@ -1,4 +1,7 @@
-import { SocketRefreshOrganizationChanges ,SocketAcceptFriendRequest} from "../../event/SocketEvent";
+import {
+  SocketRefreshOrganizationChanges,
+  SocketAcceptFriendRequest,
+} from '../../event/SocketEvent';
 import { useEffect, useState } from 'react';
 import User from '../../scripts/API.User';
 import Chats from '../../scripts/API.Chats';
@@ -8,76 +11,79 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 
 const CollabrationRequest = ({ notification }) => {
-    const [sender, setSender] = useState(null);
-    const notifications = useSelector((state) => state.notifications);
-    const API = new User();
-    const dispatch = useDispatch();
-    const APINotif = new Chats();  
-    const APIProject = new ApiDashboard();
-    const userId = useSelector((state) => state.user.userInfo._id);
-    
-    const onAccept = async (notificationId) => {
-      const notification = notifications.find(
-            (notif) => notif.type === 'collaborationRequest' && notif._id === notificationId
-          );
-      
-          if (!notification) {
-            console.error('Notification not found');
-            return;
-          }
-          console.log(notification)
-          const { groupChatId,projectId } = notification.message;
-      
-          try {
-            // Perform necessary API call or logic for accepting collaboration
-            
-            await APIProject.acceptCollaboration(projectId,notification.receiverId); // Hypothetical API call
-            dispatch(deleteNotification({ id: notificationId }));
-            await APINotif.deleteNotification(notificationId);
-            const chat = await APINotif.addUserToGroupChat(groupChatId,[userId,]);
-            SocketAcceptFriendRequest(chat.data);
-            SocketRefreshOrganizationChanges(projectId);
-            
-          } catch (error) {
-            console.error('Error accepting collaboration request:', error);
-          }
-    };
-  
-    const onDecline = async (notificationId) => {
-      const notification = notifications.find(
-            (notif) => notif.type === 'collaborationRequest' && notif._id === notificationId
-          );
-      
-          if (!notification) {
-            console.error('Notification not found');
-            return;
-          }
-      
-          try {
-            dispatch(deleteNotification({ id: notificationId }));
-            await APINotif.deleteNotification(notificationId);
-          } catch (error) {
-            console.error('Error declining collaboration request:', error);
+  const [sender, setSender] = useState(null);
+  const notifications = useSelector((state) => state.notifications);
+  const API = new User();
+  const dispatch = useDispatch();
+  const APINotif = new Chats();
+  const APIProject = new ApiDashboard();
+  const userId = useSelector((state) => state.user.userInfo._id);
+
+  const onAccept = async (notificationId) => {
+    const notification = notifications.find(
+      (notif) =>
+        notif.type === 'collaborationRequest' && notif._id === notificationId
+    );
+
+    if (!notification) {
+      console.error('Notification not found');
+      return;
+    }
+    console.log(notification);
+    const { groupChatId, projectId } = notification.message;
+
+    try {
+      // Perform necessary API call or logic for accepting collaboration
+
+      await APIProject.acceptCollaboration(projectId, notification.receiverId); // Hypothetical API call
+      dispatch(deleteNotification({ id: notificationId }));
+      await APINotif.deleteNotification(notificationId);
+      const chat = await APINotif.addUserToGroupChat(groupChatId, [userId]);
+      SocketAcceptFriendRequest(chat.data);
+      SocketRefreshOrganizationChanges(projectId);
+    } catch (error) {
+      console.error('Error accepting collaboration request:', error);
+    }
+  };
+
+  const onDecline = async (notificationId) => {
+    const notification = notifications.find(
+      (notif) =>
+        notif.type === 'collaborationRequest' && notif._id === notificationId
+    );
+
+    if (!notification) {
+      console.error('Notification not found');
+      return;
+    }
+
+    try {
+      dispatch(deleteNotification({ id: notificationId }));
+      await APINotif.deleteNotification(notificationId);
+    } catch (error) {
+      console.error('Error declining collaboration request:', error);
+    }
+  };
+  useEffect(() => {
+    // Fetch sender details
+    const fetchSenderData = async () => {
+      try {
+        const senderData = await new ApiDashboard().FindUserByID(
+          notification.message.senderId
+        );
+        setSender(senderData);
+      } catch (error) {
+        console.error('Error fetching sender data:', error);
       }
-    };  
-    useEffect(() => {
-      // Fetch sender details
-      const fetchSenderData = async () => {
-        try {
-          const senderData = await new ApiDashboard().FindUserByID(notification.message.senderId);
-          setSender(senderData);
-        } catch (error) {
-          console.error('Error fetching sender data:', error);
-        }
-      };
-  
-      fetchSenderData();
-    }, [notification.message]);
-  
-    const { projectName, roleOffered } = notification.message;
-  
-    return (
-      <div
+    };
+
+    fetchSenderData();
+  }, [notification.message]);
+
+  const { projectName, roleOffered } = notification.message;
+
+  return (
+    <div
       className={`p-3 rounded-lg shadow-md flex items-center justify-between ${notification.read ? 'bg-gray-100' : 'bg-red-50'}`}
     >
       {/* Left Section: Icon */}
@@ -94,7 +100,7 @@ const CollabrationRequest = ({ notification }) => {
           </div>
         )}
       </div>
-    
+
       {/* Right Section */}
       <div className="flex flex-col flex-grow ml-3">
         {/* Title */}
@@ -102,12 +108,8 @@ const CollabrationRequest = ({ notification }) => {
           {sender?.displayname || 'Loading...'} invited you
         </p>
         {/* Info */}
-        <p className="text-xs text-gray-500">
-          {`Project: ${projectName}`}
-        </p>
-        <p className="text-xs text-gray-500">
-          {`Role: ${roleOffered}`}
-        </p>
+        <p className="text-xs text-gray-500">{`Project: ${projectName}`}</p>
+        <p className="text-xs text-gray-500">{`Role: ${roleOffered}`}</p>
         {/* Action Buttons */}
         <div className="flex space-x-2 mt-2">
           <button
@@ -125,8 +127,7 @@ const CollabrationRequest = ({ notification }) => {
         </div>
       </div>
     </div>
-    
-    );
-  };
-  
+  );
+};
+
 export default CollabrationRequest;

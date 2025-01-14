@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { Search, Settings, User, LogOut, Bell } from "lucide-react";
-import NotificationsPanel from "./NotificationsPanel";
-import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../Store/userSlice";
-import AuthService from "../../scripts/API.Login";
-import {useNavigate} from "react-router-dom";
-import url from "../../url.json";
+import React, { useState } from 'react';
+import { Search, Settings, User, LogOut, Bell } from 'lucide-react';
+import NotificationsPanel from './NotificationsPanel';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../Store/userSlice';
+import AuthService from '../../scripts/API.Login';
+import { useNavigate } from 'react-router-dom';
+import url from '../../url.json';
 const TopBar = ({ searchQuery, setSearchQuery }) => {
   const [showNotifications, setShowNotifications] = useState(false);
   const dispatch = useDispatch();
@@ -54,12 +54,18 @@ const TopBar = ({ searchQuery, setSearchQuery }) => {
             </button>
 
             {/* Settings */}
-            <button className="p-2 rounded-full hover:bg-red-300" onClick={()=>navigate(url.Settings)}>
+            <button
+              className="p-2 rounded-full hover:bg-red-300"
+              onClick={() => navigate(url.Settings)}
+            >
               <Settings className="w-5 h-5 text-red-600" />
             </button>
 
             {/* Profile */}
-            <button className="p-2 rounded-full hover:bg-red-300" onClick={()=>navigate(url.SocialMain)}>
+            <button
+              className="p-2 rounded-full hover:bg-red-300"
+              onClick={() => navigate(url.SocialMain)}
+            >
               {user ? (
                 <img
                   src={user}
@@ -89,7 +95,7 @@ const TopBar = ({ searchQuery, setSearchQuery }) => {
       {showNotifications && (
         <div
           className=""
-          style={{ position: "absolute", right: 0, zIndex: 2000 }}
+          style={{ position: 'absolute', right: 0, zIndex: 2000 }}
         >
           <div className="relative w-full max-w-xs mt-2 top-full">
             <NotificationsPanel />

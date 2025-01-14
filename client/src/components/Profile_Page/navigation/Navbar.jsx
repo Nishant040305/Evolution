@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Bell, Plus, Search, ChevronDown } from "lucide-react";
+import React, { useState } from 'react';
+import { Bell, Plus, Search, ChevronDown } from 'lucide-react';
 
 export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {UserVerifier} = require('../middleware/credMiddleware');
+const { UserVerifier } = require('../middleware/credMiddleware');
 const MessageController = require('../controller/MessagesController');
 
 // @route    GET api/messages

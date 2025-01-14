@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
-import GroupInfo from "./CreateGroupChatTop";
-import UserInfo from "./SelectUserForGroupChat";
-import { useSelector } from "react-redux";
-import axios from "axios";
-import server from "../../server.json";
-import Chats from "../../scripts/API.Chats";
-import { SocketAcceptFriendRequest } from "../../event/SocketEvent";
-const CreateGroupChat = ({toast}) => {
-  const [groupName, setGroupName] = useState("");
-  const [groupIcon, setGroupIcon] = useState({image:"",file:""});
-  const [searchQuery, setSearchQuery] = useState("");
+import React, { useEffect, useState } from 'react';
+import GroupInfo from './CreateGroupChatTop';
+import UserInfo from './SelectUserForGroupChat';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
+import server from '../../server.json';
+import Chats from '../../scripts/API.Chats';
+import { SocketAcceptFriendRequest } from '../../event/SocketEvent';
+const CreateGroupChat = ({ toast }) => {
+  const [groupName, setGroupName] = useState('');
+  const [groupIcon, setGroupIcon] = useState({ image: '', file: '' });
+  const [searchQuery, setSearchQuery] = useState('');
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [users, setUsers] = useState([]);
-  const [groupImage,setGroupImage] = useState(null);
+  const [groupImage, setGroupImage] = useState(null);
   // Redux states
   const chats = useSelector((state) => state.chat.chats);
   const API = new Chats();
@@ -27,51 +27,51 @@ const CreateGroupChat = ({toast}) => {
   };
 
   // Create group logic
-  const createGroup = async() => {
+  const createGroup = async () => {
     if (!groupName || selectedUsers.length === 0) {
-      toast.error("Please provide a group name and select at least one member.");
+      toast.error(
+        'Please provide a group name and select at least one member.'
+      );
       return;
     }
     if (!groupIcon.file) {
-        const response = await API.createGroupChat(groupName,selectedUsers);
-        if(response.data){
-            SocketAcceptFriendRequest(response.data);
-            toast.success("Group chat created successfully");
-            setGroupName("");   
-            setSelectedUsers([]);
-        }
-        return;
+      const response = await API.createGroupChat(groupName, selectedUsers);
+      if (response.data) {
+        SocketAcceptFriendRequest(response.data);
+        toast.success('Group chat created successfully');
+        setGroupName('');
+        setSelectedUsers([]);
+      }
+      return;
     }
     let image = null;
     const BACKWEB = import.meta.env.VITE_REACT_APP_BACKWEB;
     try {
       const formData = new FormData();
-      formData.append("file", groupIcon.file);
+      formData.append('file', groupIcon.file);
 
       const response = await axios.post(
         `${BACKWEB}${server.Image.ImageUpload}`, // Adjust endpoint
-        formData,
-        
+        formData
       );
 
       if (response.status === 200 && response.data.url) {
         image = response.data.url;
-        setGroupIcon({ image: "", file: "" });
+        setGroupIcon({ image: '', file: '' });
       }
     } catch (error) {
-      console.error("Upload error:", error);
-      toast.error("Failed to upload group icon.");
+      console.error('Upload error:', error);
+      toast.error('Failed to upload group icon.');
       return;
     }
-  
 
     // TODO: Call your API or Redux action here
-    const chat = await API.createGroupChat(groupName,selectedUsers,image);
-    if(chat.data){
-        SocketAcceptFriendRequest(chat.data);
-        toast.success("Group chat created successfully");
-        setGroupName("");
-        setSelectedUsers([]);
+    const chat = await API.createGroupChat(groupName, selectedUsers, image);
+    if (chat.data) {
+      SocketAcceptFriendRequest(chat.data);
+      toast.success('Group chat created successfully');
+      setGroupName('');
+      setSelectedUsers([]);
     }
   };
 
@@ -86,7 +86,7 @@ const CreateGroupChat = ({toast}) => {
 
     const uniqueUsers = {};
     chats.forEach((chat) => {
-      if (chat.chat_type === "personal" && chat.participants.length === 2) {
+      if (chat.chat_type === 'personal' && chat.participants.length === 2) {
         const otherUserId =
           chat.participants[0].user_id === userId
             ? chat.participants[1].user_id
@@ -96,8 +96,8 @@ const CreateGroupChat = ({toast}) => {
         if (!uniqueUsers[otherUserId]) {
           uniqueUsers[otherUserId] = {
             id: otherUserId,
-            name: chat.chat_name || "Unknown",
-            avatar: chat.chat_avatar || "/default-avatar.png",
+            name: chat.chat_name || 'Unknown',
+            avatar: chat.chat_avatar || '/default-avatar.png',
           };
         }
       }
@@ -117,7 +117,7 @@ const CreateGroupChat = ({toast}) => {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         createGroup={createGroup}
-        toast = {toast}
+        toast={toast}
       />
 
       {/* User List */}

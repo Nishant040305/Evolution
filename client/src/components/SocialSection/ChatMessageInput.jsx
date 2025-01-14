@@ -14,7 +14,7 @@ const ChatMessageInput = () => {
   const senderId = useSelector((state) => state.user.userInfo._id);
 
   const handleSendMessage = () => {
-    if (!message.trim() ) return; // Don't send if message is empty or not connected to socket
+    if (!message.trim()) return; // Don't send if message is empty or not connected to socket
     const newMessage = {
       chatId: Chat,
       senderId: senderId,
@@ -23,7 +23,7 @@ const ChatMessageInput = () => {
     };
 
     // Emit the message using socket
-    SocketSendMessage(Chat,senderId,message,'text');
+    SocketSendMessage(Chat, senderId, message, 'text');
 
     // Clear the input field
     setMessage('');
@@ -45,8 +45,7 @@ const ChatMessageInput = () => {
       };
 
       // Emit the file message using socket
-      SocketSendMessage(Chat.chat_id,senderId,file.name,'file');
-     
+      SocketSendMessage(Chat.chat_id, senderId, file.name, 'file');
     }
   };
   connectRooms();
@@ -70,11 +69,7 @@ const ChatMessageInput = () => {
       {/* File Upload */}
       <label className="p-2 text-gray-500 hover:text-gray-700 cursor-pointer">
         <FaPaperclip size={24} />
-        <input
-          type="file"
-          onChange={handleFileUpload}
-          className="hidden"
-        />
+        <input type="file" onChange={handleFileUpload} className="hidden" />
       </label>
 
       {/* Input Field */}

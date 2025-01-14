@@ -1,5 +1,5 @@
-import React from "react";
-import { X } from "lucide-react";
+import React from 'react';
+import { X } from 'lucide-react';
 
 const ProjectAnalyticsModal = ({ isOpen, onClose, project }) => {
   if (!isOpen) return null;
@@ -9,7 +9,7 @@ const ProjectAnalyticsModal = ({ isOpen, onClose, project }) => {
     projectViews: 150, // Number of views for the project
     dateCreated: project.createdAt
       ? new Date(project.createdAt).toLocaleDateString()
-      : "N/A", // Formatting the created date
+      : 'N/A', // Formatting the created date
   };
 
   return (

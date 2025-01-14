@@ -11,9 +11,9 @@ const UserSchema = new Schema({
     type: String,
     unique: true,
   },
-  verify:{
-    type:Boolean,
-    default:false
+  verify: {
+    type: Boolean,
+    default: false,
   },
   password: {
     type: String,
@@ -26,13 +26,13 @@ const UserSchema = new Schema({
     {
       type: Schema.Types.ObjectId,
       ref: 'Project',
-    }
+    },
   ],
   sharedProjects: [
     {
       type: Schema.Types.ObjectId,
       ref: 'Project',
-    }
+    },
   ],
 });
 

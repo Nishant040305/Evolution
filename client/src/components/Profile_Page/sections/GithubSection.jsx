@@ -1,9 +1,9 @@
-import React from "react";
-import ProfileSection from "../sections/ProfileSection.jsx";
-import Organizations from "../sections/Organizations.jsx";
-import ContributionSection from "../sections/ContributionSection.jsx";
-import Project from "../sections/Project.jsx";
-import ActivityTimeline from "../sections/Activity_Timeline.jsx";
+import React from 'react';
+import ProfileSection from '../sections/ProfileSection.jsx';
+import Organizations from '../sections/Organizations.jsx';
+import ContributionSection from '../sections/ContributionSection.jsx';
+import Project from '../sections/Project.jsx';
+import ActivityTimeline from '../sections/Activity_Timeline.jsx';
 
 const GitHubProfilePage = ({ left, right }) => {
   return (

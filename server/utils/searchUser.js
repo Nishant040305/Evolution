@@ -8,7 +8,10 @@ const createHttpError = require('http-errors');
  */
 const searchUsers = async (searchString) => {
   if (!searchString || searchString.trim().length < 3) {
-    throw createHttpError(400, 'Search string must be at least 3 characters long.');
+    throw createHttpError(
+      400,
+      'Search string must be at least 3 characters long.'
+    );
   }
 
   try {
@@ -17,10 +20,7 @@ const searchUsers = async (searchString) => {
     // Perform initial query to fetch matches
     const matches = await User.find(
       {
-        $or: [
-          { displayname: { $regex: regex } },
-          { email: { $regex: regex } },
-        ],
+        $or: [{ displayname: { $regex: regex } }, { email: { $regex: regex } }],
       },
       'id displayname email avatar' // Select only required fields
     ).lean();
@@ -32,13 +32,19 @@ const searchUsers = async (searchString) => {
         user.email.toLowerCase() === searchString.toLowerCase()
     );
 
-    const limit = exactMatches.length > 0 ? exactMatches.length : Math.min(5, matches.length);
+    const limit =
+      exactMatches.length > 0
+        ? exactMatches.length
+        : Math.min(5, matches.length);
 
     // Return the dynamically limited results
     return matches.slice(0, limit);
   } catch (error) {
-    throw createHttpError(500, 'An internal server error occurred while searching for users.');
+    throw createHttpError(
+      500,
+      'An internal server error occurred while searching for users.'
+    );
   }
 };
 
-module.exports = {searchUsers};
+module.exports = { searchUsers };

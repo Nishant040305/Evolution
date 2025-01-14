@@ -30,17 +30,25 @@ const NotificationPage = () => {
     if (filter === 'unread') {
       filtered = filtered.filter((notification) => !notification.read);
     } else if (filter === 'information') {
-      filtered = filtered.filter((notification) => notification.type === 'information');
+      filtered = filtered.filter(
+        (notification) => notification.type === 'information'
+      );
     } else if (filter === 'friendRequest') {
-      filtered = filtered.filter((notification) => notification.type === 'friendRequest');
+      filtered = filtered.filter(
+        (notification) => notification.type === 'friendRequest'
+      );
     } else if (filter === 'collaborationRequest') {
-      filtered = filtered.filter((notification) => notification.type === 'collaborationRequest');
+      filtered = filtered.filter(
+        (notification) => notification.type === 'collaborationRequest'
+      );
     }
 
     if (searchTerm) {
       filtered = filtered.filter(
         (notification) =>
-          notification.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          notification.title
+            ?.toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
           notification.message?.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
@@ -53,27 +61,27 @@ const NotificationPage = () => {
   // Handle Collaboration Request actions
   const handleAcceptCollaborationRequest = async (notificationId) => {
     const notification = notifications.find(
-      (notif) => notif.type === 'collaborationRequest' && notif._id === notificationId
+      (notif) =>
+        notif.type === 'collaborationRequest' && notif._id === notificationId
     );
 
     if (!notification) {
       console.error('Notification not found');
       return;
     }
-    console.log(notification)
-    const { groupChatId,projectId } = notification.message;
+    console.log(notification);
+    const { groupChatId, projectId } = notification.message;
 
     try {
       // Perform necessary API call or logic for accepting collaboration
-      
-      await APIProject.acceptCollaboration(projectId,notification.receiverId); // Hypothetical API call
+
+      await APIProject.acceptCollaboration(projectId, notification.receiverId); // Hypothetical API call
       dispatch(deleteNotification({ id: notificationId }));
       await APINotif.deleteNotification(notificationId);
-      console.log(groupChatId)
-      const chat = await APINotif.addUserToGroupChat(groupChatId,[userId,]);
+      console.log(groupChatId);
+      const chat = await APINotif.addUserToGroupChat(groupChatId, [userId]);
       SocketAcceptFriendRequest(chat.data);
       SocketRefreshOrganizationChanges(projectId);
-      
     } catch (error) {
       console.error('Error accepting collaboration request:', error);
     }
@@ -81,7 +89,8 @@ const NotificationPage = () => {
 
   const handleDeclineCollaborationRequest = async (notificationId) => {
     const notification = notifications.find(
-      (notif) => notif.type === 'collaborationRequest' && notif._id === notificationId
+      (notif) =>
+        notif.type === 'collaborationRequest' && notif._id === notificationId
     );
 
     if (!notification) {
@@ -165,17 +174,26 @@ const NotificationPage = () => {
       {/* Filters and Search */}
       <div className="flex justify-between mt-4 space-x-4">
         <div className="flex space-x-2">
-          {['all', 'unread', 'information', 'friendRequest', 'collaborationRequest'].map((type) => (
+          {[
+            'all',
+            'unread',
+            'information',
+            'friendRequest',
+            'collaborationRequest',
+          ].map((type) => (
             <button
               key={type}
               onClick={() => setFilter(type)}
               className={`px-3 py-1 text-sm rounded-lg ${
-                filter === type ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-700'
+                filter === type
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-gray-100 text-gray-700'
               }`}
             >
               {type === 'all'
                 ? 'All'
-                : type.charAt(0).toUpperCase() + type.slice(1).replace(/([A-Z])/g, ' $1')}
+                : type.charAt(0).toUpperCase() +
+                  type.slice(1).replace(/([A-Z])/g, ' $1')}
             </button>
           ))}
         </div>
@@ -190,7 +208,10 @@ const NotificationPage = () => {
       </div>
 
       {/* Notification List */}
-      <div className="mt-4 space-y-2 overflow-y-scroll overflow-x-hidden scrollbar_edit" style={{ maxHeight: '73vh' }}>
+      <div
+        className="mt-4 space-y-2 overflow-y-scroll overflow-x-hidden scrollbar_edit"
+        style={{ maxHeight: '73vh' }}
+      >
         {filteredNotifications.length > 0 ? (
           filteredNotifications.map((notification) => {
             switch (notification.type) {

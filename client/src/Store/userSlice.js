@@ -29,9 +29,9 @@ const userSlice = createSlice({
       state.isAuthenticated = false;
       state.userInfo = null;
     },
-    ProfileUpdate: (state,action)=>{
-      state.userInfo = action.payload
-    }
+    ProfileUpdate: (state, action) => {
+      state.userInfo = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -56,7 +56,7 @@ const userSlice = createSlice({
 });
 
 // Export actions
-export const { logout ,loginSuccess,ProfileUpdate} = userSlice.actions;
+export const { logout, loginSuccess, ProfileUpdate } = userSlice.actions;
 
 // Export reducer
 export default userSlice.reducer;

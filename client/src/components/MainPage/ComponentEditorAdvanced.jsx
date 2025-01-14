@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
-import { setProperty } from "../../Store/webElementSlice";
+import React, { useState } from 'react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setProperty } from '../../Store/webElementSlice';
 
 const ComponentEditorAdvanced = ({ id }) => {
   const webElements = useSelector((state) => state.webElement.present);
@@ -25,17 +25,17 @@ const ComponentEditorAdvanced = ({ id }) => {
       ...prev,
       [property]: value,
     }));
-    handleAdvancedChange("hover", { ...hoverStyles, [property]: value });
+    handleAdvancedChange('hover', { ...hoverStyles, [property]: value });
   };
 
-  const boxShadow = element.styles.boxShadow || "0px 0px 0px 0px #000000";
+  const boxShadow = element.styles.boxShadow || '0px 0px 0px 0px #000000';
 
   const [shadowParams, setShadowParams] = useState({
-    horizontalOffset: boxShadow.split(" ")[0] || "0px",
-    verticalOffset: boxShadow.split(" ")[1] || "0px",
-    blurRadius: boxShadow.split(" ")[2] || "0px",
-    spreadRadius: boxShadow.split(" ")[3] || "0px",
-    color: boxShadow.split(" ")[4] || "#000000",
+    horizontalOffset: boxShadow.split(' ')[0] || '0px',
+    verticalOffset: boxShadow.split(' ')[1] || '0px',
+    blurRadius: boxShadow.split(' ')[2] || '0px',
+    spreadRadius: boxShadow.split(' ')[3] || '0px',
+    color: boxShadow.split(' ')[4] || '#000000',
   });
 
   const handleShadowChange = (property, value) => {
@@ -57,7 +57,7 @@ const ComponentEditorAdvanced = ({ id }) => {
 
     const newBoxShadow = `${horizontalOffset} ${verticalOffset} ${blurRadius} ${spreadRadius} ${color}`;
     dispatch(
-      setProperty({ id: id, property: "boxShadow", value: newBoxShadow })
+      setProperty({ id: id, property: 'boxShadow', value: newBoxShadow })
     );
   };
 
@@ -79,7 +79,7 @@ const ComponentEditorAdvanced = ({ id }) => {
           {/* Border Width */}
           <h4 className="mt-3 font-semibold text-gray-700">Border Width</h4>
           <div className="grid grid-cols-2 gap-4 p-3 bg-white border border-gray-200 rounded">
-            {["Top", "Bottom", "Left", "Right"].map((side) => (
+            {['Top', 'Bottom', 'Left', 'Right'].map((side) => (
               <label key={side} className="flex flex-col">
                 <span className="font-medium text-gray-600">{side}:</span>
                 <input
@@ -99,8 +99,8 @@ const ComponentEditorAdvanced = ({ id }) => {
             <label className="flex flex-col">
               <span className="font-medium text-gray-700">Cursor:</span>
               <select
-                value={element.styles.cursor || "default"}
-                onChange={(e) => handleAdvancedChange("cursor", e.target.value)}
+                value={element.styles.cursor || 'default'}
+                onChange={(e) => handleAdvancedChange('cursor', e.target.value)}
                 className="p-1 mt-1 border border-gray-300 rounded focus:border-gray-400 focus:outline-none"
               >
                 <option value="default">Default</option>
@@ -123,7 +123,7 @@ const ComponentEditorAdvanced = ({ id }) => {
                 type="number"
                 value={parseInt(shadowParams.horizontalOffset)}
                 onChange={(e) =>
-                  handleShadowChange("horizontalOffset", `${e.target.value}px`)
+                  handleShadowChange('horizontalOffset', `${e.target.value}px`)
                 }
                 className="p-1 mt-1 border border-gray-300 rounded focus:border-gray-400 focus:outline-none"
               />
@@ -135,7 +135,7 @@ const ComponentEditorAdvanced = ({ id }) => {
                 type="number"
                 value={parseInt(shadowParams.verticalOffset)}
                 onChange={(e) =>
-                  handleShadowChange("verticalOffset", `${e.target.value}px`)
+                  handleShadowChange('verticalOffset', `${e.target.value}px`)
                 }
                 className="p-1 mt-1 border border-gray-300 rounded focus:border-gray-400 focus:outline-none"
               />
@@ -147,7 +147,7 @@ const ComponentEditorAdvanced = ({ id }) => {
                 type="number"
                 value={parseInt(shadowParams.blurRadius)}
                 onChange={(e) =>
-                  handleShadowChange("blurRadius", `${e.target.value}px`)
+                  handleShadowChange('blurRadius', `${e.target.value}px`)
                 }
                 className="p-1 mt-1 border border-gray-300 rounded focus:border-gray-400 focus:outline-none"
               />
@@ -159,23 +159,21 @@ const ComponentEditorAdvanced = ({ id }) => {
                 type="number"
                 value={parseInt(shadowParams.spreadRadius)}
                 onChange={(e) =>
-                  handleShadowChange("spreadRadius", `${e.target.value}px`)
+                  handleShadowChange('spreadRadius', `${e.target.value}px`)
                 }
                 className="p-1 mt-1 border border-gray-300 rounded focus:border-gray-400 focus:outline-none"
               />
             </label>
-
-            
           </div>
           <label className="flex flex-row justify-between items-center">
-              <span className="font-medium text-gray-600">Color</span>
-              <input
-                type="color"
-                value={shadowParams.color}
-                onChange={(e) => handleShadowChange("color", e.target.value)}
-                className="mt-1 border border-gray-300 rounded focus:outline-none color-picker"
-              />
-            </label>
+            <span className="font-medium text-gray-600">Color</span>
+            <input
+              type="color"
+              value={shadowParams.color}
+              onChange={(e) => handleShadowChange('color', e.target.value)}
+              className="mt-1 border border-gray-300 rounded focus:outline-none color-picker"
+            />
+          </label>
           {/* Letter Spacing */}
           <div className="mt-4">
             <label className="flex flex-col">
@@ -184,7 +182,7 @@ const ComponentEditorAdvanced = ({ id }) => {
                 type="number"
                 value={parseInt(element.styles.letterSpacing) || 0}
                 onChange={(e) =>
-                  handleAdvancedChange("letterSpacing", `${e.target.value}px`)
+                  handleAdvancedChange('letterSpacing', `${e.target.value}px`)
                 }
                 className="p-1 mt-1 border border-gray-300 rounded focus:border-gray-400 focus:outline-none"
                 placeholder="px"

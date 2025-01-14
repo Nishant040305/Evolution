@@ -1,67 +1,68 @@
 {
-    "Test":{
-        "signup":"/api/test/signup",
-        "otpVerification":"/api/test/Otpver",
-        "login":"/api/test/login",
-        "forget":"/api/test/forget",
-        "confirmPasswordChange":"/api/test/confirChange",
-        "resend":"/api/test/resend"
-    },
-    "Auth":{
-        "signup":"/api/auth/signin",
-        "otpVerification":"/api/auth/OTPverification",
-        "login":"/api/auth/login",
-        "forget":"/api/auth/forgetPassword",
-        "confirmPasswordChange":"/api/auth/passwordChange",
-        "resend":"/api/auth/OTPverification",
-        "verify":"/api/auth/",
-        "logout":"/api/auth/logout"
-    },
-    "Project":{
-        "GetAllProject":"/api/project",
-        "GetProjectById":"/api/project/:id",
-        "CreatProject":"/api/project",
-        "UpdateProject":"/api/project/:id",
-        "ProjectFile":"/api/project/:id/file",
-        "UpdateProjectComponents":"/api/project/:id/components",
-        "GetProjectVersionHistory":"/api/project/:id/versionHistory",
-        "RevertProject":"/api/project/:id/versionHistory",
-        "DeleteProject":"/api/project/:id",
-        "PublishProject": "/api/project/:id/publish",
-        "DownloadProject":"/api/project/:id/download",
-        "MediaUpdate":"/api/project/image/",
-        "SharedProject":"/api/project/shared",
-        "InviteUser":"/api/project/:id/invite"
-    },
-    "User":{
-        "GetAllUsersProject":"/api/user/:id/project",
-        "ChangeProfile":"/api/user/:id",
-        "GetAllSharedProjects":"/api/user/:id/shared",
-        "FindUserEmail":"/api/user/:email",
-        "FindUserByID":"/api/user/ID/:id",
-        "FindUserSearch":"/api/user/search/:query",
-        "GetFriends":"/api/user/friends/:id",
-        "createChat":"/api/chat/chats",
-        "createGroupChat":"/api/chat/chats/group",
-        "addUserToGroupChat":"/api/chat/chats/group/add",
-        "getChatsData":"/api/chat/chats"
-    },
-    "Image":{
-        "ImageUpload":"/api/image/imageUpload"
-    },
-    "Chat":{
-        "getChatsData":"/api/chat/chats",
-        "createChat":"/api/chat/chats",
-        "createGroupChat":"/api/chat/chats/group",
-        "addUserToGroupChat":"/api/chat/chats/group/add",
-        "getMessages":"/api/message/messages",
-        "leaveGroupChat":"/api/chat/chats/group/leave",
-        "editGroupChatIcon":"/api/chat/chats/group/editIcon",
-        "editGroupChatName":"/api/chat/chats/group/editName"
-    },"Notifications":{
-        "getNotifications":"/api/notifications/getNotifications",
-        "createNotification":"/api/notifications/createNotification",
-        "markAsRead":"/api/notifications/markAsRead",
-        "deleteNotification":"/api/notifications/deleteNotification"
-    }
+  "Test": {
+    "signup": "/api/test/signup",
+    "otpVerification": "/api/test/Otpver",
+    "login": "/api/test/login",
+    "forget": "/api/test/forget",
+    "confirmPasswordChange": "/api/test/confirChange",
+    "resend": "/api/test/resend"
+  },
+  "Auth": {
+    "signup": "/api/auth/signin",
+    "otpVerification": "/api/auth/OTPverification",
+    "login": "/api/auth/login",
+    "forget": "/api/auth/forgetPassword",
+    "confirmPasswordChange": "/api/auth/passwordChange",
+    "resend": "/api/auth/OTPverification",
+    "verify": "/api/auth/",
+    "logout": "/api/auth/logout"
+  },
+  "Project": {
+    "GetAllProject": "/api/project",
+    "GetProjectById": "/api/project/:id",
+    "CreatProject": "/api/project",
+    "UpdateProject": "/api/project/:id",
+    "ProjectFile": "/api/project/:id/file",
+    "UpdateProjectComponents": "/api/project/:id/components",
+    "GetProjectVersionHistory": "/api/project/:id/versionHistory",
+    "RevertProject": "/api/project/:id/versionHistory",
+    "DeleteProject": "/api/project/:id",
+    "PublishProject": "/api/project/:id/publish",
+    "DownloadProject": "/api/project/:id/download",
+    "MediaUpdate": "/api/project/image/",
+    "SharedProject": "/api/project/shared",
+    "InviteUser": "/api/project/:id/invite"
+  },
+  "User": {
+    "GetAllUsersProject": "/api/user/:id/project",
+    "ChangeProfile": "/api/user/:id",
+    "GetAllSharedProjects": "/api/user/:id/shared",
+    "FindUserEmail": "/api/user/:email",
+    "FindUserByID": "/api/user/ID/:id",
+    "FindUserSearch": "/api/user/search/:query",
+    "GetFriends": "/api/user/friends/:id",
+    "createChat": "/api/chat/chats",
+    "createGroupChat": "/api/chat/chats/group",
+    "addUserToGroupChat": "/api/chat/chats/group/add",
+    "getChatsData": "/api/chat/chats"
+  },
+  "Image": {
+    "ImageUpload": "/api/image/imageUpload"
+  },
+  "Chat": {
+    "getChatsData": "/api/chat/chats",
+    "createChat": "/api/chat/chats",
+    "createGroupChat": "/api/chat/chats/group",
+    "addUserToGroupChat": "/api/chat/chats/group/add",
+    "getMessages": "/api/message/messages",
+    "leaveGroupChat": "/api/chat/chats/group/leave",
+    "editGroupChatIcon": "/api/chat/chats/group/editIcon",
+    "editGroupChatName": "/api/chat/chats/group/editName"
+  },
+  "Notifications": {
+    "getNotifications": "/api/notifications/getNotifications",
+    "createNotification": "/api/notifications/createNotification",
+    "markAsRead": "/api/notifications/markAsRead",
+    "deleteNotification": "/api/notifications/deleteNotification"
+  }
 }

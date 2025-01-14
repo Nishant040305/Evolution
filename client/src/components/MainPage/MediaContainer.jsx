@@ -1,10 +1,10 @@
-import React, { useState, useRef } from "react";
-import { Upload, Plus, ChevronUp, ChevronDown } from "lucide-react";
-import { useDispatch } from "react-redux";
-import { addElement } from "../../Store/webElementSlice";
-import { setImagesMedia } from "../../Store/imageSlice";
-import server from "../../server.json";
-import axios from "axios"
+import React, { useState, useRef } from 'react';
+import { Upload, Plus, ChevronUp, ChevronDown } from 'lucide-react';
+import { useDispatch } from 'react-redux';
+import { addElement } from '../../Store/webElementSlice';
+import { setImagesMedia } from '../../Store/imageSlice';
+import server from '../../server.json';
+import axios from 'axios';
 const MediaSection = ({
   toast,
   imagesMedia,
@@ -14,7 +14,7 @@ const MediaSection = ({
   counter,
 }) => {
   const [showMedia, setShowMedia] = useState(true);
-  const [imageToUpload, setImageToUpload] = useState({ image: "", file: "" });
+  const [imageToUpload, setImageToUpload] = useState({ image: '', file: '' });
   const [uploadProgress, setUploadProgress] = useState(0);
   const [totalProgress, setTotalProgress] = useState(0);
   const [isDraggingImage, setIsDraggingImage] = useState(false);
@@ -26,15 +26,15 @@ const MediaSection = ({
     const file = e.target.files[0];
     if (!file) return;
 
-    const validImageTypes = ["image/jpg", "image/jpeg", "image/png"];
+    const validImageTypes = ['image/jpg', 'image/jpeg', 'image/png'];
     if (!validImageTypes.includes(file.type)) {
-      toast.error("Please upload a JPG or PNG image.");
+      toast.error('Please upload a JPG or PNG image.');
       return;
     }
 
     const maxSizeInBytes = 2000 * 1024;
     if (file.size > maxSizeInBytes) {
-      toast.error("Image must be under 200KB.");
+      toast.error('Image must be under 200KB.');
       return;
     }
 
@@ -48,7 +48,7 @@ const MediaSection = ({
   const handleUpload = async () => {
     try {
       const formData = new FormData();
-      formData.append("file", imageToUpload.file);
+      formData.append('file', imageToUpload.file);
 
       const response = await axios.post(
         `${BACKWEB}${server.Project.MediaUpdate}${projectID}`,
@@ -66,13 +66,13 @@ const MediaSection = ({
 
       if (response.status === 200) {
         dispatch(setImagesMedia(response.data.url));
-        setImageToUpload({ image: "", file: "" });
+        setImageToUpload({ image: '', file: '' });
         setUploadProgress(0);
-        toast.success("Image uploaded successfully!");
+        toast.success('Image uploaded successfully!');
       }
     } catch (error) {
       console.error(error);
-      toast.error("Failed to upload image. Please try again.");
+      toast.error('Failed to upload image. Please try again.');
     }
   };
 
@@ -96,7 +96,7 @@ const MediaSection = ({
   };
 
   return (
-    <div className="space-y-3 " >
+    <div className="space-y-3 ">
       <div className="flex items-center justify-between">
         <h3 className="flex items-center text-sm font-semibold text-gray-700">
           Media
@@ -120,8 +120,8 @@ const MediaSection = ({
             onDrop={handleDrop}
             className={`border-2 border-dashed rounded-lg p-4 text-center transition-all ${
               isDraggingImage
-                ? "border-red-500 bg-red-50"
-                : "border-gray-300 hover:border-red-400"
+                ? 'border-red-500 bg-red-50'
+                : 'border-gray-300 hover:border-red-400'
             }`}
           >
             <input
@@ -130,7 +130,6 @@ const MediaSection = ({
               className="hidden "
               ref={fileInputRef}
               accept="image/png,image/jpeg,image/jpg"
-            
             />
             <button
               onClick={() => fileInputRef.current?.click()}

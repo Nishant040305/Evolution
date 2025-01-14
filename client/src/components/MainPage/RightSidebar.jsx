@@ -1,35 +1,35 @@
-import React, { useEffect } from "react";
-import { X, ChartColumn } from "lucide-react";
-import ComponentEditor from "./componentEditor";
-import ComponentEditorTransform from "./ComponentEditorTransform";
-import Info from "./Info";
-import ComponentEditorAppearance from "./ComponentEditorAppearance";
-import ComponentEditorAdvanced from "./ComponentEditorAdvanced";
-import ComponentEditorContent from "./ComponentEditorContent";
-import { useSelector } from "react-redux";
-import ComponentEditorHover from "./ComponentsEditorHover";
+import React, { useEffect } from 'react';
+import { X, ChartColumn } from 'lucide-react';
+import ComponentEditor from './componentEditor';
+import ComponentEditorTransform from './ComponentEditorTransform';
+import Info from './Info';
+import ComponentEditorAppearance from './ComponentEditorAppearance';
+import ComponentEditorAdvanced from './ComponentEditorAdvanced';
+import ComponentEditorContent from './ComponentEditorContent';
+import { useSelector } from 'react-redux';
+import ComponentEditorHover from './ComponentsEditorHover';
 
-const RightSidebar = ({ closeSidebar, id,toast }) => {
+const RightSidebar = ({ closeSidebar, id, toast }) => {
   const webElements = useSelector((state) => state.webElement.present);
   let idx = id;
   if (webElements[id] == null) {
     idx = 0;
   }
 
-  document.addEventListener("mousedown", function (e) {
+  document.addEventListener('mousedown', function (e) {
     // Check if the target is a resizable element
     const target = e.target.closest(
-      ".resizable-right, .resizable-left, .resizable-left-right"
+      '.resizable-right, .resizable-left, .resizable-left-right'
     );
     if (!target) return;
 
     // Determine the direction of resizing
     const isResizingRight =
-      target.classList.contains("resizable-right") ||
-      target.classList.contains("resizable-left-right");
+      target.classList.contains('resizable-right') ||
+      target.classList.contains('resizable-left-right');
     const isResizingLeft =
-      target.classList.contains("resizable-left") ||
-      target.classList.contains("resizable-left-right");
+      target.classList.contains('resizable-left') ||
+      target.classList.contains('resizable-left-right');
 
     // Initial mouse and element dimensions
     const startX = e.clientX;
@@ -38,22 +38,22 @@ const RightSidebar = ({ closeSidebar, id,toast }) => {
 
     function resize(e) {
       if (isResizingRight) {
-        target.style.width = startWidth + (e.clientX - startX) + "px";
+        target.style.width = startWidth + (e.clientX - startX) + 'px';
       }
       if (isResizingLeft) {
-        target.style.width = startWidth - (e.clientX - startX) + "px";
-        target.style.left = startLeft + (e.clientX - startX) + "px";
+        target.style.width = startWidth - (e.clientX - startX) + 'px';
+        target.style.left = startLeft + (e.clientX - startX) + 'px';
       }
     }
 
     function stopResize() {
-      window.removeEventListener("mousemove", resize);
-      window.removeEventListener("mouseup", stopResize);
+      window.removeEventListener('mousemove', resize);
+      window.removeEventListener('mouseup', stopResize);
     }
 
     // Attach mousemove and mouseup listeners
-    window.addEventListener("mousemove", resize);
-    window.addEventListener("mouseup", stopResize);
+    window.addEventListener('mousemove', resize);
+    window.addEventListener('mouseup', stopResize);
   });
 
   return (
@@ -87,7 +87,6 @@ const RightSidebar = ({ closeSidebar, id,toast }) => {
             <ComponentEditorAdvanced id={idx} />
             <ComponentEditorHover id={idx} />
             <ComponentEditorContent id={idx} toast={toast} />
-
           </div>
         )}
       </div>

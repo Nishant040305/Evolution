@@ -1,6 +1,6 @@
 {
-  "buttonsFuntions":[
-    { "label": "Alert", "type": "alert" },    
+  "buttonsFuntions": [
+    { "label": "Alert", "type": "alert" },
     { "label": "Console Log", "type": "console.log" },
     { "label": "Navigate", "type": "navigate" },
     { "label": "Custom", "type": "custom" }

@@ -1,5 +1,5 @@
-import React from "react";
-import "../../style/HoverInfoWrapper.css";
+import React from 'react';
+import '../../style/HoverInfoWrapper.css';
 
 const HoverInfoWrapper = ({ children, info, position }) => {
   return (

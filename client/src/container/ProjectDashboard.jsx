@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import TopBar from "../components/Dashboard/Topbar";
-import Modal from "../components/Dashboard/Modal";
-import CreateProjectForm from "../components/Dashboard/CreateProjectForm";
-import { useSelector } from "react-redux";
-import ApiDashboard from "../scripts/API.Dashboard";
-import User from "../scripts/API.User";
-import url from "../url.json";
-import { toast, ToastContainer } from "react-toastify";
-import useProjects from "../hooks/useProjectDashboard";
-import ProjectList from "../components/Dashboard/ProjectList";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import TopBar from '../components/Dashboard/Topbar';
+import Modal from '../components/Dashboard/Modal';
+import CreateProjectForm from '../components/Dashboard/CreateProjectForm';
+import { useSelector } from 'react-redux';
+import ApiDashboard from '../scripts/API.Dashboard';
+import User from '../scripts/API.User';
+import url from '../url.json';
+import { toast, ToastContainer } from 'react-toastify';
+import useProjects from '../hooks/useProjectDashboard';
+import ProjectList from '../components/Dashboard/ProjectList';
 
-import "react-toastify/dist/ReactToastify.css";
+import 'react-toastify/dist/ReactToastify.css';
 
 const ProjectDashboard = () => {
   const navigate = useNavigate();
@@ -39,29 +39,33 @@ const ProjectDashboard = () => {
       setProjects((prev) => [createdProject, ...prev]);
       setIsCreateModalOpen(false);
     } catch (err) {
-      console.error("Error creating project:", err);
+      console.error('Error creating project:', err);
     }
   };
   const onUpdateProject = async (projectId, updatedProject) => {
     try {
-      setProjects((prev) => prev.map((p) => (p?._id === projectId ? { ...p, ...updatedProject } : p)));
-      toast.success("Project updated successfully.");
+      setProjects((prev) =>
+        prev.map((p) =>
+          p?._id === projectId ? { ...p, ...updatedProject } : p
+        )
+      );
+      toast.success('Project updated successfully.');
     } catch (err) {
-      console.error("Error updating project:", err);
+      console.error('Error updating project:', err);
     }
   };
   const handleDeleteProject = async (projectId) => {
     try {
       await API.deleteProject(projectId);
-      toast.success("Project deleted successfully.");
+      toast.success('Project deleted successfully.');
       setProjects((prev) => prev.filter((p) => p?._id !== projectId));
     } catch (err) {
-      console.error("Error deleting project:", err);
+      console.error('Error deleting project:', err);
     }
   };
 
   const handleProjectClick = (projectID) => {
-    navigate(url.WebsiteBuilder.replace(":projectID", projectID));
+    navigate(url.WebsiteBuilder.replace(':projectID', projectID));
   };
 
   return (
@@ -73,7 +77,9 @@ const ProjectDashboard = () => {
           <button
             onClick={() => setIsSharedView(false)}
             className={`px-4 py-2 rounded ${
-              !isSharedView ? "bg-red-500 text-white" : "bg-gray-200 text-gray-800"
+              !isSharedView
+                ? 'bg-red-500 text-white'
+                : 'bg-gray-200 text-gray-800'
             }`}
           >
             My Projects
@@ -81,7 +87,9 @@ const ProjectDashboard = () => {
           <button
             onClick={() => setIsSharedView(true)}
             className={`px-4 py-2 rounded ${
-              isSharedView ? "bg-red-500 text-white" : "bg-gray-200 text-gray-800"
+              isSharedView
+                ? 'bg-red-500 text-white'
+                : 'bg-gray-200 text-gray-800'
             }`}
           >
             Shared With Me
@@ -100,7 +108,10 @@ const ProjectDashboard = () => {
         />
       </div>
       <Modal isOpen={isCreateModalOpen} onClose={setIsCreateModalOpen}>
-        <CreateProjectForm onCreateProject={handleCreateProject} toast={toast} />
+        <CreateProjectForm
+          onCreateProject={handleCreateProject}
+          toast={toast}
+        />
       </Modal>
     </div>
   );

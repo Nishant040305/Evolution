@@ -1,16 +1,22 @@
-import React, { useState } from "react";
-import { parseOnClick } from "../../scripts/parserFunctions";
-import buttonFunctions from "../../constants/functions.json";
-const ButtonContent = ({ handleContentChange, handleHtmlAttributes, element ,toast}) => {
+import React, { useState } from 'react';
+import { parseOnClick } from '../../scripts/parserFunctions';
+import buttonFunctions from '../../constants/functions.json';
+const ButtonContent = ({
+  handleContentChange,
+  handleHtmlAttributes,
+  element,
+  toast,
+}) => {
   const predefinedActions = buttonFunctions.buttonsFuntions;
   const initialAction = parseOnClick(element.HTMLAttributes?.onclick);
 
   const [action, setAction] = useState(initialAction);
   const [actionValues, setActionValues] = useState({
-    alert: initialAction.type === "alert" ? initialAction.value : "",
-    "console.log": initialAction.type === "console.log" ? initialAction.value : "",
-    navigate: initialAction.type === "navigate" ? initialAction.value : "",
-    custom: initialAction.type === "custom" ? initialAction.value : "",
+    alert: initialAction.type === 'alert' ? initialAction.value : '',
+    'console.log':
+      initialAction.type === 'console.log' ? initialAction.value : '',
+    navigate: initialAction.type === 'navigate' ? initialAction.value : '',
+    custom: initialAction.type === 'custom' ? initialAction.value : '',
   });
 
   const handlePredefinedActionChange = (type) => {
@@ -21,33 +27,35 @@ const ButtonContent = ({ handleContentChange, handleHtmlAttributes, element ,toa
     }));
 
     // Switch to the new type and load the stored value
-    setAction({ type, value: actionValues[type] || "" });
+    setAction({ type, value: actionValues[type] || '' });
   };
 
   const handleActionValueChange = (value) => {
     setAction((prev) => ({ ...prev, value }));
 
-    let functionCall = "";
-    if (action.type === "custom") {
+    let functionCall = '';
+    if (action.type === 'custom') {
       functionCall = value;
-    } else if (action.type === "alert") {
+    } else if (action.type === 'alert') {
       functionCall = `alert("${value}")`;
-    } else if (action.type === "console.log") {
+    } else if (action.type === 'console.log') {
       functionCall = `console.log("${value}")`;
-    } else if (action.type === "navigate") {
+    } else if (action.type === 'navigate') {
       functionCall = `window.location.href='${value}'`;
     }
 
-    handleHtmlAttributes("onclick", functionCall); // Update function call format
+    handleHtmlAttributes('onclick', functionCall); // Update function call format
   };
 
   const handleSubmit = () => {
     const { type, value } = action;
-    console.log("Submitted onClick Action:", { type, value });
-    toast.success("OnClick Action Updated!");
+    console.log('Submitted onClick Action:', { type, value });
+    toast.success('OnClick Action Updated!');
   };
 
-  const selectedAction = predefinedActions.find((a) => a.type === action.type) || predefinedActions[3];
+  const selectedAction =
+    predefinedActions.find((a) => a.type === action.type) ||
+    predefinedActions[3];
 
   return (
     <>
@@ -56,8 +64,8 @@ const ButtonContent = ({ handleContentChange, handleHtmlAttributes, element ,toa
         Button Text:
         <input
           type="text"
-          value={element.content || ""}
-          onChange={(e) => handleContentChange("content", e.target.value)}
+          value={element.content || ''}
+          onChange={(e) => handleContentChange('content', e.target.value)}
           className="w-full p-2 mt-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
           placeholder="Enter button text"
         />
@@ -80,7 +88,7 @@ const ButtonContent = ({ handleContentChange, handleHtmlAttributes, element ,toa
       </label>
 
       {/* Input for action value */}
-      {action.type !== "custom" && (
+      {action.type !== 'custom' && (
         <label className="block mb-1 font-medium text-gray-600">
           {selectedAction.label} Value:
           <input
@@ -94,7 +102,7 @@ const ButtonContent = ({ handleContentChange, handleHtmlAttributes, element ,toa
       )}
 
       {/* Textarea for custom JavaScript */}
-      {action.type === "custom" && (
+      {action.type === 'custom' && (
         <label className="block mb-1 font-medium text-gray-600">
           Custom OnClick Code:
           <textarea
@@ -112,7 +120,7 @@ const ButtonContent = ({ handleContentChange, handleHtmlAttributes, element ,toa
         onClick={handleSubmit}
         className="mt-4 px-3 py-2 bg-blue-500 text-white font-bold rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
       >
-       Set OnClick Actions
+        Set OnClick Actions
       </button>
     </>
   );

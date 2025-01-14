@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 function ComponentEditor({ id, webElements, setWebElements }) {
   const element = webElements[id];
@@ -37,8 +37,8 @@ function ComponentEditor({ id, webElements, setWebElements }) {
             <label className="block font-medium text-gray-700">Content:</label>
             <input
               type="text"
-              value={element.content || ""}
-              onChange={(e) => handleInputChange("content", e.target.value)}
+              value={element.content || ''}
+              onChange={(e) => handleInputChange('content', e.target.value)}
               className="w-full p-2 border border-gray-300 rounded"
               placeholder="Enter content"
             />
@@ -56,7 +56,7 @@ function ComponentEditor({ id, webElements, setWebElements }) {
                   type="number"
                   value={element.position.x || 0}
                   onChange={(e) =>
-                    handleInputChange("position", {
+                    handleInputChange('position', {
                       ...element.position,
                       x: parseInt(e.target.value),
                     })
@@ -72,7 +72,7 @@ function ComponentEditor({ id, webElements, setWebElements }) {
                   type="number"
                   value={element.position.y || 0}
                   onChange={(e) =>
-                    handleInputChange("position", {
+                    handleInputChange('position', {
                       ...element.position,
                       y: parseInt(e.target.value),
                     })
@@ -94,9 +94,9 @@ function ComponentEditor({ id, webElements, setWebElements }) {
                 </label>
                 <input
                   type="color"
-                  value={element.styles.backgroundColor || "#ffffff"}
+                  value={element.styles.backgroundColor || '#ffffff'}
                   onChange={(e) =>
-                    handleStyleChange("backgroundColor", e.target.value)
+                    handleStyleChange('backgroundColor', e.target.value)
                   }
                   className="w-full p-2 border border-gray-300 rounded"
                 />
@@ -109,48 +109,48 @@ function ComponentEditor({ id, webElements, setWebElements }) {
                 </label>
                 <input
                   type="color"
-                  value={element.styles.color || "#000000"}
-                  onChange={(e) => handleStyleChange("color", e.target.value)}
+                  value={element.styles.color || '#000000'}
+                  onChange={(e) => handleStyleChange('color', e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded"
                 />
               </div>
 
               {/* Other styles */}
               {[
-                { label: "Padding", style: "padding" },
+                { label: 'Padding', style: 'padding' },
                 {
-                  label: "Border Width",
-                  style: "borderWidth",
-                  type: "number",
-                  suffix: "px",
+                  label: 'Border Width',
+                  style: 'borderWidth',
+                  type: 'number',
+                  suffix: 'px',
                 },
-                { label: "Border Color", style: "borderColor", type: "color" },
+                { label: 'Border Color', style: 'borderColor', type: 'color' },
                 {
-                  label: "Border Radius",
-                  style: "borderRadius",
-                  type: "number",
-                  suffix: "px",
-                },
-                {
-                  label: "Font Size",
-                  style: "fontSize",
-                  type: "number",
-                  suffix: "px",
+                  label: 'Border Radius',
+                  style: 'borderRadius',
+                  type: 'number',
+                  suffix: 'px',
                 },
                 {
-                  label: "Letter Spacing",
-                  style: "letterSpacing",
-                  type: "number",
-                  suffix: "px",
+                  label: 'Font Size',
+                  style: 'fontSize',
+                  type: 'number',
+                  suffix: 'px',
                 },
-              ].map(({ label, style, type = "text", suffix = "" }) => (
+                {
+                  label: 'Letter Spacing',
+                  style: 'letterSpacing',
+                  type: 'number',
+                  suffix: 'px',
+                },
+              ].map(({ label, style, type = 'text', suffix = '' }) => (
                 <div key={style}>
                   <label className="block font-medium text-gray-700">
                     {label}:
                   </label>
                   <input
                     type={type}
-                    value={parseInt(element.styles[style]) || ""}
+                    value={parseInt(element.styles[style]) || ''}
                     onChange={(e) =>
                       handleStyleChange(style, `${e.target.value}${suffix}`)
                     }
@@ -162,19 +162,19 @@ function ComponentEditor({ id, webElements, setWebElements }) {
               {/* Select elements for dropdown styles */}
               {[
                 {
-                  label: "Border Style",
-                  style: "borderStyle",
-                  options: ["solid", "dashed", "dotted", "double"],
+                  label: 'Border Style',
+                  style: 'borderStyle',
+                  options: ['solid', 'dashed', 'dotted', 'double'],
                 },
                 {
-                  label: "Font Weight",
-                  style: "fontWeight",
-                  options: ["normal", "bold", "bolder", "lighter"],
+                  label: 'Font Weight',
+                  style: 'fontWeight',
+                  options: ['normal', 'bold', 'bolder', 'lighter'],
                 },
                 {
-                  label: "Cursor",
-                  style: "cursor",
-                  options: ["pointer", "default", "move", "text"],
+                  label: 'Cursor',
+                  style: 'cursor',
+                  options: ['pointer', 'default', 'move', 'text'],
                 },
               ].map(({ label, style, options }) => (
                 <div key={style}>
@@ -196,14 +196,14 @@ function ComponentEditor({ id, webElements, setWebElements }) {
               ))}
 
               {/* Text inputs for miscellaneous properties */}
-              {["transition", "boxShadow", "transform"].map((style) => (
+              {['transition', 'boxShadow', 'transform'].map((style) => (
                 <div key={style}>
                   <label className="block font-medium text-gray-700">
                     {style.charAt(0).toUpperCase() + style.slice(1)}:
                   </label>
                   <input
                     type="text"
-                    value={element.styles[style] || ""}
+                    value={element.styles[style] || ''}
                     onChange={(e) => handleStyleChange(style, e.target.value)}
                     className="w-full p-2 border border-gray-300 rounded"
                   />

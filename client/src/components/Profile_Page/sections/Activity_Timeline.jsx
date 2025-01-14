@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { GitCommit, GitPullRequest } from "lucide-react";
+import { useState, useEffect } from 'react';
+import { GitCommit, GitPullRequest } from 'lucide-react';
 
 const ActivityTimeline = () => {
   const [activityData, setActivityData] = useState([]); // State for storing activity data
@@ -12,19 +12,19 @@ const ActivityTimeline = () => {
       // For now, using dummy data
       const mockData = [
         {
-          type: "commit",
-          message: "Fixed bug in login flow",
-          date: "2023-05-01",
+          type: 'commit',
+          message: 'Fixed bug in login flow',
+          date: '2023-05-01',
         },
         {
-          type: "pr",
-          message: "Implemented new feature",
-          date: "2023-04-20",
+          type: 'pr',
+          message: 'Implemented new feature',
+          date: '2023-04-20',
         },
         {
-          type: "commit",
-          message: "Refactored codebase",
-          date: "2023-03-15",
+          type: 'commit',
+          message: 'Refactored codebase',
+          date: '2023-03-15',
         },
       ];
 
@@ -34,7 +34,7 @@ const ActivityTimeline = () => {
         setLoading(false);
       }, 1000); // 1 second delay for demo
     } catch (err) {
-      setError("Error fetching data. Please try again later.");
+      setError('Error fetching data. Please try again later.');
       setLoading(false);
     }
   };
@@ -60,7 +60,7 @@ const ActivityTimeline = () => {
       <div className="space-y-4">
         {activityData.map((activity, index) => (
           <div key={index} className="flex items-center space-x-3">
-            {activity.type === "commit" ? (
+            {activity.type === 'commit' ? (
               <GitCommit className="w-5 h-5 text-[#7d8590]" />
             ) : (
               <GitPullRequest className="w-5 h-5 text-[#7d8590]" />

@@ -6,7 +6,7 @@ import { socket } from '../scripts/socket';
  * @param {string} messageId - The ID of the message to delete.
  */
 export const SocketDeleteMessage = (chatId, messageId) => {
-    socket.emit('deleteMessage', { chatId, messageId });
+  socket.emit('deleteMessage', { chatId, messageId });
 };
 
 /**
@@ -15,7 +15,7 @@ export const SocketDeleteMessage = (chatId, messageId) => {
  * @param {string} userId - The ID of the user marking the messages as read.
  */
 export const SocketMarkAsRead = (chatId, userId) => {
-    socket.emit('markAsRead', { chatId, userId });
+  socket.emit('markAsRead', { chatId, userId });
 };
 
 /**
@@ -26,7 +26,7 @@ export const SocketMarkAsRead = (chatId, userId) => {
  * @param {string} type - The type of message (e.g., "text", "image", "file").
  */
 export const SocketSendMessage = (chatId, senderId, content, type) => {
-    socket.emit('sendMessage', { chatId, senderId, content, type });
+  socket.emit('sendMessage', { chatId, senderId, content, type });
 };
 
 /**
@@ -37,7 +37,7 @@ export const SocketSendMessage = (chatId, senderId, content, type) => {
  * @param {Object} message - The message content (structure varies based on type).
  */
 export const SocketSendNotification = (receiverId, title, type, message) => {
-    socket.emit('sendNotification', { receiverId, title, type, message });
+  socket.emit('sendNotification', { receiverId, title, type, message });
 };
 
 /**
@@ -46,8 +46,12 @@ export const SocketSendNotification = (receiverId, title, type, message) => {
  * @param {string} receiverId - The ID of the user receiving the friend request.
  * @param {string} title - The title of the notification (default: "Friend Request").
  */
-export const SocketSendFriendRequest = (senderId, receiverId, title = "Friend Request") => {
-    socket.emit('sendFriendRequest', { senderId, receiverId, title });
+export const SocketSendFriendRequest = (
+  senderId,
+  receiverId,
+  title = 'Friend Request'
+) => {
+  socket.emit('sendFriendRequest', { senderId, receiverId, title });
 };
 
 /**
@@ -56,7 +60,7 @@ export const SocketSendFriendRequest = (senderId, receiverId, title = "Friend Re
  * @param {string} userId - The ID of the user marking the notification as read.
  */
 export const SocketMarkNotificationAsRead = (notificationId, userId) => {
-    socket.emit('markNotificationAsRead', { notificationId, userId });
+  socket.emit('markNotificationAsRead', { notificationId, userId });
 };
 
 /**
@@ -64,7 +68,7 @@ export const SocketMarkNotificationAsRead = (notificationId, userId) => {
  * @param {string} notificationId - The ID of the friend request notification to accept.
  */
 export const SocketAcceptFriendRequest = (chat) => {
-    socket.emit('acceptFriendRequest', chat);
+  socket.emit('acceptFriendRequest', chat);
 };
 
 /**
@@ -72,30 +76,30 @@ export const SocketAcceptFriendRequest = (chat) => {
  * @param {string} notificationId - The ID of the friend request notification to decline.
  */
 export const SocketDeclineFriendRequest = (notificationId) => {
-    socket.emit('declineFriendRequest', { notificationId });
-};  
+  socket.emit('declineFriendRequest', { notificationId });
+};
 
 /**
  * Emit an event to send Notification to a user.
  * @param {string} NotificationId - The Notification to send.
  */
 export const SocketSendNotificationToUser = (NotificationId) => {
-    socket.emit('sendNotification', NotificationId);
+  socket.emit('sendNotification', NotificationId);
 };
 /**
  * Emit an event to refresh the organization changes.
  * @param {string} projectId - The ID of the project.
  */
 export const SocketRefreshOrganizationChanges = (projectId) => {
-    socket.emit('organizationChanges',projectId);
+  socket.emit('organizationChanges', projectId);
 };
 /**
  * Emit an event to refresh the group chats Name.
  * @param {string} chatId - The ID of the chat.
  * @param {string} name - The name of the chat.
  */
- export const SocketRefreshGroupChatName = (chatId, name) => {
-    socket.emit('groupChatName',chatId);
+export const SocketRefreshGroupChatName = (chatId, name) => {
+  socket.emit('groupChatName', chatId);
 };
 
 /**
@@ -103,6 +107,6 @@ export const SocketRefreshOrganizationChanges = (projectId) => {
  * @param {string} chatId - The ID of the chat.
  * @param {string} icon - The icon of the chat.
  */
- export const SocketRefreshGroupChatIcon = (chatId, icon) => {
-    socket.emit('groupChatIcon',chatId);
+export const SocketRefreshGroupChatIcon = (chatId, icon) => {
+  socket.emit('groupChatIcon', chatId);
 };

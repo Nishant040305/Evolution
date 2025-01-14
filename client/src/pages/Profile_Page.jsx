@@ -1,7 +1,7 @@
-import React from "react";
-import Navbar from "../components/Profile_Page/navigation/Navbar";
-import Sidebar from "../components/Profile_Page/navigation/Sidebar";
-import GitHubProfilePage from "../components/Profile_Page/sections/GithubSection";
+import React from 'react';
+import Navbar from '../components/Profile_Page/navigation/Navbar';
+import Sidebar from '../components/Profile_Page/navigation/Sidebar';
+import GitHubProfilePage from '../components/Profile_Page/sections/GithubSection';
 
 export default function MainLayout({ children }) {
   return (

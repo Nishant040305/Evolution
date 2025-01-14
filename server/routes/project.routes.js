@@ -1,16 +1,16 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const multer = require("multer");
+const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 // controllers
-const { 
-    projectController, 
-    publishController, 
-    memberController,
-    fileController,
-} = require("../controller");
+const {
+  projectController,
+  publishController,
+  memberController,
+  fileController,
+} = require('../controller');
 
 const {
   getAllProjects,
@@ -24,21 +24,22 @@ const {
   updateImageProject,
 } = projectController;
 const { publishProject, openProject, downloadProject } = publishController;
-const { inviteMember, updateMemberRole, removeMember,acceptCollaboration } = memberController;
+const { inviteMember, updateMemberRole, removeMember, acceptCollaboration } =
+  memberController;
 const { createFile, deleteFile, updateFile } = fileController;
 
 // middlewares
-const { UserVerifier } = require("../middleware/credMiddleware");
-const { permissions, authorize } = require("../middleware/authMiddleware");
+const { UserVerifier } = require('../middleware/credMiddleware');
+const { permissions, authorize } = require('../middleware/authMiddleware');
 
 // @route    GET /api/project
 // @desc     Get all projects
-router.get("/", UserVerifier, getAllProjects);
+router.get('/', UserVerifier, getAllProjects);
 
 // @route    GET /api/project/:id
 // @desc     Get a project by id
 router.get(
-  "/:id",
+  '/:id',
   UserVerifier,
   authorize(permissions.viewProject),
   getProjectById
@@ -47,7 +48,7 @@ router.get(
 // @route    GET /api/project/:id/versionHistory
 // @desc     Get project version history by id
 router.get(
-  "/:id/versionHistory",
+  '/:id/versionHistory',
   UserVerifier,
   authorize(permissions.manageProject),
   getProjectVersionHistory
@@ -56,7 +57,7 @@ router.get(
 // @route    POST /api/project/:id/versionHistory
 // @desc     Revert project version by id
 router.post(
-  "/:id/versionHistory",
+  '/:id/versionHistory',
   UserVerifier,
   authorize(permissions.manageProject),
   revertProject
@@ -64,12 +65,12 @@ router.post(
 
 // @route    POST /api/project
 // @desc     Create a new project
-router.post("/", UserVerifier, createProject);
+router.post('/', UserVerifier, createProject);
 
 // @route    POST /api/project/:id/invite/:userid
 // @desc     Invite a user to a project
 router.post(
-  "/:id/invite",
+  '/:id/invite',
   UserVerifier,
   authorize(permissions.manageMembers),
   inviteMember
@@ -77,15 +78,11 @@ router.post(
 
 // @route    POST /api/project/:id/collaboration/:userid
 // @desc     Accept collaboration request by id
-router.post(
-  "/:id/collaboration",
-  UserVerifier,
-  acceptCollaboration
-);
+router.post('/:id/collaboration', UserVerifier, acceptCollaboration);
 // @route    PUT /api/project/:id/member/:userid
 // @desc     Update a user's role in a project
 router.put(
-  "/:id/member",
+  '/:id/member',
   UserVerifier,
   authorize(permissions.manageMembers),
   updateMemberRole
@@ -94,7 +91,7 @@ router.put(
 // @route    DELETE /api/project/:id/member/:userid
 // @desc     Remove a user from a project
 router.delete(
-  "/:id/member",
+  '/:id/member',
   UserVerifier,
   authorize(permissions.manageMembers),
   removeMember
@@ -103,7 +100,7 @@ router.delete(
 // @route    PUT /api/project/:id
 // @desc     Update a project by id
 router.put(
-  "/:id",
+  '/:id',
   UserVerifier,
   authorize(permissions.manageProject),
   updateProject
@@ -112,7 +109,7 @@ router.put(
 // @route    POST /api/project/:id/file
 // @desc     Create a new project's file by id
 router.post(
-  "/:id/file",
+  '/:id/file',
   UserVerifier,
   authorize(permissions.editProject),
   createFile
@@ -121,7 +118,7 @@ router.post(
 // @route    DELETE /api/project/:id/file
 // @desc     Delete a project's file by id
 router.delete(
-  "/:id/file",
+  '/:id/file',
   UserVerifier,
   authorize(permissions.editProject),
   deleteFile
@@ -130,7 +127,7 @@ router.delete(
 // @route    PUT /api/project/:id/file
 // @desc     Update a project's file by id
 router.put(
-  "/:id/file",
+  '/:id/file',
   UserVerifier,
   authorize(permissions.editProject),
   updateFile
@@ -139,7 +136,7 @@ router.put(
 // @route    PUT /api/project/:id/components
 // @desc     Update a project's components by id
 router.put(
-  "/:id/components",
+  '/:id/components',
   UserVerifier,
   authorize(permissions.editProject),
   updateComponents
@@ -148,7 +145,7 @@ router.put(
 // @route    DELETE /api/project/:id
 // @desc     Delete a project by id
 router.delete(
-  "/:id",
+  '/:id',
   UserVerifier,
   authorize(permissions.deleteProject),
   deleteProject
@@ -157,17 +154,17 @@ router.delete(
 // @route    POST /api/project/image/:id
 // @desc     Update a project's media by id
 router.post(
-  "/image/:id",
+  '/image/:id',
   UserVerifier,
   authorize(permissions.editProject),
-  upload.single("file"),
+  upload.single('file'),
   updateImageProject
 );
 
 // @route    POST /api/project/:id/publish
 // @desc     Publish a project by id
 router.post(
-  "/:id/publish",
+  '/:id/publish',
   UserVerifier,
   authorize(permissions.publishProject),
   publishProject
@@ -176,7 +173,7 @@ router.post(
 // @route    GET /:domain/download
 // @desc     Download a project zip by domain
 router.get(
-  "/:id/download",
+  '/:id/download',
   UserVerifier,
   authorize(permissions.downloadProject),
   downloadProject

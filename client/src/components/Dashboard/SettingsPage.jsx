@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import { ProfileUpdate } from "../../Store/userSlice"; // Import actions from ImageSlice
-import { useParams } from "react-router-dom";
-import server from "../../server.json";
+import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { ProfileUpdate } from '../../Store/userSlice'; // Import actions from ImageSlice
+import { useParams } from 'react-router-dom';
+import server from '../../server.json';
 
 const SettingsPage = () => {
   const [profileImage, setProfileImage] = useState(null);
-  const [imageToUpload, setImageToUpload] = useState({ image: "", file: "" });
+  const [imageToUpload, setImageToUpload] = useState({ image: '', file: '' });
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState({
-    username: "",
-    email: "",
+    username: '',
+    email: '',
   });
   const fileInputRef = useRef(null);
   const dispatch = useDispatch();
@@ -25,11 +25,11 @@ const SettingsPage = () => {
     .toUpperCase()}`;
 
   useEffect(() => {
-    const usernameFromEmail = user.email ? user.email.split("@")[0] : ""; // Extract the part before '@'
+    const usernameFromEmail = user.email ? user.email.split('@')[0] : ''; // Extract the part before '@'
 
     setEditForm({
-      username: usernameFromEmail || "",
-      email: user.email || "",
+      username: usernameFromEmail || '',
+      email: user.email || '',
     });
     setProfileImage(user.avatar || defaultImage);
   }, [user]);
@@ -38,15 +38,15 @@ const SettingsPage = () => {
     const file = e.target.files[0];
     if (!file) return;
 
-    const validImageTypes = ["image/jpg", "image/jpeg", "image/png"];
+    const validImageTypes = ['image/jpg', 'image/jpeg', 'image/png'];
     if (!validImageTypes.includes(file.type)) {
-      alert("Please upload a JPG or PNG image.");
+      alert('Please upload a JPG or PNG image.');
       return;
     }
 
     const maxSizeInBytes = 200 * 1024; // 200KB
     if (file.size > maxSizeInBytes) {
-      alert("Image must be under 200KB.");
+      alert('Image must be under 200KB.');
       return;
     }
 
@@ -62,7 +62,7 @@ const SettingsPage = () => {
       if (!imageToUpload.file) return;
 
       const formData = new FormData();
-      formData.append("file", imageToUpload.file);
+      formData.append('file', imageToUpload.file);
 
       const response = await axios.post(
         `${BACKWEB}${server.Image.ImageUpload}`,
@@ -71,19 +71,19 @@ const SettingsPage = () => {
 
       if (response.status === 200 && response.data.url) {
         setProfileImage(response.data.url); // Update the profile image preview
-        setImageToUpload({ image: "", file: "" }); // Reset image preview and file input
-        alert("Image uploaded successfully!");
+        setImageToUpload({ image: '', file: '' }); // Reset image preview and file input
+        alert('Image uploaded successfully!');
       }
     } catch (error) {
-      console.error("Error uploading image:", error);
-      alert("Failed to upload image. Please try again.");
+      console.error('Error uploading image:', error);
+      alert('Failed to upload image. Please try again.');
     }
   };
 
   const handleEditSubmit = async () => {
     try {
       const urlB = `${BACKWEB}${server.User.ChangeProfile}`;
-      const endpoint = urlB.replace(":id", user._id);
+      const endpoint = urlB.replace(':id', user._id);
       const response = await axios.put(endpoint, {
         username: editForm.username,
         avatar: profileImage,
@@ -92,13 +92,13 @@ const SettingsPage = () => {
       if (response.status === 200) {
         dispatch(ProfileUpdate({ ...user, ...editForm, avatar: profileImage })); // Dispatch action to update user
         setIsEditing(false); // Exit editing mode
-        alert("Profile Updated");
+        alert('Profile Updated');
       } else {
-        throw new Error("Profile update failed");
+        throw new Error('Profile update failed');
       }
     } catch (err) {
       console.error(err);
-      alert("There was an error updating your profile");
+      alert('There was an error updating your profile');
     }
   };
 

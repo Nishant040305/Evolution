@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Undo,
   Redo,
@@ -6,16 +6,16 @@ import {
   Tablet,
   Smartphone,
   Settings,
-} from "lucide-react";
+} from 'lucide-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faDownload, faUpload } from '@fortawesome/free-solid-svg-icons';
-import { ActionCreators } from "redux-undo";
-import { useDispatch, useSelector } from "react-redux";
-import PublishPage from "../../hooks/PublishPage";
-import { useNavigate } from "react-router-dom";
-import url from "../../url.json";
-import ConfirmationModal from "./ConfirmationModal";  // Import the ConfirmationModal
-import HoverInfoWrapper from "../utility/toolTip";
+import { ActionCreators } from 'redux-undo';
+import { useDispatch, useSelector } from 'react-redux';
+import PublishPage from '../../hooks/PublishPage';
+import { useNavigate } from 'react-router-dom';
+import url from '../../url.json';
+import ConfirmationModal from './ConfirmationModal'; // Import the ConfirmationModal
+import HoverInfoWrapper from '../utility/toolTip';
 
 const TopBar = ({ setScreenSize, setStatusCode, toast, file }) => {
   const dispatch = useDispatch();
@@ -61,19 +61,19 @@ const TopBar = ({ setScreenSize, setStatusCode, toast, file }) => {
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if ((event.ctrlKey || event.metaKey) && event.key === "z") {
+      if ((event.ctrlKey || event.metaKey) && event.key === 'z') {
         event.preventDefault();
         handleUndo();
       }
-      if ((event.ctrlKey || event.metaKey) && event.key === "y") {
+      if ((event.ctrlKey || event.metaKey) && event.key === 'y') {
         event.preventDefault();
         handleRedo();
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
 
@@ -102,7 +102,7 @@ const TopBar = ({ setScreenSize, setStatusCode, toast, file }) => {
         </div>
       </div>
       <div className="flex items-center mb-2 space-x-4 text-lg font-semibold text-rose-800">
-        {projectinfo.name + " - " + file.name}
+        {projectinfo.name + ' - ' + file.name}
       </div>
       <div className="flex items-center space-x-4">
         <button
@@ -115,52 +115,51 @@ const TopBar = ({ setScreenSize, setStatusCode, toast, file }) => {
           <button className="p-1 rounded hover:bg-white">
             <Monitor
               className="w-4 h-4"
-              onClick={() => setScreenSize("desktop")}
+              onClick={() => setScreenSize('desktop')}
             />
           </button>
           <button
             className="p-1 rounded hover:bg-white"
-            onClick={() => setScreenSize("tablet")}
+            onClick={() => setScreenSize('tablet')}
           >
             <Tablet className="w-4 h-4" />
           </button>
           <button
             className="p-1 rounded hover:bg-white"
-            onClick={() => setScreenSize("mobile")}
+            onClick={() => setScreenSize('mobile')}
           >
             <Smartphone className="w-4 h-4" />
           </button>
         </div>
 
         <HoverInfoWrapper info="Preview" position="bottom">
-        <button
-          className="px-3 py-1.5 bg-rose-100 hover:bg-rose-200 rounded-lg text-rose-800"
-          onClick={handleConfirmPreview}
-        >
-          <FontAwesomeIcon icon={faEye} />
-        </button>
+          <button
+            className="px-3 py-1.5 bg-rose-100 hover:bg-rose-200 rounded-lg text-rose-800"
+            onClick={handleConfirmPreview}
+          >
+            <FontAwesomeIcon icon={faEye} />
+          </button>
         </HoverInfoWrapper>
 
         <HoverInfoWrapper info="Download" position="bottom">
-        <button
-          className="px-3 py-1.5 bg-rose-100 hover:bg-rose-200 rounded-lg text-rose-800"
-          onClick={handleConfirmDownload}
-        >
-          <FontAwesomeIcon icon={faDownload} />
-        </button>
+          <button
+            className="px-3 py-1.5 bg-rose-100 hover:bg-rose-200 rounded-lg text-rose-800"
+            onClick={handleConfirmDownload}
+          >
+            <FontAwesomeIcon icon={faDownload} />
+          </button>
         </HoverInfoWrapper>
 
         <HoverInfoWrapper info="Publish" position="bottom">
-        <button
-          className="px-3 py-1.5 bg-rose-800 text-white rounded-lg hover:bg-rose-900"
-          onClick={handleConfirmPublish}
-        >
-          <FontAwesomeIcon icon={faUpload} />
-        </button>
+          <button
+            className="px-3 py-1.5 bg-rose-800 text-white rounded-lg hover:bg-rose-900"
+            onClick={handleConfirmPublish}
+          >
+            <FontAwesomeIcon icon={faUpload} />
+          </button>
         </HoverInfoWrapper>
 
         {/* TODO: Refactor, move Download to Files and add redirect to site without publishing, add project settings etc. */}
-
       </div>
 
       {/* Confirmation Modals

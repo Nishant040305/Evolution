@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import ChatSearchBar from "../utility/ChatSearchBar";
-import UserInfo from "./SelectUserForGroupChat";
-import { useSelector } from "react-redux";
-import { FaUserPlus } from "react-icons/fa";
-import { IoClose } from "react-icons/io5"; // Close Icon
-import Chats from "../../scripts/API.Chats";
-import { SocketAcceptFriendRequest } from "../../event/SocketEvent";
+import React, { useEffect, useState } from 'react';
+import ChatSearchBar from '../utility/ChatSearchBar';
+import UserInfo from './SelectUserForGroupChat';
+import { useSelector } from 'react-redux';
+import { FaUserPlus } from 'react-icons/fa';
+import { IoClose } from 'react-icons/io5'; // Close Icon
+import Chats from '../../scripts/API.Chats';
+import { SocketAcceptFriendRequest } from '../../event/SocketEvent';
 
 const AddParticipants = ({ toast, onClose }) => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [users, setUsers] = useState([]);
 
@@ -35,7 +35,7 @@ const AddParticipants = ({ toast, onClose }) => {
 
     const uniqueUsers = {};
     chats.forEach((chat) => {
-      if (chat.chat_type === "personal" && chat.participants.length === 2) {
+      if (chat.chat_type === 'personal' && chat.participants.length === 2) {
         const otherUserId =
           chat.participants[0].user_id === userId
             ? chat.participants[1].user_id
@@ -45,8 +45,8 @@ const AddParticipants = ({ toast, onClose }) => {
         if (!uniqueUsers[otherUserId]) {
           uniqueUsers[otherUserId] = {
             id: otherUserId,
-            name: chat.chat_name || "Unknown",
-            avatar: chat.chat_avatar || "/default-avatar.png",
+            name: chat.chat_name || 'Unknown',
+            avatar: chat.chat_avatar || '/default-avatar.png',
           };
         }
       }
@@ -71,23 +71,26 @@ const AddParticipants = ({ toast, onClose }) => {
 
   const addParticipants = async () => {
     if (selectedUsers.length === 0) {
-      toast.error("Please select at least one user to add.");
+      toast.error('Please select at least one user to add.');
       return;
     }
 
     try {
-      const response = await API.addUserToGroupChat(group.chat_id, selectedUsers);
+      const response = await API.addUserToGroupChat(
+        group.chat_id,
+        selectedUsers
+      );
       if (response.success) {
         SocketAcceptFriendRequest(response.data);
-        toast.success("Participants added successfully!");
+        toast.success('Participants added successfully!');
         setSelectedUsers([]);
         onClose();
       } else {
-        toast.error("Failed to add participants.");
+        toast.error('Failed to add participants.');
       }
     } catch (error) {
-      console.error("Error adding participants:", error);
-      toast.error("An error occurred while adding participants.");
+      console.error('Error adding participants:', error);
+      toast.error('An error occurred while adding participants.');
     }
   };
 
@@ -109,7 +112,7 @@ const AddParticipants = ({ toast, onClose }) => {
       {/* Group Info */}
       <div className="flex items-center space-x-4 p-4">
         <img
-          src={group?.chat_avatar || "/default-group-avatar.png"}
+          src={group?.chat_avatar || '/default-group-avatar.png'}
           alt="Group Icon"
           className="w-12 h-12 rounded-full"
         />
@@ -117,7 +120,10 @@ const AddParticipants = ({ toast, onClose }) => {
       </div>
 
       {/* Search Bar */}
-      <ChatSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <ChatSearchBar
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+      />
 
       {/* Add Participants Button */}
       <button

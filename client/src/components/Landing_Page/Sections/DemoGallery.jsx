@@ -1,27 +1,27 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { Eye } from "lucide-react";
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Eye } from 'lucide-react';
 
 const templates = [
   {
-    title: "Business Pro",
+    title: 'Business Pro',
     image:
-      "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?auto=format&fit=crop&q=80&w=1200",
+      'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?auto=format&fit=crop&q=80&w=1200',
   },
   {
-    title: "Creative Portfolio",
+    title: 'Creative Portfolio',
     image:
-      "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?auto=format&fit=crop&q=80&w=1200",
+      'https://images.unsplash.com/photo-1522542550221-31fd19575a2d?auto=format&fit=crop&q=80&w=1200',
   },
   {
-    title: "E-Commerce Plus",
+    title: 'E-Commerce Plus',
     image:
-      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80&w=1200",
+      'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80&w=1200',
   },
   {
-    title: "Blog Master",
+    title: 'Blog Master',
     image:
-      "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=1200",
+      'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=1200',
   },
 ];
 

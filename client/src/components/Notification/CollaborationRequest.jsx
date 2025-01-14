@@ -3,7 +3,11 @@ import { FaCheck, FaTimes } from 'react-icons/fa'; // Icons for actions
 import { formatDistanceToNow } from 'date-fns'; // For formatting timestamps
 import ApiDashboard from '../../scripts/API.Dashboard';
 
-const CollaborationRequestNotification = ({ notification, onAccept, onDecline }) => {
+const CollaborationRequestNotification = ({
+  notification,
+  onAccept,
+  onDecline,
+}) => {
   const [sender, setSender] = useState(null);
 
   useEffect(() => {
@@ -11,7 +15,9 @@ const CollaborationRequestNotification = ({ notification, onAccept, onDecline })
     const fetchSenderData = async () => {
       try {
         const apiDashboard = new ApiDashboard();
-        const senderData = await apiDashboard.FindUserByID(notification.message.senderId); // Fetch sender by senderId
+        const senderData = await apiDashboard.FindUserByID(
+          notification.message.senderId
+        ); // Fetch sender by senderId
         setSender(senderData);
       } catch (error) {
         console.error('Error fetching sender data:', error);
@@ -21,7 +27,8 @@ const CollaborationRequestNotification = ({ notification, onAccept, onDecline })
     fetchSenderData();
   }, [notification.message]);
 
-  const { projectName, description, dateOfProjectCreated, roleOffered } = notification.message;
+  const { projectName, description, dateOfProjectCreated, roleOffered } =
+    notification.message;
 
   return (
     <div
@@ -46,18 +53,23 @@ const CollaborationRequestNotification = ({ notification, onAccept, onDecline })
 
         {/* Sender and Project Details */}
         <div className="flex flex-col">
-          <span className="text-base font-semibold text-gray-800">Collaboration Request</span>
+          <span className="text-base font-semibold text-gray-800">
+            Collaboration Request
+          </span>
           <span className="text-sm text-gray-600">
             {sender ? (
               <>
-                Request from <span className="font-medium">{sender.displayname}</span>
+                Request from{' '}
+                <span className="font-medium">{sender.displayname}</span>
               </>
             ) : (
               'Loading sender details...'
             )}
           </span>
           <span className="text-xs text-gray-500">
-            {formatDistanceToNow(new Date(notification.timestamp), { addSuffix: true })}
+            {formatDistanceToNow(new Date(notification.timestamp), {
+              addSuffix: true,
+            })}
           </span>
         </div>
       </div>
@@ -74,7 +86,9 @@ const CollaborationRequestNotification = ({ notification, onAccept, onDecline })
         <p className="text-sm text-gray-600">{roleOffered}</p>
 
         <h3 className="mt-2 text-sm font-bold text-gray-700">Created On</h3>
-        <p className="text-sm text-gray-600">{new Date(dateOfProjectCreated).toLocaleDateString()}</p>
+        <p className="text-sm text-gray-600">
+          {new Date(dateOfProjectCreated).toLocaleDateString()}
+        </p>
       </div>
 
       {/* Action Buttons */}

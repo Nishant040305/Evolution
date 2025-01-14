@@ -1,33 +1,36 @@
-import React, { useState, useEffect } from "react";
-import ApiDashboard from "../../scripts/API.Dashboard"; // Assuming the API methods are in this file
-import { FaUser, FaUserShield, FaUserEdit } from "react-icons/fa";
-import {FaHourglassHalf} from "react-icons/fa";
-import { SocketRefreshOrganizationChanges, SocketSendNotificationToUser } from "../../event/SocketEvent";
-const ManageCollaboratorsTab = ({ project, toast}) => {
-  const [newCollaboratorEmail, setNewCollaboratorEmail] = useState("");
-  const [newCollaboratorRole, setNewCollaboratorRole] = useState("editor");
-  const [message, setMessage] = useState("");
+import React, { useState, useEffect } from 'react';
+import ApiDashboard from '../../scripts/API.Dashboard'; // Assuming the API methods are in this file
+import { FaUser, FaUserShield, FaUserEdit } from 'react-icons/fa';
+import { FaHourglassHalf } from 'react-icons/fa';
+import {
+  SocketRefreshOrganizationChanges,
+  SocketSendNotificationToUser,
+} from '../../event/SocketEvent';
+const ManageCollaboratorsTab = ({ project, toast }) => {
+  const [newCollaboratorEmail, setNewCollaboratorEmail] = useState('');
+  const [newCollaboratorRole, setNewCollaboratorRole] = useState('editor');
+  const [message, setMessage] = useState('');
   const [showConfirmationModal, setShowConfirmationModal] = useState(false); // To show/hide confirmation popup
-  const [userDetails, setUserDetails] = useState(null);  // Holds the matched user details for confirmation
+  const [userDetails, setUserDetails] = useState(null); // Holds the matched user details for confirmation
   const [collaborators, setCollaborators] = useState([]);
   const API = new ApiDashboard();
   const roleIcons = {
-    "editor": <FaUserShield />,
-    "viewer": <FaUser />,
-    "admin": <FaUserEdit />
+    editor: <FaUserShield />,
+    viewer: <FaUser />,
+    admin: <FaUserEdit />,
   };
 
   // Fetch suggestions based on email input
   const fetchUserDetails = async (email) => {
     if (!email.trim()) {
-      setUserDetails(null);  // Clear user details if input is empty
+      setUserDetails(null); // Clear user details if input is empty
       return;
     }
     try {
       const userData = await API.FindUserByEmail(email);
-      setUserDetails(userData || null);  // Set user data or null if not found
+      setUserDetails(userData || null); // Set user data or null if not found
     } catch (error) {
-      console.error("Error fetching user details:", error);
+      console.error('Error fetching user details:', error);
       setUserDetails(null);
     }
   };
@@ -35,20 +38,20 @@ const ManageCollaboratorsTab = ({ project, toast}) => {
   // Handle adding a collaborator
   const handleAddCollaborator = async () => {
     try {
-      if (!newCollaboratorEmail.trim()){
-        toast.warning("Please provide an email.");
-      };
+      if (!newCollaboratorEmail.trim()) {
+        toast.warning('Please provide an email.');
+      }
 
       // Fetch user by email for confirmation
       const userData = await API.FindUserByEmail(newCollaboratorEmail);
-      if (!userData) return setMessage("User not found.");
+      if (!userData) return setMessage('User not found.');
 
       // Set the user details to show the confirmation modal
       setUserDetails(userData);
-      setShowConfirmationModal(true);  // Show confirmation modal
+      setShowConfirmationModal(true); // Show confirmation modal
     } catch (error) {
       console.error(error);
-      toast.error("Error fetching user details.");
+      toast.error('Error fetching user details.');
     }
   };
 
@@ -58,43 +61,54 @@ const ManageCollaboratorsTab = ({ project, toast}) => {
       if (!userDetails) return;
 
       // Invite collaborator to the project
-      const projectID = project;  // Assuming project has an _id
-      const response =await API.inviteCollaborator(projectID, newCollaboratorRole, userDetails._id);
+      const projectID = project; // Assuming project has an _id
+      const response = await API.inviteCollaborator(
+        projectID,
+        newCollaboratorRole,
+        userDetails._id
+      );
       SocketSendNotificationToUser(response.Notification);
       SocketRefreshOrganizationChanges(projectID);
       // Add collaborator to the collaborators list
-      setCollaborators(prevCollaborators => [
+      setCollaborators((prevCollaborators) => [
         ...prevCollaborators,
-        { user: userDetails._id,status:"pending", role: newCollaboratorRole, userData:userDetails }
+        {
+          user: userDetails._id,
+          status: 'pending',
+          role: newCollaboratorRole,
+          userData: userDetails,
+        },
       ]);
-      setNewCollaboratorEmail("");
-      setUserDetails(null);  // Reset user details
-      setShowConfirmationModal(false);  // Hide the confirmation modal
-      toast.success(`${userDetails.displayname} added as a collaborator successfully.`);
+      setNewCollaboratorEmail('');
+      setUserDetails(null); // Reset user details
+      setShowConfirmationModal(false); // Hide the confirmation modal
+      toast.success(
+        `${userDetails.displayname} added as a collaborator successfully.`
+      );
     } catch (error) {
       console.error(error);
-      toast.error("Error adding collaborator.");
+      toast.error('Error adding collaborator.');
     }
   };
 
   // Handle canceling collaborator addition
   const handleCancelAddCollaborator = () => {
-    setShowConfirmationModal(false);  // Hide the confirmation modal without adding the user
-    setUserDetails(null);  // Reset user details
+    setShowConfirmationModal(false); // Hide the confirmation modal without adding the user
+    setUserDetails(null); // Reset user details
   };
 
   // Handle email input change
   const handleEmailChange = (e) => {
     const email = e.target.value;
     setNewCollaboratorEmail(email);
-    fetchUserDetails(email);  // Fetch user suggestions when email changes
+    fetchUserDetails(email); // Fetch user suggestions when email changes
   };
 
   useEffect(() => {
     const fetchCollaborators = async () => {
       const collaborate = await API.getProjectById(project);
       setCollaborators(collaborate.members);
-      if(collaborate.members.length === 0){
+      if (collaborate.members.length === 0) {
         return;
       }
       try {
@@ -109,20 +123,20 @@ const ManageCollaboratorsTab = ({ project, toast}) => {
         );
         setCollaborators(collaboratorsWithDetails); // Update state with detailed collaborators
       } catch (error) {
-        console.error("Error fetching collaborators:", error);
+        console.error('Error fetching collaborators:', error);
       }
     };
 
     fetchCollaborators(); // Call the function to fetch collaborators
   }, [project]);
   const handleRemoveCollaborator = async (id) => {
-    try{
-      await API.DeleteCollaborator(project,id);
-      setCollaborators(collaborators.filter(c => c.user !== id));
-    }catch(error){
+    try {
+      await API.DeleteCollaborator(project, id);
+      setCollaborators(collaborators.filter((c) => c.user !== id));
+    } catch (error) {
       console.log(error);
     }
-  }
+  };
   return (
     <div>
       <h2 className="mb-4 text-lg font-semibold text-red-800">
@@ -147,7 +161,7 @@ const ManageCollaboratorsTab = ({ project, toast}) => {
           <div className="absolute top-full left-0 mt-2 p-2 bg-white border border-gray-300 rounded-md shadow-md w-full max-w-xs z-10">
             <div className="flex items-center space-x-3">
               <img
-                src={userDetails.avatar || "/path/to/default-avatar.png"} // Use default avatar if none available
+                src={userDetails.avatar || '/path/to/default-avatar.png'} // Use default avatar if none available
                 alt="User Avatar"
                 className="w-10 h-10 rounded-full object-cover"
               />
@@ -191,7 +205,7 @@ const ManageCollaboratorsTab = ({ project, toast}) => {
             <h3 className="text-xl font-semibold mb-4">Confirm Collaborator</h3>
             <div className="flex items-center space-x-3 mb-4">
               <img
-                src={userDetails.avatar || "/path/to/default-avatar.png"}  // Use default avatar if none available
+                src={userDetails.avatar || '/path/to/default-avatar.png'} // Use default avatar if none available
                 alt="User Avatar"
                 className="w-12 h-12 rounded-full object-cover"
               />
@@ -201,7 +215,10 @@ const ManageCollaboratorsTab = ({ project, toast}) => {
               </div>
             </div>
 
-            <p className="mb-4 text-sm text-gray-600">Are you sure you want to add {userDetails.displayname} as a collaborator?</p>
+            <p className="mb-4 text-sm text-gray-600">
+              Are you sure you want to add {userDetails.displayname} as a
+              collaborator?
+            </p>
 
             {/* Confirm and Cancel Buttons */}
             <div className="flex justify-between">
@@ -225,11 +242,14 @@ const ManageCollaboratorsTab = ({ project, toast}) => {
       {/* Collaborators List */}
       {collaborators.length === 0 ? (
         <div className="mb-4 text-gray-500">
-          No collaborators added yet. Click "Add Collaborator" to invite someone.
+          No collaborators added yet. Click "Add Collaborator" to invite
+          someone.
         </div>
       ) : (
         <div>
-          <h3 className="mb-3 text-xl font-semibold text-red-600">Current Collaborators</h3>
+          <h3 className="mb-3 text-xl font-semibold text-red-600">
+            Current Collaborators
+          </h3>
           {collaborators.map((collaborator) => (
             <div
               key={collaborator.user}
@@ -239,16 +259,18 @@ const ManageCollaboratorsTab = ({ project, toast}) => {
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 rounded-full overflow-hidden">
                   <img
-                    src={collaborator.userData?.avatar || "default-avatar-url"} // Replace with actual avatar URL
-                    alt={collaborator.userData?.displayname || "User Avatar"}
+                    src={collaborator.userData?.avatar || 'default-avatar-url'} // Replace with actual avatar URL
+                    alt={collaborator.userData?.displayname || 'User Avatar'}
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div>
                   <div className="text-base font-medium text-gray-900">
-                    {collaborator.userData?.displayname || "Unknown User"}
+                    {collaborator.userData?.displayname || 'Unknown User'}
                   </div>
-                  <div className="text-xs text-gray-600">{collaborator.userData?.email}</div>
+                  <div className="text-xs text-gray-600">
+                    {collaborator.userData?.email}
+                  </div>
                 </div>
               </div>
 
@@ -256,23 +278,22 @@ const ManageCollaboratorsTab = ({ project, toast}) => {
               <div className="text-lg text-yellow-500 font-semibold">
                 {roleIcons[collaborator.role]}
               </div>
-              
-              
+
               <div>
-                {collaborator.status=="pending"?
-                (
+                {collaborator.status == 'pending' ? (
                   <div className="flex items-center space-x-1 text-yellow-500">
-                      <FaHourglassHalf className="h-5 w-5" /> {/* Pending Icon */}
-                      <span>Pending</span>
+                    <FaHourglassHalf className="h-5 w-5" /> {/* Pending Icon */}
+                    <span>Pending</span>
                   </div>
-                ):
-                (<button
-                  type="button"
-                  onClick={() => handleRemoveCollaborator(collaborator.user)}
-                  className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-700 transition-colors duration-200"
-                >
-                  Remove
-                </button>)}
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveCollaborator(collaborator.user)}
+                    className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-700 transition-colors duration-200"
+                  >
+                    Remove
+                  </button>
+                )}
               </div>
             </div>
           ))}

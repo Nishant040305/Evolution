@@ -6,6 +6,7 @@ const LoadNotifications = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const user = useSelector((state) => state.user.userInfo);
+  
   useEffect(() => {
     if (!isAuthenticated) return;
     const fetchNotifications = async () => {
@@ -19,9 +20,7 @@ const LoadNotifications = () => {
     };
 
     fetchNotifications();
-  }, [isAuthenticated,user]);
-
-
+  }, [isAuthenticated, user]);
 };
 
 export default LoadNotifications;

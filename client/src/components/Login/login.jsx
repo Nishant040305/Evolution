@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import AuthService from "../../scripts/API.Login";
-import { useDispatch } from "react-redux";
-import { loginSuccess } from "../../Store/userSlice";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import AuthService from '../../scripts/API.Login';
+import { useDispatch } from 'react-redux';
+import { loginSuccess } from '../../Store/userSlice';
 const Login = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const API = new AuthService();
-  const [msg, setMsg] = useState("");
+  const [msg, setMsg] = useState('');
   const handleChange = (e) => {
     props.setValue({
       ...props.value,

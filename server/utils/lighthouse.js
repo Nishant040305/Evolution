@@ -5,13 +5,13 @@ module.exports = async (url, filePath) => {
   const lighthouse = await import('lighthouse');
 
   const chrome = await chromeLauncher.launch({
-    chromeFlags: ['--headless', '--disable-gpu']
+    chromeFlags: ['--headless', '--disable-gpu'],
   });
 
   const options = {
     port: chrome.port,
     output: 'html',
-    onlyCategories: ['seo']
+    onlyCategories: ['seo'],
   };
 
   console.log(url);

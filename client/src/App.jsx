@@ -1,37 +1,37 @@
-import React, { useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import url from "./url.json";
-import LoginMain from "./container/LoginMain";
-import WebsiteBuilder from "./container/WebsiteBuilder";
-import ProjectDashboard from "./container/ProjectDashboard";
-import { verifyUser } from "./Store/userSlice";
-import SettingsPage from "./components/Dashboard/SettingsPage";
-import LandingPage from "./pages/Landing_Page";
-import MainLayout from "./pages/Profile_Page";
+import React, { useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import url from './url.json';
+import LoginMain from './container/LoginMain';
+import WebsiteBuilder from './container/WebsiteBuilder';
+import ProjectDashboard from './container/ProjectDashboard';
+import { verifyUser } from './Store/userSlice';
+import SettingsPage from './components/Dashboard/SettingsPage';
+import LandingPage from './pages/Landing_Page';
+import MainLayout from './pages/Profile_Page';
 
-import { useSocketConnect } from "./hooks/SocketConnect";
-import ChatTest from "./test/chatTEst";
-import SocialMain from "./container/SocialMain";
-import { connectRooms } from "./event/connectRooms";
-import { useSocketRecieveMessage } from "./event/recieveMessage";
-import { useSocketMarkAsRead } from "./event/markAsRead";
-import { useSocketUserReadReceipts } from "./event/recieveRecipient";
-import { useSocketDeleteMessage } from "./event/deleteMessage";
-import LoadNotifications from "./hooks/LoadNotifications";
-import { useSocketNotifications } from "./event/Notifications";
-import { useSocketAcceptFriendRequest } from "./event/AcceptRequest";
-import { useSocketOrganizationChanges } from "./event/OrgChange";
-import {useSocketGroupChatName} from "./event/ChatGroupName";
-import {useSocketGroupChatIcon} from "./event/ChatGroupIcon";
-import CheckFile from "./test/CheckFile";
+import { useSocketConnect } from './hooks/SocketConnect';
+import ChatTest from './test/chatTEst';
+import SocialMain from './container/SocialMain';
+import { connectRooms } from './event/connectRooms';
+import { useSocketRecieveMessage } from './event/recieveMessage';
+import { useSocketMarkAsRead } from './event/markAsRead';
+import { useSocketUserReadReceipts } from './event/recieveRecipient';
+import { useSocketDeleteMessage } from './event/deleteMessage';
+import LoadNotifications from './hooks/LoadNotifications';
+import { useSocketNotifications } from './event/Notifications';
+import { useSocketAcceptFriendRequest } from './event/AcceptRequest';
+import { useSocketOrganizationChanges } from './event/OrgChange';
+import { useSocketGroupChatName } from './event/ChatGroupName';
+import { useSocketGroupChatIcon } from './event/ChatGroupIcon';
+import CheckFile from './test/CheckFile';
 const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.user);
   const user = useSelector((state) => state.user.userInfo);
   useEffect(() => {
     dispatch(verifyUser());
-  }, [dispatch,isAuthenticated]);
+  }, [dispatch, isAuthenticated]);
   useSocketConnect();
   connectRooms();
   LoadNotifications();
@@ -47,7 +47,10 @@ const App = () => {
   return (
     <Routes>
       {/* Landing Page */}
-      <Route path={url.LandingPage} element={isAuthenticated?<ProjectDashboard />:<LandingPage />} />
+      <Route
+        path={url.LandingPage}
+        element={isAuthenticated ? <ProjectDashboard /> : <LandingPage />}
+      />
 
       {/* Login Page */}
       <Route path={url.Login} element={<LoginMain />} />
@@ -73,9 +76,15 @@ const App = () => {
       />
 
       {/* Fallback Route */}
-      <Route path="*" element={ isAuthenticated ?<ProjectDashboard />:<LoginMain />} />
-      <Route path={url.SocialMain} element={isAuthenticated ? <SocialMain/> : <LoginMain />} />
-      <Route path="/test" element = {<CheckFile></CheckFile>} />
+      <Route
+        path="*"
+        element={isAuthenticated ? <ProjectDashboard /> : <LoginMain />}
+      />
+      <Route
+        path={url.SocialMain}
+        element={isAuthenticated ? <SocialMain /> : <LoginMain />}
+      />
+      <Route path="/test" element={<CheckFile></CheckFile>} />
     </Routes>
   );
 };

@@ -1,19 +1,19 @@
 // InviteCollaboratorForm.js
-import React, { useState } from "react";
-import { Mail, UserPlus } from "lucide-react";
+import React, { useState } from 'react';
+import { Mail, UserPlus } from 'lucide-react';
 
 const InviteCollaboratorForm = ({ onInvite, onCancel }) => {
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validateEmail(email)) {
-      setError("Please enter a valid email address.");
+      setError('Please enter a valid email address.');
       return;
     }
     onInvite(email);
-    setEmail("");
+    setEmail('');
   };
 
   const validateEmail = (email) => {
@@ -35,7 +35,7 @@ const InviteCollaboratorForm = ({ onInvite, onCancel }) => {
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
-                setError("");
+                setError('');
               }}
               placeholder="Enter email address"
               className="w-full p-3 pl-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-300"

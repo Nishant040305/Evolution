@@ -1,10 +1,9 @@
-.login-page{
-    width:100vw;
-    height:100vh;
-    background-size: cover;
-    display:flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+.login-page {
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
-

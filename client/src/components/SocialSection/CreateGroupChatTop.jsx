@@ -1,8 +1,8 @@
-import React, { useState, useRef } from "react";
-import { FaUserPlus } from "react-icons/fa";
-import { Upload, Camera } from "lucide-react";
-import ChatSearchBar from "../utility/ChatSearchBar";
-import axios from "axios";
+import React, { useState, useRef } from 'react';
+import { FaUserPlus } from 'react-icons/fa';
+import { Upload, Camera } from 'lucide-react';
+import ChatSearchBar from '../utility/ChatSearchBar';
+import axios from 'axios';
 
 const CreateGroupChatTop = ({
   groupName,
@@ -20,15 +20,15 @@ const CreateGroupChatTop = ({
     const file = e.target.files[0];
     if (!file) return;
 
-    const validImageTypes = ["image/jpg", "image/jpeg", "image/png"];
+    const validImageTypes = ['image/jpg', 'image/jpeg', 'image/png'];
     if (!validImageTypes.includes(file.type)) {
-      toast.error("Please upload a JPG or PNG image.");
+      toast.error('Please upload a JPG or PNG image.');
       return;
     }
 
-    const maxSizeInBytes = 1024*200;
+    const maxSizeInBytes = 1024 * 200;
     if (file.size > maxSizeInBytes) {
-      toast.error("Image must be under 200KB.");
+      toast.error('Image must be under 200KB.');
       return;
     }
 
@@ -42,46 +42,47 @@ const CreateGroupChatTop = ({
   return (
     <div className="flex flex-col items-start w-full p-4 border-b">
       <h2 className="text-lg font-semibold mb-4">Create Group</h2>
-    <div className="flex flex-row">
-      
-      {/* Group Icon Upload */}
-      <div className="w-full mb-4 flex justify-center">
-        <label className="relative inline-block">
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleGroupIconChange}
-            className="hidden"
-            ref={fileInputRef}
-          />
-          {/* Upload Button (circle with camera overlay) */}
-          <div
-            className={`w-16 h-16 bg-gray-200 rounded-full flex justify-center items-center ${imageToUpload.image ? "relative" : "cursor-pointer"}`}
-          >
-            {imageToUpload.image ? (
-              <img
-                src={imageToUpload.image}
-                alt="Group Icon Preview"
-                className="object-cover w-full h-full rounded-full"
-              />
-            ) : (
-              <Camera className="w-6 h-6 text-gray-500" />
-            )}
-            
-          </div>
-        </label>
-      </div>
-      {/* Group Name Input */}
-      <input
-        type="text"
-        placeholder="Group Name"
-        value={groupName}
-        onChange={(e) => setGroupName(e.target.value)}
-        className="w-full max-w-lg p-1 h-10  border-b-2 border-gray-300 focus:border-indigo-500 outline-none transition duration-300"
+      <div className="flex flex-row">
+        {/* Group Icon Upload */}
+        <div className="w-full mb-4 flex justify-center">
+          <label className="relative inline-block">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleGroupIconChange}
+              className="hidden"
+              ref={fileInputRef}
+            />
+            {/* Upload Button (circle with camera overlay) */}
+            <div
+              className={`w-16 h-16 bg-gray-200 rounded-full flex justify-center items-center ${imageToUpload.image ? 'relative' : 'cursor-pointer'}`}
+            >
+              {imageToUpload.image ? (
+                <img
+                  src={imageToUpload.image}
+                  alt="Group Icon Preview"
+                  className="object-cover w-full h-full rounded-full"
+                />
+              ) : (
+                <Camera className="w-6 h-6 text-gray-500" />
+              )}
+            </div>
+          </label>
+        </div>
+        {/* Group Name Input */}
+        <input
+          type="text"
+          placeholder="Group Name"
+          value={groupName}
+          onChange={(e) => setGroupName(e.target.value)}
+          className="w-full max-w-lg p-1 h-10  border-b-2 border-gray-300 focus:border-indigo-500 outline-none transition duration-300"
         />
-    </div>
+      </div>
       {/* Search Bar */}
-      <ChatSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <ChatSearchBar
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+      />
 
       {/* Create Group Button */}
       <button

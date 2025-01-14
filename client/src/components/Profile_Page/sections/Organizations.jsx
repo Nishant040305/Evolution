@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
 const Organizations = () => {
   const [organizations, setOrganizations] = useState([]);
@@ -10,13 +10,13 @@ const Organizations = () => {
     try {
       // Simulating an API call with dummy data for now
       const fetchedOrganizations = [
-        { name: "techcorp", url: "#" },
-        { name: "opensourcr", url: "#" },
+        { name: 'techcorp', url: '#' },
+        { name: 'opensourcr', url: '#' },
       ];
       setOrganizations(fetchedOrganizations);
       setLoading(false);
     } catch (err) {
-      setError("Error fetching organization data. Please try again later.");
+      setError('Error fetching organization data. Please try again later.');
       setLoading(false);
     }
   };

@@ -1,22 +1,22 @@
-import React, { useState } from "react";
-import ApiDashboard from "../../scripts/API.Dashboard";
-import { useSelector } from "react-redux";
-import {FaUser, FaUserShield,FaUserEdit} from "react-icons/fa"
-import { SocketSendNotificationToUser } from "../../event/SocketEvent";
-const CreateProjectForm = ({ onCreateProject ,toast}) => {
+import React, { useState } from 'react';
+import ApiDashboard from '../../scripts/API.Dashboard';
+import { useSelector } from 'react-redux';
+import { FaUser, FaUserShield, FaUserEdit } from 'react-icons/fa';
+import { SocketSendNotificationToUser } from '../../event/SocketEvent';
+const CreateProjectForm = ({ onCreateProject, toast }) => {
   const user = useSelector((state) => state.user.userInfo._id);
   const [newProject, setNewProject] = useState({
-    name: "",
-    description: "",
-    startDate: "",
-    endDate: "",
-    priority: "Medium",
+    name: '',
+    description: '',
+    startDate: '',
+    endDate: '',
+    priority: 'Medium',
   });
   const [collaborators, setCollaborators] = useState([]);
-  const [currentEmail, setCurrentEmail] = useState("");
-  const [currentRole, setCurrentRole] = useState("editor");
+  const [currentEmail, setCurrentEmail] = useState('');
+  const [currentRole, setCurrentRole] = useState('editor');
   const [potentialCollaborator, setPotentialCollaborator] = useState(null);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const userID = useSelector((state) => state.user.userInfo._id);
   const API = new ApiDashboard();
@@ -49,12 +49,12 @@ const CreateProjectForm = ({ onCreateProject ,toast}) => {
   const handleAddCollaborator = () => {
     if (potentialCollaborator) {
       const isAlreadyAdded = collaborators.some(
-        (collab) => (collab._id === potentialCollaborator._id)
+        (collab) => collab._id === potentialCollaborator._id
       );
       if (potentialCollaborator._id === userID) {
         setPotentialCollaborator(null);
-        setCurrentEmail("");
-        setCurrentRole("editor");
+        setCurrentEmail('');
+        setCurrentRole('editor');
         return;
       }
       if (!isAlreadyAdded) {
@@ -63,8 +63,8 @@ const CreateProjectForm = ({ onCreateProject ,toast}) => {
           { ...potentialCollaborator, role: currentRole },
         ]);
         setPotentialCollaborator(null);
-        setCurrentEmail("");
-        setCurrentRole("editor");
+        setCurrentEmail('');
+        setCurrentRole('editor');
       } else {
         setCollaborators((prev) =>
           prev.filter((collab) => collab._id !== potentialCollaborator._id)
@@ -75,36 +75,39 @@ const CreateProjectForm = ({ onCreateProject ,toast}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!newProject.name.trim()) return setMessage("Project name is required.");
+    if (!newProject.name.trim()) return setMessage('Project name is required.');
 
     setLoading(true);
-    setMessage("");
+    setMessage('');
 
     try {
       // Create Project
       const projectData = await API.createProject({ ...newProject, user });
-      toast.success("Project created successfully!");
+      toast.success('Project created successfully!');
       // Invite each collaborator
       for (const collaborator of collaborators) {
-        const response = await API.inviteCollaborator(projectData._id,collaborator.role,collaborator._id);
+        const response = await API.inviteCollaborator(
+          projectData._id,
+          collaborator.role,
+          collaborator._id
+        );
         SocketSendNotificationToUser(response.Notification);
-
       }
-      setMessage("Collaborators invited successfully.");
+      setMessage('Collaborators invited successfully.');
       onCreateProject(projectData);
 
       // Reset form
       setNewProject({
-        name: "",
-        description: "",
-        startDate: "",
-        endDate: "",
-        priority: "Medium",
+        name: '',
+        description: '',
+        startDate: '',
+        endDate: '',
+        priority: 'Medium',
       });
       setCollaborators([]);
     } catch (error) {
       console.error(error);
-      setMessage("Error creating project or inviting collaborators.");
+      setMessage('Error creating project or inviting collaborators.');
     } finally {
       setLoading(false);
     }
@@ -114,9 +117,9 @@ const CreateProjectForm = ({ onCreateProject ,toast}) => {
       <h2 className="mb-4 text-lg font-semibold text-red-600">
         Create New Project
       </h2>
-  
+
       {message && <p className="mb-4 text-center text-green-500">{message}</p>}
-  
+
       <input
         type="text"
         name="name"
@@ -134,9 +137,9 @@ const CreateProjectForm = ({ onCreateProject ,toast}) => {
         className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-300"
         required
       />
-  
+
       <h3 className="mb-2 text-lg font-semibold text-red-600">Collaborators</h3>
-  
+
       {/* Selected Collaborators List */}
       <div className="space-y-2 mb-4">
         {collaborators.map((collab, index) => (
@@ -159,7 +162,7 @@ const CreateProjectForm = ({ onCreateProject ,toast}) => {
           </div>
         ))}
       </div>
-  
+
       <div className="relative mb-4">
         <div className="flex items-center space-x-2">
           <input
@@ -179,7 +182,7 @@ const CreateProjectForm = ({ onCreateProject ,toast}) => {
             <option value="viewer">Viewer</option>
           </select>
         </div>
-  
+
         {/* Dynamic Popup for Potential Collaborator */}
         {potentialCollaborator && (
           <div
@@ -202,15 +205,16 @@ const CreateProjectForm = ({ onCreateProject ,toast}) => {
           </div>
         )}
       </div>
-  
+
       <button
         type="submit"
         disabled={loading}
         className="w-full py-2 text-white bg-red-600 rounded-md hover:bg-red-700"
       >
-        {loading ? "Creating..." : "Create Project"}
+        {loading ? 'Creating...' : 'Create Project'}
       </button>
     </form>
-  );}
+  );
+};
 
-  export default CreateProjectForm;
+export default CreateProjectForm;

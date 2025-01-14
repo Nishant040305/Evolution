@@ -1,6 +1,6 @@
-import { useRef ,useEffect} from "react";
-import { useDispatch } from "react-redux";
-import { addChild, removeChild, setPosition } from "../Store/webElementSlice";
+import { useRef, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { addChild, removeChild, setPosition } from '../Store/webElementSlice';
 
 export const useCanvasEvents = (setId, toggleRight, webElements) => {
   const dispatch = useDispatch();
@@ -18,41 +18,41 @@ export const useCanvasEvents = (setId, toggleRight, webElements) => {
 
   const onDragStart = (event, elementId) => {
     event.stopPropagation();
-    console.log("Dragging.... ", elementId);
+    console.log('Dragging.... ', elementId);
     const rect = event.currentTarget.getBoundingClientRect();
 
     const offsetX = event.clientX - rect.left;
     const offsetY = event.clientY - rect.top;
 
     event.dataTransfer.setData(
-      "text/plain",
+      'text/plain',
       JSON.stringify({
         id: elementId,
         offsetX,
-        offsetY
+        offsetY,
       })
     );
-    event.dataTransfer.effectAllowed = "move";
+    event.dataTransfer.effectAllowed = 'move';
   };
 
   const onDragEnter = (event, targetId) => {
     event.preventDefault();
-    console.log("Entered:", targetId);
+    console.log('Entered:', targetId);
   };
 
   const onDragOver = (event, targetId) => {
     event.preventDefault();
-    console.log("Dragging over:", targetId);
+    console.log('Dragging over:', targetId);
   };
 
   const onDragLeave = (event, targetId) => {
-    console.log("Left:", targetId);
+    console.log('Left:', targetId);
   };
 
   const onDrop = (event, targetId) => {
     event.preventDefault();
 
-    const data = JSON.parse(event.dataTransfer.getData("text/plain"));
+    const data = JSON.parse(event.dataTransfer.getData('text/plain'));
     const { id: draggedElementId, offsetX, offsetY } = data;
 
     if (draggedElementId === targetId) return;
@@ -75,7 +75,7 @@ export const useCanvasEvents = (setId, toggleRight, webElements) => {
       dispatch(addChild({ id: targetId, child: draggedElementId }));
     }
 
-    console.log("Dropped on:", targetId);
+    console.log('Dropped on:', targetId);
   };
 
   const canvasEvents = (id, container) => {
@@ -84,13 +84,13 @@ export const useCanvasEvents = (setId, toggleRight, webElements) => {
           onDragEnter: (event) => onDragEnter(event, id),
           onDragOver: (event) => onDragOver(event, id),
           onDragLeave: (event) => onDragLeave(event, id),
-          onDrop: (event) => onDrop(event, id)
+          onDrop: (event) => onDrop(event, id),
         }
       : {};
     return {
       onDragStart: (event) => onDragStart(event, id),
       onDoubleClick: (event) => handleClick(id),
-      ...dragTarget
+      ...dragTarget,
     };
   };
 
@@ -108,11 +108,11 @@ export const useDragDrop = (webElementsRef, reloadEvents) => {
     event.preventDefault();
 
     try {
-      const data = JSON.parse(event.dataTransfer.getData("text/plain"));
+      const data = JSON.parse(event.dataTransfer.getData('text/plain'));
       const { id: draggedElementId, offsetX, offsetY } = data;
       const element = webElementsRef.current[draggedElementId];
 
-      console.log("Dropped on canvas ", draggedElementId);
+      console.log('Dropped on canvas ', draggedElementId);
 
       if (element) {
         // Calculate drop position relative to the canvas
@@ -130,11 +130,11 @@ export const useDragDrop = (webElementsRef, reloadEvents) => {
         dispatch(setPosition({ id: draggedElementId, dx, dy }));
       }
     } catch (error) {
-      console.log("Error dropping element:", error);
-      console.log("Reloading events...");
+      console.log('Error dropping element:', error);
+      console.log('Reloading events...');
       reloadEvents();
     }
   };
 
   return { handleDragOver, handleDrop };
-}
+};

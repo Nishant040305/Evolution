@@ -1,13 +1,13 @@
-import {socket} from "../scripts/socket";
-import { useEffect, useState } from "react";
+import { socket } from '../scripts/socket';
+import { useEffect, useState } from 'react';
 export const useSocketConnect = () => {
   const [connected, setConnected] = useState(false);
 
   useEffect(() => {
-    socket.on("connect", () => {
+    socket.on('connect', () => {
       setConnected(true);
     });
-    socket.on("disconnect", () => {
+    socket.on('disconnect', () => {
       setConnected(false);
     });
   }, []);

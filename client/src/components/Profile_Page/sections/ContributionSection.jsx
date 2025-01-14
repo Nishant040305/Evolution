@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Calendar, GitCommit, GitPullRequest, Star } from "lucide-react";
+import React, { useState, useEffect } from 'react';
+import { Calendar, GitCommit, GitPullRequest, Star } from 'lucide-react';
 
 // Dummy stats for now, can later be replaced with data from an API
 const dummyStats = [
-  { icon: GitCommit, label: "Commits", value: "2,431" },
-  { icon: GitPullRequest, label: "Pull Requests", value: "147" },
-  { icon: Star, label: "Stars Earned", value: "328" },
-  { icon: Calendar, label: "Streak", value: "45 days" },
+  { icon: GitCommit, label: 'Commits', value: '2,431' },
+  { icon: GitPullRequest, label: 'Pull Requests', value: '147' },
+  { icon: Star, label: 'Stars Earned', value: '328' },
+  { icon: Calendar, label: 'Streak', value: '45 days' },
 ];
 
 export default function ContributionSection() {
@@ -28,7 +28,7 @@ export default function ContributionSection() {
       setContributionData(fetchedContributionData);
       setLoading(false);
     } catch (err) {
-      setError("Error fetching data. Please try again later.");
+      setError('Error fetching data. Please try again later.');
       setLoading(false);
     }
   };
@@ -80,12 +80,12 @@ export default function ContributionSection() {
                     key={dayIndex}
                     className={`w-[10px] h-[10px] m-[2px] rounded-sm ${
                       intensity === 0
-                        ? "bg-[#161b22] border border-[#1b1f23]"
+                        ? 'bg-[#161b22] border border-[#1b1f23]'
                         : intensity === 1
-                        ? "bg-[#0e4429]"
-                        : intensity === 2
-                        ? "bg-[#006d32]"
-                        : "bg-[#26a641]"
+                          ? 'bg-[#0e4429]'
+                          : intensity === 2
+                            ? 'bg-[#006d32]'
+                            : 'bg-[#26a641]'
                     }`}
                   />
                 ))}

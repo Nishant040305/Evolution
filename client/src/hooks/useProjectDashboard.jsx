@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 const useProjects = (userId, APIUser) => {
   const [projects, setProjects] = useState([]);
   const [sharedProjects, setSharedProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [sharedFilteredProjects, setSharedFilteredProjects] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const organizationChanges = useSelector((state) => state.organization);
@@ -19,8 +19,8 @@ const useProjects = (userId, APIUser) => {
       setSharedProjects(fetchedSharedProjects);
       setSharedFilteredProjects(fetchedSharedProjects);
     } catch (err) {
-      setError("Failed to load projects");
-      console.error("Error fetching projects:", err);
+      setError('Failed to load projects');
+      console.error('Error fetching projects:', err);
     } finally {
       setIsLoading(false);
     }
@@ -28,8 +28,8 @@ const useProjects = (userId, APIUser) => {
 
   useEffect(() => {
     fetchProjects();
-    console.log("organization Changes at Use",organizationChanges)
-  }, [userId,organizationChanges]);
+    console.log('organization Changes at Use', organizationChanges);
+  }, [userId, organizationChanges]);
 
   useEffect(() => {
     const filterProjects = () => {

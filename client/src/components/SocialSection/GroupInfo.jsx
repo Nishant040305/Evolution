@@ -1,13 +1,17 @@
-import React, { useState, useRef } from "react";
-import { X, UserPlus, LogOut, Edit } from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import { deleteChat } from "../../Store/Chat";
-import { setPresentChat } from "../../Store/Chat";
-import { SocketAcceptFriendRequest, SocketRefreshGroupChatIcon, SocketRefreshGroupChatName } from "../../event/SocketEvent";
-import server from "../../server.json";
-import Chats from "../../scripts/API.Chats";
-import {Camera} from "lucide-react";
+import React, { useState, useRef } from 'react';
+import { X, UserPlus, LogOut, Edit } from 'lucide-react';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { deleteChat } from '../../Store/Chat';
+import { setPresentChat } from '../../Store/Chat';
+import {
+  SocketAcceptFriendRequest,
+  SocketRefreshGroupChatIcon,
+  SocketRefreshGroupChatName,
+} from '../../event/SocketEvent';
+import server from '../../server.json';
+import Chats from '../../scripts/API.Chats';
+import { Camera } from 'lucide-react';
 const GroupInfo = ({ onClose, onAddParticipant, toast }) => {
   const present = useSelector((state) => state.chat.presentChat);
   const chat = useSelector((state) => state.chat.chats);
@@ -15,12 +19,12 @@ const GroupInfo = ({ onClose, onAddParticipant, toast }) => {
   const userId = useSelector((state) => state.user.userInfo._id);
   const API = new Chats();
   const dispatch = useDispatch();
-  const isGroup = group.chat_type === "group";
+  const isGroup = group.chat_type === 'group';
 
   const [isEditingName, setIsEditingName] = useState(false);
   const [isEditingIcon, setIsEditingIcon] = useState(false);
   const [newGroupName, setNewGroupName] = useState(group.chat_name);
-  const [newGroupIcon, setNewGroupIcon] = useState({ image: "", file: null });
+  const [newGroupIcon, setNewGroupIcon] = useState({ image: '', file: null });
   const fileInputRef = useRef(null);
 
   const BACKWEB = import.meta.env.VITE_REACT_APP_BACKWEB;
@@ -32,11 +36,11 @@ const GroupInfo = ({ onClose, onAddParticipant, toast }) => {
       if (response.success) {
         SocketRefreshGroupChatName(present);
       }
-      toast.success("Group name updated successfully.");
+      toast.success('Group name updated successfully.');
       setIsEditingName(false);
     } catch (error) {
-      console.error("Failed to update group name:", error);
-      toast.error("Failed to update group name.");
+      console.error('Failed to update group name:', error);
+      toast.error('Failed to update group name.');
     }
   };
 
@@ -44,7 +48,7 @@ const GroupInfo = ({ onClose, onAddParticipant, toast }) => {
   const uploadGroupIcon = async (file) => {
     try {
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append('file', file);
 
       const response = await axios.post(
         `${BACKWEB}${server.Image.ImageUpload}`,
@@ -54,11 +58,11 @@ const GroupInfo = ({ onClose, onAddParticipant, toast }) => {
       if (response.status === 200 && response.data.url) {
         return response.data.url;
       } else {
-        throw new Error("Image upload failed");
+        throw new Error('Image upload failed');
       }
     } catch (error) {
-      console.error("Image upload error:", error);
-      toast.error("Failed to upload group icon.");
+      console.error('Image upload error:', error);
+      toast.error('Failed to upload group icon.');
       return null;
     }
   };
@@ -69,17 +73,17 @@ const GroupInfo = ({ onClose, onAddParticipant, toast }) => {
 
     try {
       const imageUrl = await uploadGroupIcon(newGroupIcon.file);
-      if (!imageUrl) return;  
+      if (!imageUrl) return;
       const response = await API.editGroupChatIcon(present, imageUrl);
       if (response.success) {
         SocketRefreshGroupChatIcon(present);
-        toast.success("Group icon updated successfully.");
-        setNewGroupIcon({ image: "", file: null });
+        toast.success('Group icon updated successfully.');
+        setNewGroupIcon({ image: '', file: null });
         setIsEditingIcon(false);
       }
     } catch (error) {
-      console.error("Failed to update group icon:", error);
-      toast.error("Failed to update group icon.");
+      console.error('Failed to update group icon:', error);
+      toast.error('Failed to update group icon.');
     }
   };
 
@@ -88,15 +92,15 @@ const GroupInfo = ({ onClose, onAddParticipant, toast }) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    const validImageTypes = ["image/jpg", "image/jpeg", "image/png"];
+    const validImageTypes = ['image/jpg', 'image/jpeg', 'image/png'];
     if (!validImageTypes.includes(file.type)) {
-      toast.error("Please upload a JPG or PNG image.");
+      toast.error('Please upload a JPG or PNG image.');
       return;
     }
 
     const maxSizeInBytes = 1024 * 200;
     if (file.size > maxSizeInBytes) {
-      toast.error("Image must be under 200KB.");
+      toast.error('Image must be under 200KB.');
       return;
     }
 
@@ -114,13 +118,13 @@ const GroupInfo = ({ onClose, onAddParticipant, toast }) => {
         SocketAcceptFriendRequest(response.data);
         dispatch(setPresentChat({ chatId: null, userId: userId }));
         dispatch(deleteChat(present));
-        toast.success("You left the group.");
+        toast.success('You left the group.');
       } else {
-        toast.error("Failed to leave the group.");
+        toast.error('Failed to leave the group.');
       }
     } catch (error) {
-      console.error("Error leaving the group:", error);
-      toast.error("Failed to leave the group.");
+      console.error('Error leaving the group:', error);
+      toast.error('Failed to leave the group.');
     }
   };
 
@@ -137,13 +141,15 @@ const GroupInfo = ({ onClose, onAddParticipant, toast }) => {
               className="w-12 h-12 rounded-full object-cover cursor-pointer"
               onClick={() => setIsEditingIcon(isGroup)}
             />
-            {isGroup && <Edit
-              className="absolute bottom-0 right-0 w-4 h-4 bg-white rounded-full p-1 text-gray-500 cursor-pointer"
-              onClick={() => setIsEditingIcon(isGroup)}
-            />}
+            {isGroup && (
+              <Edit
+                className="absolute bottom-0 right-0 w-4 h-4 bg-white rounded-full p-1 text-gray-500 cursor-pointer"
+                onClick={() => setIsEditingIcon(isGroup)}
+              />
+            )}
           </div>
           {/* Group Name */}
-          {isGroup&&isEditingName ? (
+          {isGroup && isEditingName ? (
             <input
               type="text"
               value={newGroupName}
@@ -165,7 +171,6 @@ const GroupInfo = ({ onClose, onAddParticipant, toast }) => {
           <X className="w-6 h-6" />
         </button>
       </div>
-
       {/* Group Info */}
       <div className="p-4 space-y-4">
         {isGroup && (
@@ -174,7 +179,7 @@ const GroupInfo = ({ onClose, onAddParticipant, toast }) => {
             <p className="text-lg font-semibold text-gray-800">
               {group.participants.find(
                 (member) => member.user_id === group.createdBy
-              )?.username || "Unknown"}
+              )?.username || 'Unknown'}
             </p>
           </div>
         )}
@@ -191,7 +196,7 @@ const GroupInfo = ({ onClose, onAddParticipant, toast }) => {
                 className="flex items-center justify-between w-full p-2 bg-white border-b border-gray-200 rounded-lg space-x-4"
               >
                 <img
-                  src={participant.avatar || "https://via.placeholder.com/150"}
+                  src={participant.avatar || 'https://via.placeholder.com/150'}
                   alt={participant.username}
                   className="w-10 h-10 rounded-full object-cover"
                 />
@@ -208,7 +213,6 @@ const GroupInfo = ({ onClose, onAddParticipant, toast }) => {
           </div>
         </div>
       </div>
-
       {/* Actions */}
       {isGroup && (
         <div className="p-4 flex flex-col">
@@ -228,68 +232,70 @@ const GroupInfo = ({ onClose, onAddParticipant, toast }) => {
           </button>
         </div>
       )}
-
       {/* Edit Icon Modal */}
       {isEditingIcon && (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
-      <h2 className="text-lg font-semibold mb-4 text-center">Update Group Icon</h2>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
+            <h2 className="text-lg font-semibold mb-4 text-center">
+              Update Group Icon
+            </h2>
 
-      {/* Image Upload Section */}
-      <div className="relative group mx-auto w-24 h-24">
-        {/* Camera Icon or Preview */}
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-200 rounded-full overflow-hidden cursor-pointer">
-          {newGroupIcon.image ? (
-            <img
-              src={newGroupIcon.image}
-              alt="Group Icon Preview"
-              className="object-cover w-full h-full"
-            />
-          ) : (
-            <Camera className="text-gray-500 w-8 h-8" />
-          )}
+            {/* Image Upload Section */}
+            <div className="relative group mx-auto w-24 h-24">
+              {/* Camera Icon or Preview */}
+              <div className="absolute inset-0 flex items-center justify-center bg-gray-200 rounded-full overflow-hidden cursor-pointer">
+                {newGroupIcon.image ? (
+                  <img
+                    src={newGroupIcon.image}
+                    alt="Group Icon Preview"
+                    className="object-cover w-full h-full"
+                  />
+                ) : (
+                  <Camera className="text-gray-500 w-8 h-8" />
+                )}
+              </div>
+
+              {/* Change Icon Overlay */}
+              <label
+                htmlFor="icon-upload"
+                className="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-sm font-medium rounded-full transition-opacity cursor-pointer"
+              >
+                Change Icon
+              </label>
+              <input
+                id="icon-upload"
+                type="file"
+                accept="image/*"
+                onChange={handleGroupIconChange}
+                ref={fileInputRef}
+                className="hidden"
+              />
+            </div>
+
+            {/* Preview Text */}
+            <p className="text-center text-gray-500 text-sm mt-2">
+              {newGroupIcon.file ? newGroupIcon.file.name : 'No file selected'}
+            </p>
+
+            {/* Action Buttons */}
+            <div className="flex justify-end mt-6 gap-2">
+              <button
+                onClick={() => setIsEditingIcon(false)}
+                className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={updateGroupIcon}
+                className="px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
         </div>
-
-        {/* Change Icon Overlay */}
-        <label
-          htmlFor="icon-upload"
-          className="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-sm font-medium rounded-full transition-opacity cursor-pointer"
-        >
-          Change Icon
-        </label>
-        <input
-          id="icon-upload"
-          type="file"
-          accept="image/*"
-          onChange={handleGroupIconChange}
-          ref={fileInputRef}
-          className="hidden"
-        />
-      </div>
-
-      {/* Preview Text */}
-      <p className="text-center text-gray-500 text-sm mt-2">
-        {newGroupIcon.file ? newGroupIcon.file.name : "No file selected"}
-      </p>
-
-      {/* Action Buttons */}
-      <div className="flex justify-end mt-6 gap-2">
-        <button
-          onClick={() => setIsEditingIcon(false)}
-          className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400"
-        >
-          Cancel
-        </button>
-        <button
-          onClick={updateGroupIcon}
-          className="px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600"
-        >
-          Confirm
-        </button>
-      </div>
+      )}{' '}
     </div>
-  </div>
-)}    </div>
   );
 };
 

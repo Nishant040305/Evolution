@@ -1,29 +1,29 @@
 import { useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import ApiDashboard from "../scripts/API.Dashboard";
+import ApiDashboard from '../scripts/API.Dashboard';
 import PublishPage from './PublishPage';
 
 export const useSaveComponents = (toast, webElementsRef, file) => {
   const API = new ApiDashboard();
   const { projectID } = useParams();
-  const { getHTMLContent } = PublishPage( { toast } );
+  const { getHTMLContent } = PublishPage({ toast });
 
   const updateWebElements = () => {
     // Create a copy of webElements with updated dimensions
     const updatedElements = JSON.parse(JSON.stringify(webElementsRef.current));
-    
-    Object.keys(webElementsRef.current).forEach((key) => {
-        const element = document.getElementById("canvas-element " + key);
-        const { height, width } = element.getBoundingClientRect();
-        console.log(height, width);
 
-        updatedElements[key].styles = {
-        ...updatedElements[key].styles || {},
+    Object.keys(webElementsRef.current).forEach((key) => {
+      const element = document.getElementById('canvas-element ' + key);
+      const { height, width } = element.getBoundingClientRect();
+      console.log(height, width);
+
+      updatedElements[key].styles = {
+        ...(updatedElements[key].styles || {}),
         height,
         width,
-        };
+      };
     });
-    
+
     return updatedElements;
   };
 
@@ -33,16 +33,23 @@ export const useSaveComponents = (toast, webElementsRef, file) => {
       const htmlContent = getHTMLContent();
 
       if (file.useDefault) {
-        const response = await API.updateProjectComponents(projectID, updateWebElements(), { content: htmlContent });
+        const response = await API.updateProjectComponents(
+          projectID,
+          updateWebElements(),
+          { content: htmlContent }
+        );
         console.log('Components Saved:', response);
       } else {
-        const response = await API.updateProjectFile(projectID, file.name, { components: updateWebElements(), content: htmlContent });
+        const response = await API.updateProjectFile(projectID, file.name, {
+          components: updateWebElements(),
+          content: htmlContent,
+        });
         console.log('File Components Saved:', response);
       }
 
-      toast.success("Components Saved!");
+      toast.success('Components Saved!');
     } catch (error) {
-      console.error("Failed to save by Ctrl+S:", error);
+      console.error('Failed to save by Ctrl+S:', error);
     }
   }, [projectID, file]);
 
@@ -60,4 +67,4 @@ export const useSaveComponents = (toast, webElementsRef, file) => {
       document.removeEventListener('keydown', handleKeyDown); // Cleanup on unmount
     };
   }, [handleSaveCallback]);
-}
+};

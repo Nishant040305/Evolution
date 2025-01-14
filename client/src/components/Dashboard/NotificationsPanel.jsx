@@ -1,19 +1,18 @@
-import React  from "react";
-import { FaBell } from "react-icons/fa"; // Assuming you're using react-icons
+import React from 'react';
+import { FaBell } from 'react-icons/fa'; // Assuming you're using react-icons
 import FriendRequest from './FriendRequest';
 import CollabrationRequest from './CollaborationRequest';
 import { useSelector } from 'react-redux';
 const Information = ({ notification }) => {
-  return(
+  return (
     <div>
       <p>Information</p>
     </div>
-  )
-}
+  );
+};
 const NotificationsPanel = () => {
   const notificationList = useSelector((state) => state.notifications);
   const loading = false;
-
 
   return (
     <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-md">
@@ -51,7 +50,7 @@ const NotificationsPanel = () => {
               default:
                 return null;
             }
-      })}
+          })}
         </ul>
       ) : (
         <p className="text-gray-500">No new notifications</p>

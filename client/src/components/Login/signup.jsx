@@ -1,7 +1,7 @@
-import React from "react";
-import axios from "axios";
-import server from "../../server.json";
-import AuthService from "../../scripts/API.Login";
+import React from 'react';
+import axios from 'axios';
+import server from '../../server.json';
+import AuthService from '../../scripts/API.Login';
 const Signup = (props) => {
   let WEB = import.meta.env.VITE_REACT_APP_BACKWEB;
 

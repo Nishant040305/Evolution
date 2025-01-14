@@ -1,36 +1,36 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React from 'react';
+import { motion } from 'framer-motion';
 import {
   MousePointerClick,
   Users,
   LineChart,
   Globe,
   ArrowRight,
-} from "lucide-react";
+} from 'lucide-react';
 
 const features = [
   {
-    title: "Drag-and-Drop Builder",
+    title: 'Drag-and-Drop Builder',
     description:
-      "Create stunning websites with our intuitive drag-and-drop interface. No coding skills required.",
+      'Create stunning websites with our intuitive drag-and-drop interface. No coding skills required.',
     icon: MousePointerClick,
   },
   {
-    title: "Real-Time Collaboration",
+    title: 'Real-Time Collaboration',
     description:
-      "Work together seamlessly with your team in real-time. Share, edit, and review changes instantly.",
+      'Work together seamlessly with your team in real-time. Share, edit, and review changes instantly.',
     icon: Users,
   },
   {
-    title: "SEO Tools & Analytics",
+    title: 'SEO Tools & Analytics',
     description:
-      "Built-in SEO optimization tools and detailed analytics to help your website perform better.",
+      'Built-in SEO optimization tools and detailed analytics to help your website perform better.',
     icon: LineChart,
   },
   {
-    title: "Hosting and Domain Support",
+    title: 'Hosting and Domain Support',
     description:
-      "One-click deployment with reliable hosting and easy domain management included.",
+      'One-click deployment with reliable hosting and easy domain management included.',
     icon: Globe,
   },
 ];

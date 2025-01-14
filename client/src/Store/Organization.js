@@ -1,13 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const organizationSlice = createSlice({
-  name: "organization",
+  name: 'organization',
   initialState: 0,
   reducers: {
     updateOrganizations: (state) => {
-        return 1-state;
+      return 1 - state;
     },
-    
   },
 });
 

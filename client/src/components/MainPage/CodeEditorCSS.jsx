@@ -25,14 +25,22 @@ const CodeEditorCSS = ({ css, setCss, file }) => {
   }, [handleSave]);
 
   return (
-    <div className='flex-1 p-8 overflow-auto bg-gray-100'>
-      <div className='flex justify-end'>
-        <button onClick={handleSave} className={"flex items-center p-2 space-x-1 text-sm text-white rounded-lg" + (changesSaved ? " bg-green-500 hover:bg-green-600" : " bg-rose-500  hover:bg-rose-600")}>
+    <div className="flex-1 p-8 overflow-auto bg-gray-100">
+      <div className="flex justify-end">
+        <button
+          onClick={handleSave}
+          className={
+            'flex items-center p-2 space-x-1 text-sm text-white rounded-lg' +
+            (changesSaved
+              ? ' bg-green-500 hover:bg-green-600'
+              : ' bg-rose-500  hover:bg-rose-600')
+          }
+        >
           <Save className="w-4 h-4" />
-          <span>{changesSaved ? "Saved" : "Save"}</span>
+          <span>{changesSaved ? 'Saved' : 'Save'}</span>
         </button>
       </div>
-      <div className='p-8 bg-white rounded-lg shadow-lg'>
+      <div className="p-8 bg-white rounded-lg shadow-lg">
         <CodeMirror
           value={css}
           height="65vh"
