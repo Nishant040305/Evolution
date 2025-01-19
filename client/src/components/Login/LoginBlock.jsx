@@ -9,7 +9,7 @@ import ConfirmPassword from './ConfirmPassword';
 const LoginBlock = ({ setRegister }) => {
   const [signupLog, setSL] = useState(0); // 0: Login, 1: Signup, 2: OTP Verification, 3: Forget Password, 4: OTP for Password Reset, 5: Confirm Password
   const [userInfo, setUserInfo] = useState({ EMAIL: '', PASSWORD: '' });
-  const [OTP, setOTP] = useState({ AUTHENTICATION: '', OTP: '' });
+  const [OTP, setOTP] = useState({ AUTHENTICATION: '', OTP: '' }); 
   const [PASS, setPASS] = useState({
     AUTHENTICATION: '',
     PASSWORD: '',
@@ -130,7 +130,7 @@ const LoginBlock = ({ setRegister }) => {
           className="google-signin-button"
           onClick={() => {
             window.open(
-              'http://localhost:4000/api/auth/google/callback',
+              `${import.meta.env.VITE_REACT_APP_BACKWEB}${import.meta.env.VITE_REACT_APP_GOOGLE}`,
               '_self'
             );
           }}
@@ -144,7 +144,7 @@ const LoginBlock = ({ setRegister }) => {
         <button
           className="github-signin-button"
           onClick={() => {
-            window.open('http://localhost:4000/api/auth/github', '_self');
+            window.open(`${import.meta.env.VITE_REACT_APP_BACKWEB}${import.meta.env.VITE_REACT_APP_GITHUB}`, '_self');
           }}
         >
           <img
