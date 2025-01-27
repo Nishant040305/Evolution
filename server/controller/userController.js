@@ -14,7 +14,7 @@ const getAllUserProjects = async (req, res) => {
 
     // Find the user by ID
     const user = await User.findById(userId);
-    if (!user) {
+    if (!user||!user.verify) {
       return res.status(404).json({ message: 'User not found' });
     }
 
@@ -42,7 +42,7 @@ const getAllSharedProjects = async (req, res) => {
 
     // Find the user by ID
     const user = await User.findById(userId);
-    if (!user) {
+    if (!user||!user.verify) {
       return res.status(404).json({ message: 'User not found' });
     }
 
@@ -66,7 +66,7 @@ const ChangeProfile = async (req, res) => {
       return res.status(400).json({ message: 'Please fill all the fields' });
     }
     const user = await User.findById(userId);
-    if (!user) {
+    if (!user||!user.verify) {
       return res.status(404).json({ message: 'User not found' });
     }
     user.username = username;
@@ -80,8 +80,8 @@ const ChangeProfile = async (req, res) => {
 const FindUserEmail = async (req, res) => {
   try {
     const userId = req.params.email;
-    const user = await User.findOne({ email: userId });
-    if (!user) {
+    const user = await User.findOne({ email: userId,verify:true });
+    if (!user||!user.verify) {
       return res.status(200).json(null);
     }
     return res.status(200).json({
@@ -98,7 +98,7 @@ const FindUserByID = async (req, res) => {
   try {
     const userId = req.params.id;
     const user = await User.findById(userId);
-    if (!user) {
+    if (!user||!user.verify) {
       return res.status(404).json(null);
     }
     return res.status(200).json({
@@ -129,7 +129,7 @@ const GetFriends = async (req, res) => {
 
     // Find the user by their ID
     const user = await User.findById(userId);
-    if (!user) {
+    if (!user||!user.verify) {
       return res.status(404).json({ message: 'User not found' });
     }
 

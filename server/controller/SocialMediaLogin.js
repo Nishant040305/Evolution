@@ -7,7 +7,7 @@ const jwtToken = require('jsonwebtoken');
 require('../config/passport'); // Import the passport configuration
 const googleCallback = (req, res) => {
   const user = req.user;
-  if (!user) {
+  if (!user||!user.verify) {
     console.error('Authentication Error:', err);
     return res.redirect(process.env.CLIENT);
   }

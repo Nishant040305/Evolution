@@ -6,7 +6,7 @@ module.exports = (io, socket) => {
     try {
       // Check if the user exists in the database
       const user = await User.findById(userId);
-      if (!user) {
+      if (!user||!user.verify) {
         console.log(`User not found: ${userId}`);
         return;
       }

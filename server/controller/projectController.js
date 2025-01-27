@@ -90,7 +90,7 @@ const revertProject = async (req, res) => {
 const createProject = async (req, res) => {
   try {
     const user = await User.findById(req.body.user);
-    if (!user) {
+    if (!user||!user.verify) {
       return res.status(404).json({ message: 'User not found' });
     }
     let unread_messages = {};

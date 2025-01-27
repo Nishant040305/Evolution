@@ -9,7 +9,7 @@ const inviteMember = async (req, res) => {
     const { id } = req.params;
     const { userid, role } = req.body;
     const user = await User.findById(userid);
-    if (!user) {
+    if (!user||!user.verify) {
       return res.status(404).json({ message: 'User not found' });
     }
     const project = await Project.findById(id).populate(
@@ -61,7 +61,7 @@ const updateMemberRole = async (req, res) => {
     const { id } = req.params;
     const { userid, role } = req.body;
     const user = await User.findById(userid);
-    if (!user) {
+    if (!user||!user.verify) {
       return res.status(404).json({ message: 'User not found' });
     }
     const project = await Project.findById(id).populate('user members.user');
@@ -89,7 +89,7 @@ const removeMember = async (req, res) => {
     const { id } = req.params;
     const { userid } = req.body;
     const user = await User.findById(userid);
-    if (!user) {
+    if (!user||!user.verify) {
       return res.status(404).json({ message: 'User not found' });
     }
     const project = await Project.findById(id).populate('user members.user');
@@ -119,7 +119,7 @@ const acceptCollaboration = async (req, res) => {
 
     // Find the user
     const user = await User.findById(userid);
-    if (!user) {
+    if (!user||!user.verify) {
       return res.status(404).json({ message: 'User not found' });
     }
 
