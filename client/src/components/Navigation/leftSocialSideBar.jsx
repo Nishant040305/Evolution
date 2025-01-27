@@ -9,65 +9,102 @@ import {
   FaUserPlus,
   FaSignOutAlt,
 } from 'react-icons/fa';
+import { useNavigate, useLocation } from 'react-router-dom';
 import HoverInfoWrapper from '../utility/toolTip';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../Store/userSlice';
 import AuthService from '../../scripts/API.Login';
-const LeftSocialSideBar = ({ setNav }) => {
-  const items = [
-    { icon: <FaArrowLeft size={20} />, label: 'Back' },
-    { icon: <FaUser size={20} />, label: 'Profile' },
-    { icon: <FaBell size={20} />, label: 'Notifications' },
-    { icon: <FaEnvelope size={20} />, label: 'Messages' },
-    { icon: <FaUsers size={20} />, label: 'Groups' },
-    { icon: <FaUserPlus size={20} />, label: 'Find Users' },
-    { icon: <FaCog size={20} />, label: 'Settings' },
-    { icon: <FaSignOutAlt size={20} />, label: 'Logout' },
-  ];
-  const dispatch = useDispatch();
 
-  const Logout = async () => {
-    const APT = new AuthService();
-    dispatch(logout());
-    await APT.logout();
-  };
+const LeftSocialSideBar = ({ setNav }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation();
+
+  const items = [
+    { 
+      icon: <FaArrowLeft size={20} />, 
+      label: 'Back',
+      action: () => navigate(-1)
+    },
+    { 
+      icon: <FaUser size={20} />, 
+      label: 'Profile',
+      action: () => navigate('/profilepage'),
+      active: location.pathname === '/profilepage'
+    },
+    { 
+      icon: <FaBell size={20} />, 
+      label: 'Notifications',
+      action: () => setNav('Notifications')
+    },
+    { 
+      icon: <FaEnvelope size={20} />, 
+      label: 'Messages',
+      action: () => setNav('Messages')
+    },
+    { 
+      icon: <FaUsers size={20} />, 
+      label: 'Groups',
+      action: () => setNav('Groups')
+    },
+    { 
+      icon: <FaUserPlus size={20} />, 
+      label: 'Find Users',
+      action: () => setNav('Find Users')
+    },
+    { 
+      icon: <FaCog size={20} />, 
+      label: 'Settings',
+      action: () => setNav('Settings')
+    },
+    { 
+      icon: <FaSignOutAlt size={20} />, 
+      label: 'Logout',
+      action: async () => {
+        const APT = new AuthService();
+        dispatch(logout());
+        await APT.logout();
+        navigate('/login');
+      }
+    },
+  ];
+
   return (
-    <div className="left-social-sidebar w-10 bg-gray-800 text-white flex flex-col justify-between">
+    <div className="left-social-sidebar w-12 bg-gray-800 text-white flex flex-col justify-between py-6">
       {/* Sidebar Content */}
-      <div className="left-social-sidebar-content flex flex-col items-center space-y-6">
+      <div className="flex flex-col items-center space-y-4">
         {items.slice(0, 6).map((item, index) => (
           <HoverInfoWrapper key={index} info={item.label} position="right">
-            <div
-              key={index}
-              className="relative group hover:bg-gray-700 p-2 rounded cursor-pointer"
+            <button
+              className={`p-2 rounded-lg transition-all duration-200 ${
+                item.active 
+                  ? 'bg-blue-500 text-white'
+                  : 'hover:bg-gray-700 hover:text-blue-400'
+              }`}
+              onClick={item.action}
               aria-label={item.label}
-              onClick={() => setNav(item.label)}
             >
               {item.icon}
-              {/* Tooltip */}
-            </div>
+            </button>
           </HoverInfoWrapper>
         ))}
       </div>
 
       {/* Sidebar Footer */}
-      <div className="left-social-sidebar-footer flex flex-col items-center space-y-6 py-4">
+      <div className="flex flex-col items-center space-y-4">
         {items.slice(6).map((item, index) => (
-          <HoverInfoWrapper key={index} info={item.label} position="right">
-            <div
-              key={index}
-              className="relative group hover:bg-gray-700 p-2 rounded cursor-pointer"
+          <HoverInfoWrapper key={index + 6} info={item.label} position="right">
+            <button
+              className={`p-2 rounded-lg transition-all duration-200 ${
+                item.label === 'Logout'
+                  ? 'hover:bg-red-500/20 hover:text-red-400'
+                  : 'hover:bg-gray-700 hover:text-blue-400'
+              }`}
+              onClick={item.action}
               aria-label={item.label}
-              onClick={async () => {
-                if (item.label === 'Logout') {
-                  Logout();
-                }
-                setNav(item.label);
-              }}
             >
               {item.icon}
-              {/* Tooltip */}
-            </div>
+            </button>
           </HoverInfoWrapper>
         ))}
       </div>
