@@ -10,21 +10,9 @@ import SettingsPage from './components/Dashboard/SettingsPage';
 import LandingPage from './pages/Landing_Page';
 import MainLayout from './pages/Profile_Page';
 
-import { useSocketConnect } from './hooks/SocketConnect';
-import ChatTest from './test/chatTEst';
 import SocialMain from './container/SocialMain';
-import { connectRooms } from './event/connectRooms';
-import { useSocketRecieveMessage } from './event/recieveMessage';
-import { useSocketMarkAsRead } from './event/markAsRead';
-import { useSocketUserReadReceipts } from './event/recieveRecipient';
-import { useSocketDeleteMessage } from './event/deleteMessage';
-import LoadNotifications from './hooks/LoadNotifications';
-import { useSocketNotifications } from './event/Notifications';
-import { useSocketAcceptFriendRequest } from './event/AcceptRequest';
-import { useSocketOrganizationChanges } from './event/OrgChange';
-import { useSocketGroupChatName } from './event/ChatGroupName';
-import { useSocketGroupChatIcon } from './event/ChatGroupIcon';
 import CheckFile from './test/CheckFile';
+import { MainPageHook } from './hooks/MainPageHook';
 const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.user);
@@ -32,18 +20,7 @@ const App = () => {
   useEffect(() => {
     dispatch(verifyUser());
   }, [dispatch, isAuthenticated]);
-  useSocketConnect();
-  connectRooms();
-  LoadNotifications();
-  useSocketMarkAsRead();
-  useSocketRecieveMessage();
-  useSocketUserReadReceipts();
-  useSocketDeleteMessage();
-  useSocketNotifications();
-  useSocketAcceptFriendRequest();
-  useSocketOrganizationChanges();
-  useSocketGroupChatName();
-  useSocketGroupChatIcon();
+  MainPageHook();
   return (
     <Routes>
       {/* Landing Page */}
