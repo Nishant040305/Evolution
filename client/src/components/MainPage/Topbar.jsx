@@ -14,24 +14,33 @@ import { useDispatch, useSelector } from 'react-redux';
 import PublishPage from '../../hooks/PublishPage';
 import { useNavigate } from 'react-router-dom';
 import url from '../../url.json';
-import ConfirmationModal from './ConfirmationModal'; // Import the ConfirmationModal
+// import ConfirmationModal from './ConfirmationModal'; // Import the ConfirmationModal
 import HoverInfoWrapper from '../utility/toolTip';
+import CombinedProjectModal from '../Dashboard/CombinedModal';
+import useProjects from '../../hooks/useProjectDashboard';
+import User from '../../scripts/API.User';
 
 const TopBar = ({ setScreenSize, setStatusCode, toast, file }) => {
   const dispatch = useDispatch();
   const handleUndo = () => {
     dispatch(ActionCreators.undo());
   };
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  
   const projectinfo = useSelector((state) => state.project);
   const navigate = useNavigate();
   const handleRedo = () => dispatch(ActionCreators.redo());
   const { preview, download, publish } = PublishPage({ toast });
-
+  const userId = useSelector((state) => state.user.userInfo._id);
+  const APIUser = new User(userId);
   // Modal States
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
   const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
   const [isPublishModalOpen, setIsPublishModalOpen] = useState(false);
-
+  
+  const {
+    setProjects
+  } = useProjects(userId, APIUser);
   const handlePreview = () => {
     setStatusCode(0);
     setIsPreviewModalOpen(true); // Open preview confirmation modal
@@ -58,7 +67,25 @@ const TopBar = ({ setScreenSize, setStatusCode, toast, file }) => {
   const handleConfirmPublish = () => {
     publish();
   };
-
+  const closeSettingsModal = () => {
+    setIsSettingsOpen(false);
+  };
+  const handleSettingsClick = (e) => {
+    e.stopPropagation();
+    setIsSettingsOpen(true);
+  };
+  const onUpdateProject = async (projectId, updatedProject) => {
+    try {
+      setProjects((prev) =>
+        prev.map((p) =>
+          p?._id === projectId ? { ...p, ...updatedProject } : p
+        )
+      );
+      toast.success('Project updated successfully.');
+    } catch (err) {
+      console.error('Error updating project:', err);
+    }
+  };
   useEffect(() => {
     const handleKeyDown = (event) => {
       if ((event.ctrlKey || event.metaKey) && event.key === 'z') {
@@ -105,12 +132,14 @@ const TopBar = ({ setScreenSize, setStatusCode, toast, file }) => {
         {projectinfo.name + ' - ' + file.name}
       </div>
       <div className="flex items-center space-x-4">
+        <HoverInfoWrapper info="Settings" position={"bottom"}>
         <button
-          onClick={() => navigate(url.Settings)}
+          onClick={handleSettingsClick}
           className="p-2 rounded-full hover:bg-red-300"
         >
           <Settings className="w-5 h-5 text-black-600" />
         </button>
+        </HoverInfoWrapper>
         <div className="flex p-1 border rounded-lg bg-rose-50">
           <button className="p-1 rounded hover:bg-white">
             <Monitor
@@ -161,7 +190,12 @@ const TopBar = ({ setScreenSize, setStatusCode, toast, file }) => {
 
         {/* TODO: Refactor, move Download to Files and add redirect to site without publishing, add project settings etc. */}
       </div>
-
+    {isSettingsOpen && <CombinedProjectModal
+      project={projectinfo}
+      onClose={closeSettingsModal}
+      onUpdate={onUpdateProject}
+      toast={toast}
+      ></CombinedProjectModal>}
       {/* Confirmation Modals
       <ConfirmationModal
         isOpen={isPreviewModalOpen}
