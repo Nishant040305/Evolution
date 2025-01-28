@@ -45,10 +45,10 @@
   box-shadow: 0 0 8px #007bff !important;
 }
 
-body {
+/* body {
   @apply bg-gray-900 text-white;
   width:100%;
-}
+} */
 #root{
   width: 100%;
   height: 100%;
