@@ -17,7 +17,7 @@ const ChatRightMain = ({ onAddParticipant, toast, mode }) => {
         </div>
         <ChatMessageList></ChatMessageList>
       </div>
-      {showGroupInfo && (mode == "disable") && (
+      {showGroupInfo && (
         <GroupInfo
           toast={toast}
           onClose={() => setShowGroupInfo(false)}
