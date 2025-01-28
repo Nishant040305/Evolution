@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TopBar from '../components/Dashboard/Topbar';
 import Modal from '../components/Dashboard/Modal';
 import CreateProjectForm from '../components/Dashboard/CreateProjectForm';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ApiDashboard from '../scripts/API.Dashboard';
 import User from '../scripts/API.User';
 import url from '../url.json';
@@ -12,13 +12,14 @@ import useProjects from '../hooks/useProjectDashboard';
 import ProjectList from '../components/Dashboard/ProjectList';
 
 import 'react-toastify/dist/ReactToastify.css';
+import { setPresentChat ,setChats} from '../Store/Chat';
 
 const ProjectDashboard = () => {
   const navigate = useNavigate();
   const userId = useSelector((state) => state.user.userInfo._id);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isSharedView, setIsSharedView] = useState(false);
-
+  const dispatch = useDispatch();
   const API = new ApiDashboard();
   const APIUser = new User(userId);
 
@@ -63,8 +64,10 @@ const ProjectDashboard = () => {
       console.error('Error deleting project:', err);
     }
   };
-
   const handleProjectClick = (projectID) => {
+    const group = projects.find((p)=>p._id==projectID).groupChatId;
+    console.log(group);
+    dispatch(setPresentChat({chatId:group,userId:userId}));
     navigate(url.WebsiteBuilder.replace(':projectID', projectID));
   };
 

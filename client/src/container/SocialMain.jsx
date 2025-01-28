@@ -16,29 +16,9 @@ import { useNavigate } from 'react-router-dom';
 const SocialMain = () => {
   const [state, setState] = useState('Messages');
   const [loading, setLoading] = useState(true); // To manage loading state
-  const API = new User();
   const [addParticipantModal, setAddParticipantModal] = useState(false);
   const presentChat = useSelector((state) => state.chat.presentChat);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  useEffect(() => {
-    const fetchChats = async () => {
-      try {
-        const response = await API.getChatsData();
-        if (response.success) {
-          dispatch(setChats(response.data));
-        } else {
-          console.error('Error fetching chats:', response.error);
-        }
-      } catch (error) {
-        console.error('Error fetching chats:', error);
-      } finally {
-        setLoading(false); // Stop loading when the fetch completes
-      }
-    };
-
-    fetchChats();
-  }, []);
   const handleAddParticipant = () => {
     setAddParticipantModal(true);
   };

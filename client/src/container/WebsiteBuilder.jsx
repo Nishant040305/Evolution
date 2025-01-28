@@ -1,5 +1,5 @@
-import { useState, useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useState, useMemo, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { toast } from 'react-toastify';
@@ -19,9 +19,12 @@ import { useCanvasEvents } from '../hooks/DragDrop';
 import { useReloadEvents } from '../hooks/useReloadEvents';
 import { useFileHandler } from '../hooks/useFileHandler';
 import { useProjectData } from '../hooks/useProjectData';
+import { setPresentChat } from '../Store/Chat';
 
 const WebsiteBuilder = () => {
   const { projectID } = useParams();
+  const userId = useSelector(state=>state.user.userInfo._id);
+  const project = useSelector(state=>state.project);
   const [showModal, setShowModal] = useState(false);
   const webElement = useSelector((state) => state.webElement.present);
   const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
@@ -76,7 +79,10 @@ const WebsiteBuilder = () => {
     setRightSidebarOpen,
     setStatusCode
   );
-
+  const dispatch = useDispatch();
+  useEffect(()=>{
+    dispatch(setPresentChat({chatId:project.groupChatId,userId:userId}))
+  },[project,userId,dispatch])
   return (
     <div className="flex flex-col h-screen">
       <TopBar

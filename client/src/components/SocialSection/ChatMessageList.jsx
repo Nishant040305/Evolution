@@ -4,9 +4,8 @@ import ChatMessageBlock from './ChatMessageBlock';
 import ChatMessageInput from './ChatMessageInput';
 import Chats from '../../scripts/API.Chats';
 import { addMessageToChat, setMessages, setMeta } from '../../Store/Chat';
-import { set } from 'mongoose';
 
-const ChatMessageList = () => {
+const ChatMessageList = ({mode}) => {
   const dispatch = useDispatch();
   const containerRef = useRef(null);
   const isLoadingRef = useRef(false);
@@ -102,7 +101,7 @@ const ChatMessageList = () => {
   }, [messages]); // Trigger this effect whenever messages change
 
   return (
-    <div className="flex flex-col w-full ChatMessageList bg-gray-100">
+    <div className={`flex flex-col w-full ${mode=="disable"?"h-full":"ChatMessageList"} bg-gray-100`}>
       {/* Messages List */}
       <div
         ref={containerRef}
@@ -133,7 +132,7 @@ const ChatMessageList = () => {
       </div>
 
       {/* Message Input */}
-      <ChatMessageInput />
+      <ChatMessageInput mode={mode} />
     </div>
   );
 };

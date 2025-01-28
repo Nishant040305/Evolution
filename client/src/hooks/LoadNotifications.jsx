@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setNotifications } from '../Store/Notifications';
 import Chats from '../scripts/API.Chats';
-const LoadNotifications = () => {
+export const LoadNotifications = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const user = useSelector((state) => state.user.userInfo);
@@ -23,4 +23,3 @@ const LoadNotifications = () => {
   }, [isAuthenticated, user]);
 };
 
-export default LoadNotifications;

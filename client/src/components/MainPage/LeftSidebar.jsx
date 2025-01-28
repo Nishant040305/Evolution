@@ -31,7 +31,7 @@ const {
   H6,
   Paragraph,
 } = components;
-import { Code, Palette } from 'lucide-react';
+import { Code, LucideMessageCircle, Palette } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addElement, deleteElement } from '../../Store/webElementSlice';
 import ImageElement from '../../lib/img.component';
@@ -43,6 +43,7 @@ import MediaSection from './MediaContainer';
 import ProjectFileSideBar from './ProjectFileSideBar';
 import HoverInfoWrapper from '../utility/toolTip';
 import ApiDashboard from '../../scripts/API.Dashboard';
+import ChatRightMain from '../SocialSection/ChatRightMain';
 const LeftSidebar = ({
   toggleRight,
   setStatusCode,
@@ -187,7 +188,7 @@ const LeftSidebar = ({
           isVisible ? 'translate-x-0' : '-translate-x-full'
         } z-10`}
       >
-        <div className="flex flex-col h-full w-80">
+        <div className={`flex flex-col   h-full w-80`}>
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b bg-red-50">
             <div className="flex w-full justify-between">
@@ -228,11 +229,23 @@ const LeftSidebar = ({
                   <FaFileAlt className="w-4 h-4" />
                 </button>
               </HoverInfoWrapper>
+              <HoverInfoWrapper info="Chats" position={'bottom'}>
+                <button
+                  onClick={() => setCurrentTab('chats')}
+                  className={`px-4 py-1.5 rounded-md transition-all mr-1 ${
+                    currentTab === 'chats'
+                      ? 'bg-red-500 text-white'
+                      : 'text-gray-600 hover:bg-red-100'
+                  }`}
+                >
+                  <LucideMessageCircle className="w-4 h-4" />
+                </button>
+              </HoverInfoWrapper>
             </div>
           </div>
 
           {/* Content */}
-          <div className="flex-1 p-4 space-y-6  overflow-y-auto">
+          <div className={`${currentTab!="chats"?"flex-1 p-4 space-y-6  overflow-y-auto":"h-full"} `}>
             {currentTab === 'components' ? (
               <>
                 {/* Elements Section */}
@@ -286,7 +299,9 @@ const LeftSidebar = ({
                 handleDelete={handleDelete}
                 handleViewChange={handleViewChange}
               />
-            ) : (
+            ) : currentTab === 'chats' ? (
+              <ChatRightMain toast={toast} mode={"disable"}/>):
+              (
               <ProjectFileSideBar file={file} setFile={setFile} toast={toast} />
             )}
           </div>

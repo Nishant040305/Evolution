@@ -7,7 +7,7 @@ import { connectRooms } from '../../event/connectRooms';
 import { useSocketRecieveMessage } from '../../event/recieveMessage';
 import { SocketSendMessage } from '../../event/SocketEvent';
 // import { useSocketConnect } from '../../hooks/SocketConnect'; // Use the custom hook for socket connection
-const ChatMessageInput = () => {
+const ChatMessageInput = ({mode}) => {
   const Chat = useSelector((state) => state.chat.presentChat);
   const [message, setMessage] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -51,11 +51,11 @@ const ChatMessageInput = () => {
   connectRooms();
   useSocketRecieveMessage();
   return (
-    <div className="flex items-center w-full p-4 bg-gray-100 rounded-lg">
+    <div className={`flex items-center w-full ${mode!="disable"?"p-4 ":""} bg-gray-100 rounded-lg`}>
       {/* Emoji Picker Toggle */}
       <button
         onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-        className="p-2 text-gray-500 hover:text-gray-700"
+        className={`${mode!="disable"?"p-2 ":""} text-gray-500 hover:text-gray-700`}
       >
         <FaSmile size={24} />
       </button>
@@ -83,7 +83,7 @@ const ChatMessageInput = () => {
           }
         }}
         placeholder="Type a message..."
-        className="flex-grow p-2 mx-2 text-gray-700 bg-white border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className={`${mode!="disable"?"p-2 ":""} flex-grow p-2 mx-2 text-gray-700 bg-white border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
       />
 
       {/* Send Button */}

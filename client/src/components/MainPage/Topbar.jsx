@@ -6,6 +6,7 @@ import {
   Tablet,
   Smartphone,
   Settings,
+  LucideMessageCircle,
 } from 'lucide-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faDownload, faUpload } from '@fortawesome/free-solid-svg-icons';

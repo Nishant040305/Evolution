@@ -16,7 +16,7 @@ const ChatSlice = createSlice({
     setPresentChat: (state, action) => {
       const { chatId, userId } = action.payload;
       state.presentChat = chatId;
-      if (chatId) {
+      if (chatId&&state.chats.find((chat) => chat.chat_id === chatId)) {
         SocketMarkAsRead(chatId, userId);
         state.chats.find((chat) => chat.chat_id === chatId).unread_messages[
           userId
