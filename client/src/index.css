@@ -1,5 +1,7 @@
 @tailwind base;
 @tailwind components;
+@tailwind utilities;
+
 
 /* canvas component global */
 .canvas-component {
@@ -43,4 +45,66 @@
   box-shadow: 0 0 8px #007bff !important;
 }
 
-@tailwind utilities;
+body {
+  @apply bg-gray-900 text-white;
+  width:100%;
+}
+#root{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+body {
+  padding-top: var(--navbar-height);
+  padding-bottom: var(--footer-height);
+}
+.navbar {
+  --navbar-height: 64px; /* Example height */
+}
+.footer {
+  --footer-height: 72px; /* Example height */
+}
+.test{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.right-panel{
+  width: 100%;
+  height: 100%;
+  background-image: url('./assets/sideimage.svg');
+  background-size:cover;
+}
+.contain{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width:50%;
+  height:100%;
+  background-color:#070133 ;
+}
+.contain-img-redirect{
+  background-color:#070133 ;
+  height:100%;
+  width:100%;
+  display:flex;
+  flex-direction:row;
+  justify-content: space-between;
+}
+@media (max-width: 768px) {
+  .contain{
+    display:none;
+  }
+}
+@media (max-width:650px){
+  .contain-img-redirect{
+    display:none;
+  }
+  .login-form{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color:#070133 ;
+  }
+}

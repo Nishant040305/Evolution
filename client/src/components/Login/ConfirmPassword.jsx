@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import AuthService from '../../scripts/API.Login';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loginSuccess } from '../../Store/userSlice';
 const ConfirmPassword = (props) => {
   const dispatch = useDispatch();
@@ -15,10 +15,13 @@ const ConfirmPassword = (props) => {
   const setRegister = (info) => {
     dispatch(loginSuccess(info));
   };
+  const mode = useSelector((state) => state.mode.mode);
   return (
     <div className="bottom">
-      <div className={`container flex flex-col text-left px-16`}>
-        <div className="text-white head-info ">New Password*</div>
+      <div className={`container flex flex-col text-left px-2`}>
+      <label className={`head-info ${mode ? "dark-mode" : ""}`}>
+          New Password*
+        </label>
         <input
           className="input-detail"
           name="PASSWORD"
@@ -28,8 +31,10 @@ const ConfirmPassword = (props) => {
           }}
         ></input>
       </div>
-      <div className=" flex flex-col text-left px-16">
-        <div className="text-white head-info">Confirm Password*</div>
+      <div className=" flex flex-col text-left px-2">
+      <label className={`head-info ${mode ? "dark-mode" : ""}`}>
+          Confirm Password*
+        </label>
         <input
           className="input-detail"
           name="CPASSWORD"

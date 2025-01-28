@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthService from '../../scripts/API.Login';
+import { useSelector } from 'react-redux';
 const OTPVerification = (props) => {
   const [timer, setTimer] = useState(300); // 5 minutes in seconds
   const [msg, setMsg] = useState('');
@@ -12,7 +13,7 @@ const OTPVerification = (props) => {
       [e.target.name]: e.target.value,
     });
   };
-
+  const mode = useSelector(state=>state.mode.mode);
   useEffect(() => {
     if (timer > 0) {
       const countdown = setInterval(() => setTimer((prev) => prev - 1), 1000);
@@ -31,12 +32,13 @@ const OTPVerification = (props) => {
   const API = new AuthService();
   return (
     <div className="bottom">
-      <div className={`container flex flex-col text-left px-16`}>
-        <div className="text-white head-info">OTP</div>
-        {isResendVisible ? (
+      <div className={`container flex flex-col text-left px-2`}>
+      <div className={`head-info ${mode ? "dark-mode" : ""}`}>OTP</div>
+      {isResendVisible ? (
           <></>
         ) : (
-          <span className="text-white timer">Resend in {formatTime()}</span>
+          <span className={`timer ${mode ? "text-white" : "text-gray-800"}`}>
+                  Resend in {formatTime()}</span>
         )}
         <input
           className="input-detail"

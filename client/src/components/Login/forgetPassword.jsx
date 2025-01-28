@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import AuthService from '../../scripts/API.Login';
+import { useSelector } from 'react-redux';
 const ForgetPassword = (props) => {
   const handleChange = (e) => {
     props.setValue(e.target.value);
   };
+  const mode = useSelector((state) => state.mode.mode);
   const API = new AuthService();
   const [msg, setMsg] = useState('');
   return (
     <div className="bottom">
-      <div className={`container flex flex-col text-left px-16`}>
-        <div className="text-white head-info ">Email*</div>
-        <input
+      <div className={`container flex flex-col text-left px-2`}>
+      <label className={`head-info ${mode?"dark-mode":""}`}>Email*</label>
+      <input
           className="input-detail"
           name="EMAIL"
           value={props.value}

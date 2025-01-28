@@ -10,6 +10,7 @@ import projectSlice from './Store/projectSlice';
 import ChatSlice from './Store/Chat';
 import organizationSlice from './Store/Organization';
 import NotificationSlice from './Store/Notifications';
+import darkLightSlice  from './Store/darkLightMode';
 // Root reducer with undo functionality for specific slices
 const rootReducer = combineReducers({
   webElement: undoable(webElementsSlice),
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   chat: ChatSlice,
   notifications: NotificationSlice,
   organization: organizationSlice,
+  mode:darkLightSlice
 });
 const persistConfig = {
   key: 'root',

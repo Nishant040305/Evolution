@@ -157,7 +157,7 @@ const LogIn = async (req, res) => {
 const PasswordRecovery = async (req, res) => {
   try {
     const { EMAIL } = req.body;
-
+    console.log(EMAIL)
     const user = await User.findOne({ email: EMAIL });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
