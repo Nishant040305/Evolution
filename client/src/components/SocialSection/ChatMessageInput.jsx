@@ -83,7 +83,7 @@ const ChatMessageInput = ({mode}) => {
           }
         }}
         placeholder="Type a message..."
-        className={`${mode!="disable"?"p-2 ":""} flex-grow p-2 mx-2 text-gray-700 bg-white border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+        className={`${mode!="disable"?"p-2 mx-2":"mx-1"} flex-grow  text-gray-700 bg-white border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
       />
 
       {/* Send Button */}
