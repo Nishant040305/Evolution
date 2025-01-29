@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FaCheck, FaClipboard, FaTrash } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { SocketDeleteMessage } from '../../event/SocketEvent';
+import { generateUserColor } from '../../constants/namecolors';
 const ChatMessageBlock = ({ message, index }) => {
   const currentUserId = useSelector((state) => state.user.userInfo._id);
   const isSender = message.sender_id === currentUserId;
@@ -94,7 +95,7 @@ const ChatMessageBlock = ({ message, index }) => {
 
         {/* Sender Name (Only for received messages) */}
         {!isSender && (
-          <div className="text-xs font-semibold text-red-500">
+          <div className="text-xs font-semibold" style={{color:generateUserColor(message.sender_id)}}>
             {
               chat?.participants.find(
                 (p) => p.user_id.toString() === message.sender_id.toString()
