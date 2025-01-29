@@ -65,9 +65,12 @@ const ProjectDashboard = () => {
     }
   };
   const handleProjectClick = (projectID) => {
-    const group = projects.find((p)=>p._id==projectID).groupChatId;
+    let group = projects.find((p)=>p._id==projectID);
+    if(!group){
+      group = sharedProjects.find((p)=>p._id==projectID);
+    }
     console.log(group);
-    dispatch(setPresentChat({chatId:group,userId:userId}));
+    dispatch(setPresentChat({chatId:group.groupChatId,userId:userId}));
     navigate(url.WebsiteBuilder.replace(':projectID', projectID));
   };
 
