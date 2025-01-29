@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { Folder, Trash2, Edit, Users, Settings } from 'lucide-react';
+// import { Folder, Trash2, Edit, Users, Settings } from 'lucide-react';
+import Folder from 'lucide-react/dist/esm/icons/folder'
+import Trash2 from 'lucide-react/dist/esm/icons/trash-2'
+import Edit from 'lucide-react/dist/esm/icons/edit'
+import Users from 'lucide-react/dist/esm/icons/users'
+import Settings from 'lucide-react/dist/esm/icons/settings'
+
 import ProjectSettingsModal from './ProjectSettingsModal';
 import CombinedProjectModal from './CombinedModal'; // Import the combined modal
 

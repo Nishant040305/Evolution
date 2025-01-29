@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import { css as cssextension } from '@codemirror/lang-css';
 import { oneDark } from '@codemirror/theme-one-dark';
-import { Save } from 'lucide-react';
+// import { Save } from 'lucide-react';
+import Save from "lucide-react/dist/esm/icons/save"
 import useSaveFile from '../../hooks/useSaveFile';
 
 const CodeEditorCSS = ({ css, setCss, file }) => {

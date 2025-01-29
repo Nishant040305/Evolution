@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { FileText, FileCode, Palette, Trash, Copy } from 'lucide-react';
+// import { FileText, FileCode, Palette, Trash, Copy } from 'lucide-react';
+import FileText from "lucide-react/dist/esm/icons/file-text"
+import FileCode from "lucide-react/dist/esm/icons/file-code"
+import Palette from "lucide-react/dist/esm/icons/palette"
+import Trash from "lucide-react/dist/esm/icons/trash"
+import Copy from "lucide-react/dist/esm/icons/copy"
 import ApiDashboard from '../../scripts/API.Dashboard';
 
 const ProjectFileSideBar = ({ file, setFile, toast }) => {

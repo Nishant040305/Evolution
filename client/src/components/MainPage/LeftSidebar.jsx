@@ -31,7 +31,10 @@ const {
   H6,
   Paragraph,
 } = components;
-import { Code, LucideMessageCircle, Palette } from 'lucide-react';
+// import { Code, LucideMessageCircle, Palette } from 'lucide-react';
+import Code from "lucide-react/dist/esm/icons/code"
+import LucideMessageCircle from "lucide-react/dist/esm/icons/message-circle"
+import Palette from "lucide-react/dist/esm/icons/palette"
 import { useDispatch, useSelector } from 'react-redux';
 import { addElement, deleteElement } from '../../Store/webElementSlice';
 import ImageElement from '../../lib/img.component';

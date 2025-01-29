@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Undo,
-  Redo,
-  Monitor,
-  Tablet,
-  Smartphone,
-  Settings,
-  LucideMessageCircle,
-} from 'lucide-react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import {
+//   Undo,
+//   Redo,
+//   Monitor,
+//   Tablet,
+//   Smartphone,
+//   Settings,
+//   LucideMessageCircle,
+// } from 'lucide-react';
+import Undo from "lucide-react/dist/esm/icons/undo"
+import Redo from "lucide-react/dist/esm/icons/redo"
+import Monitor from "lucide-react/dist/esm/icons/monitor"
+import Tablet from "lucide-react/dist/esm/icons/tablet"
+import Smartphone from "lucide-react/dist/esm/icons/smartphone"
+import Settings from "lucide-react/dist/esm/icons/settings"
+
 import { faEye, faDownload, faUpload } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ActionCreators } from 'redux-undo';
 import { useDispatch, useSelector } from 'react-redux';
 import PublishPage from '../../hooks/PublishPage';

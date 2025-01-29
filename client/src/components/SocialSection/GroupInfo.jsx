@@ -1,5 +1,9 @@
 import React, { useState, useRef } from 'react';
-import { X, UserPlus, LogOut, Edit } from 'lucide-react';
+// import { X, UserPlus, LogOut, Edit } from 'lucide-react';
+import X from "lucide-react/dist/esm/icons/x"
+import UserPlus from "lucide-react/dist/esm/icons/user-plus"
+import LogOut from "lucide-react/dist/esm/icons/log-out"
+import Edit from "lucide-react/dist/esm/icons/edit"
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { deleteChat } from '../../Store/Chat';
@@ -11,7 +15,9 @@ import {
 } from '../../event/SocketEvent';
 import server from '../../server.json';
 import Chats from '../../scripts/API.Chats';
-import { Camera } from 'lucide-react';
+// import { Camera } from 'lucide-react';
+import Camera from "lucide-react/dist/esm/icons/camera"
+
 const GroupInfo = ({ onClose, onAddParticipant, toast }) => {
   const present = useSelector((state) => state.chat.presentChat);
   const chat = useSelector((state) => state.chat.chats);

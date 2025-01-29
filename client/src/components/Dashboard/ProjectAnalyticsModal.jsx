@@ -1,6 +1,6 @@
 import React from 'react';
-import { X } from 'lucide-react';
-
+// import { X } from 'lucide-react';
+import X from 'lucide-react/dist/esm/icons/x'
 const ProjectAnalyticsModal = ({ isOpen, onClose, project }) => {
   if (!isOpen) return null;
 

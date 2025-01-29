@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { X, Eye, EyeOff } from 'lucide-react'; // Import eye icons
-
+// import { X, Eye, EyeOff } from 'lucide-react'; // Import eye icons
+import X from "lucide-react/dist/esm/icons/x"
+import Eye from "lucide-react/dist/esm/icons/eye"
+import EyeOff from "lucide-react/dist/esm/icons/eye-off"
 const ProjectOverview = ({
   webElements,
   setId,

@@ -51,13 +51,13 @@ const ChatMessageInput = ({mode}) => {
   connectRooms();
   useSocketRecieveMessage();
   return (
-    <div className={`flex items-center w-full ${mode!="disable"?"p-4 ":""} bg-gray-100 rounded-lg`}>
+    <div className={`flex items-center w-full ${mode!="disable"?"p-4 ":"pb-2"} bg-gray-100 rounded-lg`}>
       {/* Emoji Picker Toggle */}
       <button
         onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-        className={`${mode!="disable"?"p-2 ":""} text-gray-500 hover:text-gray-700`}
+        className={`${mode=="disable"?"p-2 ":"p-2"} text-gray-500 hover:text-gray-700`}
       >
-        <FaSmile size={24} />
+        <FaSmile size={`${mode=="disable"?"20":"24"}`} />
       </button>
 
       {showEmojiPicker && (
@@ -67,8 +67,8 @@ const ChatMessageInput = ({mode}) => {
       )}
 
       {/* File Upload */}
-      <label className="p-2 text-gray-500 hover:text-gray-700 cursor-pointer">
-        <FaPaperclip size={24} />
+      <label className={`${mode=="disable"?"pr-2":"p-2"} text-gray-500 hover:text-gray-700 cursor-pointer`}>
+        <FaPaperclip size={`${mode=="disable"?"20":"24"}`} />
         <input type="file" onChange={handleFileUpload} className="hidden" />
       </label>
 
@@ -83,15 +83,15 @@ const ChatMessageInput = ({mode}) => {
           }
         }}
         placeholder="Type a message..."
-        className={`${mode!="disable"?"p-2 mx-2":"mx-1"} flex-grow  text-gray-700 bg-white border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+        className={`${mode!="disable"?"p-2 mx-2":"mx-1 p-2"} flex-grow  text-gray-700 bg-white border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
       />
 
       {/* Send Button */}
       <button
         onClick={handleSendMessage}
-        className="p-2 text-white bg-blue-500 rounded-full hover:bg-blue-600"
+        className={`${mode=="disable"?"p-2":"p-2"} text-white bg-blue-500 rounded-full hover:bg-blue-600`}
       >
-        <FaPaperPlane size={20} />
+        <FaPaperPlane size={`${mode=="disable"?"15":"20"}`} />
       </button>
     </div>
   );

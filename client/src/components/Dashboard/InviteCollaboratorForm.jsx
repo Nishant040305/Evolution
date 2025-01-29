@@ -1,7 +1,8 @@
 // InviteCollaboratorForm.js
 import React, { useState } from 'react';
-import { Mail, UserPlus } from 'lucide-react';
-
+// import { Mail, UserPlus } from 'lucide-react';
+import Mail from 'lucide-react/dist/esm/icons/mail'
+import UserPlus from 'lucide-react/dist/esm/icons/user-plus'
 const InviteCollaboratorForm = ({ onInvite, onCancel }) => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');

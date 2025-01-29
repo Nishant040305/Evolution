@@ -1,6 +1,8 @@
 import React from 'react';
-import { ChevronDown, ChevronUp, Grid } from 'lucide-react';
-
+// import { ChevronDown, ChevronUp, Grid } from 'lucide-react';
+import ChevronDown from "lucide-react/dist/esm/icons/chevron-down"
+import ChevronUp from "lucide-react/dist/esm/icons/chevron-up"
+import Grid from "lucide-react/dist/esm/icons/grid"
 const ElementContainer = ({
   showElements,
   setShowElements,

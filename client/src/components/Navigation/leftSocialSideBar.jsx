@@ -24,7 +24,7 @@ const LeftSocialSideBar = ({ setNav }) => {
     { 
       icon: <FaArrowLeft size={20} />, 
       label: 'Back',
-      action: () => navigate(-1)
+      action: () => navigate("/")
     },
     { 
       icon: <FaUser size={20} />, 

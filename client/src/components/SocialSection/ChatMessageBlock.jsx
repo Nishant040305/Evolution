@@ -94,7 +94,7 @@ const ChatMessageBlock = ({ message, index }) => {
 
         {/* Sender Name (Only for received messages) */}
         {!isSender && (
-          <div className="text-xs font-semibold text-gray-600">
+          <div className="text-xs font-semibold text-red-500">
             {
               chat?.participants.find(
                 (p) => p.user_id.toString() === message.sender_id.toString()

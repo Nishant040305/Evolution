@@ -1,9 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { FaUserPlus } from 'react-icons/fa';
-import { Upload, Camera } from 'lucide-react';
+// import {  Camera } from 'lucide-react';
+import Camera from "lucide-react/dist/esm/icons/camera"
 import ChatSearchBar from '../utility/ChatSearchBar';
-import axios from 'axios';
-
 const CreateGroupChatTop = ({
   groupName,
   setGroupName,

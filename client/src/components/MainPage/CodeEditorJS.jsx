@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import { oneDark } from '@codemirror/theme-one-dark';
-import { Save } from 'lucide-react';
+// import { Save } from 'lucide-react';
+import Save from "lucide-react/dist/esm/icons/save"
 import useSaveFile from '../../hooks/useSaveFile';
 
 const CodeEditorJS = ({ js, setJs, file }) => {

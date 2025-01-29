@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
-import { X, ChartColumn } from 'lucide-react';
-import ComponentEditor from './componentEditor';
+import React from 'react';
+// import { X, ChartColumn } from 'lucide-react';
+import X from "lucide-react/dist/esm/icons/x"
+import ChartColumn from "lucide-react/dist/esm/icons/chart-column"
 import ComponentEditorTransform from './ComponentEditorTransform';
 import Info from './Info';
 import ComponentEditorAppearance from './ComponentEditorAppearance';

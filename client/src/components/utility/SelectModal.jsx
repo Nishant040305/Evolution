@@ -10,9 +10,12 @@
 
 import React, { useState } from 'react';
 import '../../style/SelectModal.css'; // Import custom CSS for modal
-import { X } from 'lucide-react';
-import { FileText, Palette, FileCode } from 'lucide-react'; // Icons for file types
-
+// import { X } from 'lucide-react';
+// import { FileText, Palette, FileCode } from 'lucide-react'; // Icons for file types
+import X from "lucide-react/dist/esm/icons/x"
+import FileText from "lucide-react/dist/esm/icons/file-text"
+import Palette from "lucide-react/dist/esm/icons/palette"
+import FileCode from "lucide-react/dist/esm/icons/file-code"
 // Function to render icons based on file type
 const renderFileIcon = (name) => {
   if (name.endsWith('.html'))

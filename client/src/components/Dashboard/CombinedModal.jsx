@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ApiDashboard from '../../scripts/API.Dashboard';
-import { X } from 'lucide-react';
+import X from 'lucide-react/dist/esm/icons/x'
 // import server from "../../server.json";
 import {
   Chart as ChartJS,

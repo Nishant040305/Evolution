@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Timer, Save } from 'lucide-react';
+// import { Timer, Save } from 'lucide-react';
+import Timer from 'lucide-react/dist/esm/icons/timer'
+import Save from 'lucide-react/dist/esm/icons/save'
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 

@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { Search, Settings, User, LogOut, Bell } from 'lucide-react';
+// import { Search, Settings, User, LogOut, Bell } from 'lucide-react';
+import Search from 'lucide-react/dist/esm/icons/search'
+import Settings from 'lucide-react/dist/esm/icons/settings'
+import User from 'lucide-react/dist/esm/icons/user'
+import LogOut from 'lucide-react/dist/esm/icons/log-out'
+import Bell from 'lucide-react/dist/esm/icons/bell'
+
 import NotificationsPanel from './NotificationsPanel';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../Store/userSlice';

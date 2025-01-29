@@ -1,5 +1,9 @@
 import React, { useState, useRef } from 'react';
-import { Upload, Plus, ChevronUp, ChevronDown } from 'lucide-react';
+// import { Upload, Plus, ChevronUp, ChevronDown } from 'lucide-react';
+import Upload from "lucide-react/dist/esm/icons/upload"
+import Plus from "lucide-react/dist/esm/icons/plus"
+import ChevronUp from "lucide-react/dist/esm/icons/chevron-up"
+import ChevronDown from "lucide-react/dist/esm/icons/chevron-down"
 import { useDispatch } from 'react-redux';
 import { addElement } from '../../Store/webElementSlice';
 import { setImagesMedia } from '../../Store/imageSlice';
