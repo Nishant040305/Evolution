@@ -44,7 +44,9 @@
     "createChat": "/api/chat/chats",
     "createGroupChat": "/api/chat/chats/group",
     "addUserToGroupChat": "/api/chat/chats/group/add",
-    "getChatsData": "/api/chat/chats"
+    "getChatsData": "/api/chat/chats",
+    "getHostedProjects":"/api/user/projects/:id",
+    "getProfile":"/api/user/username/:id"
   },
   "Image": {
     "ImageUpload": "/api/image/imageUpload"

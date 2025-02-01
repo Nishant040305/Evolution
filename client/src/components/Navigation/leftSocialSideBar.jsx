@@ -21,51 +21,46 @@ const LeftSocialSideBar = ({ setNav }) => {
   const location = useLocation();
 
   const items = [
-    { 
-      icon: <FaArrowLeft size={20} />, 
+    {
+      icon: <FaArrowLeft size={20} />,
       label: 'Back',
-      action: () => navigate("/")
+      action: () => navigate('/'),
     },
-    { 
-      icon: <FaUser size={20} />, 
+    {
+      icon: <FaUser size={20} />,
       label: 'Profile',
-      action: () => navigate('/profilepage'),
-      active: location.pathname === '/profilepage'
+      action: () => setNav('Profile'),
+      // active: location.pathname === '/profilepage',
     },
-    { 
-      icon: <FaBell size={20} />, 
+    {
+      icon: <FaBell size={20} />,
       label: 'Notifications',
-      action: () => setNav('Notifications')
+      action: () => setNav('Notifications'),
     },
-    { 
-      icon: <FaEnvelope size={20} />, 
+    {
+      icon: <FaEnvelope size={20} />,
       label: 'Messages',
-      action: () => setNav('Messages')
+      action: () => setNav('Messages'),
     },
-    { 
-      icon: <FaUsers size={20} />, 
+    {
+      icon: <FaUsers size={20} />,
       label: 'Groups',
-      action: () => setNav('Groups')
+      action: () => setNav('Groups'),
     },
-    { 
-      icon: <FaUserPlus size={20} />, 
+    {
+      icon: <FaUserPlus size={20} />,
       label: 'Find Users',
-      action: () => setNav('Find Users')
+      action: () => setNav('Find Users'),
     },
-    { 
-      icon: <FaCog size={20} />, 
-      label: 'Settings',
-      action: () => setNav('Settings')
-    },
-    { 
-      icon: <FaSignOutAlt size={20} />, 
+    {
+      icon: <FaSignOutAlt size={20} />,
       label: 'Logout',
       action: async () => {
         const APT = new AuthService();
         dispatch(logout());
         await APT.logout();
         navigate('/login');
-      }
+      },
     },
   ];
 
@@ -77,7 +72,7 @@ const LeftSocialSideBar = ({ setNav }) => {
           <HoverInfoWrapper key={index} info={item.label} position="right">
             <button
               className={`p-2 rounded-lg transition-all duration-200 ${
-                item.active 
+                item.active
                   ? 'bg-blue-500 text-white'
                   : 'hover:bg-gray-700 hover:text-blue-400'
               }`}

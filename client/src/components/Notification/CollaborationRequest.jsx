@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { FaCheck, FaTimes } from 'react-icons/fa'; // Icons for actions
 import { formatDistanceToNow } from 'date-fns'; // For formatting timestamps
 import ApiDashboard from '../../scripts/API.Dashboard';
-
+import { useNavigate } from 'react-router-dom';
 const CollaborationRequestNotification = ({
   notification,
   onAccept,
   onDecline,
 }) => {
   const [sender, setSender] = useState(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     // Fetch sender details using the provided API
     const fetchSenderData = async () => {
@@ -37,7 +37,10 @@ const CollaborationRequestNotification = ({
       } hover:scale-[1.001] `}
     >
       {/* Header Section */}
-      <div className="flex items-center space-x-3">
+      <div
+        className="flex items-center space-x-3"
+        onClick={() => navigate('/profilepage/' + sender.displayname)}
+      >
         {/* Sender avatar */}
         {sender?.avatar ? (
           <img

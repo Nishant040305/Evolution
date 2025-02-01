@@ -77,6 +77,29 @@ class User {
       throw error;
     }
   }
+  async getAllHostedProjects(userId) {
+    try {
+      let endpoint = `${this.baseURL}${server.User.getHostedProjects}`;
+      endpoint = endpoint.replace(':id', userId);
+      console.log(endpoint);
+      const response = await axios.get(endpoint);
+      return response.data;
+    } catch (error) {
+      console.error('Failed to fetch projects:', error);
+      throw error;
+    }
+  }
+  async getProfile(id) {
+    try {
+      let endpoint = `${this.baseURL}${server.User.getProfile}`;
+      endpoint = endpoint.replace(':id', id);
+      const response = await axios.get(endpoint);
+      return response.data;
+    } catch (error) {
+      console.error('Failed to fetch projects:', error);
+      throw error;
+    }
+  }
 }
 
 export default User;

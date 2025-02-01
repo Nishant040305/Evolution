@@ -9,7 +9,7 @@ import { verifyUser } from './Store/userSlice';
 import SettingsPage from './components/Dashboard/SettingsPage';
 import LandingPage from './pages/Landing_Page';
 import MainLayout from './pages/Profile_Page';
-
+import ProfileView from './container/ProfileView';
 import SocialMain from './container/SocialMain';
 import CheckFile from './test/CheckFile';
 import { MainPageHook } from './hooks/MainPageHook';
@@ -28,7 +28,10 @@ const App = () => {
         path={url.LandingPage}
         element={isAuthenticated ? <ProjectDashboard /> : <LandingPage />}
       />
-
+      <Route
+        path={url.SocialMain}
+        element={isAuthenticated ? <SocialMain /> : <LoginMain />}
+      />
       {/* Login Page */}
       <Route path={url.Login} element={<LoginMain />} />
 
@@ -49,17 +52,13 @@ const App = () => {
       {/* Profile Page Route */}
       <Route
         path={url.ProfilePage}
-        element={isAuthenticated ? <MainLayout /> : <LoginMain />} // Show MainLayout for /profilepage
+        element={isAuthenticated ? <ProfileView /> : <LoginMain />} // Show MainLayout for /profilepage
       />
 
       {/* Fallback Route */}
       <Route
         path="*"
         element={isAuthenticated ? <ProjectDashboard /> : <LoginMain />}
-      />
-      <Route
-        path={url.SocialMain}
-        element={isAuthenticated ? <SocialMain /> : <LoginMain />}
       />
       <Route path="/test" element={<CheckFile></CheckFile>} />
     </Routes>

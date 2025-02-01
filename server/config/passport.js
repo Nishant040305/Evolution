@@ -5,6 +5,7 @@ require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('../models/User');
+const { UserNameParse } = require('../utils');
 
 passport.use(
   new GoogleStrategy(
@@ -17,9 +18,11 @@ passport.use(
       try {
         let user = await User.findOne({ email: profile.emails[0].value });
         if (!user || !user?.verify) {
+          const hasheduser = await UserNameParse(profile.emails[0].value);
           user = await User.create({
             email: profile.emails[0].value,
-            displayname: profile.displayName,
+            name: profile.displayName,
+            displayname: hasheduser,
             avatar: profile.photos[0].value,
             password: null,
             verify: true,

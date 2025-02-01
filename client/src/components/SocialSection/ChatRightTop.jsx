@@ -45,18 +45,18 @@ const ChatRightTop = ({ setShowGroupInfo, toast }) => {
         className="flex items-center space-x-2"
         onClick={() => setShowGroupInfo(true)}
       >
-        <div className="relative w-12 h-12 rounded-full bg-gray-200">
+        <div className="relative flex items-center justify-center w-12 h-12 rounded-full bg-gray-200">
           {isGroupChat ? (
             <img
               src={Chat?.chat_avatar} // Replace with your group chat image path
               alt="Group"
-              className="w-10 h-10 rounded-full object-cover" // Adjust image size and roundness
+              className="w-10 h-10 rounded-full " // Adjust image size and roundness
             />
           ) : (
             <img
               src={Chat?.chat_avatar} // Replace with your individual user image path
               alt="User"
-              className="w-10 h-10 rounded-full object-cover" // Adjust image size and roundness
+              className="w-10 h-10 rounded-full " // Adjust image size and roundness
             />
           )}
         </div>

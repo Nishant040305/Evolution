@@ -4,10 +4,11 @@ const axios = require('axios');
 const querystring = require('querystring');
 require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
 const jwtToken = require('jsonwebtoken');
+const { UserNameParse } = require('../utils');
 require('../config/passport'); // Import the passport configuration
 const googleCallback = (req, res) => {
   const user = req.user;
-  if (!user||!user.verify) {
+  if (!user || !user.verify) {
     console.error('Authentication Error:', err);
     return res.redirect(process.env.CLIENT);
   }
@@ -16,6 +17,12 @@ const googleCallback = (req, res) => {
       displayname: user.displayname,
       email: user.email,
       avatar: user.avatar,
+      name: user?.name,
+      bio: user?.bio,
+      linkedin: user?.linkedin,
+      location: user?.location,
+      createdAt: user?.createdAt,
+      github: user?.github,
       _id: user._id,
     },
     process.env.JWTSECREAT
@@ -75,13 +82,20 @@ const GithubCallback = async (req, res) => {
         : userResponse.data.login,
     }).lean();
     if (!user) {
+      let hashedUsername = await UserNameParse(
+        userResponse.data.email
+          ? userResponse.data.email
+          : userResponse.data.login + '@dna.com'
+      );
       user = await new User({
-        displayname: userResponse.data.name,
+        name: userResponse.data.name,
+        displayname: hashedUsername,
         email: userResponse.data.email
           ? userResponse.data.email
           : userResponse.data.login,
         password: null,
         avatar: userResponse.data.avatar_url,
+        github: `https://github.com/${userResponse.data.login}`,
         verify: true,
       }).save();
     }
@@ -93,7 +107,13 @@ const GithubCallback = async (req, res) => {
         ? userResponse.data.email
         : userResponse.data.login,
       avatar: user.avatar,
-      _id: user._id,
+      bio: user?.bio,
+      linkedin: user?.linkedin,
+      location: user?.location,
+      name: user?.name,
+      _id: user?._id,
+      github: user.github,
+      createdAt: user?.createdAt,
     };
     const jwtData = jwtToken.sign(jwtPayload, process.env.JWTSECREAT);
     res.cookie('uid', jwtData, {

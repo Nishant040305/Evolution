@@ -13,7 +13,12 @@ const User = require('../models/User');
 // @routes   GET /api/auth/
 // @desc     Get current user info
 router.get('/', credMiddleware.UserVerifier, async (req, res) => {
-  const user = await User.findById(req.user._id);
+  const user = await User.findById(req.user._id).lean();
+  delete user.password;
+  delete user.verify;
+  delete user.projects;
+  delete user.sharedProjects;
+  delete user.contribution;
   return res.status(200).json({ info: user });
 });
 

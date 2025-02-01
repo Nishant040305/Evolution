@@ -30,7 +30,7 @@ const userSlice = createSlice({
       state.userInfo = null;
     },
     ProfileUpdate: (state, action) => {
-      state.userInfo = action.payload;
+      state.userInfo = { ...state.userInfo, ...action.payload };
     },
   },
   extraReducers: (builder) => {

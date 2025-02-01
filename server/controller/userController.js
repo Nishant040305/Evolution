@@ -14,7 +14,7 @@ const getAllUserProjects = async (req, res) => {
 
     // Find the user by ID
     const user = await User.findById(userId);
-    if (!user||!user.verify) {
+    if (!user || !user.verify) {
       return res.status(404).json({ message: 'User not found' });
     }
 
@@ -42,7 +42,7 @@ const getAllSharedProjects = async (req, res) => {
 
     // Find the user by ID
     const user = await User.findById(userId);
-    if (!user||!user.verify) {
+    if (!user || !user.verify) {
       return res.status(404).json({ message: 'User not found' });
     }
 
@@ -61,18 +61,36 @@ const getAllSharedProjects = async (req, res) => {
 const ChangeProfile = async (req, res) => {
   try {
     const userId = req.params.id;
-    const { username, avatar } = req.body;
-    if (!username || !avatar) {
+    const { name, avatar, linkedin, github, bio, location } = req.body;
+    if (!name || !avatar) {
       return res.status(400).json({ message: 'Please fill all the fields' });
     }
     const user = await User.findById(userId);
-    if (!user||!user.verify) {
+    if (!user || !user.verify) {
       return res.status(404).json({ message: 'User not found' });
     }
-    user.username = username;
+    user.name = name;
     user.avatar = avatar;
+    user.bio = bio;
+    user.linkedin = linkedin;
+    user.github = github;
+    user.location = location;
     await user.save();
-    return res.status(200).json({ message: 'Profile updated successfully' });
+    const updatedUser = {
+      name: user.name,
+      avatar: user.avatar,
+      bio: user.bio,
+      linkedin: user.linkedin,
+      location: user.location,
+      github: user.github,
+      displayname: user.displayname,
+      _id: user._id,
+    };
+    console.log(user);
+    console.log(updatedUser);
+    return res
+      .status(200)
+      .json({ message: 'Profile updated successfully', user: updatedUser });
   } catch (e) {
     return res.status(500).json({ message: 'Internal Server Error' });
   }
@@ -80,8 +98,8 @@ const ChangeProfile = async (req, res) => {
 const FindUserEmail = async (req, res) => {
   try {
     const userId = req.params.email;
-    const user = await User.findOne({ email: userId,verify:true });
-    if (!user||!user.verify) {
+    const user = await User.findOne({ email: userId, verify: true });
+    if (!user || !user.verify) {
       return res.status(200).json(null);
     }
     return res.status(200).json({
@@ -98,7 +116,7 @@ const FindUserByID = async (req, res) => {
   try {
     const userId = req.params.id;
     const user = await User.findById(userId);
-    if (!user||!user.verify) {
+    if (!user || !user.verify) {
       return res.status(404).json(null);
     }
     return res.status(200).json({
@@ -106,6 +124,40 @@ const FindUserByID = async (req, res) => {
       _id: user._id,
       avatar: user.avatar,
       email: user.email,
+      linkedin: user.linkedin,
+      location: user.location,
+      bio: user.bio,
+      contribution: user.contribution,
+      github: user?.github,
+      selectedProjects: user.selectedProjects,
+      name: user.name,
+    });
+  } catch (e) {
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+const FindUserFromUsername = async (req, res) => {
+  const username = req.params.id;
+  console.log(username);
+  try {
+    if (!username) {
+      return res.status(400).json({ error: 'Username parameter is required.' });
+    }
+    const user = await User.findOne({ displayname: username, verify: true });
+    if (!user || !user.verify) {
+      return res.status(200).json(null);
+    }
+    console.log(user);
+    return res.status(200).json({
+      displayname: user.displayname,
+      _id: user._id,
+      avatar: user.avatar,
+      email: user.email,
+      linkedin: user.linkedin,
+      location: user.location,
+      bio: user.bio,
+      github: user?.github,
+      name: user.name,
     });
   } catch (e) {
     return res.status(500).json({ message: 'Internal Server Error' });
@@ -129,7 +181,7 @@ const GetFriends = async (req, res) => {
 
     // Find the user by their ID
     const user = await User.findById(userId);
-    if (!user||!user.verify) {
+    if (!user || !user.verify) {
       return res.status(404).json({ message: 'User not found' });
     }
 
@@ -160,13 +212,52 @@ const GetFriends = async (req, res) => {
     return res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+const getProjectsForDisplay = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: 'Invalid user ID' });
+    }
+    const user = await User.findById(userId);
+    if (!user || !user.verify) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    const projects = await Promise.all(
+      user.projects.map((projectId) => Project.findById(projectId))
+    );
+    const hostedProjects = projects
+      .filter((projects) => projects.publishVersion >= 1)
+      .map((project) => {
+        return {
+          name: project.name,
+          _id: project._id,
+          description: project.description,
+          domain:
+            project.customDomain !== null
+              ? project.customDomain
+              : `${process.env.SERVER}/public/${project.domain}`,
+          createdAt: project.createdAt,
+          publishVersion: project.publishVersion,
+          updatedAt: project.updatedAt,
+        };
+      });
 
+    return res.status(200).json(hostedProjects);
+  } catch (error) {
+    console.error('Error retrieving projects:', error);
+    return res
+      .status(500)
+      .json({ message: 'Error retrieving projects', error });
+  }
+};
 module.exports = {
+  getProjectsForDisplay,
   getAllUserProjects,
   getAllSharedProjects,
   ChangeProfile,
   FindUserEmail,
   FindUserByID,
+  FindUserFromUsername,
   FindUserSearch,
   GetFriends,
 };

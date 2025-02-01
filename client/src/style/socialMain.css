@@ -1,5 +1,6 @@
 .left-social-sidebar {
-  height: 100vh;
+  height: auto;
+  min-height: 100vh;
 }
 .ChatLeftBar {
   width: 30vw;
@@ -9,6 +10,7 @@
   width: 95%;
 }
 .leftSideChatBar {
+  height: auto;
   max-height: 76.5vh;
 }
 .leftSideChatBar::-webkit-scrollbar {
@@ -30,7 +32,7 @@
 }
 
 .ChatMessageList {
-  max-height: 90%;
+  max-height: 100%;
 }
 /* Custom Scrollbar styles */
 .scrollbar_edit {

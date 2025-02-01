@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 // import { Search, Settings, User, LogOut, Bell } from 'lucide-react';
-import Search from 'lucide-react/dist/esm/icons/search'
-import Settings from 'lucide-react/dist/esm/icons/settings'
-import User from 'lucide-react/dist/esm/icons/user'
-import LogOut from 'lucide-react/dist/esm/icons/log-out'
-import Bell from 'lucide-react/dist/esm/icons/bell'
+import Search from 'lucide-react/dist/esm/icons/search';
+import Settings from 'lucide-react/dist/esm/icons/settings';
+import User from 'lucide-react/dist/esm/icons/user';
+import LogOut from 'lucide-react/dist/esm/icons/log-out';
+import Bell from 'lucide-react/dist/esm/icons/bell';
 
 import NotificationsPanel from './NotificationsPanel';
 import { useDispatch, useSelector } from 'react-redux';
@@ -59,14 +59,6 @@ const TopBar = ({ searchQuery, setSearchQuery }) => {
               <span className="absolute top-0 right-0 w-2 h-2 bg-red-600 rounded-full"></span>
             </button>
 
-            {/* Settings */}
-            <button
-              className="p-2 rounded-full hover:bg-red-300"
-              onClick={() => navigate(url.Settings)}
-            >
-              <Settings className="w-5 h-5 text-red-600" />
-            </button>
-
             {/* Profile */}
             <button
               className="p-2 rounded-full hover:bg-red-300"
@@ -76,7 +68,7 @@ const TopBar = ({ searchQuery, setSearchQuery }) => {
                 <img
                   src={user}
                   alt="user"
-                  className="w-8 h-8 text-red-600 rounded-circle"
+                  className="w-8 h-8 text-red-600 rounded-full"
                 />
               ) : (
                 <User className="w-5 h-5 text-red-600" />

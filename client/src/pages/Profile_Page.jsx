@@ -1,97 +1,74 @@
-import React, { useState } from "react";
-import CalendarHeatmap from "react-calendar-heatmap";
-import "react-calendar-heatmap/dist/styles.css";
+import React, { useState } from 'react';
+import CalendarHeatmap from 'react-calendar-heatmap';
+import 'react-calendar-heatmap/dist/styles.css';
 import {
   MagnifyingGlassIcon,
   StarIcon as OutlineStarIcon,
-} from "@heroicons/react/24/outline";
-import { StarIcon as SolidStarIcon } from "@heroicons/react/24/solid";
-import { ProfileHeader, EditProfileModal } from "../components/ProfilePage/ProfileHeader";
+} from '@heroicons/react/24/outline';
+import { StarIcon as SolidStarIcon } from '@heroicons/react/24/solid';
+import ProfileHeader from '../components/ProfilePage/ProfileHeader';
+import EditProfileModal from '../components/ProfilePage/EditProfileModal';
+import ContributionHeatmap from '../components/ProfilePage/ContributionHeatmap';
+import ProjectGrid from '../components/ProfilePage/ProjectGrid';
+import Section from '../components/ProfilePage/Section';
+import ActivityTimeline from '../components/ProfilePage/ActivityTimeline';
+import { useEffect } from 'react';
+import User from '../scripts/API.User';
 
-import ContributionHeatmap from "../components/ProfilePage/ContributionHeatmap";
-import ProjectGrid from "../components/ProfilePage/ProjectGrid";
-import Section from "../components/ProfilePage/Section";
-import ActivityTimeline from "../components/ProfilePage/ActivityTimeline";
-import LeftSocialSideBar from "../components/Navigation/leftSocialSideBar";
-
-const ProfilePage = () => {
+const ProfilePage = (props) => {
+  const [projects, setProjects] = useState([]);
+  const API = new User();
   const [profile, setProfile] = useState({
-    name: "Kanye West",
-    username: "@yeezus",
-    email: "kanye@yeezy.com",
-    avatarUrl: "/profile-image.jpg",
-    location: "Chicago, IL",
-    joinDate: "June 2010",
-    bio: "Visionary artist, producer, and creative director. Changing the game one album at a time.",
-    projects: [
-      { id: 1, name: "Yeezy Design Studio", stars: 2450, description: "Next-gen fashion design platform", language: "TypeScript" },
-      { id: 2, name: "Donda Academy", stars: 1890, description: "Creative education ecosystem", language: "Python" },
-      { id: 3, name: "Yeezy Gap Engine", stars: 3567, description: "Retail infrastructure system", language: "Rust" },
-    ],
     activity: [
-      { date: "2023-03-15", action: "Created project 'Yeezy Design Studio'" },
-      { date: "2023-03-12", action: "Updated profile information" },
-      { date: "2023-03-10", action: "Launched new collection" },
+      { date: '2023-03-15', action: "Created project 'Yeezy Design Studio'" },
+      { date: '2023-03-12', action: 'Updated profile information' },
+      { date: '2023-03-10', action: 'Launched new collection' },
     ],
     contributions: generateHeatmapData(200), // Generate more days for the heatmap
-    socialLinks: {
-      twitter: "#",
-      website: "#",
-      github: "#",
-      linkedin: "#",
-    },
-    totalStars: 2450 + 1890 + 3567,
-    searchQuery: "",
-    editingProfile: false,
+    searchQuery: '',
+    edit: false,
   });
-
   function generateHeatmapData(days) {
     return Array.from({ length: days }, (_, i) => ({
-      date: new Date(Date.now() - i * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+      date: new Date(Date.now() - i * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .split('T')[0],
       count: Math.floor(Math.random() * 5),
     }));
   }
-
-  const handleStarProject = (projectId) => {
-    setProfile((prev) => ({
-      ...prev,
-      projects: prev.projects.map((p) =>
-        p.id === projectId ? { ...p, stars: p.stars + 1 } : p
-      ),
-      totalStars: prev.totalStars + 1,
-    }));
+  const handleEditProfile = () => {
+    setProfile((prev) => ({ ...prev, edit: true }));
   };
 
-  const handleEditProfile = (field, value) => {
-    setProfile((prev) => ({ ...prev, [field]: value }));
-  };
+  const filteredProjects = projects
+    .filter((project) =>
+      project.name.toLowerCase().includes(profile.searchQuery.toLowerCase())
+    )
+    .slice(0, 4);
+  useEffect(() => {
+    setProfile((p) => ({ ...p, ...props.profile }));
+  }, [props.profile]);
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const projects = await API.getAllHostedProjects(profile._id);
+        setProjects(projects);
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+      }
+    };
 
-  const filteredProjects = profile.projects.filter((project) =>
-    project.name.toLowerCase().includes(profile.searchQuery.toLowerCase())
-  );
-
+    fetchProjects();
+  }, [profile._id]); // Depend on profile._id if it changes
   return (
-    <div className="min-h-screen bg-[#0D1117] text-white flex">
-      {/* Left Sidebar */}
-      <div className="w-16 md:w-20 fixed left-0 top-0 bottom-0 bg-[#161B22] p-2 md:p-4 border-r border-[#30363D]">
-        <LeftSocialSideBar
-          twitterUrl={profile.socialLinks.twitter}
-          websiteUrl={profile.socialLinks.website}
-          stats={{
-            projects: profile.projects.length,
-            stars: profile.totalStars,
-            contributions: profile.contributions.reduce((acc, curr) => acc + curr.count, 0),
-          }}
-        />
-      </div>
-
+    <div className="min-h-screen bg-[#0D1117] text-white flex w-full">
       {/* Main Content */}
       <div className="ml-16 md:ml-20 w-full p-4 md:p-8 space-y-8">
         <ProfileHeader
           profile={profile}
-          onEditProfile={() => setProfile((p) => ({ ...p, editingProfile: true }))}
+          onEditProfile={handleEditProfile}
+          profileStatus={props.status}
         />
-
         <div className="space-y-8">
           {/* Search Bar */}
           <div className="flex gap-4">
@@ -102,7 +79,9 @@ const ProfilePage = () => {
                 placeholder="Search projects..."
                 className="w-full pl-10 pr-4 py-2 bg-[#0D1117] border border-[#30363D] rounded-lg focus:border-[#58A6FF] focus:outline-none placeholder-[#8B949E]"
                 value={profile.searchQuery}
-                onChange={(e) => setProfile((p) => ({ ...p, searchQuery: e.target.value }))}
+                onChange={(e) =>
+                  setProfile((p) => ({ ...p, searchQuery: e.target.value }))
+                }
               />
             </div>
           </div>
@@ -111,8 +90,11 @@ const ProfilePage = () => {
           <Section title="Projects">
             <ProjectGrid
               projects={filteredProjects}
-              onStar={handleStarProject}
-              StarIcon={filteredProjects.length === profile.projects.length ? OutlineStarIcon : SolidStarIcon}
+              StarIcon={
+                filteredProjects.length === projects.length
+                  ? OutlineStarIcon
+                  : SolidStarIcon
+              }
             />
           </Section>
 
@@ -120,7 +102,9 @@ const ProfilePage = () => {
           <Section title="Insights">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <h2 className="text-lg font-semibold mb-4">Contribution Heatmap</h2>
+                <h2 className="text-lg font-semibold mb-4">
+                  Contribution Heatmap
+                </h2>
                 <div className="scale-90 md:scale-100">
                   <ContributionHeatmap contributions={profile.contributions} />
                 </div>
@@ -135,11 +119,11 @@ const ProfilePage = () => {
       </div>
 
       {/* Edit Profile Modal */}
-      {profile.editingProfile && (
+      {profile.edit && (
         <EditProfileModal
           profile={profile}
           handleEditProfile={handleEditProfile}
-          onClose={() => setProfile((p) => ({ ...p, editingProfile: false }))}
+          onClose={() => setProfile((p) => ({ ...p, edit: false }))}
         />
       )}
     </div>

@@ -13,8 +13,15 @@ import NotificationPage from '../components/Notification/Notification';
 import CreateGroupChat from '../components/SocialSection/createGroupChat';
 import AddParticipants from '../components/SocialSection/Addparticipants';
 import { useNavigate } from 'react-router-dom';
+import ProfilePage from '../pages/Profile_Page';
 const SocialMain = () => {
-  const [state, setState] = useState('Messages');
+  const [state, setState] = useState(() => {
+    return sessionStorage.getItem('state') || 'Profile';
+  });
+
+  useEffect(() => {
+    sessionStorage.setItem('state', state);
+  }, [state]);
   const [loading, setLoading] = useState(true); // To manage loading state
   const [addParticipantModal, setAddParticipantModal] = useState(false);
   const presentChat = useSelector((state) => state.chat.presentChat);
@@ -27,6 +34,7 @@ const SocialMain = () => {
       navigate('/');
     }
   }, [state]);
+  const user = useSelector((state) => state.user.userInfo);
   return (
     <div className="social-main flex flex-row">
       <ToastContainer />
@@ -47,11 +55,10 @@ const SocialMain = () => {
         <FindUser toast={toast} />
       ) : state === 'Groups' ? (
         <CreateGroupChat toast={toast} />
+      ) : state === 'Profile' ? (
+        <ProfilePage profile={user} status={true} />
       ) : (
-        <ChatLeftBar
-          messageOpen={() => setState('Messages')}
-          newGroup={() => setState('Groups')}
-        />
+        <ChatLeftBar></ChatLeftBar>
       )}
 
       {/* Display Chat Right Section */}
@@ -63,13 +70,15 @@ const SocialMain = () => {
             toast={toast}
             onAddParticipant={handleAddParticipant}
           />
-        ) : loading ? (
-          <div className="loading-state">Loading chats...</div> // Display loading state while chats are loading
         ) : (
           <></>
         )
-      ) : (
+      ) : state === 'Profile' ? (
+        <></>
+      ) : presentChat ? (
         <ChatRightMain toast={toast} onAddParticipant={handleAddParticipant} />
+      ) : (
+        <NotificationPage />
       )}
     </div>
   );

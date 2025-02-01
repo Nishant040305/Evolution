@@ -3,9 +3,11 @@ import { FaCheck, FaClipboard, FaTrash } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { SocketDeleteMessage } from '../../event/SocketEvent';
 import { generateUserColor } from '../../constants/namecolors';
+import { useNavigate } from 'react-router-dom';
 const ChatMessageBlock = ({ message, index }) => {
   const currentUserId = useSelector((state) => state.user.userInfo._id);
   const isSender = message.sender_id === currentUserId;
+  const navigate = useNavigate();
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const chats = useSelector((state) => state.chat.chats);
   const handleCopyMessage = () => {
@@ -40,7 +42,17 @@ const ChatMessageBlock = ({ message, index }) => {
     >
       {/* Sender's Avatar (Only for received messages) */}
       {!isSender && (
-        <div className="w-10 h-10 rounded-full overflow-hidden">
+        <div
+          className="w-10 h-10 rounded-full overflow-hidden"
+          onClick={() =>
+            navigate(
+              '/profilepage/' +
+                chat?.participants.find(
+                  (p) => p.user_id.toString() === message.sender_id.toString()
+                )?.username
+            )
+          }
+        >
           <img
             src={
               chat?.participants.find(
@@ -95,7 +107,18 @@ const ChatMessageBlock = ({ message, index }) => {
 
         {/* Sender Name (Only for received messages) */}
         {!isSender && (
-          <div className="text-xs font-semibold" style={{color:generateUserColor(message.sender_id)}}>
+          <div
+            className="text-xs font-semibold"
+            style={{ color: generateUserColor(message.sender_id) }}
+            onClick={() =>
+              navigate(
+                '/profilepage/' +
+                  chat?.participants.find(
+                    (p) => p.user_id.toString() === message.sender_id.toString()
+                  )?.username
+              )
+            }
+          >
             {
               chat?.participants.find(
                 (p) => p.user_id.toString() === message.sender_id.toString()

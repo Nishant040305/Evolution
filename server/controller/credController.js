@@ -21,12 +21,13 @@ const Signin = async (req, res) => {
   if (!user) {
     const salt = await bcrypt.genSalt(Number(process.env.SALT));
     const hashPassword = await bcrypt.hash(req.body.PASSWORD, salt);
-
+    const hashedUsername = await UserNameParse(req.body.EMAIL);
     user = await new User({
-      displayname: UserNameParse(req.body.EMAIL),
+      displayname: hashedUsername,
       email: req.body.EMAIL,
       password: hashPassword,
       verify: false,
+      name: hashedUsername,
     }).save();
     const otp = generateOTP();
 
@@ -37,22 +38,18 @@ const Signin = async (req, res) => {
       type: 'EmailVerification',
     }).save();
     await sendOtpEmail(user.email, otp);
-    return res
-      .status(200)
-      .json({
-        message: 'An Email sent to your account please verify',
-        AUTH: token._id,
-      });
+    return res.status(200).json({
+      message: 'An Email sent to your account please verify',
+      AUTH: token._id,
+    });
   } else if (!user.verify) {
     const tok = await Token.findOne({ userId: user._id });
     if (tok && tok.type == 'EmailVerification') {
       await sendOtpEmail(user.email, tok.token);
-      return res
-        .status(200)
-        .json({
-          message: 'An Email sent to your account please verify',
-          AUTH: tok._id,
-        });
+      return res.status(200).json({
+        message: 'An Email sent to your account please verify',
+        AUTH: tok._id,
+      });
     }
 
     const _ = generateOTP();
@@ -65,12 +62,10 @@ const Signin = async (req, res) => {
     }).save();
     await sendOtpEmail(user.email, _);
 
-    return res
-      .status(200)
-      .json({
-        message: 'An Email sent to your account please verify',
-        AUTH: token._id,
-      });
+    return res.status(200).json({
+      message: 'An Email sent to your account please verify',
+      AUTH: token._id,
+    });
   }
   return res.status(400).json({ message: 'User All ready Exist' });
 };
@@ -143,6 +138,10 @@ const LogIn = async (req, res) => {
     }
     delete user.password;
     delete user.verify;
+    delete user.contribution;
+    delete user.projects;
+    delete user.sharedProjects;
+    console.log('LOGIN', user);
     const jwtData = jwtToken.sign(user, process.env.JWTSECREAT);
     res.cookie('uid', jwtData, {
       httpOnly: true,
@@ -157,7 +156,7 @@ const LogIn = async (req, res) => {
 const PasswordRecovery = async (req, res) => {
   try {
     const { EMAIL } = req.body;
-    console.log(EMAIL)
+    console.log(EMAIL);
     const user = await User.findOne({ email: EMAIL });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
