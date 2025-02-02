@@ -123,7 +123,7 @@ const ChatMessageBlock = ({ message, index }) => {
             {
               chat?.participants.find(
                 (p) => p.user_id.toString() === message.sender_id.toString()
-              )?.username
+              )?.name
             }
           </div>
         )}
@@ -132,7 +132,7 @@ const ChatMessageBlock = ({ message, index }) => {
         <div className="text-sm">{message.content}</div>
 
         {/* Timestamp and Read Status */}
-        <div className="flex items-center justify-between text-xs text-gray-500">
+        <div className="flex items-center justify-between text-xs text-gray-400">
           <span>
             {new Date(message.timestamp).toLocaleTimeString([], {
               hour: '2-digit',

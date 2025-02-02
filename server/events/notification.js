@@ -73,10 +73,17 @@ module.exports = (io, socket) => {
   });
   socket.on('acceptFriendRequest', async (chat) => {
     try {
-      console.log(chat);
-      if (chat) {
+      if (chat && chat.chat_type !== 'personal') {
         for (let i = 0; i < chat.participants.length; i++) {
           io.to(chat.participants[i].user_id).emit('acceptFriendRequest', chat);
+        }
+      } else if (chat) {
+        for (let i = 0; i < 2; i++) {
+          io.to(chat.participants[i].user_id).emit('acceptFriendRequest', {
+            ...chat,
+            chat_name: chat.participants[1 - i].username,
+            chat_avatar: chat.participants[1 - i].avatar,
+          });
         }
       }
     } catch (error) {

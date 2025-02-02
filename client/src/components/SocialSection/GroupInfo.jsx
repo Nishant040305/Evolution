@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react';
 // import { X, UserPlus, LogOut, Edit } from 'lucide-react';
-import X from "lucide-react/dist/esm/icons/x"
-import UserPlus from "lucide-react/dist/esm/icons/user-plus"
-import LogOut from "lucide-react/dist/esm/icons/log-out"
-import Edit from "lucide-react/dist/esm/icons/edit"
+import X from 'lucide-react/dist/esm/icons/x';
+import UserPlus from 'lucide-react/dist/esm/icons/user-plus';
+import LogOut from 'lucide-react/dist/esm/icons/log-out';
+import Edit from 'lucide-react/dist/esm/icons/edit';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { deleteChat } from '../../Store/Chat';
@@ -16,8 +16,9 @@ import {
 import server from '../../server.json';
 import Chats from '../../scripts/API.Chats';
 // import { Camera } from 'lucide-react';
-import Camera from "lucide-react/dist/esm/icons/camera"
-
+import Camera from 'lucide-react/dist/esm/icons/camera';
+import { useNavigate } from 'react-router-dom';
+import url from '../../url.json';
 const GroupInfo = ({ onClose, onAddParticipant, toast }) => {
   const present = useSelector((state) => state.chat.presentChat);
   const chat = useSelector((state) => state.chat.chats);
@@ -26,7 +27,7 @@ const GroupInfo = ({ onClose, onAddParticipant, toast }) => {
   const API = new Chats();
   const dispatch = useDispatch();
   const isGroup = group.chat_type === 'group';
-
+  const navigate = useNavigate();
   const [isEditingName, setIsEditingName] = useState(false);
   const [isEditingIcon, setIsEditingIcon] = useState(false);
   const [newGroupName, setNewGroupName] = useState(group.chat_name);
@@ -200,6 +201,10 @@ const GroupInfo = ({ onClose, onAddParticipant, toast }) => {
               <div
                 key={participant.user_id}
                 className="flex items-center justify-between w-full p-2 bg-white border-b border-gray-200 rounded-lg space-x-4"
+                onClick={() => {
+                  const url_ = `${url.ProfilePage}`;
+                  navigate(url_.replace(':id', participant.username));
+                }}
               >
                 <img
                   src={participant.avatar || 'https://via.placeholder.com/150'}
@@ -208,10 +213,10 @@ const GroupInfo = ({ onClose, onAddParticipant, toast }) => {
                 />
                 <div className="flex flex-col ml-3 space-y-1 w-full">
                   <div className="text-lg font-semibold">
-                    {participant.username}
+                    {participant.name}
                   </div>
                   <div className="text-gray-600 text-sm">
-                    {participant.email}
+                    {participant.username}
                   </div>
                 </div>
               </div>

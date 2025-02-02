@@ -18,12 +18,13 @@ const getChatDetails = async (chatId) => {
     const participants = await Promise.all(
       chat.members.map(async (memberId) => {
         const member = await User.findById(memberId).select(
-          'displayname avatar email'
+          'displayname avatar email name'
         );
         return {
           user_id: member._id,
           username: member.displayname,
           avatar: member.avatar,
+          name: member.name,
           email: member.email,
         };
       })
@@ -86,11 +87,12 @@ const getChatsData = async (req, res) => {
       const participants = await Promise.all(
         chat.members.map(async (memberId) => {
           const member = await User.findById(memberId).select(
-            'displayname avatar email'
+            'displayname avatar email name'
           );
           return {
             user_id: member._id,
             username: member.displayname,
+            name: member.name,
             avatar: member.avatar,
             email: member.email,
           };
@@ -147,7 +149,7 @@ const createChat = async (req, res) => {
 
     // Check if a chat already exists between the two users
     const existingChat = await Chat.findOne({
-      type: 'individual',
+      type: 'personal',
       members: { $all: [user._id, secondUser._id] },
     });
 
@@ -157,7 +159,7 @@ const createChat = async (req, res) => {
 
     // Create a new chat
     const newChat = new Chat({
-      type: 'individual',
+      type: 'personal',
       members: [user._id, secondUser._id],
       unread_messages: { [user._id]: 0, [secondUser._id]: 0 },
     });
@@ -182,12 +184,22 @@ const createChat = async (req, res) => {
         chat_id: newChat._id,
         chat_name: secondUser.displayname,
         chat_avatar: secondUser.avatar,
-        chat_type: newChat.chat_type,
+        chat_type: newChat.type,
         last_message: 'No messages yet',
         last_message_time: null,
         participants: [
-          { user_id: user._id, username: user.displayname },
-          { user_id: secondUser._id, username: secondUser.displayname },
+          {
+            user_id: user._id,
+            username: user.displayname,
+            name: user.name,
+            avatar: user.avatar,
+          },
+          {
+            user_id: secondUser._id,
+            username: secondUser.displayname,
+            name: secondUser.name,
+            avatar: secondUser.avatar,
+          },
         ],
         unread_messages: newChat.unread_messages,
       },
@@ -246,12 +258,14 @@ const createGroupChat = async (req, res) => {
     }
     const participants = await Promise.all(
       newChat.members.map(async (memberId) => {
-        const member =
-          await User.findById(memberId).select('displayname avatar');
+        const member = await User.findById(memberId).select(
+          'displayname avatar name'
+        );
         return {
-          user_id: member._id,
+          user_id: memberId,
           username: member.displayname,
           avatar: member.avatar,
+          name: member.name,
         };
       })
     );
@@ -331,6 +345,7 @@ const addUserToGroupChat = async (req, res) => {
           user_id: userToAdd._id,
           username: userToAdd.displayname,
           avatar: userToAdd.avatar,
+          name: userToAdd.name,
         });
       } catch (innerError) {
         errors.push({
@@ -350,6 +365,7 @@ const addUserToGroupChat = async (req, res) => {
       username: member.displayname,
       avatar: member.avatar,
       email: member.email,
+      name: member.name,
     }));
     const lastMessage = await Message.findOne({ chat_id: groupChat._id })
       .sort({ timestamp: -1 })

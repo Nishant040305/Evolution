@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const ChatSchema = new mongoose.Schema({
-  type: { type: String, enum: ['individual', 'group'], required: true },
+  type: { type: String, enum: ['personal', 'group'], required: true },
   members: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   groupName: { type: String },
   groupAvatar: { type: String },

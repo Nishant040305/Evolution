@@ -9,7 +9,6 @@ import { SocketAcceptFriendRequest } from '../../event/SocketEvent';
 import User from '../../scripts/API.User';
 import Chats from '../../scripts/API.Chats';
 import { addChat } from '../../Store/Chat';
-import { Socket } from 'socket.io-client';
 import ApiDashboard from '../../scripts/API.Dashboard';
 
 const NotificationPage = () => {

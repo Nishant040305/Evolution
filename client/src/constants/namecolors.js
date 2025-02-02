@@ -1,22 +1,19 @@
 export const generateUserColor = (userId) => {
   const colors = [
-    'rgb(255, 99, 132)', // Red
-    'rgb(54, 162, 235)', // Blue
-    'rgb(255, 159, 64)', // Orange
-    'rgb(75, 192, 192)', // Turquoise
-    'rgb(153, 102, 255)', // Purple
-    'rgb(255, 159, 64)', // Peach
-    'rgb(255, 205, 86)', // Yellow
-    'rgb(54, 162, 235)', // Sky Blue
-    'rgb(255, 99, 132)', // Hot Pink
-    'rgb(75, 192, 192)', // Soft Blue
-    'rgb(255, 87, 34)', // Deep Orange
-    'rgb(233, 30, 99)', // Pink
-    'rgb(139, 195, 74)', // Light Green
-    'rgb(33, 150, 243)', // Blue
-    'rgb(156, 39, 176)', // Purple
+    'rgb(255, 99, 132)', // Red (Good contrast)
+    'rgb(54, 162, 235)', // Blue (Good contrast)
+    'rgb(255, 159, 64)', // Orange (Good contrast)
+    'rgb(0, 128, 128)', // Dark Turquoise (Better contrast)
+    'rgb(255, 180, 0)', // Darker Yellow (Better contrast)
+    'rgb(255, 87, 34)', // Deep Orange (Good contrast)
+    'rgb(233, 30, 99)', // Pink (Good contrast)
+    'rgb(139, 195, 74)', // Light Green (Good contrast)
+    'rgb(33, 150, 243)', // Blue (Good contrast)
+    'rgb(156, 39, 176)', // Purple (Good contrast)
+    'rgb(200, 0, 0)', // Dark Red (High contrast)
+    'rgb(0, 77, 64)', // Dark Teal (Replaces gray, high contrast)
+    'rgb(153, 102, 255)', // Purple (Good contrast)
   ];
-
   // Improved Hash function using FNV-1a hash
   const fnv1aHash = (str) => {
     let hash = 2166136261; // FNV-1a offset basis
