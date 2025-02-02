@@ -12,6 +12,7 @@ import { logout } from '../../Store/userSlice';
 import AuthService from '../../scripts/API.Login';
 import { useNavigate } from 'react-router-dom';
 import url from '../../url.json';
+import { LucideMessageCircle } from 'lucide-react';
 const TopBar = ({ searchQuery, setSearchQuery }) => {
   const [showNotifications, setShowNotifications] = useState(false);
   const dispatch = useDispatch();
@@ -21,7 +22,21 @@ const TopBar = ({ searchQuery, setSearchQuery }) => {
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
   };
-
+  const notif = useSelector((state) => state.notifications).length;
+  const navigateProfile = () => {
+    sessionStorage.setItem('state', 'Profile');
+    navigate(url.SocialMain);
+  };
+  const navigateChats = () => {
+    sessionStorage.setItem('state', 'Messages');
+    navigate(url.SocialMain);
+  };
+  const chats = useSelector((state) => state.chat.chats);
+  const userId = useSelector((state) => state.user.userInfo._id);
+  const chatNotif = chats.reduce(
+    (sum, chat) => sum + (chat.unread_messages?.[userId] || 0),
+    0
+  );
   return (
     <div className="relative text-red-900 shadow-md bg-gradient-to-r from-red-400 to-red-200">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -52,17 +67,28 @@ const TopBar = ({ searchQuery, setSearchQuery }) => {
           <div className="flex items-center space-x-4">
             {/* Notifications */}
             <button
+              onClick={navigateChats}
+              className="relative p-2 rounded-full hover:bg-red-300"
+            >
+              <LucideMessageCircle className="w-5 h-5 text-red-600" />
+              {chatNotif > 0 && (
+                <span className="absolute top-0 right-0 w-2 h-2 bg-red-600 rounded-full"></span>
+              )}
+            </button>
+            <button
               onClick={toggleNotifications}
               className="relative p-2 rounded-full hover:bg-red-300"
             >
               <Bell className="w-5 h-5 text-red-600" />
-              <span className="absolute top-0 right-0 w-2 h-2 bg-red-600 rounded-full"></span>
+              {notif > 0 && (
+                <span className="absolute top-0 right-0 w-2 h-2 bg-red-600 rounded-full"></span>
+              )}
             </button>
 
             {/* Profile */}
             <button
               className="p-2 rounded-full hover:bg-red-300"
-              onClick={() => navigate(url.SocialMain)}
+              onClick={navigateProfile}
             >
               {user ? (
                 <img

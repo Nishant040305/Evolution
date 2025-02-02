@@ -11,7 +11,7 @@ import {
 } from 'react-icons/fa';
 import { useNavigate, useLocation } from 'react-router-dom';
 import HoverInfoWrapper from '../utility/toolTip';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../Store/userSlice';
 import AuthService from '../../scripts/API.Login';
 
@@ -19,6 +19,13 @@ const LeftSocialSideBar = ({ setNav }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
+  const notif = useSelector((state) => state.notifications).length;
+  const chats = useSelector((state) => state.chat.chats);
+  const userId = useSelector((state) => state.user.userInfo._id);
+  const chatNotif = chats.reduce(
+    (sum, chat) => sum + (chat.unread_messages?.[userId] || 0),
+    0
+  );
 
   const items = [
     {
@@ -70,17 +77,25 @@ const LeftSocialSideBar = ({ setNav }) => {
       <div className="flex flex-col items-center space-y-4">
         {items.slice(0, 6).map((item, index) => (
           <HoverInfoWrapper key={index} info={item.label} position="right">
-            <button
-              className={`p-2 rounded-lg transition-all duration-200 ${
-                item.active
-                  ? 'bg-blue-500 text-white'
-                  : 'hover:bg-gray-700 hover:text-blue-400'
-              }`}
-              onClick={item.action}
-              aria-label={item.label}
-            >
-              {item.icon}
-            </button>
+            <>
+              <button
+                className={`p-2 rounded-lg transition-all duration-200 ${
+                  item.active
+                    ? 'bg-blue-500 text-white'
+                    : 'hover:bg-gray-700 hover:text-blue-400'
+                }`}
+                onClick={item.action}
+                aria-label={item.label}
+              >
+                {item.icon}
+              </button>
+              {notif > 0 && item.label == 'Notifications' && (
+                <span className="absolute top-0 right-0 w-2 h-2 bg-red-600 rounded-full"></span>
+              )}
+              {chatNotif > 0 && item.label == 'Messages' && (
+                <span className="absolute top-0 right-0 w-2 h-2 bg-red-600 rounded-full"></span>
+              )}
+            </>
           </HoverInfoWrapper>
         ))}
       </div>

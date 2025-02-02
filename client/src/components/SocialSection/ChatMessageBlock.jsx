@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { SocketDeleteMessage } from '../../event/SocketEvent';
 import { generateUserColor } from '../../constants/namecolors';
 import { useNavigate } from 'react-router-dom';
+import { CheckCheck } from 'lucide-react';
 const ChatMessageBlock = ({ message, index }) => {
   const currentUserId = useSelector((state) => state.user.userInfo._id);
   const isSender = message.sender_id === currentUserId;
@@ -141,7 +142,13 @@ const ChatMessageBlock = ({ message, index }) => {
           {isSender && (
             <span className="flex items-center space-x-1">
               {unreadCount > 1 ? (
-                <FaCheck className="text-green-500" title="Read" />
+                <>
+                  <CheckCheck
+                    className="text-blue-500"
+                    titel="Read"
+                    size={16}
+                  />
+                </>
               ) : (
                 <FaCheck className="text-gray-400" title="Delivered" />
               )}

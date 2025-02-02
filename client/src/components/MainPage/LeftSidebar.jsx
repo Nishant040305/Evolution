@@ -32,9 +32,9 @@ const {
   Paragraph,
 } = components;
 // import { Code, LucideMessageCircle, Palette } from 'lucide-react';
-import Code from "lucide-react/dist/esm/icons/code"
-import LucideMessageCircle from "lucide-react/dist/esm/icons/message-circle"
-import Palette from "lucide-react/dist/esm/icons/palette"
+import Code from 'lucide-react/dist/esm/icons/code';
+import LucideMessageCircle from 'lucide-react/dist/esm/icons/message-circle';
+import Palette from 'lucide-react/dist/esm/icons/palette';
 import { useDispatch, useSelector } from 'react-redux';
 import { addElement, deleteElement } from '../../Store/webElementSlice';
 import ImageElement from '../../lib/img.component';
@@ -179,6 +179,12 @@ const LeftSidebar = ({
       window.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
+  const chats = useSelector((state) => state.chat.chats);
+  const userId = useSelector((state) => state.user.userInfo._id);
+  const chatNotif = chats.reduce(
+    (sum, chat) => sum + (chat.unread_messages?.[userId] || 0),
+    0
+  );
   return (
     <div
       className="relative h-full"
@@ -242,13 +248,18 @@ const LeftSidebar = ({
                   }`}
                 >
                   <LucideMessageCircle className="w-4 h-4" />
+                  {chatNotif > 0 && (
+                    <span className="absolute top-0 right-0 w-2 h-2 bg-red-600 rounded-full"></span>
+                  )}
                 </button>
               </HoverInfoWrapper>
             </div>
           </div>
 
           {/* Content */}
-          <div className={`${currentTab!="chats"?"flex-1 p-4 space-y-6  overflow-y-auto":"h-full"} `}>
+          <div
+            className={`${currentTab != 'chats' ? 'flex-1 p-4 space-y-6  overflow-y-auto' : 'h-full'} `}
+          >
             {currentTab === 'components' ? (
               <>
                 {/* Elements Section */}
@@ -303,8 +314,8 @@ const LeftSidebar = ({
                 handleViewChange={handleViewChange}
               />
             ) : currentTab === 'chats' ? (
-              <ChatRightMain toast={toast} mode={"disable"}/>):
-              (
+              <ChatRightMain toast={toast} mode={'disable'} />
+            ) : (
               <ProjectFileSideBar file={file} setFile={setFile} toast={toast} />
             )}
           </div>
