@@ -19,6 +19,7 @@ const ProfileView = () => {
     if (state === 'Back') {
       navigate('/');
     } else if (state !== 'Profile') {
+      sessionStorage.setItem('state', 'Profile');
       navigate(url.SocialMain);
     }
   }, [state]);

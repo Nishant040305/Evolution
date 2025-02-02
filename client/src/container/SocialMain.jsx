@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import LeftSocialSideBar from '../components/Navigation/leftSocialSideBar';
 import '../style/socialMain.css';
 import ChatLeftBar from '../components/SocialSection/ChatLeftBar';
@@ -35,6 +35,7 @@ const SocialMain = () => {
     }
   }, [state]);
   const user = useSelector((state) => state.user.userInfo);
+  const messageOpenHandler = useCallback(() => setState('Messages'), []);
   return (
     <div className="social-main flex flex-row">
       <ToastContainer />
@@ -47,7 +48,7 @@ const SocialMain = () => {
           />
         ) : (
           <ChatLeftBar
-            messageOpen={() => setState('Messages')}
+            messageOpen={messageOpenHandler}
             newGroup={() => setState('Groups')}
           />
         )
@@ -58,7 +59,10 @@ const SocialMain = () => {
       ) : state === 'Profile' ? (
         <ProfilePage profile={user} status={true} />
       ) : (
-        <ChatLeftBar></ChatLeftBar>
+        <ChatLeftBar
+          messageOpen={messageOpenHandler}
+          newGroup={() => setState('Groups')}
+        ></ChatLeftBar>
       )}
 
       {/* Display Chat Right Section */}
