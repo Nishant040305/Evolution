@@ -8,10 +8,8 @@ import ProjectDashboard from './container/ProjectDashboard';
 import { verifyUser } from './Store/userSlice';
 import SettingsPage from './components/Dashboard/SettingsPage';
 import LandingPage from './pages/Landing_Page';
-import MainLayout from './pages/Profile_Page';
-import ProfileView from './container/ProfileView';
+import ProfileView from './container/profileView';
 import SocialMain from './container/SocialMain';
-import CheckFile from './test/CheckFile';
 import { MainPageHook } from './hooks/MainPageHook';
 const App = () => {
   const dispatch = useDispatch();
@@ -60,7 +58,6 @@ const App = () => {
         path="*"
         element={isAuthenticated ? <ProjectDashboard /> : <LoginMain />}
       />
-      <Route path="/test" element={<CheckFile></CheckFile>} />
     </Routes>
   );
 };
