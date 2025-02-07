@@ -14,11 +14,16 @@ const User = require('../models/User');
 // @desc     Get current user info
 router.get('/', credMiddleware.UserVerifier, async (req, res) => {
   const user = await User.findById(req.user._id).lean();
-  delete user.password;
-  delete user.verify;
-  delete user.projects;
-  delete user.sharedProjects;
-  delete user.contribution;
+  try {
+    if (user.password) delete user.password;
+    if (user.verify) delete user.verify;
+    if (user.projects) delete user.projects;
+    if (user.sharedProjects) delete user.sharedProjects;
+    if (user.contribution) delete user.contribution;
+  } catch (e) {
+    console.log(e);
+  }
+
   return res.status(200).json({ info: user });
 });
 
