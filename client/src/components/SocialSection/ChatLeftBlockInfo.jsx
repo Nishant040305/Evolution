@@ -1,5 +1,4 @@
 import React from 'react';
-import { FaUsers, FaUser } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPresentChat } from '../../Store/Chat';
 const ChatLeftBlockInfo = ({ Chat, messageOpen }) => {

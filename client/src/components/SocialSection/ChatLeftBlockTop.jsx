@@ -3,7 +3,6 @@ import { FaEllipsisV, FaUserPlus } from 'react-icons/fa';
 import ChatSearchBar from '../utility/ChatSearchBar';
 import HoverInfoWrapper from '../utility/toolTip';
 import { useSelector } from 'react-redux';
-import ChatLeftBlockInfo from './ChatLeftBlockInfo';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../Store/userSlice';
 import AuthService from '../../scripts/API.Login';
@@ -12,7 +11,6 @@ const ChatLeftBlockTop = ({ setChats, newGroup }) => {
   const chats = useSelector((state) => state.chat.chats);
   const [selectedButton, setSelectedButton] = useState('All'); // Track selected button
   const [searchQuery, setSearchQuery] = useState('');
-  const filterChats = chats;
   const user = useSelector((state) => state.user.userInfo._id);
   const dispatch = useDispatch();
 

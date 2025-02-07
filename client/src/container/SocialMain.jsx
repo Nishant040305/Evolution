@@ -4,13 +4,11 @@ import '../style/socialMain.css';
 import ChatLeftBar from '../components/SocialSection/ChatLeftBar';
 import FindUser from '../components/SocialSection/FindUser';
 import ChatRightMain from '../components/SocialSection/ChatRightMain';
-import User from '../scripts/API.User';
-import { setChats } from '../Store/Chat';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NotificationPage from '../components/Notification/Notification';
-import CreateGroupChat from '../components/SocialSection/createGroupChat';
+import CreateGroupChat from '../components/SocialSection/CreateGroupChat';
 import AddParticipants from '../components/SocialSection/Addparticipants';
 import { useNavigate } from 'react-router-dom';
 import ProfilePage from '../pages/Profile_Page';
@@ -22,7 +20,6 @@ const SocialMain = () => {
   useEffect(() => {
     sessionStorage.setItem('state', state);
   }, [state]);
-  const [loading, setLoading] = useState(true); // To manage loading state
   const [addParticipantModal, setAddParticipantModal] = useState(false);
   const presentChat = useSelector((state) => state.chat.presentChat);
   const navigate = useNavigate();
