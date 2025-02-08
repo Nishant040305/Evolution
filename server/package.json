@@ -1,10 +1,12 @@
 {
   "name": "evolution",
   "version": "1.2.0",
-  "main": "server/app.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "concurrently \"npm run dev --prefix ./client\" \"nodemon\"",
+    "build": "node app.js",
+    "dev": "nodemon",
     "release": "standard-version",
     "format": "prettier --write \"**/*.{html,css,js,jsx,json,md,MD}\""
   },
