@@ -39,4 +39,7 @@ router.post('/confirChange', async (req, res) => {
 router.post('/resend', async (req, res) => {
   return res.status(200).json({ success: true });
 });
+router.get('/test', async (req, res) => {
+  return res.status(200).json({ msg: 'test' });
+});
 module.exports = router;
