@@ -79,9 +79,4 @@ module.exports = (io, socket) => {
       socket.emit('error', 'Failed to accept collaborator');
     }
   });
-
-  // Handle disconnect
-  socket.on('disconnect', () => {
-    console.log(`Socket disconnected: ${socket.id}`);
-  });
 };

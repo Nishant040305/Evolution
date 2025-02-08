@@ -22,6 +22,7 @@ const io = new Server(server, {
     origin: process.env.CLIENT || 'http://localhost:5173',
     methods: ['GET', 'POST'],
     credentials: true,
+    transports: ['websocket'],
   },
 });
 socketHandlers(io);

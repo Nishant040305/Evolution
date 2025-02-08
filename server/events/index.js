@@ -11,6 +11,8 @@ module.exports = (io) => {
     notification(io, socket);
     manageCollab(io, socket);
     Chats(io, socket);
-    socket.on('disconnect', () => {});
+    socket.on('disconnect', () => {
+      console.log('A user disconnected:', socket.id);
+    });
   });
 };

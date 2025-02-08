@@ -113,8 +113,4 @@ module.exports = (io, socket) => {
       socket.emit('error', { error: 'Failed to delete message' });
     }
   });
-  // Handle disconnect
-  socket.on('disconnect', () => {
-    console.log(`Socket disconnected: ${socket.id}`);
-  });
 };
