@@ -28,6 +28,7 @@
     "chrome-launcher": "^1.1.2",
     "cloudinary": "^2.5.1",
     "concurrently": "^9.0.1",
+    "connect-mongo": "^5.1.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
