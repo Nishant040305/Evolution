@@ -104,7 +104,7 @@ const VerifyUser = async (req, res) => {
     res.cookie('uid', jwtData, {
       httpOnly: true,
       secure: true,
-      sameSite: 'Strict',
+      sameSite: 'none',
     });
     return res
       .status(200)
@@ -146,7 +146,7 @@ const LogIn = async (req, res) => {
     res.cookie('uid', jwtData, {
       httpOnly: true,
       secure: true,
-      sameSite: 'Strict',
+      sameSite: 'none',
     });
     res.status(200).json({ info: { ...user }, message: 'Login successful' });
   } catch (e) {
@@ -219,7 +219,7 @@ const ConfirmPasswordChange = async (req, res) => {
     res.cookie('uid', jwtData, {
       httpOnly: true,
       secure: true,
-      sameSite: 'Strict',
+      sameSite: 'none',
     });
     return res
       .status(200)
@@ -232,7 +232,7 @@ const ConfirmPasswordChange = async (req, res) => {
 // Logout route
 const logout = (req, res) => {
   // Clear the 'uid' cookie
-  res.clearCookie('uid', { httpOnly: true, secure: true, sameSite: 'Strict' });
+  res.clearCookie('uid', { httpOnly: true, secure: true, sameSite: 'none' });
   res.status(200).send({ message: 'Logged out successfully' });
 };
 module.exports = {

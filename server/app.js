@@ -34,7 +34,10 @@ app.use(
     secret: process.env.SESSION_SECRET, // Replace with a secure key or an environment variable
     resave: false, // Don't save session if unmodified
     saveUninitialized: true, // Doesn't save empty sessions
-    cookie: { secure: process.env.NODE_ENV === 'production' }, // Set to true if using HTTPS in production
+    cookie: { 
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'none',
+     }, // Set to true if using HTTPS in production
     store: MongoStore.create({ mongoUrl: process.env.MONGODB_URL }), // Use MongoDB for sessions
   })
 );

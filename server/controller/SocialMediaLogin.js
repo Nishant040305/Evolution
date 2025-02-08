@@ -30,7 +30,7 @@ const googleCallback = (req, res) => {
   res.cookie('uid', jwtData, {
     httpOnly: true,
     secure: true,
-    sameSite: 'Strict',
+    sameSite: 'none',
   });
   return res.redirect(process.env.CLIENT);
 };
@@ -119,7 +119,7 @@ const GithubCallback = async (req, res) => {
     res.cookie('uid', jwtData, {
       httpOnly: true,
       secure: true,
-      sameSite: 'Strict',
+      sameSite: 'none',
     });
     return res.redirect(process.env.CLIENT);
   } catch (error) {
