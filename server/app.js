@@ -2,14 +2,14 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const passport = require('passport');
-const session = require('express-session');
+// const passport = require('passport');
+// const session = require('express-session');
 const http = require('http');
 const { Server } = require('socket.io');
 const socketHandlers = require('./events');
 // Load environment variables
 require('dotenv').config();
-
+console.log(process.env);
 // Connect to database
 const db = require('./db/mongoose');
 
@@ -29,16 +29,16 @@ app.use(
     credentials: true,
   })
 );
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET, // Replace with a secure key or an environment variable
-    resave: false, // Don't save session if unmodified
-    saveUninitialized: true, // Doesn't save empty sessions
-    cookie: { secure: process.env.NODE_ENV === 'production' }, // Set to true if using HTTPS in production
-  })
-);
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(
+//   session({
+//     secret: process.env.SESSION_SECRET, // Replace with a secure key or an environment variable
+//     resave: false, // Don't save session if unmodified
+//     saveUninitialized: true, // Doesn't save empty sessions
+//     cookie: { secure: process.env.NODE_ENV === 'production' }, // Set to true if using HTTPS in production
+//   })
+// );
+// app.use(passport.initialize());
+// app.use(passport.session());
 app.use(express.json());
 app.use(cookieParser());
 
