@@ -16,9 +16,12 @@ const db = require('./db/mongoose');
 // Create express app and add middlewares
 const app = express();
 const server = http.createServer(app);
-const io = new Server({
+
+const io = new Server(server, {
   cors: {
-    orgin: process.env.CLIENT,
+    origin: process.env.CLIENT || 'http://localhost:5173',
+    methods: ['GET', 'POST'],
+    credentials: true,
   },
 });
 socketHandlers(io);
@@ -73,11 +76,6 @@ app.use('/api/test/mail', require('./test/mailTest'));
 
 // Start server
 const PORT = process.env.PORT || 4000;
-const SOCKET = process.env.SOCKET || 8000;
 server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
-io.listen(SOCKET);
-io.httpServer.on('listening', () => {
-  console.log(`SOCKET is running on port ${SOCKET}`);
+  console.log(`Server and Socket.io are running on port ${PORT}`);
 });
