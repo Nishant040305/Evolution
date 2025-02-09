@@ -3,7 +3,6 @@ import { io } from 'socket.io-client';
 const URL = `${import.meta.env.VITE_REACT_APP_SOCKET}`;
 // const max_socket_reconnects = 200;
 export const socket = io(URL, {
-  path: '/socket/',
   withCredentials: true,
   autoConnect: false, // Prevent auto-connect on import
   reconnection: true, // Enable automatic reconnection
