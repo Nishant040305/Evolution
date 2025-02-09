@@ -1,11 +1,13 @@
 const fs = require('fs');
 const nodemailer = require('nodemailer');
 const path = require('path');
-// Load HTML template and replace placeholders
-function loadTemplate(filePath, replacements) {
-  const resolvedPath = path.resolve(__dirname, filePath);
 
-  let template = fs.readFileSync(resolvedPath, 'utf-8');
+// Load HTML template and replace placeholders
+async function loadTemplate(filePath, replacements) {
+  const resolvedPath = path.resolve(__dirname, filePath); // Resolve the path correctly
+
+  // Asynchronously read the file
+  let template = await fs.promises.readFile(resolvedPath, 'utf-8');
   for (const key in replacements) {
     template = template.replace(
       new RegExp(`{{${key}}}`, 'g'),
@@ -26,8 +28,8 @@ const transporter = nodemailer.createTransport({
 
 const sendOtpEmail = async (recipientEmail, otpCode) => {
   // Load the template with the OTP and user name
-
-  const htmlTemplate = loadTemplate('../messages/EmailVerification.html', {
+  const filePath = path.join(__dirname, '../messages/EmailVerification.html');
+  const htmlTemplate = await loadTemplate(filePath, {
     OTP_CODE: otpCode,
   });
 
@@ -48,10 +50,11 @@ const sendOtpEmail = async (recipientEmail, otpCode) => {
     }
   });
 };
+
 const sendPasswordRecoverEmail = async (recipientEmail, otpCode) => {
   // Load the template with the OTP and user name
-
-  const htmlTemplate = loadTemplate('../messages/PasswordRecovery.html', {
+  const filePath = path.join(__dirname, '../messages/PasswordRecovery.html'); // Resolve path correctly
+  const htmlTemplate = await loadTemplate(filePath, {
     OTP_CODE: otpCode,
   });
 
