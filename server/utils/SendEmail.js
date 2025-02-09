@@ -20,10 +20,16 @@ async function loadTemplate(filePath, replacements) {
 // Configure Nodemailer
 const transporter = nodemailer.createTransport({
   service: 'gmail', // or your email provider
+  host: 'smtp.gmail.com',
+  port: 465,
   auth: {
     user: process.env.EMAIL,
     pass: process.env.PASS,
   },
+  secure: true, // Use TLS
+  tls: {
+    rejectUnauthorized: false, // Do not reject unauthorized TLS connections
+  }, // Set up the transporter
 });
 
 const sendOtpEmail = async (recipientEmail, otpCode) => {
