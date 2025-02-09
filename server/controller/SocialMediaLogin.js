@@ -38,7 +38,7 @@ const googleCallback = (req, res) => {
 //github
 const GithubRedirect = async (req, res) => {
   const client_id = process.env.GITHUB_CLIENT_ID;
-  const redirect_uri = 'http://localhost:4000/api/auth/github/callback';
+  const redirect_uri = `${process.env.SERVER}/api/auth/github/callback`;
   res.redirect(
     `https://github.com/login/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}`
   );
@@ -48,7 +48,7 @@ const GithubCallback = async (req, res) => {
   const { code } = req.query;
   const client_id = process.env.GITHUB_CLIENT_ID;
   const client_secret = process.env.GITHUB_CLIENT_SECREAT;
-  const redirect_uri = 'http://localhost:4000/api/auth/github/callback';
+  const redirect_uri = `${process.env.SERVER}/api/auth/github/callback`;
 
   try {
     // Step 1: Exchange the code for an access token
