@@ -20,9 +20,10 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: process.env.CLIENT || 'http://localhost:5173',
+    path: '/socket/',
     methods: ['GET', 'POST'],
     credentials: true,
-    transports: ['websocket'],
+    transports: ['websocket', 'polling'],
   },
 });
 socketHandlers(io);
@@ -38,10 +39,10 @@ app.use(
     secret: process.env.SESSION_SECRET, // Replace with a secure key or an environment variable
     resave: false, // Don't save session if unmodified
     saveUninitialized: true, // Doesn't save empty sessions
-    cookie: { 
+    cookie: {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'none',
-     }, // Set to true if using HTTPS in production
+    }, // Set to true if using HTTPS in production
     store: MongoStore.create({ mongoUrl: process.env.MONGODB_URL }), // Use MongoDB for sessions
   })
 );

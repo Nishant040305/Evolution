@@ -8,14 +8,16 @@ export const connectRooms = () => {
 
   useEffect(() => {
     if (!isAuthenticated || !user) return;
-
+    console.log(socket);
     if (!socket.connected) {
       socket.connect();
     }
 
     socket.emit('joinRoom', user._id);
     console.log('Socket connected and joined room:', user._id);
-
+    socket.on('joinRoom', (data) => {
+      console.log('Socket joined room:', data);
+    });
     socket.on('disconnect', () => {
       console.log('Socket disconnected, attempting to reconnect...');
       socket.connect();
