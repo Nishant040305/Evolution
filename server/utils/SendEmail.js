@@ -67,12 +67,14 @@ const sendPasswordRecoverEmail = async (recipientEmail, otpCode) => {
   };
 
   // Send the email
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error('Error sending email:', error);
-    } else {
-      console.log('Email sent:', info.response);
-    }
-  });
+  await new Promise(
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error sending email:', error);
+      } else {
+        console.log('Email sent:', info.response);
+      }
+    })
+  );
 };
 module.exports = { sendOtpEmail, sendPasswordRecoverEmail };
