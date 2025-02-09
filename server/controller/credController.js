@@ -170,7 +170,7 @@ const PasswordRecovery = async (req, res) => {
       email: EMAIL,
     });
 
-    sendPasswordRecoverEmail(EMAIL, otp);
+    await sendPasswordRecoverEmail(EMAIL, otp);
 
     return res
       .status(200)
