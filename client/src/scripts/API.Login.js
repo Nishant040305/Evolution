@@ -1,5 +1,7 @@
 import axios from 'axios';
 import server from '../server.json';
+import { persistor } from '../store'; // Import persistor
+
 class AuthService {
   constructor() {
     this.baseURL = import.meta.env.VITE_REACT_APP_BACKWEB; // Set base URL from the imported constant
@@ -157,7 +159,7 @@ class AuthService {
         }
       );
       if (response.status !== 200) throw new Error('Failed to logout');
-
+      persistor.purge();
       window.location.reload(true);
     } catch (e) {
       console.error(e);

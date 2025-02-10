@@ -63,7 +63,7 @@ const ProfilePage = (props) => {
   return (
     <div className="min-h-screen bg-[#0D1117] text-white flex w-full">
       {/* Main Content */}
-      <div className="ml-16 md:ml-20 w-full p-4 md:p-8 space-y-8">
+      <div className="ml-5 md:ml-20 w-full p-4 md:p-8 space-y-8">
         <ProfileHeader
           profile={profile}
           onEditProfile={handleEditProfile}

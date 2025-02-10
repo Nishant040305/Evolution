@@ -42,15 +42,18 @@ const TopBar = ({ searchQuery, setSearchQuery }) => {
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo and Title */}
-          <div className="flex items-center space-x-8">
-            <div className="flex items-center space-x-3">
-              <div className="flex items-center justify-center w-10 h-10 bg-white rounded-lg">
-                <span className="text-2xl font-bold text-red-600">E</span>
+          <div className="project-name">
+            <div className="flex items-center space-x-8 ">
+              <div className="flex items-center space-x-3 ">
+                <div className="flex items-center justify-center w-10 h-10 bg-white rounded-lg ">
+                  <span className="text-2xl font-bold text-red-600">E</span>
+                </div>
+                <h1 className="text-2xl font-semibold text-white project-name">
+                  Evolution
+                </h1>
               </div>
-              <h1 className="text-2xl font-semibold text-white">Evolution</h1>
             </div>
           </div>
-
           {/* Search Bar */}
           <div className="relative w-full max-w-md">
             <input
@@ -87,7 +90,7 @@ const TopBar = ({ searchQuery, setSearchQuery }) => {
 
             {/* Profile */}
             <button
-              className="p-2 rounded-full hover:bg-red-300"
+              className="p-2 rounded-full min-w-12 min-h-8 hover:bg-red-300"
               onClick={navigateProfile}
             >
               {user ? (

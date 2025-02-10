@@ -147,18 +147,18 @@ const FindUserFromUsername = async (req, res) => {
     if (!user || !user.verify) {
       return res.status(200).json(null);
     }
-    console.log(user);
-    return res.status(200).json({
-      displayname: user.displayname,
-      _id: user._id,
-      avatar: user.avatar,
-      email: user.email,
-      linkedin: user.linkedin,
-      location: user.location,
-      bio: user.bio,
-      github: user?.github,
-      name: user.name,
-    });
+    const user_username = { ...user._doc };
+    try {
+      if (user_username.password) delete user_username.password;
+      if (user_username.verify) delete user_username.verify;
+      if (user_username.projects) delete user_username.projects;
+      if (user_username.sharedProjects) delete user_username.sharedProjects;
+      if (user_username.contribution) delete user_username.contribution;
+    } catch (e) {
+      console.log(e);
+    }
+    console.log(user_username);
+    return res.status(200).json(user_username);
   } catch (e) {
     return res.status(500).json({ message: 'Internal Server Error' });
   }

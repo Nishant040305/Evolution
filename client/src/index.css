@@ -107,4 +107,9 @@ body {
     justify-content: center;
     background-color:#070133 ;
   }
+  #testimonials{
+    display: none;
+  }#pricing{
+    display: none;
+  }
 }

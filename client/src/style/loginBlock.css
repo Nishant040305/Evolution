@@ -279,3 +279,11 @@ body {
   color:rgb(220, 93, 89);
 
 }
+.project-name{
+  display:block;
+}
+@media screen and (max-width:768px){
+  .project-name{
+    display:none;
+  }
+}

@@ -1,6 +1,5 @@
-// src/features/userSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { UserVerify } from '../scripts/UserAuth'; // Adjust the import path
+import { UserVerify } from '../scripts/UserAuth';
 
 // Define initial state
 const initialState = {
@@ -8,13 +7,28 @@ const initialState = {
   userInfo: null,
   loading: false,
   error: null,
+  isPersisted: false, // Track persistence
 };
 
-// Create an async thunk for user verification
-export const verifyUser = createAsyncThunk('user/verifyUser', async () => {
-  const info = await UserVerify();
-  return info;
-});
+// Async thunk for user verification
+export const verifyUser = createAsyncThunk(
+  'user/verifyUser',
+  async (_, { getState, rejectWithValue }) => {
+    try {
+      const { user } = getState(); // Get user state
+
+      // Prevent re-fetching if the user is already persisted
+      if (user.isPersisted && user.isAuthenticated) return user.userInfo;
+
+      const info = await UserVerify();
+      if (!info) throw new Error('User not authenticated');
+
+      return info;
+    } catch (error) {
+      return rejectWithValue(error.message || 'Verification failed');
+    }
+  }
+);
 
 // Create a slice
 const userSlice = createSlice({
@@ -24,10 +38,13 @@ const userSlice = createSlice({
     loginSuccess: (state, action) => {
       state.isAuthenticated = true;
       state.userInfo = action.payload;
+      state.isPersisted = true;
     },
     logout: (state) => {
       state.isAuthenticated = false;
       state.userInfo = null;
+      state.error = null;
+      state.isPersisted = false; // Reset persistence on logout
     },
     ProfileUpdate: (state, action) => {
       state.userInfo = { ...state.userInfo, ...action.payload };
@@ -37,20 +54,20 @@ const userSlice = createSlice({
     builder
       .addCase(verifyUser.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(verifyUser.fulfilled, (state, action) => {
-        if (action.payload) {
-          state.isAuthenticated = true;
-          state.userInfo = action.payload;
-        } else {
-          state.isAuthenticated = false;
-          state.userInfo = null;
-        }
+        state.isAuthenticated = true;
+        state.userInfo = action.payload;
+        state.isPersisted = true;
         state.loading = false;
       })
       .addCase(verifyUser.rejected, (state, action) => {
+        state.isAuthenticated = false;
+        state.userInfo = null;
         state.loading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
+        state.isPersisted = false;
       });
   },
 });
