@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import url from './url.json';
@@ -15,9 +15,10 @@ const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.user);
   const user = useSelector((state) => state.user.userInfo);
+  const [mounted, setMounted] = useState(false);
   useEffect(() => {
-    dispatch(verifyUser());
-  }, [dispatch, isAuthenticated]);
+    if (!isAuthenticated) dispatch(verifyUser());
+  }, [isAuthenticated, user]);
   MainPageHook();
   return (
     <Routes>

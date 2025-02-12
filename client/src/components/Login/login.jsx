@@ -4,7 +4,7 @@ import AuthService from '../../scripts/API.Login';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginSuccess } from '../../Store/userSlice';
 import { Eye, EyeOff } from 'lucide-react';
-
+import { EmailVerifier } from '../../scripts/Validator';
 const Login = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,6 +21,7 @@ const Login = (props) => {
   const setRegister = (info) => {
     dispatch(loginSuccess(info));
   };
+  const isEmailValid = EmailVerifier(props.value.EMAIL);
   return (
     <div className="bottom">
       <div className={` flex flex-col text-left px-2`}>
@@ -33,6 +34,7 @@ const Login = (props) => {
             handleChange(e);
           }}
         ></input>
+        {!isEmailValid && <div className="text-red-500">Invalid Email</div>}
       </div>
       <div className="flex flex-col px-2 text-left ">
         <div className={`head-info ${mode ? 'dark-mode' : ''}`}>Password*</div>
@@ -58,6 +60,10 @@ const Login = (props) => {
       <button
         className="enterdetail btn"
         onClick={() => {
+          if (!isEmailValid) {
+            setMsg('Invalid Email');
+            return;
+          }
           API.login({ ...props, setRegister: setRegister }, setMsg, navigate);
         }}
       >

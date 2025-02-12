@@ -8,6 +8,7 @@ class Chats {
    */
   constructor(id) {
     this.id = id;
+    axios.defaults.withCredentials = true;
     this.baseURL = import.meta.env.VITE_REACT_APP_BACKWEB; // Base URL for API requests
   }
 

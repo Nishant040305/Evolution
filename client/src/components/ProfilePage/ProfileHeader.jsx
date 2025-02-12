@@ -43,7 +43,7 @@ const ProfileHeader = ({ profile, onEditProfile, profileStatus }) => {
                 onClick={onEditProfile}
               >
                 <PencilSquareIcon className="w-4 h-4" />
-                Edit Profile
+                <span className="hidden md:block">Edit Profile</span>
               </button>
             )}
           </div>

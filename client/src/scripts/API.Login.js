@@ -90,10 +90,7 @@ class AuthService {
       if (response.status !== 200)
         throw new Error('Failed to confirm password change');
       else {
-        props.setRegister({
-          state: true,
-          info: response.data.info,
-        });
+        window.location.reload();
       }
     } catch (e) {
       console.error(e);
@@ -114,8 +111,7 @@ class AuthService {
       if (response.status !== 200) throw new Error('Invalid Credentials');
 
       props.setRegister({
-        state: true,
-        info: response.data.info,
+        ...response.data.info,
       });
       // const dispatch = useDispatch();
       // dispatch(loginSuccess(response.data.info))

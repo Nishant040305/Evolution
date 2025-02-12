@@ -3,6 +3,7 @@ import server from '../server.json';
 class User {
   constructor(id) {
     this.id = id;
+    axios.defaults.withCredentials = true;
     this.baseURL = import.meta.env.VITE_REACT_APP_BACKWEB;
   }
 

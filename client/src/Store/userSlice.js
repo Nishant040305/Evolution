@@ -15,12 +15,14 @@ export const verifyUser = createAsyncThunk(
   'user/verifyUser',
   async (_, { getState, rejectWithValue }) => {
     try {
-      const { user } = getState(); // Get user state
+      const { user } = getState();
 
-      // Prevent re-fetching if the user is already persisted
-      if (user.isPersisted && user.isAuthenticated) return user.userInfo;
+      // Only fetch the user data if it's not persisted already
+      if (user.isPersisted && user.isAuthenticated) {
+        return user.userInfo; // Return from persisted state
+      }
 
-      const info = await UserVerify();
+      const info = await UserVerify(); // Assume this fetches user data
       if (!info) throw new Error('User not authenticated');
 
       return info;

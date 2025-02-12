@@ -9,6 +9,7 @@ const useProjects = (userId, APIUser) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const organizationChanges = useSelector((state) => state.organization);
+  const [mounted, setMounted] = useState(false);
   const fetchProjects = async () => {
     try {
       setIsLoading(true);
@@ -27,9 +28,12 @@ const useProjects = (userId, APIUser) => {
   };
 
   useEffect(() => {
-    fetchProjects();
-    console.log('organization Changes at Use', organizationChanges);
-  }, [userId, organizationChanges]);
+    if (mounted) {
+      fetchProjects(); // Refetch projects when dependencies change
+    } else {
+      setMounted(true); // Set mounted to true after first render
+    }
+  }, [userId, organizationChanges, mounted]); // Dependencies include mounted to trigger on first load
 
   useEffect(() => {
     const filterProjects = () => {

@@ -15,13 +15,20 @@ import darkLightSlice from './Store/darkLightMode';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['user', 'mode'], // Persist only authentication and theme mode
+  whitelist: ['mode'], // Only persist the theme mode, excluding user
+};
+
+const userPersistConfig = {
+  key: 'user',
+  storage,
+  version: 1, // This will help with migrations
+  whitelist: ['isAuthenticated', 'userInfo'], // Only persist necessary parts of the state
 };
 
 // Root reducer with undoable functionality for web elements
 const rootReducer = combineReducers({
   webElement: undoable(webElementsSlice), // Undoable reducer (not persisted)
-  user: userReducer, // Persist user authentication
+  user: persistReducer(userPersistConfig, userReducer), // Apply persist for user slice
   image: ImageSlice,
   project: projectSlice,
   chat: ChatSlice,
@@ -44,3 +51,6 @@ export const store = configureStore({
 
 // ✅ Persistor for Rehydration
 export const persistor = persistStore(store);
+persistor.flush().then(() => {
+  console.log('Persisted store loaded');
+});

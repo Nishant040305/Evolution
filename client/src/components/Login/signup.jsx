@@ -1,10 +1,12 @@
+import { useState } from 'react';
 import AuthService from '../../scripts/API.Login';
 import { useSelector } from 'react-redux';
 import { Eye, EyeOff } from 'lucide-react';
-
+import { EmailVerifier, PasswordVerifier } from '../../scripts/Validator';
 const Signup = (props) => {
   let WEB = import.meta.env.VITE_REACT_APP_BACKWEB;
   const [showPassword, setShowPassword] = useState(false);
+  const [msg, setMsg] = useState('');
 
   const handleChange = (e) => {
     props.setValue({
@@ -14,6 +16,9 @@ const Signup = (props) => {
   };
   const mode = useSelector((state) => state.mode.mode);
   const API = new AuthService();
+  const isEmailValid = EmailVerifier(props.value.EMAIL);
+  const isPasswordValid = PasswordVerifier(props.value.PASSWORD);
+
   return (
     <div className="bottom">
       <div className={`container flex flex-col text-left px-2`}>
@@ -22,10 +27,11 @@ const Signup = (props) => {
           className="input-detail"
           name="EMAIL"
           value={props.value.EMAIL}
-          onChange={(e) => {
-            handleChange(e);
-          }}
+          onChange={handleChange}
         ></input>
+        {!isEmailValid && props.value.EMAIL.trim().length != 0 && (
+          <div className="text-red-500">Invalid Email</div>
+        )}
       </div>
       <div className="flex flex-col px-2 text-left ">
         <div className={`head-info ${mode ? 'dark-mode' : ''}`}>Password*</div>
@@ -35,9 +41,7 @@ const Signup = (props) => {
             type={showPassword ? 'text' : 'password'}
             name="PASSWORD"
             value={props.value.PASSWORD}
-            onChange={(e) => {
-              handleChange(e);
-            }}
+            onChange={handleChange}
           ></input>
           <button
             type="button"
@@ -47,15 +51,32 @@ const Signup = (props) => {
             {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
           </button>
         </div>
+        {!isPasswordValid && props.value.PASSWORD.trim().length != 0 && (
+          <div className="text-red-500">
+            Password must be at least 8 characters long, include an uppercase
+            letter, a number, and a special character.
+          </div>
+        )}
       </div>
       <button
         className="enterdetail btn"
         onClick={() => {
+          if (!isEmailValid) {
+            setMsg('Invalid Email');
+            return;
+          }
+          if (!isPasswordValid) {
+            setMsg('Weak Password');
+            return;
+          }
           API.signup(props);
         }}
       >
         Signup
       </button>
+      {msg && (
+        <div className="mt-2 text-base text-center text-red-500 msg">{msg}</div>
+      )}
     </div>
   );
 };

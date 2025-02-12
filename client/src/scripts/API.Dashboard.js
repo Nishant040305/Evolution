@@ -5,6 +5,7 @@ class ApiDashboard {
   constructor(baseURL) {
     this.baseURL = baseURL || import.meta.env.VITE_REACT_APP_BACKWEB;
     this.endpoints = serverConfig.Project;
+    axios.defaults.withCredentials = true;
     // Create an axios instance with the base URL
     this.api = axios.create({
       baseURL: this.baseURL,

@@ -67,7 +67,7 @@ const TopBar = ({ searchQuery, setSearchQuery }) => {
           </div>
 
           {/* User Options */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
             {/* Notifications */}
             <button
               onClick={navigateChats}

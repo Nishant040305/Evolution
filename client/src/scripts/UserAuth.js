@@ -15,6 +15,7 @@ export const UserVerify = async () => {
 
     if (response.status === 200) {
       const userInfo = response.data.info;
+      console.log(userInfo);
       return userInfo; // Return the userInfo object directly
     } else {
       return null;
