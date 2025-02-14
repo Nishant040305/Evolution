@@ -54,7 +54,7 @@ const ConfirmPassword = (props) => {
             {showPasswordNew ? <EyeOff size={20} /> : <Eye size={20} />}
           </button>
         </div>
-        {!isPasswordValid && (
+        {!isPasswordValid && props.value.PASSWORD.trim().length > 0 && (
           <div className="msg text-red-500 mt-1 text-sm">
             Password must be at least 8 characters long, include an uppercase
             letter, a number, and a special character.
@@ -89,7 +89,7 @@ const ConfirmPassword = (props) => {
             {showPasswordConfirm ? <EyeOff size={20} /> : <Eye size={20} />}
           </button>
         </div>
-        {!isPasswordsMatch && (
+        {!isPasswordsMatch && props.value.CPASSWORD.trim().length > 0 && (
           <div className="msg text-red-500 mt-1 text-sm">
             Passwords do not match.
           </div>

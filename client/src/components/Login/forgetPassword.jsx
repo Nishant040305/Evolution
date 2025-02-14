@@ -11,14 +11,12 @@ const ForgetPassword = (props) => {
   return (
     <div className="bottom">
       <div className={`container flex flex-col text-left px-2`}>
-      <label className={`head-info ${mode?"dark-mode":""}`}>Email*</label>
-      <input
+        <label className={`head-info ${mode ? 'dark-mode' : ''}`}>Email*</label>
+        <input
           className="input-detail"
           name="EMAIL"
           value={props.value}
-          onChange={(e) => {
-            handleChange(e);
-          }}
+          onChange={handleChange}
         ></input>
         <button
           className="enterdetail btn"

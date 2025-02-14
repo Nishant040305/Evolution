@@ -61,7 +61,7 @@ const Signup = (props) => {
       <button
         className="enterdetail btn"
         onClick={() => {
-          if (!isEmailValid) {
+          if (!isEmailValid && props.value.EMAIL.trim().length > 0) {
             setMsg('Invalid Email');
             return;
           }

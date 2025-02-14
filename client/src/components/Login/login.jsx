@@ -30,11 +30,11 @@ const Login = (props) => {
           className="input-detail"
           name="EMAIL"
           value={props.value.EMAIL}
-          onChange={(e) => {
-            handleChange(e);
-          }}
+          onChange={handleChange}
         ></input>
-        {!isEmailValid && <div className="text-red-500">Invalid Email</div>}
+        {!isEmailValid && props.value.EMAIL.trim().length > 0 && (
+          <div className="text-red-500">Invalid Email</div>
+        )}
       </div>
       <div className="flex flex-col px-2 text-left ">
         <div className={`head-info ${mode ? 'dark-mode' : ''}`}>Password*</div>
@@ -44,9 +44,7 @@ const Login = (props) => {
             type={showPassword ? 'text' : 'password'}
             name="PASSWORD"
             value={props.value.PASSWORD}
-            onChange={(e) => {
-              handleChange(e);
-            }}
+            onChange={handleChange}
           ></input>
           <button
             type="button"
@@ -60,7 +58,7 @@ const Login = (props) => {
       <button
         className="enterdetail btn"
         onClick={() => {
-          if (!isEmailValid) {
+          if (!isEmailValid && props.value.EMAIL.trim().length > 0) {
             setMsg('Invalid Email');
             return;
           }

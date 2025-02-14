@@ -17,8 +17,13 @@ const App = () => {
   const user = useSelector((state) => state.user.userInfo);
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
-    if (!isAuthenticated) dispatch(verifyUser());
-  }, [isAuthenticated, user]);
+    if (!mounted) {
+      dispatch(verifyUser());
+      setMounted(true);
+    } else {
+      if (!isAuthenticated) dispatch(verifyUser());
+    }
+  }, [isAuthenticated, user, mounted]);
   MainPageHook();
   return (
     <Routes>
