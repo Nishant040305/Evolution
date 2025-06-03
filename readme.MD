@@ -48,3 +48,5 @@ To set up Evolution locally, follow these steps:
   ```bash
   npm run install
   npm start
+
+👉 **Surely send a friend request to `nishant0_0391` on the [Evolution website](https://evolution-dna.vercel.app)! 😉**
