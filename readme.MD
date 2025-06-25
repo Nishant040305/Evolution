@@ -23,8 +23,8 @@ Evolution is built to make web development accessible to everyone. With a drag-a
 - **Component Library**: Access a library of reusable components.
 - **SEO Tools**: Built-in SEO optimizations to enhance website visibility.
 - **Version Control**: Track changes and revert to previous versions.
-
-## Technologies Used
+- **Collaboration**: Multiple Users can work on same project with different level of hierarchy
+- **Real-Time Chat**: Implemented real-time messaging with Socket.IO featuring infinite scroll, read receipts, group/channel management, friend request flows, and timestamped messages with custom group metadata.## Technologies Used
 - **Frontend**: React.js, JavaScript, HTML5, CSS3
 - **Backend**: Node.js, Express.js
 - **Database**: MongoDB
