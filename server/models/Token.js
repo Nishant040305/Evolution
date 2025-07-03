@@ -29,6 +29,7 @@ const expiresAt = {
   PasswordChange: 60 * 60,
   PasswordChangeOTP: 60 * 10,
   EmailVerification: 60 * 5,
+  GitHubConnect: 60 * 10,
 };
 
 tokenSchema.pre('save', function (next) {
