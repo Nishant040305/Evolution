@@ -158,7 +158,6 @@ const GithubCallback = async (req, res) => {
         displayname: hashedUsername,
         email: githubEmail,
         password: null,
-        avatar: githubProfile.avatar_url,
         github: `https://github.com/${githubProfile.login}`,
         verify: true,
       }).save();
