@@ -43,7 +43,7 @@ To set up Evolution locally, follow these steps:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/evolution.git
+   git clone https://github.com/DesolateSea/evolution.git
    cd evolution
    ```
 
