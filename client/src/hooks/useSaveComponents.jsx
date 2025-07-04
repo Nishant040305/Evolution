@@ -2,7 +2,6 @@ import { useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import ApiDashboard from '../scripts/API.Dashboard';
 import PublishPage from './PublishPage';
-
 export const useSaveComponents = (toast, webElementsRef, file) => {
   const API = new ApiDashboard();
   const { projectID } = useParams();
@@ -67,4 +66,5 @@ export const useSaveComponents = (toast, webElementsRef, file) => {
       document.removeEventListener('keydown', handleKeyDown); // Cleanup on unmount
     };
   }, [handleSaveCallback]);
+  return { handleSaveCallback };
 };

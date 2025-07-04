@@ -9,7 +9,7 @@ const {
   GithubRedirect,
 } = require('../controller/SocialMediaLogin');
 const User = require('../models/User');
-
+const { UserVerifier } = require('../middleware/credMiddleware');
 // @routes   GET /api/auth/
 // @desc     Get current user info
 router.get('/', credMiddleware.UserVerifier, async (req, res) => {
@@ -55,6 +55,7 @@ router.post('/logout', credController.logout);
 // @desc     Google OAuth callback
 router.get('/google/callback', googleLogin, googleCallback);
 
+router.get('/github', UserVerifier, GithubRedirect);
 // @routes   GET /api/auth/github
 // @desc     Github OAuth login
 router.get('/github', GithubRedirect);

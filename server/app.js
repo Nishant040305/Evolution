@@ -19,7 +19,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT || 'http://localhost:5173',
+    origin: process.env.CLIENT || 'http://localhost:3000',
     methods: ['GET', 'POST'],
     credentials: true,
     transports: ['websocket', 'polling'],
@@ -28,7 +28,7 @@ const io = new Server(server, {
 socketHandlers(io);
 app.use(
   cors({
-    origin: process.env.CLIENT || 'http://localhost:5173', // Allow the frontend origin
+    origin: process.env.CLIENT || 'http://localhost:3000', // Allow the frontend origin
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
   })

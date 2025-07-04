@@ -23,8 +23,8 @@ import { setPresentChat } from '../Store/Chat';
 
 const WebsiteBuilder = () => {
   const { projectID } = useParams();
-  const userId = useSelector(state=>state.user.userInfo._id);
-  const project = useSelector(state=>state.project);
+  const userId = useSelector((state) => state.user.userInfo._id);
+  const project = useSelector((state) => state.project);
   const [showModal, setShowModal] = useState(false);
   const webElement = useSelector((state) => state.webElement.present);
   const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
@@ -80,9 +80,9 @@ const WebsiteBuilder = () => {
     setStatusCode
   );
   const dispatch = useDispatch();
-  useEffect(()=>{
-    dispatch(setPresentChat({chatId:project.groupChatId,userId:userId}))
-  },[project,userId,dispatch])
+  useEffect(() => {
+    dispatch(setPresentChat({ chatId: project.groupChatId, userId: userId }));
+  }, [project, userId, dispatch]);
   return (
     <div className="flex flex-col h-screen">
       <TopBar
@@ -142,7 +142,7 @@ const WebsiteBuilder = () => {
           />
         )}
       </div>
-      <BottomBar />
+      <BottomBar file={file} />
     </div>
   );
 };

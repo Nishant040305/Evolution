@@ -1,19 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 // import { Timer, Save } from 'lucide-react';
-import Timer from 'lucide-react/dist/esm/icons/timer'
-import Save from 'lucide-react/dist/esm/icons/save'
+import Timer from 'lucide-react/dist/esm/icons/timer';
+import Save from 'lucide-react/dist/esm/icons/save';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useSaveComponents } from '../../hooks/useSaveComponents';
+import { toast } from 'react-toastify';
 
-const BottomBar = () => {
+const BottomBar = ({ file }) => {
   const { projectID } = useParams();
   const project = useSelector((state) => state.user.userInfo.projects);
   const webElements = useSelector((state) => state.webElement.present);
-
+  const webElementsRef = useRef(webElements);
+  const { handleSaveCallback } = useSaveComponents(toast, webElementsRef, file);
   const [isVisible, setIsVisible] = useState(false);
 
   const handleSave = () => {
-    console.log('Not implemented');
+    handleSaveCallback();
   };
 
   // Function to handle mouse movement

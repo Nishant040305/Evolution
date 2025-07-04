@@ -86,9 +86,25 @@ const ProfileHeader = ({ profile, onEditProfile, profileStatus }) => {
             </div>
             <div className="flex items-center gap-2">
               <FaGithub className="w-5 h-5 text-[#58A6FF]" />
-              <a href={profile.github} className="hover:text-[#58A6FF]">
-                {profile.github == null ? 'Connect with Github' : 'Github'}
-              </a>
+              {profile.github == null ? (
+                <a
+                  href={`${import.meta.env.VITE_REACT_APP_BACKWEB}${
+                    import.meta.env.VITE_REACT_APP_GITHUB
+                  }?mode=connect`}
+                  className="hover:text-[#58A6FF] font-medium"
+                >
+                  Connect with GitHub
+                </a>
+              ) : (
+                <a
+                  href={profile.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[#58A6FF] font-medium"
+                >
+                  GitHub
+                </a>
+              )}
             </div>
           </div>
 

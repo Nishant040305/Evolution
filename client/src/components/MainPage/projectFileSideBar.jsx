@@ -1,17 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 // import { FileText, FileCode, Palette, Trash, Copy } from 'lucide-react';
-import FileText from "lucide-react/dist/esm/icons/file-text"
-import FileCode from "lucide-react/dist/esm/icons/file-code"
-import Palette from "lucide-react/dist/esm/icons/palette"
-import Trash from "lucide-react/dist/esm/icons/trash"
-import Copy from "lucide-react/dist/esm/icons/copy"
+import FileText from 'lucide-react/dist/esm/icons/file-text';
+import FileCode from 'lucide-react/dist/esm/icons/file-code';
+import Palette from 'lucide-react/dist/esm/icons/palette';
+import Trash from 'lucide-react/dist/esm/icons/trash';
+import Copy from 'lucide-react/dist/esm/icons/copy';
 import ApiDashboard from '../../scripts/API.Dashboard';
+import { useSelector } from 'react-redux';
+import { useSaveComponents } from '../../hooks/useSaveComponents';
 
 const ProjectFileSideBar = ({ file, setFile, toast }) => {
   const { projectID } = useParams();
   const API = new ApiDashboard();
-
+  const webElements = useSelector((state) => state.webElement.present);
+  const webElementsRef = useRef(webElements);
+  const { handleSaveCallback } = useSaveComponents(toast, webElementsRef, file);
   const [files, setFiles] = useState([]);
 
   const fetchFiles = async () => {
@@ -33,7 +37,10 @@ const ProjectFileSideBar = ({ file, setFile, toast }) => {
   const handleOpen = async (name) => {
     await fetchFiles();
     const selectedFile = files.find((f) => f.name === name);
-    if (selectedFile) setFile(selectedFile);
+    if (selectedFile) {
+      handleSaveCallback();
+      setFile(selectedFile);
+    }
   };
 
   const createFile = (name) => {
@@ -64,8 +71,10 @@ const ProjectFileSideBar = ({ file, setFile, toast }) => {
     try {
       await API.createProjectFile(projectID, newfile);
       await fetchFiles();
-      if (files.some((f) => f.name === name)) setFile(newfile);
-      else throw new Error('Failed to add file.');
+      if (files.some((f) => f.name === name)) {
+        handleSaveCallback();
+        setFile(newfile);
+      } else throw new Error('Failed to add file.');
     } catch (error) {
       console.error('Failed to add file:', error);
       toast.error('Failed to create file.');
@@ -85,8 +94,10 @@ const ProjectFileSideBar = ({ file, setFile, toast }) => {
     try {
       await API.deleteProjectFile(projectID, name);
       await fetchFiles();
-      if (file?.name === name)
+      if (file?.name === name) {
+        handleSaveCallback();
         setFile(files.find((f) => f.name === 'index.html'));
+      }
     } catch (error) {
       toast.error('Failed to delete file.');
     }

@@ -61,7 +61,7 @@ const getAllSharedProjects = async (req, res) => {
 const ChangeProfile = async (req, res) => {
   try {
     const userId = req.params.id;
-    const { name, avatar, linkedin, github, bio, location } = req.body;
+    const { name, avatar, linkedin, bio, location } = req.body;
     if (!name || !avatar) {
       return res.status(400).json({ message: 'Please fill all the fields' });
     }
@@ -73,7 +73,6 @@ const ChangeProfile = async (req, res) => {
     user.avatar = avatar;
     user.bio = bio;
     user.linkedin = linkedin;
-    user.github = github;
     user.location = location;
     await user.save();
     const updatedUser = {
@@ -82,7 +81,6 @@ const ChangeProfile = async (req, res) => {
       bio: user.bio,
       linkedin: user.linkedin,
       location: user.location,
-      github: user.github,
       displayname: user.displayname,
       _id: user._id,
     };
@@ -250,6 +248,7 @@ const getProjectsForDisplay = async (req, res) => {
       .json({ message: 'Error retrieving projects', error });
   }
 };
+
 module.exports = {
   getProjectsForDisplay,
   getAllUserProjects,
