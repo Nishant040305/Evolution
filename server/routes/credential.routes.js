@@ -55,7 +55,7 @@ router.post('/logout', credController.logout);
 // @desc     Google OAuth callback
 router.get('/google/callback', googleLogin, googleCallback);
 
-router.get('/github', UserVerifier, GithubRedirect);
+router.get('/github/connect', UserVerifier, GithubRedirect);
 // @routes   GET /api/auth/github
 // @desc     Github OAuth login
 router.get('/github', GithubRedirect);

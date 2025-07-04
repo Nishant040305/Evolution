@@ -90,7 +90,7 @@ const ProfileHeader = ({ profile, onEditProfile, profileStatus }) => {
                 <a
                   href={`${import.meta.env.VITE_REACT_APP_BACKWEB}${
                     import.meta.env.VITE_REACT_APP_GITHUB
-                  }?mode=connect`}
+                  }/connect?mode=connect`}
                   className="hover:text-[#58A6FF] font-medium"
                 >
                   Connect with GitHub
