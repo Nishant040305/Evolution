@@ -17,14 +17,15 @@ const bcrypt = require('bcryptjs');
 
 //Sign In
 const Signin = async (req, res) => {
-  let user = await User.findOne({ email: req.body.EMAIL });
+  const email_verify = req.body.EMAIL.toLowerCase().trim();
+  let user = await User.findOne({ email: email_verify });
   if (!user) {
     const salt = await bcrypt.genSalt(Number(process.env.SALT));
     const hashPassword = await bcrypt.hash(req.body.PASSWORD, salt);
-    const hashedUsername = await UserNameParse(req.body.EMAIL);
+    const hashedUsername = await UserNameParse(email_verify);
     user = await new User({
       displayname: hashedUsername,
-      email: req.body.EMAIL,
+      email: email_verify,
       password: hashPassword,
       verify: false,
       name: hashedUsername,
@@ -116,7 +117,8 @@ const VerifyUser = async (req, res) => {
 };
 const LogIn = async (req, res) => {
   try {
-    let user = await User.findOne({ email: req.body.EMAIL }).lean();
+    let email_verify = req.body.EMAIL.toLowerCase().trim();
+    let user = await User.findOne({ email: email_verify }).lean();
     if (user.password == null) {
       return res
         .status(400)
@@ -156,8 +158,8 @@ const LogIn = async (req, res) => {
 const PasswordRecovery = async (req, res) => {
   try {
     const { EMAIL } = req.body;
-    console.log(EMAIL);
-    const user = await User.findOne({ email: EMAIL });
+    const email_verify = EMAIL.toLowerCase().trim();
+    const user = await User.findOne({ email: email_verify });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -167,10 +169,10 @@ const PasswordRecovery = async (req, res) => {
       userId: user._id,
       token: otp,
       type: 'PasswordChangeOTP',
-      email: EMAIL,
+      email: email_verify,
     });
 
-    await sendPasswordRecoverEmail(EMAIL, otp);
+    await sendPasswordRecoverEmail(email_verify, otp);
 
     return res
       .status(200)
